@@ -1,6 +1,6 @@
 {
-  "short_name": "kuikit",
-  "name": "kuikit",
+  "short_name": "unikit",
+  "name": "unikit",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",

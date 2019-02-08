@@ -1,10 +1,10 @@
 {
-  "name": "kuikit",
+  "name": "unikit",
   "version": "1.0.0",
-  "description": "Cross-Plattform UI kit based on styled-components",
+  "description": "",
   "author": "kations",
   "license": "MIT",
-  "repository": "kations/kuikit",
+  "repository": "kations/unikit",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",

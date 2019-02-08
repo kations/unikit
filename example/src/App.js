@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import ExampleComponent from 'kuikit'
+import ExampleComponent from 'unikit'
 
 export default class App extends Component {
   render () {

@@ -1,6 +1,6 @@
 {
-  "name": "kuikit-example",
-  "homepage": "https://kations.github.io/kuikit",
+  "name": "unikit-example",
+  "homepage": "https://kations.github.io/unikit",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -9,7 +9,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
-    "kuikit": "link:.."
+    "unikit": "link:.."
   },
   "scripts": {
     "start": "react-scripts start",
