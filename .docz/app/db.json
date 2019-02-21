@@ -1,0 +1,37 @@
+{
+  "config": {
+    "title": "Unikit",
+    "description": "My awesome app using docz",
+    "menu": [],
+    "ordering": "descending",
+    "version": "1.0.0",
+    "repository": "https://github.com/kations/unikit",
+    "native": false,
+    "codeSandbox": true,
+    "themeConfig": {}
+  },
+  "entries": {
+    "docs/Button.mdx": {
+      "name": "Button",
+      "id": "68a6b55def5e73bf0a1b7ab2a4a79f62",
+      "filepath": "docs/Button.mdx",
+      "link": "https://github.com/kations/unikit/edit/master/docs/Button.mdx",
+      "slug": "docs-button",
+      "route": "/docs-button",
+      "order": 0,
+      "menu": null,
+      "headings": [
+        {
+          "depth": 1,
+          "slug": "button",
+          "value": "Button"
+        },
+        {
+          "depth": 2,
+          "slug": "basic-usage",
+          "value": "Basic usage"
+        }
+      ]
+    }
+  }
+}

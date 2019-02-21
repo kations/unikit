@@ -7,7 +7,9 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
+    "react-art": "^16.8.1",
     "react-dom": "^16.4.1",
+    "react-native-web": "^0.10.0",
     "react-scripts": "^1.1.4",
     "unikit": "link:.."
   },
@@ -16,5 +18,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "docz": "^0.13.7",
+    "docz-theme-default": "^0.13.7"
   }
 }
