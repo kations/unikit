@@ -16,7 +16,6 @@ export const getObjValue = (o, s) => {
 };
 
 export const lightOrDark = color => {
-  if (!color) return false;
   const { red, green, blue } = parseToRgb(color);
   if (red * 0.299 + green * 0.587 + blue * 0.114 > 186) {
     return true;
@@ -25,47 +24,42 @@ export const lightOrDark = color => {
   }
 };
 
-const ColorStyles = [
-  "color",
-  "backgroundColor",
-  "borderColor",
-  "bodyBackground",
-  "headerBackground"
-];
+export const defaultTheme = {
+  unikit: {
+    avatar: {
+      mode: "primary",
+      size: 60
+    },
+    button: {
+      mode: "primary"
+    },
+    switch: {
+      circleSize: 25
+    }
+  }
+};
 
 export const getProp = (props, key, comp) => {
-  const unikitTheme = props.theme ? props.theme.unikit : {};
-  let value = undefined;
+  const unikitTheme = Object.assign(
+    {},
+    defaultTheme.unikit,
+    props.theme.unikit
+  );
   if (props[key] !== undefined) {
-    value = props[key];
+    return props[key];
   } else if (getObjValue(unikitTheme, `${comp}.${key}`) !== undefined) {
-    value = getObjValue(unikitTheme, `${comp}.${key}`);
-  } else if (getObjValue(unikitTheme, `box.${key}`) !== undefined) {
-    value = getObjValue(unikitTheme, `box.${key}`);
+    return getObjValue(unikitTheme, `${comp}.${key}`);
+  } else if (getObjValue(unikitTheme, `globals.${key}`) !== undefined) {
+    return getObjValue(unikitTheme, `globals.${key}`);
   } else if (getObjValue(unikitTheme, `colors.${key}`) !== undefined) {
-    value = getObjValue(unikitTheme, `colors.${key}`);
+    return getObjValue(unikitTheme, `colors.${key}`);
+  } else {
+    return undefined;
   }
-
-  if (getObjValue(unikitTheme, `colors.${value}`)) {
-    value = getObjValue(unikitTheme, `colors.${value}`);
-  }
-
-  if (
-    props[`${key}Lightness`] ||
-    getObjValue(unikitTheme, `${comp}.${key}Lightness`)
-  ) {
-    value = setLightness(
-      props[`${key}Lightness`] ||
-        getObjValue(unikitTheme, `${comp}.${key}Lightness`),
-      value
-    );
-  }
-  return value;
 };
 
 export const getColorSchema = (props, color, type) => {
   var newColor = color;
-  if (!newColor) return {};
   var lightness = getProp(props, "lightness", "global") || 0.94;
   if (type === "light") {
     newColor = setLightness(lightness, newColor);

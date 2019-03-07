@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
-import styled from "styled-components/native";
+import { TouchableOpacity, Text } from "react-native";
+import styled from "styled-components";
 
 import PropTypes from "prop-types";
 
@@ -8,25 +8,25 @@ import { getProp, getColorSchema } from "../../helper";
 
 // import styles from "./styles.css";
 
-const Button = styled.TouchableOpacity`
+const Button = styled(TouchableOpacity)`
   display: inline-block;
   padding: 15px 20px;
   width: auto;
   background-color: ${p =>
     getColorSchema(
       p,
-      getProp(p, p.mode, "colors"),
+      getProp(p, getProp(p, "mode", "avatar"), "colors"),
       p.light ? "light" : "background"
     ).background};
   border-radius: ${p => getProp(p, "borderRadius", "button")}px;
   opacity: ${p => (p.disabled ? 0.5 : 1)};
 `;
 
-const ButtonText = styled.Text`
+const ButtonText = styled(Text)`
   color: ${p =>
     getColorSchema(
       p,
-      getProp(p, p.mode, "button"),
+      getProp(p, getProp(p, "mode", "avatar"), "colors"),
       p.light ? "light" : "background"
     ).text};
 `;

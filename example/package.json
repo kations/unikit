@@ -5,12 +5,18 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "jsx-to-string": "^1.4.0",
+    "parse-prop-types": "^0.3.0",
+    "prettier": "^1.16.4",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
+    "react": "link:../node_modules/react",
     "react-art": "^16.8.1",
-    "react-dom": "^16.4.1",
+    "react-dom": "link:../node_modules/react-dom",
+    "react-live": "^1.12.0",
     "react-native-web": "^0.10.0",
     "react-scripts": "^1.1.4",
+    "react-spring": "^8.0.7",
+    "swgs": "^3.3.0",
     "unikit": "link:.."
   },
   "scripts": {
@@ -18,9 +24,5 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "docz": "^0.13.7",
-    "docz-theme-default": "^0.13.7"
   }
 }

@@ -22,8 +22,8 @@ export default {
       sourcemap: true
     }
   ],
-  external: ["styled-components/native", "react-native"],
-  globals: { "styled-components/native": "styled" },
+  external: ["styled-components", "react-native"],
+  globals: { "styled-components": "styled" },
   plugins: [
     external(),
     postcss({
@@ -35,7 +35,11 @@ export default {
       exclude: "node_modules/**",
       plugins: ["external-helpers"]
     }),
-    resolve(),
+    resolve({
+      alias: {
+        "react-native-svg": "swgs"
+      }
+    }),
     commonjs()
   ]
 };
