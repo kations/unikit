@@ -1,20 +1,11 @@
 import React, { Component } from "react";
 import Svg, { Defs, Stop, Rect, LinearGradient } from "swgs";
-import styled, { withTheme } from "styled-components";
 import PropTypes from "prop-types";
+import { StyleSheet } from "react-native-web";
 
 import Box from "../primitives/Box";
 import { getProp } from "../../helper";
-
-const Gradient = styled(Box)`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 0;
-  overflow: hidden;
-`;
+import { useTheme } from "../../style/Theme";
 
 const getID = () => {
   return Math.random()
@@ -25,10 +16,12 @@ const getID = () => {
 
 const Comp = props => {
   const { children, style, ...rest } = props;
+  const theme = useTheme();
+  const { gradient } = defaultStyle;
   var id = getID();
-  const colors = getProp(props, "colors", "gradient");
+  const colors = getProp(props, theme, "colors", "gradient");
   return (
-    <Gradient style={style} {...rest}>
+    <Box style={StyleSheet.flatten([gradient, style])} {...rest}>
       <Svg height="100%" width="100%">
         <Defs>
           <LinearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
@@ -46,13 +39,25 @@ const Comp = props => {
         <Rect x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
       </Svg>
       {children}
-    </Gradient>
+    </Box>
   );
 };
+
+const defaultStyle = StyleSheet.create({
+  gradient: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 0,
+    overflow: "hidden"
+  }
+});
 
 Comp.propTypes = {
   colors: PropTypes.array,
   style: PropTypes.object
 };
 
-export default withTheme(Comp);
+export default Comp;

@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path, G } from "swgs";
-import { Animated, Easing } from "react-native";
 import { useSpring, animated } from "react-spring";
-import styled, { withTheme } from "styled-components";
 import PropTypes from "prop-types";
+import { View } from "react-native-web";
 
-import { getProp, getColorSchema } from "../../helper";
-import Block from "../primitives/Block";
+import { getProp } from "../../helper";
+import { useTheme } from "../../style/Theme";
 
-const Track = styled(Path)`
-  stroke: ${p => getProp(p, "trackColor", "progress")};
-`;
-
-const Circle = styled(Path)`
-  stroke: ${p => getProp(p, "circleColor", "progress")};
-`;
-
-const AnimatedView = animated(Block);
+const AnimatedView = animated(View);
 
 const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
   var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -58,10 +49,11 @@ class PathComp extends React.PureComponent {
       size,
       angle,
       rotate,
+      theme,
       ...rest
     } = this.props;
     return (
-      <Circle
+      <Path
         d={circlePath(
           size / 2,
           size / 2,
@@ -72,7 +64,9 @@ class PathComp extends React.PureComponent {
         strokeWidth={circleWidth}
         strokeLinecap={lineCap}
         fill={"transparent"}
-        {...rest}
+        style={{
+          stroke: getProp(this.props, theme, "circleColor", "progress")
+        }}
       />
     );
   }
@@ -93,6 +87,8 @@ const Comp = props => {
     rotate,
     ...rest
   } = props;
+
+  const theme = useTheme();
 
   const [running, setRunning] = useState(1); // 0 reset, 1 run
   useEffect(() => {
@@ -130,9 +126,13 @@ const Comp = props => {
       style={
         loading
           ? {
-              transform: loadingRotate.interpolate(l => `rotate(${l}deg)`)
+              width: size,
+              height: size,
+              transform: loadingRotate.interpolate(l => [{ rotate: `${l}deg` }])
             }
           : {
+              width: size,
+              height: size,
               transform: [
                 {
                   rotate: `${rotate}deg`
@@ -149,16 +149,18 @@ const Comp = props => {
         style={{ backgroundColor: "transparent" }}
       >
         <G rotate={rotate} originX={size / 2} originY={size / 2}>
-          <Track
+          <Path
             d={backgroundPath}
             strokeWidth={trackWidth}
             strokeLinecap={lineCap}
             fill="transparent"
             strokeDashoffset={50}
+            style={{ stroke: getProp(props, theme, "trackColor", "progress") }}
             {...rest}
           />
           <AnimatedPath
             {...props}
+            theme={theme}
             progress={
               loading
                 ? loadingRotate.interpolate([0, 180, 360], [75, 25, 75])

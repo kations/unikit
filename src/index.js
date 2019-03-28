@@ -1,7 +1,7 @@
-export { default as Visible } from "./components/Visible";
-
-//Helper
-export { default as UniProvider } from "./components/helper/UniProvider";
+import { useTheme, withTheme } from "./style/Theme";
+export { useTheme, withTheme };
+export { default as Visible } from "./components/helper/Visible";
+export { default as UniProvider } from "./style/Provider";
 
 //Inputs
 export { default as Select } from "./components/inputs/Select";
@@ -23,3 +23,4 @@ export { default as Table } from "./components/ui/Table";
 export { default as Avatar } from "./components/ui/Avatar";
 export { default as Progress } from "./components/ui/Progress";
 export { default as Overlay } from "./components/ui/Overlay";
+export { default as Animate } from "./components/ui/Animate";

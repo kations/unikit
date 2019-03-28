@@ -1,20 +1,20 @@
-import styled from "styled-components";
-
+import React from "react";
+import { Platform } from "react-native-web";
 import PropTypes from "prop-types";
 
 import Box from "./Box";
 
-const Flex = styled(Box)`
-  flex: ${p => (p.inline ? "0" : "1")};
-  display: ${p => (p.inline ? "inline-flex" : "flex")};
-`;
+const Flex = ({ children, inline, ...rest }) => (
+  <Box
+    display={Platform.OS === "web" ? (inline ? "inline-flex" : "flex") : "flex"}
+    {...rest}
+  >
+    {children}
+  </Box>
+);
 
 Flex.propTypes = {
   inline: PropTypes.bool
-};
-
-Flex.defaultProps = {
-  flex: "1"
 };
 
 export default Flex;

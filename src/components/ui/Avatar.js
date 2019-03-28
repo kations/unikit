@@ -1,67 +1,33 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
-import styled from "styled-components";
-
+import { TouchableOpacity, StyleSheet } from "react-native-web";
 import PropTypes from "prop-types";
 
-import { getProp, getColorSchema } from "../../helper";
+import { useTheme } from "../../style/Theme";
+import { getProp } from "../../helper";
 
-// import styles from "./styles.css";
-import Block from "../primitives/Block";
+import Box from "../primitives/Box";
 import Text from "../primitives/Text";
 import Image from "../primitives/Image";
 
-const Avatar = styled(Block)`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: ${p => getProp(p, "size", "avatar")}px;
-  width: ${p => getProp(p, "size", "avatar")}px;
-  background-color: ${p =>
-    getColorSchema(
-      p,
-      getProp(p, getProp(p, "mode", "avatar"), "colors"),
-      p.light ? "light" : "background"
-    ).background};
-  border-radius: ${p => getProp(p, "size", "avatar") / 2}px;
-`;
-
-const Char = styled(Text)`
-  position: relative;
-  z-index: 10;
-  font-size: ${p => getProp(p, "size", "avatar") / 2.25}px;
-  font-weight: bold;
-  color: ${p => getProp(p, "color", "avatar")};
-`;
-
-const Background = styled(Image)`
-  left: 0;
-  top: 0;
-  height: ${p => getProp(p, "size", "avatar")}px;
-  width: ${p => getProp(p, "size", "avatar")}px;
-  z-index: 0;
-  border-radius: ${p => getProp(p, "size", "avatar") / 2}px;
-`;
-
-const Comp = ({
-  children,
-  mode,
-  char,
-  size,
-  onPress,
-  light,
-  style,
-  source,
-  color,
-  ...rest
-}) => {
+const Comp = props => {
+  const {
+    children,
+    mode,
+    char,
+    size,
+    onPress,
+    light,
+    style,
+    source,
+    color,
+    ...rest
+  } = props;
+  const theme = useTheme();
+  const { avatar, background, text } = defaultStyle(props, theme);
   return (
-    <Avatar
+    <Box
       as={TouchableOpacity}
-      style={style}
-      light={light}
-      mode={mode}
-      size={size}
+      style={StyleSheet.flatten([avatar, style])}
       onPress={onPress || null}
       onMouseEnter={() => console.log("hover")}
       activeOpacity={onPress ? 0.6 : 1}
@@ -69,24 +35,41 @@ const Comp = ({
       {...rest}
     >
       {source ? (
-        <Background
-          source={source}
-          width={size}
-          height={size}
-          resizeMode="cover"
-          absolute
-        />
+        <Image style={background} source={source} resizeMode="cover" />
       ) : null}
-      {children ? (
-        children
-      ) : (
-        <Char mode={mode} light={light} size={size} color={color}>
-          {char}
-        </Char>
-      )}
-    </Avatar>
+      {children ? children : <Text style={text}>{char}</Text>}
+    </Box>
   );
 };
+
+const defaultStyle = (props, theme) =>
+  StyleSheet.create({
+    avatar: {
+      display: "inline-flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: getProp(props, theme, "size", "avatar"),
+      width: getProp(props, theme, "size", "avatar"),
+      backgroundColor: getProp(props, theme, "backgroundColor", "avatar"),
+      borderRadius: getProp(props, theme, "size", "avatar") / 2
+    },
+    background: {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      height: getProp(props, theme, "size", "avatar"),
+      width: getProp(props, theme, "size", "avatar"),
+      zIndex: 0,
+      borderRadius: getProp(props, theme, "size", "avatar") / 2
+    },
+    text: {
+      position: "relative",
+      zIndex: 10,
+      fontSize: getProp(props, theme, "size", "avatar") / 2.25,
+      fontWeight: "bold",
+      color: getProp(props, theme, "color", "avatar", "backgroundColor")
+    }
+  });
 
 Comp.propTypes = {
   mode: PropTypes.string,

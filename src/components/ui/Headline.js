@@ -1,53 +1,59 @@
-import React from "react";
-import styled from "styled-components";
+import React, { Fragment } from "react";
+import { Platform, StyleSheet, Text as DefaultText } from "react-native-web";
 import PropTypes from "prop-types";
-import { useTransition, animated } from "react-spring";
 
 import Text from "../primitives/Text";
+import Animate from "./Animate";
 
-const Headline = styled(Text)`
-  display: inline-block;
-`;
+const Comp = ({ level = 1, children, style, animated, ...rest }) => {
+  const { text, span } = defaultStyle;
+  if (animated) {
+    var splittedString = children.split("");
+    return (
+      <Text
+        style={StyleSheet.flatten([text, style])}
+        accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
+        aria-level={level}
+        comp="headline"
+        {...rest}
+      >
+        {splittedString.map((char, index) => (
+          <Animate
+            key={`${index}-${char}`}
+            delay={index * 25}
+            config={{ mass: 1, tension: 180, friction: 12 }}
+            as={DefaultText}
+          >
+            {char}
+          </Animate>
+        ))}
+      </Text>
+    );
+  }
 
-const Span = styled(Text)`
-  display: inline-block;
-`;
-
-const AnimatedSpan = animated(Span);
-
-const Comp = ({ level, children, style, ...rest }) => {
-  const transitions = useTransition(children.split(""), null, {
-    from: { opacity: 0, translateX: 50 },
-    enter: { opacity: 1, translateX: 0 },
-    leave: { opacity: 0, translateX: 50 }
-  });
-  // return (
-  //   <Headline style={style} ariaLevel="1" {...rest}>
-  //     {transitions.map(({ item, key, props }) => (
-  //       <AnimatedSpan
-  //         style={{
-  //           opacity: props.opacity,
-  //           transform: [{ translateX: props.translateX }]
-  //         }}
-  //         key={key}
-  //       >
-  //         {item}
-  //       </AnimatedSpan>
-  //     ))}
-  //   </Headline>
-  // );
   return (
-    <Headline
-      accessibilityRole="heading"
+    <Text
+      accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
       aria-level={level}
-      style={style}
+      style={StyleSheet.flatten([text, style])}
       comp="headline"
       {...rest}
     >
       {children}
-    </Headline>
+    </Text>
   );
 };
+
+const defaultStyle = StyleSheet.create({
+  text: {
+    display: Platform.OS === "web" ? "inline-block" : "flex",
+    flexDirection: "row",
+    fontSize: 30
+  },
+  span: {
+    display: Platform.OS === "web" ? "inline-block" : "flex"
+  }
+});
 
 // const transitions = useTransition(text, null, {
 //   from: { opacity: 0 },

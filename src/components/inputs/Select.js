@@ -1,67 +1,14 @@
 import React, { useState, useEffect } from "react";
-import styled, { withTheme } from "styled-components";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native-web";
 import { useSpring, animated } from "react-spring";
 
-import { getProp, getColorSchema } from "../../helper";
+import { useTheme } from "../../style/Theme";
+import { getProp } from "../../helper";
 import Pan from "../helper/Pan";
 import Swiper from "../ui/Swiper";
+import Box from "../primitives/Box";
 
-const Select = styled(Pan)`
-  position: relative;
-  height: 45px;
-  width: 100%;
-  background-color: ${p =>
-    getColorSchema(p, getProp(p, "mode", "select"), "light").background};
-  border-radius: ${p => getProp(p, "borderRadius", "select")}px;
-
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`;
-
-const Item = styled(TouchableOpacity)`
-  flex: 1;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Label = styled(Text)`
-  font-size: 14px;
-  color: ${p =>
-    p.active
-      ? "#FFF"
-      : getColorSchema(p, getProp(p, "mode", "select"), "light").text};
-`;
-
-const Indicator = styled(View)`
-  position: absolute;
-  height: ${p => getProp(p, "indicatorHeight", "select")}px;
-  left: 0;
-  top: 0;
-  background-color: ${p =>
-    getColorSchema(p, getProp(p, "mode", "select"), "background").background};
-  border-radius: ${p => getProp(p, "borderRadius", "select")}px;
-`;
-
-const ContentWrap = styled(Pan)`
-  position: relative;
-  flex: 1;
-  height: 500px;
-  overflow: hidden;
-`;
-
-const Content = styled(View)`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-`;
-
-const AnimatedIndicator = animated(Indicator);
-const AnimatedContent = animated(Content);
+const AnimatedIndicator = animated(View);
 
 const isString = option => {
   return typeof option === "string" ? true : false;
@@ -75,9 +22,14 @@ const Comp = props => {
     options,
     children,
     indicatorHeight,
-    borderRadius
+    borderRadius,
+    swipeIndex,
+    hideLabels,
+    ...rest
   } = props;
 
+  const theme = useTheme();
+  const { select, item, label, indicator } = defaultStyle(props, theme);
   const selectedIndex = options.findIndex(
     option => option === value || option.value === value
   );
@@ -94,8 +46,22 @@ const Comp = props => {
   const width = state.width / options.length;
 
   useEffect(() => {
-    setState({ ...state, index: selectedIndex, moveX: selectedIndex * width });
-  }, [selectedIndex]);
+    if (selectedIndex !== state.index) {
+      setState({
+        ...state,
+        index: selectedIndex,
+        moveX: selectedIndex * width,
+        swipeIndex: selectedIndex
+      });
+    }
+    if (swipeIndex !== state.swipeIndex) {
+      setState({
+        ...state,
+        moveX: swipeIndex * width,
+        swipeIndex: swipeIndex
+      });
+    }
+  }, [selectedIndex, swipeIndex]);
 
   const springStyle = useSpring({
     x: Math.round(state.swipeIndex * width),
@@ -106,9 +72,9 @@ const Comp = props => {
   });
 
   const TabsComp = (
-    <Select
-      style={style}
-      borderRadius={borderRadius}
+    <Box
+      as={Pan}
+      style={StyleSheet.flatten([select, style])}
       onLayout={({ nativeEvent }) => {
         const width = state.width / options.length;
         setState({
@@ -168,16 +134,20 @@ const Comp = props => {
     >
       {value && (
         <AnimatedIndicator
-          style={{
-            left: state.swipe ? state.swipeIndex * width : springStyle.x,
-            width: `${width}px`
-          }}
+          style={StyleSheet.flatten([
+            indicator,
+            {
+              left: state.swipe ? state.swipeIndex * width : springStyle.x,
+              width: width
+            }
+          ])}
           indicatorHeight={indicatorHeight}
           borderRadius={borderRadius}
         />
       )}
       {options.map((option, index) => (
-        <Item
+        <TouchableOpacity
+          style={item}
           active={state.index === index}
           activeOpacity={state.index === index ? 1 : 0.6}
           onPress={() => {
@@ -188,17 +158,20 @@ const Comp = props => {
               swipeIndex: index
             });
             if (onChange) {
+              console.log(isString(option) ? option : option.value);
               onChange(isString(option) ? option : option.value);
             }
           }}
           key={`item-${index}`}
         >
-          <Label active={Math.round(state.swipeIndex) === index}>
-            {isString(option) ? option : option.label}
-          </Label>
-        </Item>
+          {!hideLabels && (
+            <Text style={label} active={Math.round(state.swipeIndex) === index}>
+              {isString(option) ? option : option.label}
+            </Text>
+          )}
+        </TouchableOpacity>
       ))}
-    </Select>
+    </Box>
   );
 
   if (children) {
@@ -226,8 +199,40 @@ const Comp = props => {
   }
 };
 
+const defaultStyle = (props, theme) =>
+  StyleSheet.create({
+    select: {
+      position: "relative",
+      height: 45,
+      width: "auto",
+      backgroundColor: getProp(props, theme, "backgroundColor", "select"),
+      borderRadius: getProp(props, theme, "borderRadius", "select"),
+      flexDirection: "row",
+      justifyContent: "space-between",
+      overflow: "hidden"
+    },
+    item: {
+      flex: 1,
+      height: "100%",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    label: {
+      fontSize: 14,
+      color: getProp(props, theme, "color", "select", "backgroundColor")
+    },
+    indicator: {
+      position: "absolute",
+      height: getProp(props, theme, "indicatorHeight", "select"),
+      left: 0,
+      top: 0,
+      backgroundColor: getProp(props, theme, "indicatorColor", "select"),
+      borderRadius: getProp(props, theme, "borderRadius", "select")
+    }
+  });
+
 Comp.defaultProps = {
   threshold: 5
 };
 
-export default withTheme(Comp);
+export default Comp;

@@ -1,166 +1,255 @@
-import React, { useState, useEffect } from "react";
-import styled, { withTheme } from "styled-components";
-import { View } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
 import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
+import { View, ScrollView, StyleSheet } from "react-native-web";
+//import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
-import { getProp, getColorSchema } from "../../helper";
-import Pan from "../helper/Pan";
 import Box from "../primitives/Box";
+import Select from "../inputs/Select";
 
-const Root = styled(Box)`
-  flex: 1;
-  overflow: hidden;
-`;
-
-const Wrap = styled(Pan)`
-  flex: 1;
-  flex-direction: row;
-`;
-
-const Content = styled(View)`
-  flex: 1;
-`;
-
-const AnimatedWrap = animated(Wrap);
-const AnimatedContent = animated(Content);
+const AnimatedContent = animated(View);
 
 const Comp = props => {
   const {
+    onSwipe,
+    onSwipeEnd,
     index,
     swipeIndex,
     style,
-    slideWidth,
+    itemSize,
     children,
     gap,
     scale,
+    flex,
+    dots,
+    dotsPosition,
+    dotsOffset,
+    autoplay,
+    duration,
+    vertical,
     ...rest
   } = props;
 
+  const scrollRef = useRef(null);
+
+  const { root, wrap, dotswrap } = defaultStyle(props);
+
   const [state, setState] = useState({
-    moveX: 0,
-    width: slideWidth || 0,
-    swipeIndex: index || swipeIndex,
-    index: index,
-    swipe: false
+    width: itemSize || 0,
+    height: itemSize || 0,
+    swipeIndex: 0,
+    index: 0,
+    offset: {
+      x: 0,
+      y: 0
+    }
   });
 
   useEffect(() => {
     if (index !== state.index) {
-      setState({ ...state, index: index, moveX: index * -state.width });
+      setState({ ...state, index: index, swipeIndex: index });
     }
     if (swipeIndex !== state.swipeIndex) {
       setState({
         ...state,
         swipeIndex: swipeIndex,
-        moveX: swipeIndex * -state.width
+        offset: {
+          x: swipeIndex * -state.width,
+          y: 0
+        }
       });
     }
   }, [index, swipeIndex]);
 
-  const getScale = (index, swipeIndex) => {
-    let factor = Math.abs(swipeIndex - index);
-    if (factor > 1) factor = 1;
-    if (factor <= 0.5) {
-      return factor;
-    } else {
-      return 1 - factor;
-    }
-  };
+  useEffect(() => {
+    scrollRef.current.scrollTo({
+      x: vertical ? 0 : state.index * state.width,
+      y: vertical ? state.index * state.width : 0,
+      animated: true
+    });
+  }, [state.index]);
 
-  const contentSpring = useSpring({
-    to: {
-      left: state.swipeIndex * -state.width,
-      moveX: state.moveX,
-      distance:
-        state.swipe && scale ? 1 - getScale(state.index, state.swipeIndex) : 1
-    },
-    config: { mass: 1, tension: 300, friction: 30 },
-    immediate: name => state.swipe && name === "moveX"
+  useEffect(() => {
+    if (autoplay) {
+      const interval = setInterval(() => {
+        const maxIndex = React.Children.count(children) - 1;
+        const newIndex = state.index + 1 > maxIndex ? 0 : state.index + 1;
+        setState({ ...state, index: newIndex });
+      }, duration);
+
+      return () => clearInterval(interval);
+    } else {
+      return () => null;
+    }
   });
 
+  // const contentSpring = useSpring({
+  //   to: {
+  //     left: state.swipeIndex * -state.width,
+  //     moveX: state.moveX,
+  //     swipeIndex: state.swipeIndex
+  //   },
+  //   config: { mass: 1, tension: 300, friction: 30 },
+  //   immediate: name => state.swipe && name === "moveX"
+  // });
+
   return (
-    <Root
+    <Box
       onLayout={({ nativeEvent }) => {
+        const width = itemSize || nativeEvent.layout.width;
         setState({
           ...state,
-          width: slideWidth || nativeEvent.layout.width
+          width: width,
+          offset: {
+            x: vertical ? 0 : state.index * width,
+            y: vertical ? state.index * width : 0
+          }
         });
       }}
-      style={style}
+      style={StyleSheet.flatten([
+        root,
+        flex,
+        {
+          flex: flex || undefined
+        }
+      ])}
       {...rest}
     >
-      <AnimatedWrap
-        onStart={() => {
-          setState({
-            ...state,
-            swipe: true
-          });
-        }}
-        onSwipe={(direction, gestureState) => {
-          let dx = state.index * -state.width + gestureState.dx;
-          var swipeIndex = contentSpring.moveX
-            .interpolate(
-              [0, -state.width * React.Children.count(children)],
-              [0, React.Children.count(children)]
-            )
-            .getAnimatedValue();
-
-          if (props.onSwipe) props.onSwipe(swipeIndex);
-          setState({
-            ...state,
-            moveX: dx,
-            swipeIndex: swipeIndex
-          });
-        }}
-        onSwipeEnd={(direction, gestureState) => {
-          const { threshold = 0, children } = props;
-          const { vx } = gestureState;
-          let swipeIndex = Math.round(state.swipeIndex);
-
-          // Quick movement
-          if (Math.abs(vx) * 10 > threshold) {
-            if (vx > 0) {
-              swipeIndex = swipeIndex - 1;
-            } else {
-              swipeIndex = swipeIndex + 1;
-            }
+      <ScrollView
+        ref={scrollRef}
+        style={wrap}
+        horizontal={!vertical}
+        pagingEnabled
+        snapToInterval={state.width}
+        decelerationRate="fast"
+        snapToAlignment="left"
+        automaticallyAdjustContentInsets={false}
+        scrollsToTop={false}
+        bounces={true}
+        scrollEventThrottle={16}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        directionalLockEnabled
+        contentOffset={state.offset}
+        alwaysBounceVertical={false}
+        keyboardDismissMode="on-drag"
+        onScroll={({ nativeEvent }) => {
+          //if (Platform.OS === "web") disablePageScroll();
+          if (!vertical) {
+            var swipeIndex = nativeEvent.contentOffset.x / state.width;
+          } else {
+            var swipeIndex = nativeEvent.contentOffset.y / state.width;
           }
 
-          if (swipeIndex < 0) {
-            swipeIndex = 0;
-          } else if (swipeIndex > React.Children.count(children) - 1) {
-            swipeIndex = React.Children.count(children) - 1;
+          if (onSwipe) onSwipe(swipeIndex);
+          setState({ ...state, swipeIndex: swipeIndex });
+        }}
+        onMomentumScrollEnd={({ nativeEvent }) => {
+          //if (Platform.OS === "web") enablePageScroll();
+          var indexNew = Math.round(nativeEvent.contentOffset.x / state.width);
+          if (!vertical) {
+            var indexNew = Math.round(
+              nativeEvent.contentOffset.x / state.width
+            );
+          } else {
+            var indexNew = Math.round(
+              nativeEvent.contentOffset.y / state.width
+            );
           }
-
-          if (props.onSwipeEnd) props.onSwipeEnd(swipeIndex);
+          if (onSwipeEnd) onSwipeEnd(indexNew);
           setState({
             ...state,
-            index: swipeIndex,
-            moveX: swipeIndex * -state.width,
-            swipeIndex: swipeIndex,
-            swipe: false
+            index: indexNew
           });
         }}
         style={{
-          left: contentSpring.left,
-          width: state.width * React.Children.count(children)
+          flex: flex || undefined,
+          flexDirection: vertical ? "column" : "row"
+        }}
+        contentContainerStyle={{
+          width: vertical ? "100%" : "auto"
         }}
       >
-        {React.Children.map(children, (child, index) => (
-          <AnimatedContent
+        {React.Children.map(children, (child, index) => {
+          return (
+            <AnimatedContent
+              style={{
+                flex: 1,
+                padding: gap / 2,
+                width: vertical ? "100%" : state.width,
+                height: vertical ? state.width : "100%"
+              }}
+            >
+              {child}
+            </AnimatedContent>
+          );
+        })}
+      </ScrollView>
+      {dots && (
+        <Box
+          style={StyleSheet.flatten([
+            dotswrap,
+            {
+              [dotsPosition]: dotsOffset
+            }
+          ])}
+        >
+          {/* {React.Children.map(children, (child, index) => (
+            <Dot active={index === state.index} />
+          ))} */}
+          <Select
             style={{
-              transform: contentSpring.distance.interpolate(d => `scale(${d})`),
-              paddingRight: gap
+              width: 70,
+              height: 6,
+              backgroundColor: "rgba(0,0,0,0.2)",
+              transform: [{ rotate: vertical ? "90deg" : "0deg" }]
             }}
-          >
-            {child}
-          </AnimatedContent>
-        ))}
-      </AnimatedWrap>
-    </Root>
+            onChange={(value, index) => {
+              setState({ ...state, index: index });
+            }}
+            borderRadius={3}
+            value={`${state.index}`}
+            swipeIndex={state.swipeIndex}
+            options={React.Children.map(children, (child, index) => `${index}`)}
+            hideLabels
+          />
+        </Box>
+      )}
+    </Box>
   );
 };
+
+const defaultStyle = (props, theme) =>
+  StyleSheet.create({
+    root: {
+      width: "100%",
+      position: "relative"
+    },
+    wrap: {
+      flexDirection: "row"
+    },
+    dotswrap: {
+      position: "absolute",
+      left: props.dotsPosition !== "right" ? "0px" : "auto",
+      right: props.dotsPosition === "right" ? "0px" : "auto",
+      bottom: props.dotsPosition === "bottom" ? "0px" : "auto",
+      top: props.dotsPosition !== "bottom" ? "0px" : "auto",
+      display: "flex",
+      justifyContent: "center",
+      flexDirection:
+        props.dotsPosition === "bottom" || p.dotsPosition === "top"
+          ? "row"
+          : "column",
+      width:
+        props.dotsPosition === "bottom" || p.dotsPosition === "top"
+          ? "100%"
+          : "auto",
+      height:
+        props.dotsPosition === "bottom" || p.dotsPosition === "top"
+          ? "auto"
+          : "100%"
+    }
+  });
 
 Comp.propTypes = {
   index: PropTypes.number,
@@ -174,10 +263,18 @@ Comp.propTypes = {
 };
 
 Comp.defaultProps = {
+  vertical: false,
+  flex: undefined,
   index: 0,
+  gap: 0,
   swipeIndex: 0,
   threshold: 5,
-  hysteresis: 0.6
+  hysteresis: 0.6,
+  dotsPosition: "bottom",
+  dotsOffset: 20,
+  dots: false,
+  autoplay: false,
+  duration: 3000
 };
 
 export default Comp;

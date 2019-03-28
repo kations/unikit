@@ -1,108 +1,137 @@
 import React, { useState, useEffect, Fragment } from "react";
-import styled from "styled-components";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  View,
+  TouchableOpacity,
+  StyleSheet
+} from "react-native-web";
 import PropTypes from "prop-types";
 import { useTransition, useSpring, animated } from "react-spring";
 
-import Poral from "../helper/Portal";
+import { useTheme } from "../../style/Theme";
+import Portal from "../helper/Portal";
 import Box from "../primitives/Box";
 import Pan from "../helper/Pan";
 
-const Backdrop = styled(View)`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.25);
-  aling-items: center;
-  justify-content: center;
-`;
+const AnimatedContent = animated(View);
+const AnimatedPan = animated(Pan);
 
-const Modal = styled(Box)`
-  position: fixed;
-  left: 0;
-  top: 0;
-`;
+const getMove = (position, width, height) => {
+  if (position === "left") {
+    return -width;
+  } else if (position === "right") {
+    return width;
+  } else if (position === "top") {
+    return -height;
+  } else if (position === "bottom") {
+    return height;
+  }
+};
 
-const Panner = styled(Box)`
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  margintop: -25px;
-  width: 6px;
-  height: 50px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.1);
-`;
+const Comp = props => {
+  const {
+    width,
+    height,
+    position,
+    visible,
+    children,
+    onClose,
+    content,
+    backdrop,
+    contentMove,
+    contentMoveStyle,
+    ...rest
+  } = props;
+  const Screen = Dimensions.get("window");
 
-const Content = styled(View)`
-  flex: 1;
-`;
+  const theme = useTheme();
+  const { back, pan, modal, handle, contents } = defaultStyle(props, theme);
 
-const AnimatedBackdrop = animated(Backdrop);
-const AnimatedModal = animated(Modal);
-const AnimatedContent = animated(Content);
-
-const Comp = ({
-  visible,
-  children,
-  onClose,
-  content,
-  backdrop,
-  contentMove,
-  ...rest
-}) => {
   const [state, setState] = useState({
+    width: width || Screen.width,
+    height: height || Screen.height,
     swipe: false,
-    position: visible ? 0 : -300
+    move: visible ? 0 : getMove(position, Screen.width, Screen.height)
   });
 
   useEffect(() => {
     if (visible) {
-      setState({ ...state, position: 0 });
+      setState({ ...state, move: 0 });
     } else {
-      setState({ ...state, position: -300 });
+      setState({
+        ...state,
+        move: getMove(position, state.width, state.height)
+      });
     }
   }, [visible]);
 
-  const { position, opacity } = useSpring({
+  const { move, opacity } = useSpring({
     from: {
       opacity: 0,
-      position: -300
+      move: getMove(position, state.width, state.height)
     },
     to: {
       opacity: 1,
-      position: state.position
+      move: state.move
     },
     config: { mass: 1, tension: 300, friction: 30 },
-    immediate: name => state.swipe
+    immediate: name => state.swipe && name === "move"
   });
 
-  const autoOpacity = position.interpolate([0, -300], [1, 0]);
-  const autoPosition = position.interpolate([0, -300], [300 * contentMove, 0]);
+  const autoOpacity = move.interpolate(
+    [0, getMove(position, state.width, state.height)],
+    [1, 0]
+  );
+  const autoPosition = move.interpolate(
+    [0, getMove(position, state.width, state.height)],
+    [getMove(position, state.width, state.height) * contentMove, 0]
+  );
 
-  console.log(position, state);
+  var contentStyle = `padding${position.charAt(0).toUpperCase() +
+    position.slice(1)}`;
+
+  const AnimatedBackdrop = animated(onClose ? TouchableOpacity : View);
+
   return (
-    <Poral>
+    <Portal>
       <Fragment>
         {children && (
-          <AnimatedContent style={{ paddingLeft: autoPosition }}>
+          <AnimatedContent
+            style={contents}
+            modalPosition={position}
+            contentMoveStyle={contentMoveStyle}
+            move={autoPosition}
+          >
             {children}
           </AnimatedContent>
         )}
         {backdrop && (
           <AnimatedBackdrop
-            as={onClose ? TouchableOpacity : undefined}
             onPress={onClose || null}
-            style={{ opacity: autoOpacity }}
+            style={StyleSheet.flatten([back, { opacity: autoOpacity }])}
             aria-modal="true"
             activeOpacity={0.8}
             pointerEvents={visible ? "auto" : "none"}
           />
         )}
-        <Pan
-          style={{ paddingRight: 50 }}
+        <AnimatedPan
+          onLayout={({ nativeEvent }) => {
+            console.log({ width: nativeEvent.layout.width });
+            setState({
+              ...state,
+              width: nativeEvent.layout.width,
+              height: nativeEvent.layout.height
+            });
+          }}
+          style={StyleSheet.flatten([
+            pan,
+            {
+              width: width,
+              height: height,
+              transform: move.interpolate(m => [{ translateX: m }])
+            }
+          ])}
           onStart={() => {
             setState({
               ...state,
@@ -110,54 +139,104 @@ const Comp = ({
             });
           }}
           onSwipe={(direction, gestureState) => {
-            let dx = gestureState.dx;
-            console.log(gestureState.dx);
+            const { dx, dy } = gestureState;
+            console.log(gestureState, dx, dy);
             setState({
               ...state,
-              position: dx > 0 ? 0 : dx
+              move: position === "top" || position === "bottom" ? dy : dx
             });
           }}
           onSwipeEnd={(direction, gestureState) => {
             const threshold = 0;
-            const { vy } = gestureState;
-            let visible = state.position < -150 ? false : true;
+            const { vx, vy } = gestureState;
+            var visible =
+              state.move < getMove(position, state.width, state.height) / 2
+                ? false
+                : true;
+
+            if (position === "right" || position === "bottom") {
+              visible =
+                state.move > getMove(position, state.width, state.height) / 2
+                  ? false
+                  : true;
+            }
 
             // Quick movement
-            if (Math.abs(vy) * 10 > threshold) {
-              if (vy > 0) {
+            if (Math.abs(vx) * 10 > threshold) {
+              if (
+                (vx > 0 && position === "left") ||
+                (vx < 0 && position === "right") ||
+                (vy < 0 && position === "top") ||
+                (vy < 0 && position === "bottom")
+              ) {
                 visible = true;
               } else {
                 visible = false;
               }
             }
-            if (!visible) onClose();
+            if (!visible && onClose) onClose();
             setState({
               ...state,
-              position: visible ? 0 : -300,
+              move: visible ? 0 : getMove(position, state.width, state.height),
               visible: visible,
               swipe: false
             });
           }}
         >
-          <AnimatedModal
-            style={{
-              transform: position.interpolate(
-                p => `translate3d(${p}px, 0px, 0px)`
-              )
-            }}
+          <Box
+            style={modal}
             onPress={null}
             activeOpacity={1}
             comp="overlay"
             {...rest}
           >
-            <Panner />
+            <Box style={handle} />
             {content && content()}
-          </AnimatedModal>
-        </Pan>
+          </Box>
+        </AnimatedPan>
       </Fragment>
-    </Poral>
+    </Portal>
   );
 };
+
+const defaultStyle = (props, theme) =>
+  StyleSheet.create({
+    back: {
+      position: Platform.OS === "web" ? "fixed" : "absolute",
+      left: 0,
+      top: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0, 0, 0, 0.25)",
+      zIndex: props.zIndex
+    },
+    pan: {
+      position: Platform.OS === "web" ? "fixed" : "absolute",
+      left: props.position !== "right" ? "0px" : "auto",
+      right: props.position === "right" ? "0px" : "auto",
+      bottom: props.position === "bottom" ? "0px" : "auto",
+      top: props.position !== "bottom" ? "0px" : "auto",
+      backgroundColor: "#000",
+      zIndex: props.zIndex + 10
+    },
+    modal: {
+      backgroundColor: "#fff",
+      width: "100%",
+      height: "100%"
+    },
+    handle: {
+      position: "absolute",
+      right: 10,
+      top: "50%",
+      width: 6,
+      height: 50,
+      borderRadius: 5,
+      backgroundColor: "rgba(0, 0, 0, 0.1)"
+    },
+    contents: {
+      flex: 1
+    }
+  });
 
 Comp.propTypes = {
   mode: PropTypes.string,
@@ -168,9 +247,11 @@ Comp.propTypes = {
 };
 
 Comp.defaultProps = {
+  contentMoveStyle: "transform",
   backdrop: true,
-  from: "left",
-  contentMove: 0.5
+  position: "bottom",
+  contentMove: 0.5,
+  zIndex: 100
 };
 
 export default Comp;

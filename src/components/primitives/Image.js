@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Animated, Image } from "react-native";
+import { StyleSheet, Animated, Image } from "react-native-web";
 import Box from "./Box";
 import PropTypes from "prop-types";
 

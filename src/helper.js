@@ -1,4 +1,4 @@
-import { parseToRgb, setLightness } from "polished";
+import color from "color";
 
 export const getObjValue = (o, s) => {
   s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
@@ -15,16 +15,6 @@ export const getObjValue = (o, s) => {
   return o;
 };
 
-export const lightOrDark = color => {
-  if (!color) return false;
-  const { red, green, blue } = parseToRgb(color);
-  if (red * 0.299 + green * 0.587 + blue * 0.114 > 186) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 const ColorStyles = [
   "color",
   "backgroundColor",
@@ -33,8 +23,8 @@ const ColorStyles = [
   "headerBackground"
 ];
 
-export const getProp = (props, key, comp) => {
-  const unikitTheme = props.theme ? props.theme.unikit : {};
+export const getProp = (props, theme, key, comp, subKey) => {
+  const unikitTheme = theme;
   let value = undefined;
   if (props[key] !== undefined) {
     value = props[key];
@@ -50,29 +40,23 @@ export const getProp = (props, key, comp) => {
     value = getObjValue(unikitTheme, `colors.${value}`);
   }
 
+  if (subKey && !value) {
+    var subValue = getProp(props, theme, subKey, comp);
+    value = color(subValue)
+      .darken(0.2)
+      .isDark()
+      ? "#FFF"
+      : "#000";
+  }
+
   if (
-    props[`${key}Lightness`] ||
-    getObjValue(unikitTheme, `${comp}.${key}Lightness`)
+    props[`${key}Lighten`] ||
+    getObjValue(unikitTheme, `${comp}.${key}Lighten`)
   ) {
-    value = setLightness(
-      props[`${key}Lightness`] ||
-        getObjValue(unikitTheme, `${comp}.${key}Lightness`),
-      value
-    );
+    var factor =
+      props[`${key}Lighten`] ||
+      getObjValue(unikitTheme, `${comp}.${key}Lighten`);
+    value = color(value).lighten(factor);
   }
   return value;
-};
-
-export const getColorSchema = (props, color, type) => {
-  var newColor = color;
-  if (!newColor) return {};
-  var lightness = getProp(props, "lightness", "global") || 0.94;
-  if (type === "light") {
-    newColor = setLightness(lightness, newColor);
-  }
-  const dark = lightOrDark(newColor);
-  return {
-    background: newColor,
-    text: dark ? color : "#FFF"
-  };
 };

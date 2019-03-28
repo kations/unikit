@@ -5,6 +5,7 @@ import postcss from "rollup-plugin-postcss";
 import resolve from "rollup-plugin-node-resolve";
 import url from "rollup-plugin-url";
 import svgr from "@svgr/rollup";
+import nodeResolve from "rollup-plugin-node-resolve";
 
 import pkg from "./package.json";
 
@@ -22,9 +23,17 @@ export default {
       sourcemap: true
     }
   ],
-  external: ["styled-components", "react-native"],
-  globals: { "styled-components": "styled" },
+  external: [
+    "react",
+    "react-spring",
+    "react-native-web",
+    "react-theme-provider"
+  ],
+  globals: {
+    react: "React"
+  },
   plugins: [
+    nodeResolve(),
     external(),
     postcss({
       modules: true
@@ -35,11 +44,7 @@ export default {
       exclude: "node_modules/**",
       plugins: ["external-helpers"]
     }),
-    resolve({
-      alias: {
-        "react-native-svg": "swgs"
-      }
-    }),
+    resolve(),
     commonjs()
   ]
 };
