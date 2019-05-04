@@ -5,7 +5,7 @@ import { View, ScrollView, StyleSheet } from "react-native-web";
 //import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import Box from "../primitives/Box";
-import Select from "../inputs/Select";
+import Tabs from "./Tabs";
 
 const AnimatedContent = animated(View);
 
@@ -46,19 +46,26 @@ const Comp = props => {
   });
 
   useEffect(() => {
-    if (index !== state.index) {
-      setState({ ...state, index: index, swipeIndex: index });
-    }
-    if (swipeIndex !== state.swipeIndex) {
-      setState({
-        ...state,
-        swipeIndex: swipeIndex,
-        offset: {
-          x: swipeIndex * -state.width,
-          y: 0
-        }
-      });
-    }
+    const newIndex =
+      swipeIndex && swipeIndex !== state.swipeIndex ? swipeIndex : index;
+
+    setState({
+      ...state,
+      index: Math.round(newIndex)
+    });
+    // if (index !== state.index) {
+    //   setState({ ...state, index: index, swipeIndex: index });
+    // }
+    // if (swipeIndex !== state.swipeIndex) {
+    //   setState({
+    //     ...state,
+    //     swipeIndex: swipeIndex,
+    //     offset: {
+    //       x: swipeIndex * -state.width,
+    //       y: 0
+    //     }
+    //   });
+    // }
   }, [index, swipeIndex]);
 
   useEffect(() => {
@@ -108,10 +115,10 @@ const Comp = props => {
       }}
       style={StyleSheet.flatten([
         root,
-        flex,
         {
           flex: flex || undefined
-        }
+        },
+        style
       ])}
       {...rest}
     >
@@ -130,6 +137,7 @@ const Comp = props => {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         directionalLockEnabled
+        disableScrollViewPanResponder
         contentOffset={state.offset}
         alwaysBounceVertical={false}
         keyboardDismissMode="on-drag"
@@ -156,6 +164,7 @@ const Comp = props => {
               nativeEvent.contentOffset.y / state.width
             );
           }
+          console.log("onMomentumScrollEnd");
           if (onSwipeEnd) onSwipeEnd(indexNew);
           setState({
             ...state,
@@ -197,7 +206,7 @@ const Comp = props => {
           {/* {React.Children.map(children, (child, index) => (
             <Dot active={index === state.index} />
           ))} */}
-          <Select
+          <Tabs
             style={{
               width: 70,
               height: 6,

@@ -1,10 +1,13 @@
+import color from "color";
+
 import { useTheme, withTheme } from "./style/Theme";
-export { useTheme, withTheme };
+
+export { useTheme, withTheme, color };
 export { default as Visible } from "./components/helper/Visible";
 export { default as UniProvider } from "./style/Provider";
 
 //Inputs
-export { default as Select } from "./components/inputs/Select";
+export { default as Slider } from "./components/inputs/Slider";
 
 //Primitives
 export { default as Box } from "./components/primitives/Box";
@@ -24,3 +27,4 @@ export { default as Avatar } from "./components/ui/Avatar";
 export { default as Progress } from "./components/ui/Progress";
 export { default as Overlay } from "./components/ui/Overlay";
 export { default as Animate } from "./components/ui/Animate";
+export { default as Tabs } from "./components/ui/Tabs";

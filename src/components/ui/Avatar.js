@@ -79,7 +79,7 @@ Comp.propTypes = {
   onPress: PropTypes.func,
   light: PropTypes.bool,
   style: PropTypes.object,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default Comp;

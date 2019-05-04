@@ -127,9 +127,13 @@ const Comp = props => {
           style={StyleSheet.flatten([
             pan,
             {
-              width: width,
-              height: height,
-              transform: move.interpolate(m => [{ translateX: m }])
+              width: state.width,
+              height: state.height,
+              transform: move.interpolate(m =>
+                position === "top" || position === "bottom"
+                  ? [{ translateY: m }]
+                  : [{ translateX: m }]
+              )
             }
           ])}
           onStart={() => {
@@ -199,6 +203,29 @@ const Comp = props => {
   );
 };
 
+const handePosition = {
+  bottom: {
+    top: 10,
+    left: "50%",
+    marginLeft: -25
+  },
+  left: {
+    right: 10,
+    top: "50%",
+    marginTop: -25
+  },
+  right: {
+    left: 10,
+    top: "50%",
+    marginTop: -25
+  },
+  top: {
+    bottom: 10,
+    left: "50%",
+    marginLeft: -25
+  }
+};
+
 const defaultStyle = (props, theme) =>
   StyleSheet.create({
     back: {
@@ -226,10 +253,9 @@ const defaultStyle = (props, theme) =>
     },
     handle: {
       position: "absolute",
-      right: 10,
-      top: "50%",
-      width: 6,
-      height: 50,
+      ...handePosition[props.position],
+      width: props.position === "bottom" || props.position === "top" ? 50 : 6,
+      height: props.position === "bottom" || props.position === "top" ? 6 : 50,
       borderRadius: 5,
       backgroundColor: "rgba(0, 0, 0, 0.1)"
     },

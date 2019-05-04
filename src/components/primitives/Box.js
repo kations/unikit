@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { View } from "react-native-web";
-import { useTheme } from "../../style/Theme";
+import { View, StyleSheet } from "react-native-web";
+import { useTheme, withTheme } from "../../style/Theme";
 // import { setLightness } from "polished";
 import "parse-prop-types";
 import PropTypes from "prop-types";
 import { getProp } from "../../helper";
 
 // // import styles from "./styles.css";
-const ColorStyles = ["color", "backgroundColor", "borderColor"];
+const ColorStyles = ["color", "backgroundColor", "borderColor", "shadowColor"];
 const BasicStyles = [
   "position",
   "width",
@@ -45,10 +45,13 @@ const BasicStyles = [
   "overflow",
   "borderWidth",
   "borderColor",
-  "border"
+  "border",
+  "shadowRadius",
+  "shadowOffset",
+  "shadowOpacity"
 ];
 
-const noPixel = ["opacity", "zIndex"];
+const noPixel = ["opacity", "zIndex", "shadowOpacity"];
 
 const toString = (value, key) => {
   if (typeof value === "number") {
@@ -78,23 +81,44 @@ ColorStyles.reduce((obj, key) => {
   BasicPropTypes[`${key}Lightness`] = PropTypes.number;
 });
 
+const interpolate = (min, max, value) => {
+  var theVariable = value * 3; // 1 to 100
+  var distance = max - min;
+  var position = min + (theVariable / 100) * distance;
+  return position;
+};
+
 // console.log(Box.propTypes);
 
 const mapProps = (props = {}, theme = {}) => {
   let styleObject = {};
-  let compProps = theme[props.comp] || {};
+  let comp = props.comp || "globals";
+  let globalProps = theme["globals"] || {};
+  let compProps = theme[comp] || {};
   let breaks = theme.breaks || {
     mb: 0,
     tb: 768,
     dt: 1024
   };
 
-  const p = Object.assign({}, compProps, props);
+  if (comp !== "globals") {
+    var p = Object.assign({}, globalProps, compProps, props);
+  } else {
+    var p = Object.assign({}, compProps, props);
+  }
+
+  if (props.mode && theme[comp].mode[props.mode]) {
+    p = Object.assign({}, p, theme[comp].mode[props.mode]);
+  }
 
   Object.keys(p).map((key, index) => {
     if (BasicStyles.indexOf(key) > -1) {
       let value = getProp(p, theme, key, p.comp);
-      if (typeof value === "string" || typeof value === "number") {
+      if (
+        typeof value === "string" ||
+        typeof value === "number" ||
+        typeof value === "object"
+      ) {
         value = toString(value, key);
       } else {
         value = getBreak(theme.layout, breaks, value);
@@ -109,26 +133,74 @@ const mapProps = (props = {}, theme = {}) => {
       styleObject[key] = color;
     }
   });
+
+  //if (comp === "globals") console.log({ styleObject });
+
+  if (p.shadow) {
+    styleObject = Object.assign({}, styleObject, {
+      shadowColor: styleObject.shadowColor || "#000",
+      shadowOffset: {
+        width: 0,
+        height: Math.round(p.shadow / 2)
+      },
+      shadowOpacity:
+        styleObject.shadowOpacity || interpolate(0.1, 0.5, p.shadow),
+      shadowRadius: styleObject.shadowRadius || interpolate(1, 25, p.shadow),
+      elevation: p.shadow
+    });
+  } else {
+    styleObject = Object.assign({}, styleObject, {
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0
+    });
+  }
+
   return styleObject;
 };
 
-const Box = ({ children, style, as, ...rest }) => {
-  const theme = useTheme();
-  const propStyle = mapProps(rest, theme);
-  var Comp = as || View;
-  return (
-    <Comp style={[style, propStyle]} {...rest}>
-      {children}
-    </Comp>
-  );
-};
+// const Box = ({ children, style, as, ...rest }) => {
+//   const theme = useTheme();
+//   const propStyle = mapProps(rest, theme);
+//   var Comp = as || View;
+//   // return (
+//   //   <Comp {...rest} style={StyleSheet.flatten([propStyle, style])}>
+//   //     {children}
+//   //   </Comp>
+//   // );
+//   return React.createElement(Comp, {
+//     style: StyleSheet.flatten([propStyle, style]),
+//     children: children,
+//     ...rest
+//   });
+// };
+
+class Box extends React.PureComponent {
+  render() {
+    const { children, style, theme, as, ...rest } = this.props;
+    const propStyle = mapProps(rest, theme);
+    var Comp = as || View;
+    // return (
+    //   <Comp {...rest} style={StyleSheet.flatten([propStyle, style])}>
+    //     {children}
+    //   </Comp>
+    // );
+    return React.createElement(Comp, {
+      style: StyleSheet.flatten([propStyle, style]),
+      children: children,
+      ...rest
+    });
+  }
+}
 
 Box.propTypes = {
-  shadow: PropTypes.number,
-  shadowOpacity: PropTypes.number,
-  shadowColor: PropTypes.string,
   ...BasicPropTypes,
   ...ColorPropTypes
 };
 
-export default Box;
+export default withTheme(Box);

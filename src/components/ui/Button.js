@@ -12,7 +12,6 @@ import Progress from "./Progress";
 
 const Comp = props => {
   const {
-    mode,
     children,
     style,
     onPress,
@@ -33,12 +32,9 @@ const Comp = props => {
     <Box
       as={TouchableOpacity}
       style={StyleSheet.flatten([button, style])}
-      disabled={disabled || loading}
-      loading={loading}
       onPress={disabled ? null : onPress || null}
       onMouseEnter={() => console.log("hover")}
       activeOpacity={getProp(props, theme, "activeOpacity", "button")}
-      inline={getProp(props, theme, "inline", "button")}
       comp="button"
       {...rest}
     >
@@ -52,7 +48,13 @@ const Comp = props => {
           trackWidth={2}
           circleWidth={2}
           trackColor="transparent"
-          circleColor="#FFF"
+          circleColor={getProp(
+            props,
+            theme,
+            props.invert ? "backgroundColor" : "color",
+            "button",
+            props.invert ? undefined : "backgroundColor"
+          )}
           loading
         />
       ) : (
@@ -62,6 +64,10 @@ const Comp = props => {
   );
 };
 
+const isNum = number => {
+  return typeof number === "number";
+};
+
 const defaultStyle = (props, theme) =>
   StyleSheet.create({
     button: {
@@ -69,7 +75,20 @@ const defaultStyle = (props, theme) =>
       padding: getProp(props, theme, "size", "button") / 2,
       height: getProp(props, theme, "size", "button"),
       width: "auto",
-      backgroundColor: getProp(props, theme, "backgroundColor", "button"),
+      backgroundColor: props.outline
+        ? "transparent"
+        : getProp(
+            props.invert
+              ? Object.assign({}, props, {
+                  backgroundColorLighten: isNum(props.invert)
+                    ? props.invert
+                    : theme.button.invert
+                })
+              : props,
+            theme,
+            "backgroundColor",
+            "button"
+          ),
       opacity: props.disabled && !props.loading ? 0.5 : 1,
       alignItems: "center",
       justifyContent: "center"
@@ -77,13 +96,18 @@ const defaultStyle = (props, theme) =>
     text: {
       position: "relative",
       zIndex: 10,
-      color: getProp(props, theme, "color", "button", "backgroundColor"),
+      color: getProp(
+        props,
+        theme,
+        props.invert || props.outline ? "backgroundColor" : "color",
+        "button",
+        props.invert || props.outline ? undefined : "backgroundColor"
+      ),
       fontSize: getProp(props, theme, "size", "button") / 3.25
     }
   });
 
 Comp.propTypes = {
-  mode: PropTypes.string,
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   onPress: PropTypes.func,
@@ -94,8 +118,7 @@ Comp.propTypes = {
 };
 
 Comp.defaultProps = {
-  loading: false,
-  borderRadius: 22
+  loading: false
 };
 
 export default Comp;

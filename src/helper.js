@@ -23,15 +23,20 @@ const ColorStyles = [
   "headerBackground"
 ];
 
-export const getProp = (props, theme, key, comp, subKey) => {
+export const getProp = (props, theme, key, comp, subKey, forceSubKey) => {
   const unikitTheme = theme;
   let value = undefined;
   if (props[key] !== undefined) {
     value = props[key];
+  } else if (
+    props.mode &&
+    getObjValue(unikitTheme, `${comp}.mode.${props.mode}.${key}`) !== undefined
+  ) {
+    value = getObjValue(unikitTheme, `${comp}.mode.${props.mode}.${key}`);
   } else if (getObjValue(unikitTheme, `${comp}.${key}`) !== undefined) {
     value = getObjValue(unikitTheme, `${comp}.${key}`);
-  } else if (getObjValue(unikitTheme, `box.${key}`) !== undefined) {
-    value = getObjValue(unikitTheme, `box.${key}`);
+  } else if (getObjValue(unikitTheme, `globals.${key}`) !== undefined) {
+    value = getObjValue(unikitTheme, `globals.${key}`);
   } else if (getObjValue(unikitTheme, `colors.${key}`) !== undefined) {
     value = getObjValue(unikitTheme, `colors.${key}`);
   }
@@ -40,7 +45,7 @@ export const getProp = (props, theme, key, comp, subKey) => {
     value = getObjValue(unikitTheme, `colors.${value}`);
   }
 
-  if (subKey && !value) {
+  if ((subKey && !value) || (subKey && forceSubKey)) {
     var subValue = getProp(props, theme, subKey, comp);
     value = color(subValue)
       .darken(0.2)
@@ -49,14 +54,24 @@ export const getProp = (props, theme, key, comp, subKey) => {
       : "#000";
   }
 
-  if (
-    props[`${key}Lighten`] ||
-    getObjValue(unikitTheme, `${comp}.${key}Lighten`)
+  var lightenFactor = undefined;
+  if (props[`${key}Lighten`]) {
+    lightenFactor = props[`${key}Lighten`];
+  } else if (
+    props.mode &&
+    getObjValue(unikitTheme, `${comp}.mode.${props.mode}.${key}Lighten`)
   ) {
-    var factor =
-      props[`${key}Lighten`] ||
-      getObjValue(unikitTheme, `${comp}.${key}Lighten`);
-    value = color(value).lighten(factor);
+    lightenFactor = getObjValue(
+      unikitTheme,
+      `${comp}.mode.${props.mode}.${key}Lighten`
+    );
+  } else if (getObjValue(unikitTheme, `${comp}.${key}Lighten`)) {
+    lightenFactor = getObjValue(unikitTheme, `${comp}.${key}Lighten`);
   }
+
+  if (lightenFactor) {
+    value = color(value).lighten(lightenFactor);
+  }
+
   return value;
 };

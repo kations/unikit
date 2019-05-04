@@ -1,16 +1,26 @@
+import color from "color";
+
 export default {
   colors: {
     primary: "#FF6B87",
+    background: color("#FF6B87")
+      .alpha(0.15)
+      .toString(),
+    accent: "",
+    text: "#FFF",
+    surface: "#FFF",
+    placeholder: "",
     success: "#4CAF50",
-    text: "#FF6B87"
+    error: "#4CAF50"
   },
   breaks: {
     mobile: 768,
     tablet: 1024,
     desktop: 99999
   },
-  box: {
-    shadowColor: "rgba(0,0,0,0.2)"
+  globals: {
+    shadowColor: "rgba(0,0,0,0.5)",
+    borderRadius: 3
   },
   overlay: {
     backgroundColor: "#FFF"
@@ -25,24 +35,40 @@ export default {
   },
   button: {
     backgroundColor: "primary",
+    color: "#FFF",
     inline: true,
     activeOpacity: 0.6,
     size: 44,
-    borderRadius: 22
+    invert: 0.35,
+    mode: {
+      invert: {
+        backgroundColor: "primary",
+        backgroundColorLighten: 0.35,
+        color: "primary"
+      },
+      outline: {
+        borderColor: "primary",
+        color: "primary",
+        borderWidth: 2,
+        backgroundColor: "transparent"
+      }
+    }
   },
   switch: {
+    activeBackground: "primary",
     circleSize: 25,
     borderSize: 5,
     borderRadius: 30
   },
-  select: {
+  tabs: {
     backgroundColor: "primary",
-    backgroundColorLighten: 0.2,
+    color: "primary",
+    backgroundColorLighten: 0.35,
     indicatorColor: "primary",
-    size: 60,
-    height: 50,
+    tabsHeight: 50,
     indicatorHeight: "100%",
-    borderRadius: 25
+    borderRadius: 0,
+    color: "primary"
   },
   text: {
     lineHeight: 25,

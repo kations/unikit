@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 import parsePropTypes from "parse-prop-types";
-import { createGlobalStyle } from "styled-components";
 
 import {
   UniProvider,
@@ -12,7 +11,7 @@ import {
   Headline,
   Overlay,
   Avatar,
-  Select,
+  Tabs,
   Swiper,
   Block,
   Text,
@@ -21,7 +20,8 @@ import {
   Box,
   Table,
   Image,
-  Animate
+  Animate,
+  Slider
 } from "unikit";
 
 const prettier = require("prettier/standalone");
@@ -37,7 +37,7 @@ const scope = {
   Headline,
   Overlay,
   Avatar,
-  Select,
+  Tabs,
   Swiper,
   Block,
   Text,
@@ -229,30 +229,16 @@ const components = [
   }
 ];
 
-const GlobalStyle = createGlobalStyle`
-html,
-  body {
-    height: 100%;
-    width: 100vw;
-    font-size: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin: 0;
-    padding: 0;
-    @media (max-width: 768px) {
-      font-size: 90%;
-    }
-  }
-`;
-
 export default () => {
   const [state, setState] = useState({
     comp: null,
-    visible: true,
+    visible: false,
     visible2: false,
     backdrop: false,
     contentMove: 1,
-    tab: "Meine"
+    tab: "Meine",
+    tab2: "Meine",
+    sliderValue: 20
   });
 
   return (
@@ -262,10 +248,6 @@ export default () => {
         colors: {
           primary: "#FF6B87",
           text: "#FF6B87"
-        },
-        globals: {
-          borderRadius: 0,
-          lightness: 0
         }
       }}
     >
@@ -275,6 +257,7 @@ export default () => {
           height="200px"
           margin={10}
           backgroundColor="primary"
+          shadow={1}
         />
         <Box
           width="100px"
@@ -282,6 +265,7 @@ export default () => {
           margin={10}
           backgroundColor="primary"
           backgroundColorLighten={0.15}
+          shadow={5}
         />
         <Box
           width="100px"
@@ -289,8 +273,13 @@ export default () => {
           margin={10}
           backgroundColor="primary"
           backgroundColorLighten={0.3}
+          shadow={10}
         />
       </Flex>
+      <Slider
+        value={state.sliderValue}
+        onChange={value => setState({ sliderValue: value })}
+      />
       <Switch />
       <Image
         width={200}
@@ -300,16 +289,47 @@ export default () => {
         }}
       />
       <Avatar char="T" />
-      <Button>Cooler Button</Button>
+      <Button mode="invert">Cooler Button</Button>
+      <Button mode="outline">Cooler Button</Button>
+      <Button marginTop={20} loading>
+        Cooler Button
+      </Button>
       <Headline animated>Das ist ein test</Headline>
       <Progress progress={10} circleWidth={20} trackWidth={30} />
       {/* <Progress progress={10} circleWidth={20} trackWidth={30} loading /> */}
-      <Select
+      <Tabs
+        value={state.tab2}
+        options={["Meine", "Alle", "Archiv"]}
+        onChange={value => setState({ ...state, tab2: value })}
+      />
+      <Tabs
         value={state.tab}
         options={["Meine", "Alle", "Archiv"]}
         onChange={value => setState({ ...state, tab: value })}
-      />
-      <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={200}>
+        flex={1}
+      >
+        <Box
+          width="100%"
+          height="200px"
+          padding={10}
+          backgroundColor="primary"
+        />
+        <Box
+          width="100%"
+          height="200px"
+          padding={10}
+          backgroundColor="primary"
+          backgroundColorLighten={0.15}
+        />
+        <Box
+          width="100%"
+          height="200px"
+          padding={10}
+          backgroundColor="primary"
+          backgroundColorLighten={0.3}
+        />
+      </Tabs>
+      <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={300}>
         <Box
           width="100%"
           height="200px"
@@ -423,22 +443,21 @@ export default () => {
         </Button>
       </Overlay>
       <Overlay
-        position="left"
+        position="bottom"
+        height="auto"
         visible={state.visible2}
         contentMove={state.contentMove}
         contentMoveStyle="padding"
-        width={300}
-        height="100%"
         shadow={10}
         padding="40px"
         onClose={() => setState({ ...state, visible2: false })}
         backdrop
         content={() => (
-          <Fragment>
+          <Box width="100%">
             <Button onPress={() => setState({ ...state, visible2: false })}>
               Close Overlay 2
             </Button>
-          </Fragment>
+          </Box>
         )}
       >
         <Button onPress={() => setState({ ...state, visible2: true })}>

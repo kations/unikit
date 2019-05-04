@@ -95,22 +95,33 @@ class Comp extends React.Component {
       >
         <Animated.Image
           {...rest}
-          width="100%"
-          height={this.state.height || "auto"}
           source={thumbnailSource || source}
           resizeMode={resizeMode}
           blurRadius={blurRadius || 5}
-          style={[style, { opacity: this.thumbnailAnimated }]}
+          style={[
+            style,
+            {
+              opacity: this.thumbnailAnimated,
+              width: "100%",
+              height: this.state.height || "auto"
+            }
+          ]}
           onLoad={this.handleThumbnailLoad}
         />
         <Animated.Image
           {...rest}
-          width="100%"
-          height={this.state.height || "auto"}
           source={source}
           resizeMode={resizeMode}
           blurRadius={blurRadius || 0}
-          style={[styles.imageOverlay, { opacity: this.imageAnimated }, style]}
+          style={[
+            styles.imageOverlay,
+            {
+              opacity: this.imageAnimated,
+              width: "100%",
+              height: this.state.height || "auto"
+            },
+            style
+          ]}
           onLoad={this.onImageLoad}
         />
       </Box>

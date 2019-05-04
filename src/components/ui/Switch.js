@@ -9,7 +9,8 @@ import Box from "../primitives/Box";
 
 import Gradient from "./Gradient";
 
-const AnimatedCircle = animated(View);
+const Active = animated(Box);
+const Circle = animated(Box);
 
 const Comp = props => {
   const { value, onChange, circleSize, style, ...rest } = props;
@@ -19,8 +20,8 @@ const Comp = props => {
 
   const [active, setActive] = useState(value || false);
 
-  const { left } = useSpring({
-    to: { left: active ? circleSize : 0 }
+  const { left, opacity } = useSpring({
+    to: { left: active ? circleSize : 0, opacity: active ? 1 : 0 }
   });
 
   useEffect(() => {
@@ -32,7 +33,6 @@ const Comp = props => {
       as={TouchableOpacity}
       style={switcher}
       activeOpacity={0.8}
-      circleSize={circleSize}
       onPress={() => {
         const newValue = !active;
         setActive(newValue);
@@ -44,13 +44,23 @@ const Comp = props => {
       }}
       {...rest}
     >
-      {active && <Gradient />}
+      {/* {active && <Gradient />} */}
+      <Active
+        position="absolute"
+        width="100%"
+        height="100%"
+        left="0px"
+        top="0px"
+        backgroundColor="primary"
+        style={{ opacity: opacity }}
+      />
       <Box style={track}>
-        <AnimatedCircle
+        <Circle
           style={StyleSheet.flatten([
             circle,
             { transform: left.interpolate(l => [{ translateX: l }]) }
           ])}
+          shadow={5}
         />
       </Box>
     </Box>
@@ -62,7 +72,7 @@ const defaultStyle = (props, theme) =>
     switcher: {
       position: "relative",
       display: Platform.OS === "web" ? "inline-block" : "flex",
-      backgroundColor: "rgba(0, 0, 0, 0.25)",
+      backgroundColor: getProp(props, theme, "backgroundColor", "switch"),
       overflow: "hidden",
       width:
         getProp(props, theme, "circleSize", "switch") * 2 +
@@ -98,7 +108,8 @@ Comp.propTypes = {
 };
 
 Comp.defaultProps = {
-  circleSize: 30
+  circleSize: 30,
+  backgroundColor: "background"
 };
 
 export default Comp;
