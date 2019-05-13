@@ -4,14 +4,17 @@ import PropTypes from "prop-types";
 
 import Box from "./Box";
 
-const Flex = ({ children, inline, ...rest }) => (
-  <Box
-    display={Platform.OS === "web" ? (inline ? "inline-flex" : "flex") : "flex"}
-    {...rest}
-  >
-    {children}
-  </Box>
-);
+class Flex extends React.PureComponent {
+  render() {
+    const { inline, ...rest } = this.props;
+
+    return React.createElement(Box, {
+      display:
+        Platform.OS === "web" ? (inline ? "inline-flex" : "flex") : "flex",
+      ...rest
+    });
+  }
+}
 
 Flex.propTypes = {
   inline: PropTypes.bool

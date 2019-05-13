@@ -21,7 +21,12 @@ import {
   Table,
   Image,
   Animate,
-  Slider
+  Slider,
+  DatePicker,
+  useTheme,
+  Icon,
+  Input,
+  TextInput
 } from "unikit";
 
 const prettier = require("prettier/standalone");
@@ -45,7 +50,8 @@ const scope = {
   Gradient,
   Box,
   Table,
-  Animate
+  Animate,
+  Icon
 };
 
 const components = [
@@ -229,6 +235,15 @@ const components = [
   }
 ];
 
+const ButtonWithTheme = props => {
+  const theme = useTheme();
+  return (
+    <Button onPress={() => theme.alert({ type: "error", message: "fidosn" })}>
+      Send Alert
+    </Button>
+  );
+};
+
 export default () => {
   const [state, setState] = useState({
     comp: null,
@@ -238,8 +253,12 @@ export default () => {
     contentMove: 1,
     tab: "Meine",
     tab2: "Meine",
-    sliderValue: 20
+    sliderValue: 20,
+    date: false
   });
+
+  const theme = useTheme();
+  console.log({ theme });
 
   return (
     <UniProvider
@@ -247,7 +266,7 @@ export default () => {
         yolo: true,
         colors: {
           primary: "#FF6B87",
-          text: "#FF6B87"
+          text: "#000"
         }
       }}
     >
@@ -279,9 +298,66 @@ export default () => {
       <Slider
         value={state.sliderValue}
         onChange={value => setState({ sliderValue: value })}
+        showTicks={false}
       />
-      <Switch />
-      <Image
+
+      <ButtonWithTheme />
+      <Button onPress={() => setState({ ...state, date: true })}>
+        Open DatePicker
+      </Button>
+      <Input label="Datepicker" error={"text"}>
+        <DatePicker value={new Date()} placeholder="test" />
+      </Input>
+      <Input label="Datepicker">
+        <TextInput placeholder="test" value="yolo" />
+      </Input>
+      <Input label="Datepicker">
+        <TextInput
+          placeholder="test"
+          value="yolo"
+          multiline
+          numberOfLines={3}
+        />
+      </Input>
+      <Input label="Datepicker" desc="This is active">
+        <Switch />
+      </Input>
+      <DatePicker
+        placeholder="test"
+        value={new Date()}
+        visible={state.date}
+        onClose={() => setState({ ...state, date: false })}
+      />
+      <Icon
+        onPress={() => {
+          alert("hi");
+        }}
+      />
+      {/* <Overlay
+        position="bottom"
+        height="auto"
+        visible={state.visible2}
+        contentMove={state.contentMove}
+        contentMoveStyle="padding"
+        shadow={10}
+        padding="40px"
+        containerStyle={{ padding: 50 }}
+        onClose={() => setState({ ...state, visible2: false })}
+        backdrop
+        content={() => (
+          <Box width="100%">
+            <Button onPress={() => setState({ ...state, visible2: false })}>
+              Close Overlay 2
+            </Button>
+          </Box>
+        )}
+      >
+        <Button onPress={() => setState({ ...state, visible2: true })}>
+          Open Overlay 2
+        </Button>
+      </Overlay> */}
+
+      {/* <Image
         width={200}
         source={{
           uri:
@@ -296,7 +372,7 @@ export default () => {
       </Button>
       <Headline animated>Das ist ein test</Headline>
       <Progress progress={10} circleWidth={20} trackWidth={30} />
-      {/* <Progress progress={10} circleWidth={20} trackWidth={30} loading /> */}
+      {/* <Progress progress={10} circleWidth={20} trackWidth={30} loading /> 
       <Tabs
         value={state.tab2}
         options={["Meine", "Alle", "Archiv"]}
@@ -329,7 +405,8 @@ export default () => {
           backgroundColorLighten={0.3}
         />
       </Tabs>
-      <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={300}>
+      */}
+      {/* <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={300}>
         <Box
           width="100%"
           height="200px"
@@ -463,7 +540,7 @@ export default () => {
         <Button onPress={() => setState({ ...state, visible2: true })}>
           Open Overlay 2
         </Button>
-      </Overlay>
+      </Overlay> */}
     </UniProvider>
   );
 };

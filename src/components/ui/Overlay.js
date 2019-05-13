@@ -14,8 +14,9 @@ import Portal from "../helper/Portal";
 import Box from "../primitives/Box";
 import Pan from "../helper/Pan";
 
-const AnimatedContent = animated(View);
+const AnimatedContent = animated(Box);
 const AnimatedPan = animated(Pan);
+const AnimatedBox = animated(Box);
 
 const getMove = (position, width, height) => {
   if (position === "left") {
@@ -41,12 +42,14 @@ const Comp = props => {
     backdrop,
     contentMove,
     contentMoveStyle,
+    containerStyle,
+    usePan,
     ...rest
   } = props;
   const Screen = Dimensions.get("window");
 
   const theme = useTheme();
-  const { back, pan, modal, handle, contents } = defaultStyle(props, theme);
+  const { back, paner, modal, handle, contents } = defaultStyle(props, theme);
 
   const [state, setState] = useState({
     width: width || Screen.width,
@@ -64,7 +67,7 @@ const Comp = props => {
         move: getMove(position, state.width, state.height)
       });
     }
-  }, [visible]);
+  }, [visible, state.width]);
 
   const { move, opacity } = useSpring({
     from: {
@@ -92,6 +95,7 @@ const Comp = props => {
     position.slice(1)}`;
 
   const AnimatedBackdrop = animated(onClose ? TouchableOpacity : View);
+  const PanComp = usePan ? AnimatedPan : AnimatedBox;
 
   return (
     <Portal>
@@ -115,7 +119,7 @@ const Comp = props => {
             pointerEvents={visible ? "auto" : "none"}
           />
         )}
-        <AnimatedPan
+        <PanComp
           onLayout={({ nativeEvent }) => {
             console.log({ width: nativeEvent.layout.width });
             setState({
@@ -125,10 +129,17 @@ const Comp = props => {
             });
           }}
           style={StyleSheet.flatten([
-            pan,
+            paner,
+            containerStyle,
             {
-              width: state.width,
-              height: state.height,
+              width:
+                position === "top" || position === "bottom"
+                  ? "100%"
+                  : state.width,
+              height:
+                position === "top" || position === "bottom"
+                  ? state.height
+                  : "100%",
               transform: move.interpolate(m =>
                 position === "top" || position === "bottom"
                   ? [{ translateY: m }]
@@ -197,7 +208,7 @@ const Comp = props => {
             <Box style={handle} />
             {content && content()}
           </Box>
-        </AnimatedPan>
+        </PanComp>
       </Fragment>
     </Portal>
   );
@@ -237,13 +248,12 @@ const defaultStyle = (props, theme) =>
       backgroundColor: "rgba(0, 0, 0, 0.25)",
       zIndex: props.zIndex
     },
-    pan: {
+    paner: {
       position: Platform.OS === "web" ? "fixed" : "absolute",
       left: props.position !== "right" ? "0px" : "auto",
       right: props.position === "right" ? "0px" : "auto",
       bottom: props.position === "bottom" ? "0px" : "auto",
       top: props.position !== "bottom" ? "0px" : "auto",
-      backgroundColor: "#000",
       zIndex: props.zIndex + 10
     },
     modal: {
@@ -277,7 +287,8 @@ Comp.defaultProps = {
   backdrop: true,
   position: "bottom",
   contentMove: 0.5,
-  zIndex: 100
+  zIndex: 100,
+  usePan: true
 };
 
 export default Comp;

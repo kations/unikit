@@ -17,15 +17,28 @@ function lerp(start, end, t) {
 
 const Track = animated(Box);
 const Circle = animated(Box);
+const Value = animated(Flex);
 
-const Comp = ({ value, style, onChange, min, max, steps, ticks }) => {
+const Comp = ({
+  value,
+  style,
+  onChange,
+  onSwipe,
+  min,
+  max,
+  steps,
+  ticks,
+  showValue,
+  showTicks
+}) => {
   const theme = useTheme();
 
   const [state, setState] = useState({
     width: 0,
     left: 0,
     dx: 0,
-    swipe: false
+    swipe: false,
+    value: value || min
   });
 
   const getSteps = () => {
@@ -42,7 +55,7 @@ const Comp = ({ value, style, onChange, min, max, steps, ticks }) => {
     const progress = invlerp(min, max, value);
     const left = lerp(0, state.width, progress);
     //const leftStep = Math.round(left / 100) * 100;
-    setState({ ...state, left: left });
+    setState({ ...state, left: left, value });
   }, [value, state.width]);
 
   const { left } = useSpring({
@@ -55,6 +68,7 @@ const Comp = ({ value, style, onChange, min, max, steps, ticks }) => {
       style={StyleSheet.flatten([
         {
           paddingHorizontal: 15,
+          paddingTop: showValue ? 25 : 10,
           paddingVertical: 10,
           width: "100%",
           overflow: "hidden"
@@ -65,8 +79,18 @@ const Comp = ({ value, style, onChange, min, max, steps, ticks }) => {
       <Pan
         onSwipe={(direction, gestureState) => {
           let { dx } = gestureState;
-          let moveX = state.left + dx;
-          setState({ ...state, swipe: true, dx: dx });
+          let newX = state.left + dx;
+          let newProgress = invlerp(0, state.width, newX);
+          let newValue = Math.round(lerp(min, max, newProgress));
+          if (newX > state.width) {
+            dx = state.width - state.left;
+            newValue = max;
+          } else if (newX < 0) {
+            dx = -state.left;
+            newValue = min;
+          }
+          setState({ ...state, swipe: true, dx: dx, value: newValue });
+          if (onSwipe) onSwipe(newValue);
         }}
         onLayout={({ nativeEvent }) => {
           setState({
@@ -128,25 +152,50 @@ const Comp = ({ value, style, onChange, min, max, steps, ticks }) => {
               },
               { transform: left.interpolate(l => [{ translateX: l }]) }
             ])}
-            shadow={5}
           />
+          {showValue ? (
+            <Value
+              backgroundColor="primary"
+              alignItems="center"
+              justifyContent="center"
+              style={StyleSheet.flatten([
+                {
+                  position: "absolute",
+                  bottom: 25,
+                  left: -15,
+                  width: "30px",
+                  height: "auto",
+                  paddingVertical: 5,
+                  borderRadius: "25px",
+                  borderColor: "rgba(0,0,0,0.1)",
+                  borderWidth: 1,
+                  cursor: "pointer"
+                },
+                { transform: left.interpolate(l => [{ translateX: l }]) }
+              ])}
+            >
+              <Text style={{ color: "#FFF", fontSize: 10 }}>{state.value}</Text>
+            </Value>
+          ) : null}
         </Box>
-        <Flex width="100%" flexDirection="row" justifyContent="space-between">
-          {getSteps().map(step => (
-            <Flex width="1px" alignItems="center">
-              <View>
-                <Text
-                  style={{
-                    fontSize: 10,
-                    whiteSpace: "nowrap"
-                  }}
-                >
-                  {step}
-                </Text>
-              </View>
-            </Flex>
-          ))}
-        </Flex>
+        {showTicks ? (
+          <Flex width="100%" flexDirection="row" justifyContent="space-between">
+            {getSteps().map(step => (
+              <Flex width="1px" alignItems="center">
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      whiteSpace: "nowrap"
+                    }}
+                  >
+                    {step}
+                  </Text>
+                </View>
+              </Flex>
+            ))}
+          </Flex>
+        ) : null}
       </Pan>
     </View>
   );
@@ -156,7 +205,9 @@ Comp.defaultProps = {
   min: 0,
   max: 100,
   steps: 1,
-  ticks: 10
+  ticks: 10,
+  showTicks: true,
+  showValue: true
 };
 
 export default Comp;

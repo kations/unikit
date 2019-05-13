@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, Dimensions } from "react-native-web";
 import { GatewayDest, GatewayProvider } from "react-gateway";
 import defaultTheme from "./defaultTheme";
 import { ThemeProvider } from "./Theme";
+import Alert from "../components/ui/Alert";
 
 export function isObject(item) {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -25,24 +26,41 @@ export function mergeDeep(target, ...sources) {
   return mergeDeep(target, ...sources);
 }
 
+let key = 1;
 export default ({ theme = {}, children }) => {
   let width = Dimensions.get("window").width;
   let height = Dimensions.get("window").height;
 
-  const [state, setState] = useState({ width, height });
+  const [state, setState] = useState({
+    width,
+    height,
+    alert: null
+  });
+
+  // setInterval(() => {
+  //   const alerts = state.alerts;
+  //   alerts.push({ key: key++, message: "yolo" });
+  //   setState({
+  //     ...state,
+  //     alerts: alerts
+  //   });
+  // }, 5000);
+
+  const enhancedDefaultTheme = Object.assign({}, defaultTheme, {
+    alert: alert => {
+      setState({ ...state, alert: alert });
+    },
+    layout: { width: state.state, height: state.height }
+  });
 
   return (
     <GatewayProvider>
-      <ThemeProvider
-        theme={{
-          layout: { width: state.state, height: state.height },
-          ...mergeDeep(defaultTheme, theme)
-        }}
-      >
+      <ThemeProvider theme={mergeDeep(enhancedDefaultTheme, theme)}>
         <View
           style={{ flex: 1 }}
           onLayout={({ nativeEvent }) => {
             setState({
+              ...state,
               width: nativeEvent.layout.width,
               height: nativeEvent.layout.height
             });
@@ -50,6 +68,7 @@ export default ({ theme = {}, children }) => {
         >
           {children}
           <GatewayDest name="unikit" component={View} />
+          <Alert alert={state.alert} />
         </View>
       </ThemeProvider>
     </GatewayProvider>

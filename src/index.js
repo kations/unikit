@@ -7,7 +7,10 @@ export { default as Visible } from "./components/helper/Visible";
 export { default as UniProvider } from "./style/Provider";
 
 //Inputs
+export { default as Input } from "./components/inputs/Input";
+export { default as TextInput } from "./components/inputs/TextInput";
 export { default as Slider } from "./components/inputs/Slider";
+export { default as DatePicker } from "./components/inputs/DatePicker";
 
 //Primitives
 export { default as Box } from "./components/primitives/Box";
@@ -28,3 +31,5 @@ export { default as Progress } from "./components/ui/Progress";
 export { default as Overlay } from "./components/ui/Overlay";
 export { default as Animate } from "./components/ui/Animate";
 export { default as Tabs } from "./components/ui/Tabs";
+export { default as Alert } from "./components/ui/Alert";
+export { default as Icon } from "./components/ui/Icon";

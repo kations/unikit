@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native-web";
+import { View, StyleSheet, createElement } from "react-native-web";
 import { useTheme, withTheme } from "../../style/Theme";
 // import { setLightness } from "polished";
 import "parse-prop-types";
@@ -28,6 +28,8 @@ const BasicStyles = [
   "paddingBottom",
   "paddingLeft",
   "paddingRight",
+  "paddingVertical",
+  "paddingHorizontal",
   "flex",
   "flexWrap",
   "flexDirection",
@@ -46,6 +48,8 @@ const BasicStyles = [
   "borderWidth",
   "borderColor",
   "border",
+  "borderBottomWidth",
+  "borderBottomColor",
   "shadowRadius",
   "shadowOffset",
   "shadowOpacity"
@@ -190,6 +194,12 @@ class Box extends React.PureComponent {
     //     {children}
     //   </Comp>
     // );
+    // return createElement(Comp, {
+    //   style: StyleSheet.flatten([propStyle, style]),
+    //   children: children,
+    //   ...rest
+    // });
+
     return React.createElement(Comp, {
       style: StyleSheet.flatten([propStyle, style]),
       children: children,

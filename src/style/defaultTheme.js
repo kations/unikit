@@ -7,11 +7,11 @@ export default {
       .alpha(0.15)
       .toString(),
     accent: "",
-    text: "#FFF",
+    text: "#000",
     surface: "#FFF",
     placeholder: "",
-    success: "#4CAF50",
-    error: "#4CAF50"
+    success: "#8bc34a",
+    error: "#f44336"
   },
   breaks: {
     mobile: 768,

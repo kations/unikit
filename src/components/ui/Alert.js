@@ -1,83 +1,98 @@
-// import React, { useRef, useState, useEffect } from 'react'
-// import { Text } from "react-native-web";
-// import { useTransition } from 'react-spring'
+import React, { useState, Fragment, useEffect } from "react";
+import { Platform, Text, StyleSheet } from "react-native-web";
+import { useSpring, useTransition, useSprings, animated } from "react-spring";
 
-// import PropTypes from "prop-types";
+import Icon from "../ui/Icon";
+import Flex from "../primitives/Flex";
+import Box from "../primitives/Box";
+import { useTheme } from "../../style/Theme";
 
-// import { getProp } from "../../helper";
-// import Flex from "../primitives/Flex";
+const Message = animated(Box);
+let id = 0;
 
-// // import styles from "./styles.css";
+const Comp = props => {
+  const { alert, timeout = 3000 } = props;
 
-// export const messageManager = {
-//   messageBar: null,
-//   registerMessageBar(component) {
-//     this.messageBar = component;
-//   },
-//   unregisterMessageBar() {
-//     this.messageBar = null;
-//   },
-//   showMessage(message, config) {
-//     this.messageBar.pushMessage({ message }, config || {});
-//   },
-// };
+  const theme = useTheme();
+  const [items, setItems] = useState([]);
+  const { container, message, text } = defaultStyle(props, theme);
 
-// export const showMessage = messageManager.showMessage.bind(messageManager);
+  const transitions = useTransition(items, items => items.key, {
+    from: { opacity: 0, top: 30 },
+    enter: { opacity: 1, top: 0 },
+    leave: { opacity: 0, top: 30 },
+    onRest: item =>
+      setTimeout(() => {
+        setItems(state => state.filter(i => i.key !== item.key));
+      }, timeout)
+  });
 
-// const Comp = (p) => {
-//   const {
-//     children,
-//     style,
-//     onPress,
-//     inline,
-//     activeOpacity,
-//     disabled,
-//     ...rest,
-//   } = p;
+  useEffect(() => {
+    if (alert) {
+      setItems(state => [
+        ...state,
+        { key: id++, message: alert.message, type: alert.type }
+      ]);
+    }
+  }, [alert]);
 
-//   useEffect(() => {
-//     if (index !== state.index) {
-//       setState({ ...state, index: index, moveX: index * -state.width });
-//     }
-//     if (swipeIndex !== state.swipeIndex) {
-//       setState({
-//         ...state,
-//         swipeIndex: swipeIndex,
-//         moveX: swipeIndex * -state.width
-//       });
-//     }
-//   }, [index, swipeIndex]);
+  return (
+    <Box style={container}>
+      {transitions.map(({ item, props, key }) => (
+        <Message key={key} style={props} width="100%" alignItems="center">
+          <Flex
+            style={message}
+            backgroundColor={item.type || "surface"}
+            shadow={5}
+          >
+            {/* <Box style={{ right: life }} /> */}
+            <Text style={text}>{item.message}</Text>
+            <Icon
+              position="absolute"
+              top={17}
+              right={15}
+              size={20}
+              color="surface"
+              onPress={e => {
+                e.stopPropagation();
+                setItems(state => state.filter(i => i.key !== item.key));
+              }}
+            />
+          </Flex>
+        </Message>
+      ))}
+    </Box>
+  );
+};
 
-//   const transitions = useTransition(items, item => item.key, {
-//     from: { opacity: 0, height: 0, life: '100%' },
-//     enter: item => async next => await next({ opacity: 1, height: refMap.get(item).offsetHeight }),
-//     leave: item => async (next, cancel) => {
-//       cancelMap.set(item, cancel)
-//       await next({ life: '0%' })
-//       await next({ opacity: 0 })
-//       await next({ height: 0 })
-//     },
-//     onRest: item => setItems(state => state.filter(i => i.key !== item.key)),
-//     config: (item, state) => (state === 'leave' ? [{ duration: timeout }, config, config] : config),
-//   })
+const defaultStyle = (props, theme) =>
+  StyleSheet.create({
+    container: {
+      position: Platform.OS === "web" ? "fixed" : "absolute",
+      right: 0,
+      bottom: 0,
+      width: "100%",
+      zIndex: props.zIndex,
+      paddingHorizontal: 15
+    },
+    message: {
+      maxWidth: 400,
+      width: "100%",
+      padding: 20,
+      marginBottom: 10
+    },
+    text: {
+      color: "#fff"
+    }
+  });
 
-//   return (
-//     <Container
-//     >
-//       <ButtonText {...rest}>
-//         {children}
-//       </ButtonText>
-//     </Container>
-//   );
-// };
+Comp.defaultProps = {
+  min: 0,
+  max: 100,
+  steps: 1,
+  ticks: 10,
+  showValue: true,
+  timeout: 2000
+};
 
-// Comp.propTypes = {
-//   mode: PropTypes.string,
-//   disabled: PropTypes.bool,
-//   onPress: PropTypes.func,
-//   light: PropTypes.bool,
-//   style: PropTypes.object,
-//   children: PropTypes.node.isRequired
-// };
-
-// export default withTheme(Comp);
+export default Comp;
