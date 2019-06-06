@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native-web";
+import { Platform } from "react-native";
 import PropTypes from "prop-types";
 
 import Box from "./Box";

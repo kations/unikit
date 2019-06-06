@@ -1,27 +1,47 @@
 import React from "react";
-import { TextInput, Platform } from "react-native-web";
+import { TextInput, Platform } from "react-native";
 
 import Box from "../primitives/Box";
 
 const Comp = props => {
-  const { as, onChange, style, multiline, ...rest } = props;
+  const {
+    as,
+    onChange,
+    style,
+    multiline,
+    setFocus,
+    onFocus,
+    onBlur,
+    ...rest
+  } = props;
 
   return (
     <Box
       as={as || TextInput}
       onChangeText={text => (onChange ? onChange(text) : null)}
+      onFocus={() => {
+        if (setFocus) {
+          setFocus(true);
+        }
+        if (onFocus) {
+          onFocus();
+        }
+      }}
+      onBlur={() => {
+        if (setFocus) {
+          setFocus(false);
+        }
+        if (onBlur) {
+          onBlur();
+        }
+      }}
+      backgroundColor="transparent"
+      width="100%"
+      paddingVertical={10}
+      borderRadius={0}
+      fontSize={15}
+      margin={0}
       style={[
-        {
-          height: multiline ? "auto" : 54,
-          flex: 1,
-          padding: 0,
-          paddingVertical: multiline ? 10 : 0,
-          margin: 0,
-          borderRadius: 0,
-          textAlign: "right",
-          outline: "none",
-          fontSize: 15
-        },
         Platform.OS === "web"
           ? {
               border: "none",

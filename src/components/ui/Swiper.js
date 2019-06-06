@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "react-spring/native";
 import PropTypes from "prop-types";
-import { View, ScrollView, StyleSheet } from "react-native-web";
+import { View, ScrollView, StyleSheet } from "react-native";
 //import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import Box from "../primitives/Box";
@@ -239,10 +239,10 @@ const defaultStyle = (props, theme) =>
     },
     dotswrap: {
       position: "absolute",
-      left: props.dotsPosition !== "right" ? "0px" : "auto",
-      right: props.dotsPosition === "right" ? "0px" : "auto",
-      bottom: props.dotsPosition === "bottom" ? "0px" : "auto",
-      top: props.dotsPosition !== "bottom" ? "0px" : "auto",
+      left: props.dotsPosition !== "right" ? 0 : "auto",
+      right: props.dotsPosition === "right" ? 0 : "auto",
+      bottom: props.dotsPosition === "bottom" ? 0 : "auto",
+      top: props.dotsPosition !== "bottom" ? 0 : "auto",
       display: "flex",
       justifyContent: "center",
       flexDirection:

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Animated, Image } from "react-native-web";
+import { StyleSheet, Animated, Image } from "react-native";
 import Box from "./Box";
 import PropTypes from "prop-types";
 
@@ -23,42 +23,45 @@ class Comp extends React.Component {
     super(props);
     this.state = {
       width: props.width,
-      height: props.height,
-      aspect: null
+      height: undefined,
+      aspect: 0
     };
   }
 
   getSize = () => {
-    Image.getSize(this.props.source.uri, (width, height) =>
-      this.setState({ aspect: width / height }, () => {
-        this.setSize();
-      })
-    );
+    Image.getSize(this.props.source.uri, (width, height) => {
+      console.log({ aspect: height / width });
+      var aspect = height / width;
+      var height = this.state.width * aspect;
+      this.setState({ aspect, height });
+    });
   };
 
   handleThumbnailLoad = () => {
+    console.log("loaded");
     Animated.timing(this.thumbnailAnimated, {
       toValue: 1
     }).start();
-    this.getSize();
+    if (typeof this.state.width === "number") {
+      this.getSize();
+    }
   };
 
   onImageLoad = () => {
     Animated.timing(this.imageAnimated, {
       toValue: 1
     }).start();
-    this.getSize();
     if (this.props.onImageLoad) this.props.onImageLoad();
   };
 
   setSize = () => {
-    const width = !this.props.width ? this.state.layoutWidth : this.props.width;
-    const height = !this.props.height
-      ? this.state.layoutWidth / this.state.aspect
-      : this.props.height;
+    const width = this.props.width ? this.props.width : this.state.layoutWidth;
+    const height = this.props.height
+      ? this.props.height
+      : this.state.layoutWidth / this.state.aspect;
     this.setState({
-      width,
-      height
+      width: width,
+      height: height || 10
     });
   };
 
@@ -76,22 +79,21 @@ class Comp extends React.Component {
       ...rest
     } = this.props;
 
+    const imageHeight = height ? height : this.state.height || 100;
+
+    console.log(this.state, imageHeight);
+
     return (
       <Box
         onLayout={({ nativeEvent }) => {
-          this.setState(
-            {
-              layoutWidth: nativeEvent.layout.width
-            },
-            () => {
-              this.setSize();
-            }
-          );
+          this.setState({
+            width: nativeEvent.layout.width
+          });
         }}
         style={style}
         {...rest}
-        width={full ? "100%" : this.state.width || "100%"}
-        height={this.state.height || "auto"}
+        width={width || "100%"}
+        height={imageHeight}
       >
         <Animated.Image
           {...rest}
@@ -103,7 +105,7 @@ class Comp extends React.Component {
             {
               opacity: this.thumbnailAnimated,
               width: "100%",
-              height: this.state.height || "auto"
+              height: imageHeight
             }
           ]}
           onLoad={this.handleThumbnailLoad}
@@ -118,7 +120,7 @@ class Comp extends React.Component {
             {
               opacity: this.imageAnimated,
               width: "100%",
-              height: this.state.height || "auto"
+              height: imageHeight
             },
             style
           ]}

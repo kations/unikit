@@ -1,13 +1,28 @@
 import color from "color";
 
+const primary = "#673fb4"; // "#FF6B87"
+
+const getLightColor = (col, lum) => {
+  return color(col)
+    .alpha(0.1)
+    .toString();
+  var newColor = col;
+  var luminosity = color(col).luminosity();
+  while (luminosity < lum) {
+    newColor = color(newColor)
+      .lighten(0.1)
+      .toString();
+    luminosity = color(newColor).luminosity();
+  }
+  return newColor;
+};
+
 export default {
   colors: {
-    primary: "#FF6B87",
-    background: color("#FF6B87")
-      .alpha(0.15)
-      .toString(),
+    primary: primary,
+    background: getLightColor(primary, 0.66),
     accent: "",
-    text: "#000",
+    text: color(primary).darken(0.6),
     surface: "#FFF",
     placeholder: "",
     success: "#8bc34a",

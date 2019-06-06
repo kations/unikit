@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native-web";
-import { useSpring, animated } from "react-spring";
+import { View, Text, StyleSheet, Platform } from "react-native";
+import { useSpring, animated } from "react-spring/native";
 
 import Pan from "../helper/Pan";
 import Flex from "../primitives/Flex";
@@ -78,7 +78,7 @@ const Comp = ({
     >
       <Pan
         onSwipe={(direction, gestureState) => {
-          let { dx } = gestureState;
+          let { dx, moveX } = gestureState;
           let newX = state.left + dx;
           let newProgress = invlerp(0, state.width, newX);
           let newValue = Math.round(lerp(min, max, newProgress));
@@ -114,26 +114,25 @@ const Comp = ({
           if ((newValue / steps) % 1 != 0) {
             newValue = Math.round(newValue / steps) * steps;
           }
-          onChange(newValue);
+          if (onChange) onChange(newValue);
         }}
       >
         <Box
           position="relative"
           width="100%"
-          height="10px"
+          height={10}
           borderRadius={10}
           backgroundColor="background"
-          marginTop="15px"
-          marginBottom="15px"
+          marginTop={15}
+          marginBottom={15}
         >
           <Track
             position="absolute"
             top={0}
             left={0}
-            height="10px"
-            borderRadius="25px"
+            height={10}
             backgroundColor="primary"
-            borderRadius="10px"
+            borderRadius={10}
             style={{ width: left }}
           />
           <Circle
@@ -142,9 +141,9 @@ const Comp = ({
                 position: "absolute",
                 top: -10,
                 left: -15,
-                width: "30px",
-                height: "30px",
-                borderRadius: "25px",
+                width: 30,
+                height: 30,
+                borderRadius: 25,
                 backgroundColor: "#FFF",
                 borderColor: "rgba(0,0,0,0.1)",
                 borderWidth: 1,
@@ -161,16 +160,21 @@ const Comp = ({
               style={StyleSheet.flatten([
                 {
                   position: "absolute",
-                  bottom: 25,
+                  bottom: 23,
                   left: -15,
-                  width: "30px",
+                  width: 30,
                   height: "auto",
-                  paddingVertical: 5,
-                  borderRadius: "25px",
+                  paddingVertical: 4,
+                  borderRadius: 25,
                   borderColor: "rgba(0,0,0,0.1)",
-                  borderWidth: 1,
-                  cursor: "pointer"
+                  borderWidth: 1
                 },
+                Platform.OS === "web"
+                  ? {
+                      cursor: "pointer",
+                      webkitUserSelect: "none"
+                    }
+                  : {},
                 { transform: left.interpolate(l => [{ translateX: l }]) }
               ])}
             >
@@ -179,15 +183,26 @@ const Comp = ({
           ) : null}
         </Box>
         {showTicks ? (
-          <Flex width="100%" flexDirection="row" justifyContent="space-between">
+          <Flex
+            width="100%"
+            flexDirection="row"
+            justifyContent="space-between"
+            marginLeft="-5%"
+          >
             {getSteps().map(step => (
-              <Flex width="1px" alignItems="center">
+              <Flex
+                width="10%"
+                alignItems="center"
+                justifyContent="center"
+                key={`step-${step}`}
+                overflow="visible"
+              >
                 <View>
                   <Text
                     style={{
-                      fontSize: 10,
-                      whiteSpace: "nowrap"
+                      fontSize: 9
                     }}
+                    numberOfLines={1}
                   >
                     {step}
                   </Text>

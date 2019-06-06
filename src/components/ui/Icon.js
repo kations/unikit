@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity, Platform, StyleSheet } from "react-native-web";
+import { View, TouchableOpacity, Platform, StyleSheet } from "react-native";
 
 import { useTheme } from "../../style/Theme";
 import { getProp } from "../../helper";
@@ -14,7 +14,21 @@ const first = {
   x: {
     rotate: 45,
     width: 100,
+    top: 50,
+    left: 0
+  },
+  arrowDown: { rotate: 45, width: 55, top: 50, left: 7 },
+  plus: {
+    rotate: 90,
+    width: 100,
+    left: 0,
     top: 50
+  },
+  minus: {
+    width: 100,
+    left: 0,
+    top: 50,
+    rotate: 0
   }
 };
 
@@ -22,22 +36,30 @@ const sec = {
   x: {
     rotate: -45,
     width: 100,
-    top: 50
+    top: 50,
+    left: 0
+  },
+  arrowDown: { rotate: -45, width: 55, top: 50, left: 40 },
+  plus: {
+    width: 100,
+    left: 0,
+    top: 50,
+    rotate: 0
   }
 };
 
 const Comp = props => {
-  const { name, onPress, ...rest } = props;
+  const { type, onPress, ...rest } = props;
 
   const theme = useTheme();
   const { icon } = defaultStyle(props, theme);
 
   const firstStyle = useSpring({
-    to: first[name]
+    to: first[type]
   });
 
   const secStyle = useSpring({
-    to: sec[name]
+    to: sec[type]
   });
 
   return (
@@ -53,21 +75,25 @@ const Comp = props => {
         height={getProp(props, theme, "lineWidth", "icon")}
         backgroundColor={getProp(props, theme, "color", "icon")}
         style={{
+          left: firstStyle.left.interpolate(l => `${l}%`),
           top: firstStyle.top.interpolate(l => `${l}%`),
           width: firstStyle.width.interpolate(l => `${l}%`),
           transform: firstStyle.rotate.interpolate(l => [{ rotate: `${l}deg` }])
         }}
       />
-      <Line
-        position="absolute"
-        height={getProp(props, theme, "lineWidth", "icon")}
-        backgroundColor={getProp(props, theme, "color", "icon")}
-        style={{
-          top: secStyle.top.interpolate(l => `${l}%`),
-          width: secStyle.width.interpolate(l => `${l}%`),
-          transform: secStyle.rotate.interpolate(l => [{ rotate: `${l}deg` }])
-        }}
-      />
+      {["minus"].indexOf(type) > -1 ? null : (
+        <Line
+          position="absolute"
+          height={getProp(props, theme, "lineWidth", "icon")}
+          backgroundColor={getProp(props, theme, "color", "icon")}
+          style={{
+            left: secStyle.left.interpolate(l => `${l}%`),
+            top: secStyle.top.interpolate(l => `${l}%`),
+            width: secStyle.width.interpolate(l => `${l}%`),
+            transform: secStyle.rotate.interpolate(l => [{ rotate: `${l}deg` }])
+          }}
+        />
+      )}
     </Flex>
   );
 };
@@ -81,7 +107,7 @@ const defaultStyle = (props, theme) =>
   });
 
 Comp.defaultProps = {
-  name: "x",
+  type: "x",
   size: 44,
   lineWidth: 2,
   color: "primary"

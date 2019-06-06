@@ -26,7 +26,7 @@ export default {
   external: [
     "react",
     "react-spring",
-    "react-native-web",
+    "react-native",
     "react-theme-provider"
   ],
   globals: {

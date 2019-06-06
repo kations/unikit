@@ -1,4 +1,63 @@
+import React from "react";
+import PropTypes from "prop-types";
 import color from "color";
+
+import { withTheme } from "./style/Theme";
+
+const createComponentFunc = config => {
+  const {
+    name,
+    style,
+    omitProps = [],
+    propTypes = {},
+    render = ({ Comp, ...props }) => <Comp {...props} />,
+    defaultComponent = "div",
+    system = fullSystem,
+    applySystem = system => props => ({
+      "&&": system.props(props)
+    }),
+    InnerComponent: InnerComponentFromConfig,
+    theme
+  } = config();
+
+  const InnerComponent =
+    InnerComponentFromConfig ||
+    function Component({ as, forwardedRef, ...props }) {
+      const Comp = as || defaultComponent;
+
+      const renderProps = {
+        ref: forwardedRef,
+        Comp,
+        ...props
+      };
+
+      return render(renderProps);
+    };
+
+  InnerComponent.displayName = `uni-${name}`;
+
+  function forwardRef(props, ref) {
+    return <InnerComponent {...props} forwardedRef={ref} />;
+  }
+  forwardRef.displayName = InnerComponent.displayName;
+
+  const RefComponent = React.forwardRef(forwardRef);
+  RefComponent.displayName = InnerComponent.displayName;
+
+  RefComponent.propTypes = {
+    theme: PropTypes.object
+  };
+
+  const defaultProps = theme[name];
+
+  RefComponent.defaultProps = {
+    ...defaultProps
+  };
+
+  return RefComponent;
+};
+
+export const createComponent = withTheme(createComponentFunc);
 
 export const getObjValue = (o, s) => {
   s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties

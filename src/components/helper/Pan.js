@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, PanResponder } from "react-native-web";
+import { View, PanResponder } from "react-native";
 
 const constant = {
   RESISTANCE_COEF: 0.6,

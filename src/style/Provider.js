@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { View, Dimensions } from "react-native-web";
+import React, { useState, useEffect } from "react";
+import { View, Dimensions } from "react-native";
 import { GatewayDest, GatewayProvider } from "react-gateway";
 import defaultTheme from "./defaultTheme";
 import { ThemeProvider } from "./Theme";
@@ -37,6 +37,10 @@ export default ({ theme = {}, children }) => {
     alert: null
   });
 
+  // useEffect(() => {
+
+  // }, [])
+
   // setInterval(() => {
   //   const alerts = state.alerts;
   //   alerts.push({ key: key++, message: "yolo" });
@@ -49,23 +53,13 @@ export default ({ theme = {}, children }) => {
   const enhancedDefaultTheme = Object.assign({}, defaultTheme, {
     alert: alert => {
       setState({ ...state, alert: alert });
-    },
-    layout: { width: state.state, height: state.height }
+    }
   });
 
   return (
     <GatewayProvider>
       <ThemeProvider theme={mergeDeep(enhancedDefaultTheme, theme)}>
-        <View
-          style={{ flex: 1 }}
-          onLayout={({ nativeEvent }) => {
-            setState({
-              ...state,
-              width: nativeEvent.layout.width,
-              height: nativeEvent.layout.height
-            });
-          }}
-        >
+        <View style={{ flex: 1, position: "relative" }}>
           {children}
           <GatewayDest name="unikit" component={View} />
           <Alert alert={state.alert} />

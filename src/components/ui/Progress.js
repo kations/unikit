@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path, G } from "swgs";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "react-spring/native";
 import PropTypes from "prop-types";
-import { View } from "react-native-web";
+import { View } from "react-native";
 
 import { getProp } from "../../helper";
 import { useTheme } from "../../style/Theme";

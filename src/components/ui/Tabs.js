@@ -5,8 +5,8 @@ import {
   Text,
   StyleSheet,
   ScrollView
-} from "react-native-web";
-import { useSpring, animated } from "react-spring";
+} from "react-native";
+import { useSpring, animated } from "react-spring/native";
 
 import { useTheme } from "../../style/Theme";
 import { getProp } from "../../helper";
@@ -66,7 +66,7 @@ const Comp = props => {
 
   const springStyle = useSpring({
     x: Math.round(state.swipeIndex * width),
-    width: `${width}px`,
+    width: width,
     config: { mass: 1, tension: 300, friction: 30 }
   });
 
@@ -246,7 +246,8 @@ const defaultStyle = (props, theme) =>
   });
 
 Comp.defaultProps = {
-  threshold: 5
+  threshold: 5,
+  style: {}
 };
 
 export default Comp;

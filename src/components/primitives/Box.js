@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { View, StyleSheet, createElement } from "react-native-web";
+import React, { Component, useMemo } from "react";
+import { View, StyleSheet, Platform } from "react-native";
 import { useTheme, withTheme } from "../../style/Theme";
 // import { setLightness } from "polished";
 import "parse-prop-types";
@@ -123,7 +123,11 @@ const mapProps = (props = {}, theme = {}) => {
         typeof value === "number" ||
         typeof value === "object"
       ) {
-        value = toString(value, key);
+        if (typeof value === "string" && value.indexOf("px") > -1) {
+          value = parseInt(value.replace("/px", "/"));
+        } else {
+          value = value;
+        }
       } else {
         value = getBreak(theme.layout, breaks, value);
       }
@@ -170,13 +174,16 @@ const mapProps = (props = {}, theme = {}) => {
 
 // const Box = ({ children, style, as, ...rest }) => {
 //   const theme = useTheme();
-//   const propStyle = mapProps(rest, theme);
+
 //   var Comp = as || View;
+
+//   const propStyle = useMemo(() => mapProps(rest, theme), [rest]);
 //   // return (
 //   //   <Comp {...rest} style={StyleSheet.flatten([propStyle, style])}>
 //   //     {children}
 //   //   </Comp>
 //   // );
+//   console.log({ propStyle });
 //   return React.createElement(Comp, {
 //     style: StyleSheet.flatten([propStyle, style]),
 //     children: children,
@@ -187,23 +194,14 @@ const mapProps = (props = {}, theme = {}) => {
 class Box extends React.PureComponent {
   render() {
     const { children, style, theme, as, ...rest } = this.props;
+
     const propStyle = mapProps(rest, theme);
     var Comp = as || View;
-    // return (
-    //   <Comp {...rest} style={StyleSheet.flatten([propStyle, style])}>
-    //     {children}
-    //   </Comp>
-    // );
-    // return createElement(Comp, {
-    //   style: StyleSheet.flatten([propStyle, style]),
-    //   children: children,
-    //   ...rest
-    // });
 
     return React.createElement(Comp, {
+      ...rest,
       style: StyleSheet.flatten([propStyle, style]),
-      children: children,
-      ...rest
+      children: children
     });
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Text, Platform } from "react-native-web";
+import { Text, Platform } from "react-native";
 const Comp = ({ children, inline, comp, level, ...rest }) => (
   <Text {...rest} aria-level={level} comp={comp || "text"}>
     {children}

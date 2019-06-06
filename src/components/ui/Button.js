@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native-web";
+import { TouchableOpacity, StyleSheet, Platform } from "react-native";
 import PropTypes from "prop-types";
 
 import { getProp } from "../../helper";
@@ -71,8 +71,8 @@ const isNum = number => {
 const defaultStyle = (props, theme) =>
   StyleSheet.create({
     button: {
-      display: "inline-flex",
-      padding: getProp(props, theme, "size", "button") / 2,
+      display: Platform.OS === "web" ? "inline-flex" : "flex",
+      paddingHorizontal: getProp(props, theme, "size", "button") / 2,
       height: getProp(props, theme, "size", "button"),
       width: "auto",
       backgroundColor: props.outline
@@ -94,8 +94,6 @@ const defaultStyle = (props, theme) =>
       justifyContent: "center"
     },
     text: {
-      position: "relative",
-      zIndex: 10,
       color: getProp(
         props,
         theme,

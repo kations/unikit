@@ -125,7 +125,8 @@ const defaultStyle = (props, theme) =>
     label: {
       fontSize: 12,
       color: "rgba(0,0,0,0.5)",
-      padding: "10px 0 6px 0"
+      paddingTop: 10,
+      paddingBottom: 6
     }
   });
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSpring, animated } from "react-spring";
-import { View } from "react-native-web";
+import { useSpring, animated } from "react-spring/native";
+import { View } from "react-native";
 import Visible from "../helper/Visible";
 
 const Comp = props => {

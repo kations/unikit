@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Svg, { Defs, Stop, Rect, LinearGradient } from "swgs";
 import PropTypes from "prop-types";
-import { StyleSheet } from "react-native-web";
+import { StyleSheet } from "react-native";
 
 import Box from "../primitives/Box";
 import { getProp } from "../../helper";

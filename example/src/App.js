@@ -26,7 +26,10 @@ import {
   useTheme,
   Icon,
   Input,
-  TextInput
+  TextInput,
+  ActionSheet,
+  Chart,
+  Grid
 } from "unikit";
 
 const prettier = require("prettier/standalone");
@@ -253,87 +256,71 @@ export default () => {
     contentMove: 1,
     tab: "Meine",
     tab2: "Meine",
+    value: "yolo",
     sliderValue: 20,
-    date: false
+    switch: true,
+    date: false,
+    arrowType: "x",
+    color: "#000",
+    number: -2,
+    actionSheet: false,
+    data: [
+      { label: "2010", value: 62 },
+      { label: "2011", value: 52 },
+      { label: "2012", value: 84 },
+      { label: "2013", value: -37 },
+      { label: "2014", value: 15 },
+      { label: "2015", value: 26 },
+      { label: "2016", value: 57 },
+      { label: "2017", value: 36 },
+      { label: "2018", value: -56 },
+      { label: "2019", value: 46 }
+    ]
   });
 
+  // setInterval(() => {
+  //   const data = Array.from({ length: 10 }, () =>
+  //     Math.floor(Math.random() * 40)
+  //   );
+  //   setState({
+  //     ...state,
+  //     data
+  //   });
+  // }, 5000);
   const theme = useTheme();
   console.log({ theme });
 
   return (
-    <UniProvider
-      theme={{
-        yolo: true,
-        colors: {
-          primary: "#FF6B87",
-          text: "#000"
-        }
-      }}
-    >
-      <Flex flexDirection="row">
-        <Box
-          width="100px"
-          height="200px"
-          margin={10}
-          backgroundColor="primary"
-          shadow={1}
-        />
-        <Box
-          width="100px"
-          height="200px"
-          margin={10}
-          backgroundColor="primary"
-          backgroundColorLighten={0.15}
-          shadow={5}
-        />
-        <Box
-          width="100px"
-          height="200px"
-          margin={10}
-          backgroundColor="primary"
-          backgroundColorLighten={0.3}
-          shadow={10}
-        />
-      </Flex>
-      <Slider
-        value={state.sliderValue}
-        onChange={value => setState({ sliderValue: value })}
-        showTicks={false}
-      />
-
-      <ButtonWithTheme />
-      <Button onPress={() => setState({ ...state, date: true })}>
-        Open DatePicker
-      </Button>
-      <Input label="Datepicker" error={"text"}>
-        <DatePicker value={new Date()} placeholder="test" />
-      </Input>
-      <Input label="Datepicker">
-        <TextInput placeholder="test" value="yolo" />
-      </Input>
-      <Input label="Datepicker">
-        <TextInput
-          placeholder="test"
-          value="yolo"
-          multiline
-          numberOfLines={3}
-        />
-      </Input>
-      <Input label="Datepicker" desc="This is active">
-        <Switch />
-      </Input>
-      <DatePicker
-        placeholder="test"
-        value={new Date()}
-        visible={state.date}
-        onClose={() => setState({ ...state, date: false })}
-      />
-      <Icon
-        onPress={() => {
-          alert("hi");
-        }}
-      />
-      {/* <Overlay
+    <UniProvider>
+      <Box backgroundColor="background">
+        <Box width="100%" height="100px" backgroundColor="#000" />
+        <Flex flexDirection="row">
+          <Box
+            width="100px"
+            height="200px"
+            margin={10}
+            backgroundColor="primary"
+            shadow={1}
+          />
+          <Box
+            width="100px"
+            height="200px"
+            margin={10}
+            backgroundColor="primary"
+            backgroundColorLighten={0.15}
+            shadow={5}
+          />
+          <Box
+            width="100px"
+            height="200px"
+            margin={10}
+            backgroundColor="primary"
+            backgroundColorLighten={0.3}
+            shadow={10}
+          />
+        </Flex>
+        <Slider value={1} />
+        {/* <Overlay
         position="bottom"
         height="auto"
         visible={state.visible2}
@@ -357,7 +344,7 @@ export default () => {
         </Button>
       </Overlay> */}
 
-      {/* <Image
+        {/* <Image
         width={200}
         source={{
           uri:
@@ -406,7 +393,7 @@ export default () => {
         />
       </Tabs>
       */}
-      {/* <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={300}>
+        {/* <Swiper dots={false} marginTop={20} marginBottom={20} itemSize={300}>
         <Box
           width="100%"
           height="200px"
@@ -541,6 +528,7 @@ export default () => {
           Open Overlay 2
         </Button>
       </Overlay> */}
+      </Box>
     </UniProvider>
   );
 };
@@ -662,7 +650,7 @@ export default () => {
 //             borderRadius={8}
 //             marginTop={20}
 //           >
-//             <Text>yarn add react-native-web react-art</Text>
+//             <Text>yarn add react-native react-art</Text>
 //           </Box>
 //         </Fragment>
 //       )}

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Platform, StyleSheet, Text as DefaultText } from "react-native-web";
+import { Platform, StyleSheet, Text as DefaultText } from "react-native";
 import PropTypes from "prop-types";
 
 import Text from "../primitives/Text";

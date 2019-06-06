@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native-web";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  ImageBackground
+} from "react-native";
 import PropTypes from "prop-types";
 
 import { useTheme } from "../../style/Theme";
@@ -34,9 +39,7 @@ const Comp = props => {
       comp="avatar"
       {...rest}
     >
-      {source ? (
-        <Image style={background} source={source} resizeMode="cover" />
-      ) : null}
+      {source ? <ImageBackground style={background} source={source} /> : null}
       {children ? children : <Text style={text}>{char}</Text>}
     </Box>
   );
@@ -45,13 +48,14 @@ const Comp = props => {
 const defaultStyle = (props, theme) =>
   StyleSheet.create({
     avatar: {
-      display: "inline-flex",
+      display: Platform.OS === "web" ? "inline-flex" : "flex",
       justifyContent: "center",
       alignItems: "center",
       height: getProp(props, theme, "size", "avatar"),
       width: getProp(props, theme, "size", "avatar"),
       backgroundColor: getProp(props, theme, "backgroundColor", "avatar"),
-      borderRadius: getProp(props, theme, "size", "avatar") / 2
+      borderRadius: getProp(props, theme, "size", "avatar") / 2,
+      overflow: "hidden"
     },
     background: {
       position: "absolute",

@@ -1,6 +1,11 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { Platform, Text, StyleSheet } from "react-native-web";
-import { useSpring, useTransition, useSprings, animated } from "react-spring";
+import { Platform, Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+  useSpring,
+  useTransition,
+  useSprings,
+  animated
+} from "react-spring/native";
 
 import Icon from "../ui/Icon";
 import Flex from "../primitives/Flex";
@@ -38,29 +43,31 @@ const Comp = props => {
 
   return (
     <Box style={container}>
-      {transitions.map(({ item, props, key }) => (
-        <Message key={key} style={props} width="100%" alignItems="center">
-          <Flex
-            style={message}
-            backgroundColor={item.type || "surface"}
-            shadow={5}
-          >
-            {/* <Box style={{ right: life }} /> */}
-            <Text style={text}>{item.message}</Text>
-            <Icon
-              position="absolute"
-              top={17}
-              right={15}
-              size={20}
-              color="surface"
-              onPress={e => {
-                e.stopPropagation();
-                setItems(state => state.filter(i => i.key !== item.key));
-              }}
-            />
-          </Flex>
-        </Message>
-      ))}
+      <SafeAreaView>
+        {transitions.map(({ item, props, key }) => (
+          <Message key={key} style={props} width="100%" alignItems="center">
+            <Flex
+              style={message}
+              backgroundColor={item.type || "surface"}
+              shadow={5}
+            >
+              {/* <Box style={{ right: life }} /> */}
+              <Text style={text}>{item.message}</Text>
+              <Icon
+                position="absolute"
+                top={17}
+                right={15}
+                size={20}
+                color="surface"
+                onPress={e => {
+                  e.stopPropagation();
+                  setItems(state => state.filter(i => i.key !== item.key));
+                }}
+              />
+            </Flex>
+          </Message>
+        ))}
+      </SafeAreaView>
     </Box>
   );
 };

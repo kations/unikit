@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions } from "react-native-web";
+import { View, Dimensions } from "react-native";
 
 export default class Visible extends Component {
   constructor(props) {
