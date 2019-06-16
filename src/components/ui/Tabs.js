@@ -86,7 +86,7 @@ const Comp = props => {
         ref={scrollRef}
         showsHorizontalScrollIndicator={false}
         keyboardShouldPersistTaps={
-          getProp(props, theme, "keyboardShouldPersistTaps", "tabs") || false
+          getProp(props, theme, "keyboardShouldPersistTaps", "tabs") || "never"
         }
         scrollEnabled={getProp(props, theme, "scrollable", "tabs") || false}
       >

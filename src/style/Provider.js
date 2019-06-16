@@ -61,7 +61,7 @@ export default ({ theme = {}, children }) => {
       <ThemeProvider theme={mergeDeep(enhancedDefaultTheme, theme)}>
         <View style={{ flex: 1, position: "relative" }}>
           {children}
-          <GatewayDest name="unikit" component={View} />
+          <GatewayDest name="unikit" component={props => <View {...props} />} />
           <Alert alert={state.alert} />
         </View>
       </ThemeProvider>

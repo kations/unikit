@@ -1,8 +1,9 @@
 import color from "color";
 
 import { useTheme, withTheme } from "./style/Theme";
+import styled from "./style/styled";
 
-export { useTheme, withTheme, color };
+export { useTheme, withTheme, color, styled };
 export { default as Visible } from "./components/helper/Visible";
 export { default as UniProvider } from "./style/Provider";
 
@@ -14,6 +15,7 @@ export { default as DatePicker } from "./components/inputs/DatePicker";
 export { default as Select } from "./components/inputs/Select";
 export { default as Switch } from "./components/inputs/Switch";
 export { default as Color } from "./components/inputs/Color";
+export { default as Checkbox } from "./components/inputs/Checkbox";
 
 //Primitives
 export { default as Box } from "./components/primitives/Box";

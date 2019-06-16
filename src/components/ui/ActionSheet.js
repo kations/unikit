@@ -1,18 +1,38 @@
 import React, { useState } from "react";
-
 import { useTheme } from "../../style/Theme";
-import { getComponents } from "../../utils";
+import styled from "../../style/styled";
 
 import Headline from "./Headline";
 import Text from "../primitives/Text";
 import Button from "./Button";
 import Overlay from "./Overlay";
 
+const Box = styled.View(() => {
+  return {
+    backgroundColor: "primary",
+    width: 100,
+    height: 100
+  };
+});
+
+const Newbox = styled.Box(({ theme, height }) => ({
+  backgroundColor: theme.colors.background,
+  width: height || 100,
+  height: 100
+}));
+
+const CloseButton = styled.Button(props => ({
+  backgroundColor: "surface",
+  borderBottomWidth: 1,
+  borderColor: "rgba(0,0,0,0.05)"
+}));
+
 const Comp = props => {
   const {
     overrides,
     style,
     actions,
+    onActionPress,
     onClose,
     cancelText,
     cancelColor,
@@ -31,30 +51,28 @@ const Comp = props => {
       {actions.map(action => {
         return (
           <Button
-            onPress={action.onPress || null}
-            style={{
-              backgroundColor: "surface",
-              color: "primary",
-              borderBottomWidth: 1,
-              borderColor: "rgba(0,0,0,0.05)"
+            onPress={() => {
+              if (action.onPress) {
+                action.onPress();
+              }
+              if (onActionPress) {
+                onActionPress(action);
+              }
             }}
+            color="primary"
+            backgroundColor="surface"
+            borderBottomWidth={1}
+            borderColor="rgba(0,0,0,0.05)"
           >
             {action.label}
           </Button>
         );
       })}
-      <Button
-        onPress={onClose || null}
-        style={{
-          backgroundColor: "surface",
-          color: "primary",
-          borderBottomWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)"
-        }}
-        color={cancelColor}
-      >
+      <Box />
+      <Newbox height={200} />
+      <CloseButton onPress={onClose || null} color={cancelColor}>
         {cancelText}
-      </Button>
+      </CloseButton>
     </Overlay>
   );
 };

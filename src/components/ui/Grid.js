@@ -3,8 +3,6 @@ import { View, Dimensions, ViewPropTypes, FlatList } from "react-native";
 import PropTypes from "prop-types";
 import { chunkArray, calculateDimensions, generateStyles } from "../../utils";
 
-import Box from "../primitives/Box";
-
 class Grid extends React.Component {
   constructor(props) {
     super(props);

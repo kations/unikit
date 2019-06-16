@@ -5,7 +5,7 @@ import { View, ScrollView, StyleSheet } from "react-native";
 //import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import Box from "../primitives/Box";
-import Tabs from "./Tabs";
+// import Tabs from "./Tabs";
 
 const AnimatedContent = animated(View);
 
@@ -194,7 +194,7 @@ const Comp = props => {
           );
         })}
       </ScrollView>
-      {dots && (
+      {/* {dots && (
         <Box
           style={StyleSheet.flatten([
             dotswrap,
@@ -203,9 +203,9 @@ const Comp = props => {
             }
           ])}
         >
-          {/* {React.Children.map(children, (child, index) => (
+          {{React.Children.map(children, (child, index) => (
             <Dot active={index === state.index} />
-          ))} */}
+          ))}}
           <Tabs
             style={{
               width: 70,
@@ -223,7 +223,7 @@ const Comp = props => {
             hideLabels
           />
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

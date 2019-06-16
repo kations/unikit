@@ -316,19 +316,20 @@ import {
   Platform,
   View,
   TouchableOpacity,
-  StyleSheet,
-  SafeAreaView
+  StyleSheet
 } from "react-native";
 import PropTypes from "prop-types";
-import { useTransition, useSpring, animated } from "react-spring/native";
+import { useTransition, useSpring, animated } from "react-spring";
 
 import { useTheme } from "../../style/Theme";
 import Portal from "../helper/Portal";
 import Box from "../primitives/Box";
 import Pan from "../helper/Pan";
+import styled from "../../style/styled";
 
-const AnimatedPan = animated(Pan);
 const AnimatedBox = animated(Box);
+const AnimatedBackdrop = animated(Box);
+const AnimatedTouchableBackdrop = animated(styled.View());
 
 const getMove = (position, width, height) => {
   if (position === "left") {
@@ -394,20 +395,21 @@ const Comp = props => {
       {transitions.map(
         ({ item, key, props }) =>
           item && (
-            <Fragment key={key}>
-              <Box
-                as={onClose ? animated(TouchableOpacity) : animated(Box)}
-                onPress={onClose || null}
-                position="absolute"
-                left={0}
-                bottom={0}
-                width={Screen.width}
-                height={Screen.height}
-                backgroundColor="rgba(0,0,0,0.1)"
-                style={{ opacity: props.opacity }}
-                activeOpacity={0.8}
-                pointerEvents={visible ? "auto" : "none"}
-              />
+            <View key={key}>
+              <TouchableOpacity onPress={onClose || null} activeOpacity={0.8}>
+                <AnimatedBackdrop
+                  style={{
+                    position: Platform.OS !== "web" ? "absolute" : "fixed",
+                    left: 0,
+                    bottom: 0,
+                    width: Screen.width,
+                    height: Screen.height,
+                    backgroundColor: "rgba(0,0,0,0.1)",
+                    opacity: props.opacity
+                  }}
+                  pointerEvents={visible ? "auto" : "none"}
+                />
+              </TouchableOpacity>
               <AnimatedBox
                 key={key}
                 width={Screen.width}
@@ -437,13 +439,11 @@ const Comp = props => {
                   backgroundColor="surface"
                   {...rest}
                 >
-                  <SafeAreaView>
-                    {usePan ? <Box style={handle} /> : null}
-                    {children}
-                  </SafeAreaView>
+                  {usePan ? <Box style={handle} /> : null}
+                  {children}
                 </Box>
               </AnimatedBox>
-            </Fragment>
+            </View>
           )
       )}
     </Portal>

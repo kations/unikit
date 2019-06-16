@@ -4,7 +4,26 @@ import { View, Dimensions, TouchableOpacity, Text } from "react-native";
 import { useTransition, animated } from "react-spring/native";
 
 import { useTheme } from "../../style/Theme";
-import { getProp } from "../../helper";
+import styled from "../../style/styled";
+
+const Label = styled.Text(({ color }) => ({
+  color: color,
+  fontSize: "label"
+}));
+
+const InputWrapper = styled.View({
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  backgroundColor: "surface",
+  height: "auto",
+  minHeight: 55,
+  padding: 15,
+  overflow: "hidden",
+  borderRadius: 3,
+  paddingBottom: 4
+});
+
 import Flex from "../primitives/Flex";
 
 import Switch from "./Switch";
@@ -14,22 +33,57 @@ import Slider from "./Slider";
 import Color from "./Color";
 import Select from "./Select";
 import Number from "./Number";
+import Checkbox from "./Checkbox";
 
 const types = {
   text: TextInput,
   select: Select,
   switch: Switch,
   date: DatePicker,
+  datetime: DatePicker,
+  time: DatePicker,
   range: Slider,
   color: Color,
-  number: Number
+  number: Number,
+  checkbox: Checkbox
 };
 
 const typesProps = {
   switch: {
-    direction: "row",
-    alignItems: "center",
-    paddingBottom: 15
+    wrapperProps: {
+      style: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingBottom: 15
+      }
+    },
+    labelProps: {
+      style: {
+        fontSize: "p"
+      }
+    }
+  },
+  checkbox: {
+    wrapperProps: {
+      style: {
+        flexDirection: "row-reverse",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingBottom: 15
+      }
+    },
+    labelProps: {
+      style: {
+        fontSize: "p",
+        marginLeft: 10
+      }
+    }
+  },
+  date: {
+    wrapperProps: {
+      readOnly: true
+    }
   }
 };
 
@@ -65,8 +119,10 @@ const Comp = props => {
   });
 
   return (
-    <Flex
-      as={type === "switch" ? TouchableOpacity : undefined}
+    <InputWrapper
+      as={
+        ["switch", "checkbox"].indexOf(type) > -1 ? TouchableOpacity : undefined
+      }
       onPress={() => {
         if (onChange) {
           onChange(!value);
@@ -76,33 +132,22 @@ const Comp = props => {
         const { width } = event.nativeEvent.layout;
         setWidth(width);
       }}
-      flexDirection={direction || TypeProps.direction || "column"}
-      justifyContent="space-between"
-      alignItems={TypeProps.alignItems || "flex-start"}
-      backgroundColor="surface"
-      height="auto"
-      minHeight={55}
-      padding={15}
-      overflow="hidden"
       activeOpacity={0.8}
-      borderRadius={3}
-      paddingBottom={TypeProps.paddingBottom || 4}
-      style={style}
+      style={[
+        style,
+        TypeProps.wrapperProps ? TypeProps.wrapperProps.style : {}
+      ]}
       {...rest}
     >
       <Flex>
-        <Text
-          style={{
-            fontSize: ["switch"].indexOf(type) === -1 ? 12 : 15,
-            color: error
-              ? theme.colors.error
-              : focused
-              ? theme.colors.primary
-              : theme.colors.text
-          }}
-        >
-          {label}
-        </Text>
+        {label ? (
+          <Label
+            color={error ? "error" : focused ? "primary" : "text"}
+            {...TypeProps.labelProps}
+          >
+            {label}
+          </Label>
+        ) : null}
         {desc ? (
           <Text
             style={{ color: color(theme.colors.text).alpha(0.5), fontSize: 10 }}
@@ -116,6 +161,9 @@ const Comp = props => {
           onChange={onChange}
           value={value}
           setFocus={setFocus}
+          type={type}
+          label={label}
+          {...TypeProps}
           {...rest}
         />
       ) : null}
@@ -125,6 +173,8 @@ const Comp = props => {
               setFocus,
               onChange,
               value,
+              type,
+              label,
               ...children.props,
               ...rest
             })
@@ -146,7 +196,7 @@ const Comp = props => {
           />
         ) : null
       )}
-    </Flex>
+    </InputWrapper>
   );
 };
 

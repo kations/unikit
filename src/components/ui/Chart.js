@@ -2,6 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useSprings, animated, useTransition } from "react-spring/native";
 import { TouchableOpacity, Text, Dimensions } from "react-native";
 import PropTypes from "prop-types";
+import styled from "../../style/styled";
+
+const Chart = styled.View();
+const Bar = styled.View();
+const TouchableBar = styled.TouchableOpacity();
+
+const XAxis = styled.Flex({
+  width: "100%",
+  flexDirection: "row",
+  paddingVertical: 10
+});
+
+const Label = styled.Flex({
+  alignItems: "center"
+});
+
+const LabelText = styled.Text({
+  fontSize: 10
+});
 
 import Box from "../primitives/Box";
 import Flex from "../primitives/Flex";
@@ -14,7 +33,7 @@ function lerp(start, end, t) {
   return start * (1 - t) + end * t;
 }
 
-const Bar = animated(Box);
+const AnimatedBar = animated(Bar);
 
 const Comp = props => {
   const {
@@ -41,18 +60,22 @@ const Comp = props => {
 
   if (data[0] === "number") {
     var max = Math.max.apply(null, data);
-    var min = Math.abs(Math.min.apply(null, data));
+    var min = Math.min.apply(null, data);
   } else {
     var max = Math.max.apply(null, data.map(a => a.value));
-    var min = Math.abs(Math.min.apply(null, data.map(a => a.value)));
+    var min = Math.min.apply(null, data.map(a => a.value));
+  }
+
+  if (min > 0) {
+    min = 0;
+  } else {
+    min = Math.abs(min);
   }
 
   const factor = height / (max + min);
 
-  console.log({ data, max, min, factor });
   const getHeight = number => {
     const height = number * factor;
-    console.log({ height, number, factor });
     return height;
   };
 
@@ -64,8 +87,6 @@ const Comp = props => {
     var transitionData = data;
   }
 
-  console.log({ transitionData });
-
   const transitions = useTransition(transitionData, data => data.label, {
     from: { height: 0, opacity: 0 },
     leave: { height: 0, opacity: 0 },
@@ -76,7 +97,7 @@ const Comp = props => {
   //const springs = useSprings(data.length, data.map(item => ({ height: getHeight(item) }))
 
   return (
-    <Box
+    <Chart
       style={{
         width: width || "100%",
         height: "auto"
@@ -97,21 +118,21 @@ const Comp = props => {
         {grid ? (
           <Box
             position="absolute"
-            left="0"
+            left={0}
             bottom={min * factor - 1}
             width="100%"
             height={2}
-            backgroundColor="background"
+            backgroundColor={barColor}
           />
         ) : null}
         {transitions.map(({ item, props: { height }, key }, index) => (
-          <Bar
+          <AnimatedBar
             as={onPress ? TouchableOpacity : undefined}
+            onPress={onPress || null}
             key={key}
-            backgroundColor={
-              selected && selected === index ? selectedBarColor : barColor
-            }
             style={{
+              backgroundColor:
+                selected && selected === index ? selectedBarColor : barColor,
               width: calcedBarWidth,
               marginHorizontal: gap,
               height: height.interpolate(h => Math.abs(h)),
@@ -122,26 +143,19 @@ const Comp = props => {
           />
         ))}
       </Flex>
-      <Flex
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          paddingVertical: 10
-        }}
-      >
+      <XAxis>
         {transitionData.map((item, index) => (
-          <Flex
+          <Label
             style={{
               width: calcedBarWidth,
-              marginHorizontal: gap,
-              alignItems: "center"
+              marginHorizontal: gap
             }}
           >
-            <Text style={{ fontSize: 10 }}>{item.label}</Text>
-          </Flex>
+            <LabelText>{item.label}</LabelText>
+          </Label>
         ))}
-      </Flex>
-    </Box>
+      </XAxis>
+    </Chart>
   );
 };
 
@@ -158,7 +172,7 @@ Comp.defaultProps = {
   height: 300,
   barWidth: "auto",
   gap: 5,
-  barColor: "background",
+  barColor: "primary",
   selectedBarColor: "primary",
   grid: true,
   gridLines: 10

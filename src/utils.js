@@ -1,11 +1,3 @@
-import { Box, Button, Overlay } from "./";
-
-// const defaultComponents = {
-//   Box,
-//   Button,
-//   Overlay
-// };
-
 function chunkArray(array = [], size) {
   if (array === []) return [];
   return array.reduce((acc, val) => {
@@ -93,15 +85,4 @@ function generateStyles({
   };
 }
 
-function getComponents(overrides) {
-  return Object.keys(defaultComponents).reduce((acc, name) => {
-    const override = overrides[name] || {};
-    acc[name] = {
-      component: override.component || defaultComponents[name],
-      props: override
-    };
-    return acc;
-  }, {});
-}
-
-export { chunkArray, calculateDimensions, generateStyles, getComponents };
+export { chunkArray, calculateDimensions, generateStyles };

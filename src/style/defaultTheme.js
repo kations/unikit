@@ -28,6 +28,14 @@ export default {
     success: "#8bc34a",
     error: "#f44336"
   },
+  fontSize: {
+    h1: 30,
+    h2: 25,
+    h3: 20,
+    p: 16,
+    cap: 10,
+    label: 12
+  },
   breaks: {
     mobile: 768,
     tablet: 1024,

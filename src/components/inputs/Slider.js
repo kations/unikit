@@ -55,7 +55,7 @@ const Comp = ({
     const progress = invlerp(min, max, value);
     const left = lerp(0, state.width, progress);
     //const leftStep = Math.round(left / 100) * 100;
-    setState({ ...state, left: left, value });
+    setState({ ...state, left: left, value: value || min });
   }, [value, state.width]);
 
   const { left } = useSpring({
@@ -171,8 +171,7 @@ const Comp = ({
                 },
                 Platform.OS === "web"
                   ? {
-                      cursor: "pointer",
-                      webkitUserSelect: "none"
+                      cursor: "pointer"
                     }
                   : {},
                 { transform: left.interpolate(l => [{ translateX: l }]) }

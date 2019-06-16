@@ -293,7 +293,14 @@ export default () => {
   return (
     <UniProvider>
       <Box backgroundColor="background">
-        <Box width="100%" height="100px" backgroundColor="#000" />
+        <Chart
+          onPress={() => alert("pressed")}
+          data={[
+            { label: "2010", value: 10 },
+            { label: "2011", value: 15 },
+            { label: "2013", value: -7 }
+          ]}
+        />
         <Flex flexDirection="row">
           <Box
             width="100px"
@@ -320,6 +327,26 @@ export default () => {
           />
         </Flex>
         <Slider value={1} />
+        <Button onPress={() => setState({ ...state, actionSheet: true })}>
+          Show Sheet
+        </Button>
+        <ActionSheet
+          visible={state.actionSheet}
+          onClose={() => {
+            setState({ ...state, actionSheet: false });
+          }}
+          onActionPress={() => setState({ ...state, actionSheet: false })}
+          actions={[
+            {
+              label: "test",
+              onPress: () => {
+                console.log("test");
+              }
+            }
+          ]}
+        />
+        <Input type="date" label="bla" />
+        <Input type="select" placeholder="bla" options={["1", "2", "3"]} />
         {/* <Overlay
         position="bottom"
         height="auto"
