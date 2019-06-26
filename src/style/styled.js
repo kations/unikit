@@ -1,8 +1,14 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect, useRef } from "react";
 import { withTheme, useTheme } from "./Theme";
+import * as reactNative from "react-native";
 
-import elements from "./styledElements";
+const aliases = `ActivityIndicator ActivityIndicatorIOS Button DatePickerIOS DrawerLayoutAndroid
+ Image ImageBackground ImageEditor ImageStore KeyboardAvoidingView ListView MapView Modal NavigatorIOS
+ Picker PickerIOS ProgressBarAndroid ProgressViewIOS ScrollView SegmentedControlIOS Slider
+ SliderIOS SnapshotViewIOS Switch RecyclerViewBackedScrollView RefreshControl SafeAreaView StatusBar
+ SwipeableListView SwitchAndroid SwitchIOS TabBarIOS Text TextInput ToastAndroid ToolbarAndroid
+ Touchable TouchableHighlight TouchableNativeFeedback TouchableOpacity TouchableWithoutFeedback
+ View ViewPagerAndroid WebView FlatList SectionList VirtualizedList`;
 
 const colorStyles = ["color", "backgroundColor", "borderColor"];
 
@@ -19,9 +25,13 @@ const getThemeStyle = (style, theme) => {
   return themeStyle;
 };
 
-const styled = (Component, Overwrites) => {
+const styled = Component => {
   const comp = arg => {
-    return withTheme(({ style, children, theme, as, ...rest }) => {
+    return withTheme(props => {
+      const { style, children, theme, as, ...rest } = props;
+
+      const RenderComp = as ? as : Component;
+
       if (typeof arg === "function") {
         var styles = arg({ theme, ...rest });
       } else {
@@ -32,7 +42,7 @@ const styled = (Component, Overwrites) => {
         const themeStyle = getThemeStyle(styles, theme);
         composed = [
           ...composed,
-          StyleSheet.create({
+          reactNative.StyleSheet.create({
             themeStyle
           }).themeStyle
         ];
@@ -46,15 +56,22 @@ const styled = (Component, Overwrites) => {
         //console.log({ themeStyle, style });
         composed = [
           ...composed,
-          StyleSheet.create({
+          reactNative.StyleSheet.create({
             themeStyle
           }).themeStyle
         ];
       }
 
-      const RenderComp = as ? as : Component;
+      //console.log(RenderComp.displayName, styles);
+      // if (
+      //   !RenderComp.displayName ||
+      //   (RenderComp.displayName &&
+      //     RenderComp.displayName.indexOf("styled") === -1)
+      // ) {
+      //   RenderComp.displayName = `styled(${getDisplayName(RenderComp)})`;
+      // }
 
-      RenderComp.displayName = `styled(${getDisplayName(RenderComp)})`;
+      //console.log(RenderComp.displayName, "in");
 
       return (
         <RenderComp style={composed} {...rest}>
@@ -74,84 +91,19 @@ const styled = (Component, Overwrites) => {
   };
 };
 
-// const interleave = vals => {
-//   let strings = vals[0];
-//   let finalArray = [strings[0]];
-//   for (let i = 1, len = vals.length; i < len; i++) {
-//     finalArray.push(vals[i]);
-//     if (strings[i] !== undefined) {
-//       finalArray.push(strings[i]);
-//     }
-//   }
-//   return finalArray;
-// };
-
-// const createCss = StyleSheet => {
-//   return function css(...args) {
-//     let vals;
-
-//     // these are declared earlier
-//     // this is done so we don't create a new
-//     // handleInterpolation function on every css call
-//     styles = [];
-//     buffer = "";
-//     lastType = undefined;
-
-//     if (args[0] == null || args[0].raw === undefined) {
-//       vals = args;
-//     } else {
-//       vals = interleave(args);
-//     }
-
-//     return StyleSheet.flatten(styles);
-//   };
-// };
-
-// export function createStyled(StyleSheet: Object) {
-//   const css = createCss(StyleSheet);
-//   console.log({ css, StyleSheet });
-//   return function createEmotion(component: React.ElementType) {
-//     console.log({ component });
-//     return function createStyledComponent(...rawStyles) {
-//       let styles;
-
-//       if (rawStyles[0] == null || rawStyles[0].raw === undefined) {
-//         styles = rawStyles;
-//       } else {
-//         styles = interleave(rawStyles);
-//       }
-
-//       console.log({ styles });
-
-//       // do we really want to use the same infra as the web since it only really uses theming?
-//       // $FlowFixMe
-//       let Styled = React.forwardRef(({ style, ...rest }, ref) => {
-//         return React.createElement(component, {
-//           ref: ref,
-//           style: style || {},
-//           ...rest
-//         });
-//       });
-
-//       Styled.withComponent = (newComponent: React.ElementType) =>
-//         createEmotion(newComponent)(...styles);
-
-//       Styled.displayName = `styled(${getDisplayName(component)})`;
-
-//       return Styled;
-//     };
-//   };
-// }
-
 const getDisplayName = primitive =>
   typeof primitive === "string"
     ? primitive
     : primitive.displayName || primitive.name || "Styled";
 
-//const styled = createStyled(StyleSheet);
-
-Object.keys(elements).map(key => {
-  styled[key] = styled(elements[key]);
-});
+aliases.split(/\s+/m).forEach(alias =>
+  Object.defineProperty(styled, alias, {
+    enumerable: true,
+    configurable: false,
+    get() {
+      return styled(reactNative[alias]);
+    }
+  })
+);
 
 export default styled;

@@ -28,12 +28,9 @@ export function mergeDeep(target, ...sources) {
 
 let key = 1;
 export default ({ theme = {}, children }) => {
-  let width = Dimensions.get("window").width;
-  let height = Dimensions.get("window").height;
-
   const [state, setState] = useState({
-    width,
-    height,
+    width: 0,
+    height: 0,
     alert: null
   });
 
@@ -53,13 +50,20 @@ export default ({ theme = {}, children }) => {
   const enhancedDefaultTheme = Object.assign({}, defaultTheme, {
     alert: alert => {
       setState({ ...state, alert: alert });
-    }
+    },
+    width: state.width,
+    height: state.height
   });
 
   return (
     <GatewayProvider>
       <ThemeProvider theme={mergeDeep(enhancedDefaultTheme, theme)}>
-        <View style={{ flex: 1, position: "relative" }}>
+        <View
+          style={{ flex: 1, position: "relative" }}
+          onLayout={({ nativeEvent: { layout } }) => {
+            setState({ ...state, width: layout.width, height: layout.height });
+          }}
+        >
           {children}
           <GatewayDest name="unikit" component={props => <View {...props} />} />
           <Alert alert={state.alert} />

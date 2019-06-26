@@ -3,6 +3,13 @@ import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
 import { View, TouchableOpacity, Platform, StyleSheet } from "react-native";
 
+import styled from "../../style/styled";
+
+const Icon = styled.View(({ size }) => ({
+  width: size,
+  height: size
+}));
+
 import { useTheme } from "../../style/Theme";
 import { getProp } from "../../helper";
 import Box from "../primitives/Box";
@@ -49,9 +56,11 @@ const sec = {
 };
 
 const Comp = props => {
-  const { type, onPress, ...rest } = props;
+  const { type, onPress, color, ...rest } = props;
 
   const theme = useTheme();
+
+  const lineColor = theme.colors[color] || color || theme.colors.primary;
   const { icon } = defaultStyle(props, theme);
 
   const firstStyle = useSpring({
@@ -63,17 +72,16 @@ const Comp = props => {
   });
 
   return (
-    <Flex
+    <Icon
       as={onPress ? TouchableOpacity : undefined}
       onPress={onPress || null}
-      style={icon}
       activeOpacity={onPress ? 0.8 : undefined}
       {...rest}
     >
       <Line
         position="absolute"
         height={getProp(props, theme, "lineWidth", "icon")}
-        backgroundColor={getProp(props, theme, "color", "icon")}
+        backgroundColor={lineColor}
         style={{
           left: firstStyle.left.interpolate(l => `${l}%`),
           top: firstStyle.top.interpolate(l => `${l}%`),
@@ -85,7 +93,7 @@ const Comp = props => {
         <Line
           position="absolute"
           height={getProp(props, theme, "lineWidth", "icon")}
-          backgroundColor={getProp(props, theme, "color", "icon")}
+          backgroundColor={lineColor}
           style={{
             left: secStyle.left.interpolate(l => `${l}%`),
             top: secStyle.top.interpolate(l => `${l}%`),
@@ -94,7 +102,7 @@ const Comp = props => {
           }}
         />
       )}
-    </Flex>
+    </Icon>
   );
 };
 

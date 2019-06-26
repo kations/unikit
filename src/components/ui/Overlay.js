@@ -315,6 +315,7 @@ import {
   Dimensions,
   Platform,
   View,
+  ScrollView,
   TouchableOpacity,
   StyleSheet
 } from "react-native";
@@ -329,7 +330,6 @@ import styled from "../../style/styled";
 
 const AnimatedBox = animated(Box);
 const AnimatedBackdrop = animated(Box);
-const AnimatedTouchableBackdrop = animated(styled.View());
 
 const getMove = (position, width, height) => {
   if (position === "left") {
@@ -429,6 +429,7 @@ const Comp = props => {
                 pointerEvents={"box-none"}
               >
                 <Box
+                  // as={ScrollView}
                   style={modal}
                   onPress={null}
                   activeOpacity={1}
@@ -437,6 +438,7 @@ const Comp = props => {
                   comp="overlay"
                   pointerEvents="auto"
                   backgroundColor="surface"
+                  style={{ maxHeight: 700, maxWidth: "100%" }}
                   {...rest}
                 >
                   {usePan ? <Box style={handle} /> : null}

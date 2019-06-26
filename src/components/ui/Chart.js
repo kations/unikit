@@ -5,21 +5,27 @@ import PropTypes from "prop-types";
 import styled from "../../style/styled";
 
 const Chart = styled.View();
-const Bar = styled.View();
-const TouchableBar = styled.TouchableOpacity();
+const Bar = styled.View({
+  alignItems: "center"
+});
 
-const XAxis = styled.Flex({
+const XAxis = styled.View({
   width: "100%",
   flexDirection: "row",
   paddingVertical: 10
 });
 
-const Label = styled.Flex({
+const Label = styled.View({
   alignItems: "center"
 });
 
 const LabelText = styled.Text({
   fontSize: 10
+});
+
+const BarValue = styled.Text({
+  marginTop: -20,
+  textAlign: "center"
 });
 
 import Box from "../primitives/Box";
@@ -37,6 +43,8 @@ const AnimatedBar = animated(Bar);
 
 const Comp = props => {
   const {
+    barProps,
+    style,
     data,
     onPress,
     height,
@@ -48,6 +56,13 @@ const Comp = props => {
     selectedBarColor,
     grid,
     gridLines,
+    xAxis,
+    barValueStyle,
+    formatValue,
+    showValue,
+    labelColor,
+    labelSize,
+    gridHeight,
     ...rest
   } = props;
 
@@ -58,7 +73,7 @@ const Comp = props => {
     barWidth !== "auto" ? barWidth : Screen.width / data.length
   );
 
-  if (data[0] === "number") {
+  if (typeof data[0] === "number") {
     var max = Math.max.apply(null, data);
     var min = Math.min.apply(null, data);
   } else {
@@ -79,7 +94,7 @@ const Comp = props => {
     return height;
   };
 
-  if (data[0] === "number") {
+  if (typeof data[0] === "number") {
     var transitionData = data.map((item, index) => {
       return { value: item, label: `bar-${index}` };
     });
@@ -95,17 +110,20 @@ const Comp = props => {
   });
 
   //const springs = useSprings(data.length, data.map(item => ({ height: getHeight(item) }))
-
+  console.log({ min, factor });
   return (
     <Chart
       style={{
         width: width || "100%",
-        height: "auto"
+        height: "auto",
+        paddingTop: showValue ? 20 : 0,
+        ...style
       }}
       onLayout={({ nativeEvent }) => {
         const width = nativeEvent.layout.width / data.length;
         setWidth(width - gap * 2);
       }}
+      {...rest}
     >
       <Flex
         style={{
@@ -121,40 +139,98 @@ const Comp = props => {
             left={0}
             bottom={min * factor - 1}
             width="100%"
-            height={2}
+            height={gridHeight}
             backgroundColor={barColor}
           />
         ) : null}
-        {transitions.map(({ item, props: { height }, key }, index) => (
-          <AnimatedBar
-            as={onPress ? TouchableOpacity : undefined}
-            onPress={onPress || null}
-            key={key}
-            style={{
-              backgroundColor:
-                selected && selected === index ? selectedBarColor : barColor,
-              width: calcedBarWidth,
-              marginHorizontal: gap,
-              height: height.interpolate(h => Math.abs(h)),
-              marginBottom: height.interpolate(h =>
-                h < 0 ? min * factor + h : min * factor
-              )
-            }}
-          />
-        ))}
+        {transitions.map(({ item, props: { height }, key }, index) =>
+          onPress ? (
+            <TouchableOpacity
+              onPress={onPress ? () => onPress(index) : null}
+              key={key}
+            >
+              <AnimatedBar
+                {...barProps}
+                style={{
+                  backgroundColor:
+                    selected && selected === index
+                      ? selectedBarColor
+                      : barColor,
+                  width: calcedBarWidth,
+                  marginHorizontal: gap,
+                  height: height.interpolate(h => Math.abs(h)),
+                  marginBottom: height.interpolate(h =>
+                    h < 0 ? min * factor + h : min * factor
+                  ),
+                  ...barProps.style
+                }}
+              >
+                {showValue ? (
+                  <BarValue
+                    numberOfLines={1}
+                    style={{
+                      width: calcedBarWidth,
+                      fontSize: 14,
+                      ...barValueStyle
+                    }}
+                  >
+                    {formatValue ? formatValue(item.value) : item.value}
+                  </BarValue>
+                ) : null}
+              </AnimatedBar>
+            </TouchableOpacity>
+          ) : (
+            <AnimatedBar
+              key={key}
+              {...barProps}
+              style={{
+                backgroundColor:
+                  selected && selected === index ? selectedBarColor : barColor,
+                width: calcedBarWidth,
+                marginHorizontal: gap,
+                height: height.interpolate(h => Math.abs(h)),
+                marginBottom: height.interpolate(h =>
+                  h < 0 ? min * factor + h : min * factor
+                ),
+                ...barProps.style
+              }}
+            >
+              {showValue ? (
+                <BarValue
+                  numberOfLines={1}
+                  style={{
+                    width: calcedBarWidth,
+                    fontSize: 14,
+                    ...barValueStyle
+                  }}
+                >
+                  {formatValue ? formatValue(item.value) : item.value}
+                </BarValue>
+              ) : null}
+            </AnimatedBar>
+          )
+        )}
       </Flex>
-      <XAxis>
-        {transitionData.map((item, index) => (
-          <Label
-            style={{
-              width: calcedBarWidth,
-              marginHorizontal: gap
-            }}
-          >
-            <LabelText>{item.label}</LabelText>
-          </Label>
-        ))}
-      </XAxis>
+      {xAxis ? (
+        <XAxis>
+          {transitionData.map((item, index) => (
+            <Label
+              key={`label-${index}`}
+              style={{
+                width: calcedBarWidth,
+                marginHorizontal: gap
+              }}
+            >
+              <LabelText
+                style={{ color: labelColor, fontSize: labelSize }}
+                numberOfLines={1}
+              >
+                {item.label}
+              </LabelText>
+            </Label>
+          ))}
+        </XAxis>
+      ) : null}
     </Chart>
   );
 };
@@ -162,7 +238,6 @@ const Comp = props => {
 Comp.propTypes = {
   value: PropTypes.bool,
   style: PropTypes.object,
-  circleSize: PropTypes.number,
   borderSize: PropTypes.number,
   onChange: PropTypes.func
 };
@@ -172,10 +247,21 @@ Comp.defaultProps = {
   height: 300,
   barWidth: "auto",
   gap: 5,
+  gridHeight: 2,
   barColor: "primary",
   selectedBarColor: "primary",
+  labelColor: "text",
+  labelProps: {
+    style: {
+      color: "text"
+    }
+  },
   grid: true,
-  gridLines: 10
+  gridLines: 10,
+  xAxis: false,
+  barLabelStyle: {},
+  barProps: { style: {} },
+  showValue: true
 };
 
 export default Comp;

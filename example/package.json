@@ -16,7 +16,6 @@
     "react-live": "^1.12.0",
     "react-native": "^0.11.0",
     "react-scripts": "^1.1.4",
-    "react-spring": "^8.0.7",
     "scroll-lock": "^2.1.0",
     "swgs": "^3.3.0",
     "unikit": "link:.."

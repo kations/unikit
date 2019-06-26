@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { View, Platform, StyleSheet, TouchableOpacity } from "react-native";
 
 import { useTheme } from "../../style/Theme";
-import { getProp } from "../../helper";
+import { getColorMode } from "../../helper";
 import TextInput from "./TextInput";
 import Overlay from "../ui/Overlay";
 import Button from "../ui/Button";
@@ -41,7 +41,11 @@ const Comp = props => {
           }}
           onPress={() => setVisible(true)}
         >
-          <Icon type="arrowDown" color="#FFF" size={15} />
+          <Icon
+            type="arrowDown"
+            color={getColorMode(value) === "light" ? "#000" : "#FFF"}
+            size={15}
+          />
         </Box>
       </Box>
       <Overlay
@@ -82,15 +86,14 @@ const Comp = props => {
 };
 
 Comp.propTypes = {
-  value: PropTypes.bool,
+  value: PropTypes.srting,
   style: PropTypes.object,
-  circleSize: PropTypes.number,
   borderSize: PropTypes.number,
   onChange: PropTypes.func
 };
 
 Comp.defaultProps = {
-  circleSize: 30,
+  value: "#FFF",
   defaultColors: [
     "#f44336",
     "#e91e63",

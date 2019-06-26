@@ -58,7 +58,7 @@ const Comp = props => {
       <AnimatedCircle
         circleSize={circleSize}
         borderSize={borderSize}
-        style={{ opacity, transform: scale.interpolate(l => [{ scale: l }]) }}
+        style={{ opacity, transform: [{ scale: scale }] }}
       />
     </Checkbox>
   );

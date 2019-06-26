@@ -149,7 +149,7 @@ const Comp = ({
                 borderWidth: 1,
                 cursor: "pointer"
               },
-              { transform: left.interpolate(l => [{ translateX: l }]) }
+              { transform: [{ translateX: left }] }
             ])}
           />
           {showValue ? (
@@ -174,7 +174,7 @@ const Comp = ({
                       cursor: "pointer"
                     }
                   : {},
-                { transform: left.interpolate(l => [{ translateX: l }]) }
+                { transform: [{ translateX: left }] }
               ])}
             >
               <Text style={{ color: "#FFF", fontSize: 10 }}>{state.value}</Text>

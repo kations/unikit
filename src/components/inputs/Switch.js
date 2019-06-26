@@ -60,7 +60,7 @@ const Comp = props => {
         <Circle
           style={StyleSheet.flatten([
             circle,
-            { transform: left.interpolate(l => [{ translateX: l }]) }
+            { transform: [{ translateX: left }] }
           ])}
           shadow={5}
         />

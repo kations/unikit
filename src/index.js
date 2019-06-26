@@ -5,6 +5,7 @@ import styled from "./style/styled";
 
 export { useTheme, withTheme, color, styled };
 export { default as Visible } from "./components/helper/Visible";
+export { default as NoSSR } from "./components/helper/NoSSR";
 export { default as UniProvider } from "./style/Provider";
 
 //Inputs
@@ -27,6 +28,7 @@ export { default as Image } from "./components/primitives/Image";
 //UI
 export { default as Swiper } from "./components/ui/Swiper";
 export { default as Button } from "./components/ui/Button";
+export { default as ButtonGroup } from "./components/ui/ButtonGroup";
 export { default as Headline } from "./components/ui/Headline";
 export { default as Gradient } from "./components/ui/Gradient";
 export { default as Table } from "./components/ui/Table";
@@ -40,3 +42,4 @@ export { default as Icon } from "./components/ui/Icon";
 export { default as Chart } from "./components/ui/Chart";
 export { default as Grid } from "./components/ui/Grid";
 export { default as ActionSheet } from "./components/ui/ActionSheet";
+export { default as Page } from "./components/ui/Page";

@@ -82,6 +82,13 @@ const ColorStyles = [
   "headerBackground"
 ];
 
+export const getColorMode = colorString => {
+  if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(colorString)) {
+    return color(colorString).isDark() ? "dark" : "light";
+  }
+  return "light";
+};
+
 export const getProp = (props, theme, key, comp, subKey, forceSubKey) => {
   const unikitTheme = theme;
   let value = undefined;

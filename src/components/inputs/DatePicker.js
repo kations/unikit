@@ -11,8 +11,6 @@ import {
 import { createElement } from "react-native";
 import dayjs from "dayjs";
 
-import { useTheme } from "../../style/Theme";
-import { getProp } from "../../helper";
 import TextInput from "./TextInput";
 import Box from "../primitives/Box";
 import Button from "../ui/Button";
@@ -63,17 +61,19 @@ const Comp = props => {
   const { value, style, type, onChange, ...rest } = props;
   const [show, setShow] = useState(false);
   const format = types[type].format;
-  const date = value || new Date();
+  const date = value ? dayjs(value).toDate() : new Date();
 
   async function openDatePicker() {
     try {
       const { action, year, month, day } = await DatePickerAndroid.open({
         // Use `new Date()` for current date.
         // May 25 2020. Month 0 is January.
-        date: dayjs(date).toDate()
+        date: date
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
+        console.log({ action, year, month, day });
+        onChange(dayjs(`${year}-${month}-${day}`).toDate());
         if (type === "datetime") {
           openTimePicker();
         }
@@ -91,6 +91,13 @@ const Comp = props => {
         is24Hour: false // Will display '2 PM'
       });
       if (action !== TimePickerAndroid.dismissedAction) {
+        dayjs().set("date", 1);
+        onChange(
+          dayjs(date)
+            .set("hour", hour)
+            .set("minute", minute)
+            .toDate()
+        );
         // Selected hour (0-23), minute (0-59)
       }
     } catch ({ code, message }) {
@@ -162,13 +169,8 @@ const Comp = props => {
 };
 
 Comp.propTypes = {
-  value: PropTypes.object,
   style: PropTypes.object,
   onChange: PropTypes.func
-};
-
-Comp.defaultProps = {
-  circleSize: 30
 };
 
 export default Comp;

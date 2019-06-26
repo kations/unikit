@@ -1,122 +1,114 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { TouchableOpacity, StyleSheet, Platform } from "react-native";
 import PropTypes from "prop-types";
 
-import { getProp } from "../../helper";
+import { getColorMode } from "../../helper";
 import { useTheme } from "../../style/Theme";
 
-import Box from "../primitives/Box";
-import Text from "../primitives/Text";
-import Gradient from "./Gradient";
 import Progress from "./Progress";
+import styled from "../../style/styled";
+
+const Button = styled.View(({ theme, disabled, loading, size, color }) => ({
+  display: Platform.OS === "web" ? "inline-flex" : "flex",
+  paddingHorizontal: size / 2,
+  height: size,
+  width: "auto",
+  backgroundColor: color,
+  opacity: disabled && !loading ? 0.5 : 1,
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "row",
+  borderRadius: theme.globals.roundness
+}));
+
+const ButtonText = styled.Text(({ textColor, size }) => ({
+  color: textColor,
+  fontSize: size / 3.25
+}));
 
 const Comp = props => {
   const {
+    as,
     children,
-    style,
-    onPress,
-    inline,
-    activeOpacity,
     disabled,
-    light,
-    colors,
-    color,
     loading,
+    onPress,
+    renderLeft,
+    renderRight,
+    size,
+    onMouseEnter,
+    color,
+    progressProps,
+    buttonTextProps,
     ...rest
   } = props;
 
   const theme = useTheme();
-  const { button, text } = defaultStyle(props, theme);
 
   return (
-    <Box
-      as={TouchableOpacity}
-      style={StyleSheet.flatten([button, style])}
-      onPress={disabled ? null : onPress || null}
-      onMouseEnter={() => console.log("hover")}
-      activeOpacity={getProp(props, theme, "activeOpacity", "button")}
-      comp="button"
+    <Button
+      as={as || TouchableOpacity}
+      onPress={disabled || loading ? null : onPress || null}
+      disabled={disabled}
+      loading={loading}
+      onMouseEnter={e => {
+        if (onMouseEnter) onMouseEnter(e);
+        console.log("hover");
+      }}
+      size={size}
+      color={color}
       {...rest}
     >
-      {/* <Gradient
-        borderRadius={props.borderRadius}
-        opacity={props.disabled ? 0.25 : 1}
-      /> */}
       {loading ? (
         <Progress
+          circleColor={
+            getColorMode(theme.colors[color] || color) === "light"
+              ? "#000"
+              : "#FFF"
+          }
+          loading
           size={20}
           trackWidth={2}
           circleWidth={2}
           trackColor="transparent"
-          circleColor={getProp(
-            props,
-            theme,
-            props.invert ? "backgroundColor" : "color",
-            "button",
-            props.invert ? undefined : "backgroundColor"
-          )}
-          loading
+          {...progressProps}
         />
       ) : (
-        <Text style={text}>{children}</Text>
+        <Fragment>
+          {renderLeft}
+          <ButtonText
+            textColor={
+              getColorMode(theme.colors[color] || color) === "light"
+                ? "#000"
+                : "#FFF"
+            }
+            size={size}
+            {...buttonTextProps}
+          >
+            {children}
+          </ButtonText>
+          {renderRight}
+        </Fragment>
       )}
-    </Box>
+    </Button>
   );
 };
-
-const isNum = number => {
-  return typeof number === "number";
-};
-
-const defaultStyle = (props, theme) =>
-  StyleSheet.create({
-    button: {
-      display: Platform.OS === "web" ? "inline-flex" : "flex",
-      paddingHorizontal: getProp(props, theme, "size", "button") / 2,
-      height: getProp(props, theme, "size", "button"),
-      width: "auto",
-      backgroundColor: props.outline
-        ? "transparent"
-        : getProp(
-            props.invert
-              ? Object.assign({}, props, {
-                  backgroundColorLighten: isNum(props.invert)
-                    ? props.invert
-                    : theme.button.invert
-                })
-              : props,
-            theme,
-            "backgroundColor",
-            "button"
-          ),
-      opacity: props.disabled && !props.loading ? 0.5 : 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    text: {
-      color: getProp(
-        props,
-        theme,
-        props.invert || props.outline ? "backgroundColor" : "color",
-        "button",
-        props.invert || props.outline ? undefined : "backgroundColor"
-      ),
-      fontSize: getProp(props, theme, "size", "button") / 3.25
-    }
-  });
 
 Comp.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   onPress: PropTypes.func,
-  light: PropTypes.bool,
   style: PropTypes.object,
   children: PropTypes.node.isRequired,
-  colors: PropTypes.array
+  progressProps: PropTypes.object,
+  buttonTextProps: PropTypes.object
 };
 
 Comp.defaultProps = {
-  loading: false
+  loading: false,
+  disabled: false,
+  size: 44,
+  color: "primary"
 };
 
 export default Comp;

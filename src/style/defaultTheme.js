@@ -32,8 +32,10 @@ export default {
     h1: 30,
     h2: 25,
     h3: 20,
+    h4: 18,
+    h5: 16,
     p: 16,
-    cap: 10,
+    caption: 10,
     label: 12
   },
   breaks: {
@@ -43,7 +45,8 @@ export default {
   },
   globals: {
     shadowColor: "rgba(0,0,0,0.5)",
-    borderRadius: 3
+    borderRadius: 3,
+    roundness: 5
   },
   overlay: {
     backgroundColor: "#FFF"
@@ -62,20 +65,7 @@ export default {
     inline: true,
     activeOpacity: 0.6,
     size: 44,
-    invert: 0.35,
-    mode: {
-      invert: {
-        backgroundColor: "primary",
-        backgroundColorLighten: 0.35,
-        color: "primary"
-      },
-      outline: {
-        borderColor: "primary",
-        color: "primary",
-        borderWidth: 2,
-        backgroundColor: "transparent"
-      }
-    }
+    invert: 0.35
   },
   switch: {
     activeBackground: "primary",

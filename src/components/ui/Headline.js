@@ -1,68 +1,77 @@
 import React, { Fragment } from "react";
-import { Platform, StyleSheet, Text as DefaultText } from "react-native";
+import { Platform, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
 
-import Text from "../primitives/Text";
+import styled from "../../style/styled";
 import Animate from "./Animate";
 
-const Comp = ({ level = 1, children, style, animated, ...rest }) => {
-  const { text, span } = defaultStyle;
-  if (animated) {
-    var splittedString = children.split("");
+const Headline = styled.Text(({ level }) => ({
+  color: "text",
+  fontSize: `h${level}`
+}));
+
+const Comp = ({
+  level = 1,
+  children,
+  style,
+  animate,
+  animateType = "word",
+  onVisible,
+  delay,
+  from,
+  to,
+  config,
+  ...rest
+}) => {
+  if (animate) {
+    var splittedString = children.split(animateType === "word" ? " " : "");
     return (
-      <Text
-        style={StyleSheet.flatten([text, style])}
+      <Headline
+        style={style}
         accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
         aria-level={level}
+        level={level}
         comp="headline"
         {...rest}
       >
         {splittedString.map((char, index) => (
           <Animate
             key={`${index}-${char}`}
-            delay={index * 25}
-            config={{ mass: 1, tension: 180, friction: 12 }}
-            as={DefaultText}
+            delay={index * delay}
+            as={Text}
+            config={config}
+            from={from || { opacity: 0, y: 50 }}
+            to={to}
+            onVisible={onVisible}
+            style={{
+              ...(Platform.OS === "web" ? { display: "inline-block" } : {})
+            }}
           >
             {char}
+            {animateType === "word" ? " " : null}
           </Animate>
         ))}
-      </Text>
+      </Headline>
     );
   }
 
   return (
-    <Text
+    <Headline
       accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
       aria-level={level}
-      style={StyleSheet.flatten([text, style])}
+      level={level}
+      style={style}
       comp="headline"
       {...rest}
     >
       {children}
-    </Text>
+    </Headline>
   );
 };
 
-const defaultStyle = StyleSheet.create({
-  text: {
-    display: Platform.OS === "web" ? "inline-block" : "flex",
-    flexDirection: "row",
-    fontSize: 30
-  },
-  span: {
-    display: Platform.OS === "web" ? "inline-block" : "flex"
-  }
-});
-
-// const transitions = useTransition(text, null, {
-//   from: { opacity: 0 },
-//   enter: { opacity: 1 },
-//   leave: { opacity: 0 }
-// })
-// return transitions.map(({ item, key, props }) => (
-//   <animated.div style={props}>{item}</animated.div>
-// ))
+Comp.defaultProps = {
+  delay: 150
+};
 
 Comp.propTypes = {
   children: PropTypes.node,

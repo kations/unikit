@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import { useSpring, animated } from "react-spring/native";
+import {
+  useSpring,
+  animated,
+  config as springConfig
+} from "react-spring/native";
 import { View } from "react-native";
 import Visible from "../helper/Visible";
+
+import styled from "../../style/styled";
+
+const Box = styled.View();
+const AnimatedBox = animated(Box);
 
 const Comp = props => {
   const {
     from,
     to,
     children,
-    isVisible,
     stayVisible,
     onVisible,
     delay,
@@ -19,51 +27,53 @@ const Comp = props => {
     as
   } = props;
 
-  const [state, setState] = useState({
-    active: onVisible ? false : true,
-    wasActive: false
-  });
+  const [visible, setVisible] = useState(false);
 
-  let visible = state.active || isVisible;
-
-  const aniStyle = useSpring({
-    from: from,
-    to: state.active ? to : from,
-    config: config || undefined,
+  const { opacity, x, y, z } = useSpring({
+    from,
+    to: !visible && onVisible ? from : to,
+    config: springConfig[config] || config || springConfig.default,
     delay: delay || 0,
     reset: reset || false,
     reverse: reverse || false
   });
 
-  const AnimatedBox = animated(as || View);
+  const AnimatedComp = (
+    <AnimatedBox
+      as={as}
+      style={{
+        ...style,
+        opacity: opacity,
+        transform: [{ translateY: y || 0 }, { translateX: x || 0 }]
+      }}
+    >
+      {children}
+    </AnimatedBox>
+  );
 
   if (onVisible) {
     return (
       <Visible
-        disabled={state.active}
-        onChange={visible => {
-          if (visible && !state.active) {
-            setState({ ...state, active: true });
-          } else if (!stayVisible) {
-            setState({ ...state, active: false });
-          }
+        disabled={visible && stayVisible}
+        onChange={isVisible => {
+          console.log({ isVisible });
+          setVisible(isVisible);
         }}
       >
         {({ isVisible }) => {
-          if (!isVisible) return null;
-          return <AnimatedBox style={aniStyle}>{children}</AnimatedBox>;
+          return AnimatedComp;
         }}
       </Visible>
     );
   }
 
-  return <AnimatedBox style={aniStyle}>{children}</AnimatedBox>;
+  return AnimatedComp;
 };
 
 Comp.defaultProps = {
   stayVisible: true,
-  from: { opacity: 0 },
-  to: { opacity: 1 }
+  from: { opacity: 0, y: 100 },
+  to: { opacity: 1, y: 0 }
 };
 
 export default Comp;

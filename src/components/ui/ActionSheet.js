@@ -7,21 +7,7 @@ import Text from "../primitives/Text";
 import Button from "./Button";
 import Overlay from "./Overlay";
 
-const Box = styled.View(() => {
-  return {
-    backgroundColor: "primary",
-    width: 100,
-    height: 100
-  };
-});
-
-const Newbox = styled.Box(({ theme, height }) => ({
-  backgroundColor: theme.colors.background,
-  width: height || 100,
-  height: 100
-}));
-
-const CloseButton = styled.Button(props => ({
+const CloseButton = styled(Button)(props => ({
   backgroundColor: "surface",
   borderBottomWidth: 1,
   borderColor: "rgba(0,0,0,0.05)"
@@ -48,9 +34,10 @@ const Comp = props => {
     <Overlay position="bottom" height="auto" onClose={onClose} {...rest}>
       {title && <Headline>{title}</Headline>}
       {desc && <Text>{desc}</Text>}
-      {actions.map(action => {
+      {actions.map((action, index) => {
         return (
           <Button
+            key={`action-${index}`}
             onPress={() => {
               if (action.onPress) {
                 action.onPress();
@@ -68,8 +55,7 @@ const Comp = props => {
           </Button>
         );
       })}
-      <Box />
-      <Newbox height={200} />
+
       <CloseButton onPress={onClose || null} color={cancelColor}>
         {cancelText}
       </CloseButton>

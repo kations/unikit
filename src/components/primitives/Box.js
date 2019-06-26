@@ -156,17 +156,6 @@ const mapProps = (props = {}, theme = {}) => {
       shadowRadius: styleObject.shadowRadius || interpolate(1, 25, p.shadow),
       elevation: p.shadow
     });
-  } else {
-    styleObject = Object.assign({}, styleObject, {
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 0
-      },
-      shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0
-    });
   }
 
   return styleObject;

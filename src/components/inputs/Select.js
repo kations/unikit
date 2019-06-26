@@ -9,12 +9,16 @@ const Headline = styled.Text({
 });
 
 import Box from "../primitives/Box";
-import Icon from "../ui/Icon";
 import Overlay from "../ui/Overlay";
 import Button from "../ui/Button";
-
+import Icon from "../ui/Icon";
 import TextInput from "./TextInput";
-import Input from "./Input";
+
+const SelectIcon = styled(Icon)({
+  position: "absolute",
+  top: 10,
+  right: 0
+});
 
 const Comp = props => {
   const {
@@ -33,65 +37,98 @@ const Comp = props => {
     const label = typeof option === "string" ? option : option.label;
     const optionValue = typeof option === "string" ? option : option.value;
     return (
-      <Input
-        key={`slect-${index}`}
-        type="checkbox"
-        value={optionValue === value}
-        label={label}
-        onChange={checked => {
-          if (optionValue === value) {
-            onChange(undefined);
-          } else {
-            onChange(optionValue);
-          }
-        }}
-        style={{
-          borderBottomWidth: index === options.length - 1 ? 0 : 1,
-          borderBottomColor: "rgba(0,0,0,0.1)"
-        }}
-      />
+      <Picker.Item key={`pick-${index}`} label={label} value={optionValue} />
+    );
+  };
+
+  const getValue = () => {
+    if (value && options) {
+      if (typeof options[0] === "string") {
+        return value;
+      } else {
+        return options.find(e => e.value === value).label;
+      }
+    }
+    return value;
+  };
+
+  const renderPicker = () => {
+    return (
+      <Picker
+        selectedValue={getValue()}
+        onValueChange={(itemValue, itemIndex) =>
+          onChange ? onChange(itemValue) : null
+        }
+        itemStyle={{ textAlign: "center" }}
+        style={[
+          {
+            width: "100%",
+            paddingVertical: 10,
+            margin: 0,
+            borderRadius: 0,
+            backgroundColor: "transparent",
+            ...Platform.select({
+              web: {
+                outlineWidth: 0,
+                outlineColor: "unset",
+                borderColor: "transparent",
+                appearance: "none"
+              }
+            })
+          },
+          style
+        ]}
+      >
+        <Picker.Item label={placeholder} value={null} />
+        {options.map((option, index) => {
+          return renderCheckbox(option, index);
+        })}
+      </Picker>
     );
   };
 
   return (
     <Box width="100%" position="relative">
-      <TouchableOpacity
-        onPress={() => {
-          setShow(true);
-        }}
-        style={{ width: "100%" }}
-      >
-        <TextInput
-          type="text"
-          editable={false}
-          value={value}
-          placeholder={placeholder}
-          pointerEvents={Platform.OS === "web" ? "all" : "none"}
-          {...inputProps}
-        />
-      </TouchableOpacity>
-      <Icon type="arrowDown" position="absolute" top={10} right={0} size={23} />
+      {Platform.OS !== "ios" ? renderPicker() : null}
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          onPress={() => {
+            setShow(true);
+          }}
+          style={{ width: "100%" }}
+        >
+          <TextInput
+            type="text"
+            editable={false}
+            value={value}
+            placeholder={placeholder}
+            pointerEvents={Platform.OS === "web" ? "all" : "none"}
+            {...inputProps}
+          />
+        </TouchableOpacity>
+      ) : null}
+      <SelectIcon type="arrowDown" size={23} color="primary" />
 
-      <Overlay
-        position="bottom"
-        height="auto"
-        visible={show}
-        onClose={() => setShow(false)}
-        padding="20px"
-        backdrop
-        usePan={false}
-        {...overlayProps}
-      >
-        <Box width="100%">
-          {placeholder && <Headline>{placeholder}</Headline>}
+      {Platform.OS === "ios" ? (
+        <Overlay
+          position="bottom"
+          height="auto"
+          visible={show}
+          onClose={() => setShow(false)}
+          padding="20px"
+          backdrop
+          usePan={false}
+          {...overlayProps}
+        >
+          <Box width="100%">
+            {placeholder && <Headline>{placeholder}</Headline>}
 
-          {options.map((option, index) => {
-            return renderCheckbox(option, index);
-          })}
+            {renderPicker()}
 
-          <Button onPress={() => setShow(false)}>Fertig</Button>
-        </Box>
-      </Overlay>
+            <Button onPress={() => setShow(false)}>Fertig</Button>
+          </Box>
+        </Overlay>
+      ) : null}
     </Box>
   );
 };

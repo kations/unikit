@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import color from "color";
-import { View, Dimensions, TouchableOpacity, Text } from "react-native";
+import { Dimensions, TouchableOpacity, Text, View } from "react-native";
 import { useTransition, animated } from "react-spring/native";
 
 import { useTheme } from "../../style/Theme";
@@ -11,18 +11,19 @@ const Label = styled.Text(({ color }) => ({
   fontSize: "label"
 }));
 
-const InputWrapper = styled.View({
+const InputWrapper = styled.View(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "flex-start",
   backgroundColor: "surface",
+  width: "100%",
   height: "auto",
   minHeight: 55,
   padding: 15,
   overflow: "hidden",
-  borderRadius: 3,
+  borderRadius: theme.globals.roundness,
   paddingBottom: 4
-});
+}));
 
 import Flex from "../primitives/Flex";
 
@@ -54,7 +55,7 @@ const typesProps = {
       style: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
         paddingBottom: 15
       }
     },
@@ -100,6 +101,7 @@ const Comp = props => {
     type,
     onChange,
     value,
+    labelColor,
     ...rest
   } = props;
 
@@ -142,7 +144,7 @@ const Comp = props => {
       <Flex>
         {label ? (
           <Label
-            color={error ? "error" : focused ? "primary" : "text"}
+            color={error ? "error" : focused ? "primary" : labelColor}
             {...TypeProps.labelProps}
           >
             {label}
@@ -201,7 +203,7 @@ const Comp = props => {
 };
 
 Comp.defaultProps = {
-  circleSize: 25
+  labelColor: "text"
 };
 
 export default Comp;

@@ -11,6 +11,7 @@ import Icon from "../ui/Icon";
 import Flex from "../primitives/Flex";
 import Box from "../primitives/Box";
 import { useTheme } from "../../style/Theme";
+import { getColorMode } from "../../helper";
 
 const Message = animated(Box);
 let id = 0;
@@ -52,13 +53,28 @@ const Comp = props => {
               shadow={5}
             >
               {/* <Box style={{ right: life }} /> */}
-              <Text style={text}>{item.message}</Text>
+              <Text
+                style={text}
+                color={
+                  getColorMode(theme.colors[item.type || "surface"]) === "light"
+                    ? "#000"
+                    : "#FFF"
+                }
+              >
+                {item.message}
+              </Text>
               <Icon
-                position="absolute"
-                top={17}
-                right={15}
+                style={{
+                  position: "absolute",
+                  top: 17,
+                  right: 15
+                }}
                 size={20}
-                color="surface"
+                color={
+                  getColorMode(theme.colors[item.type || "surface"]) === "light"
+                    ? "#000"
+                    : "#FFF"
+                }
                 onPress={e => {
                   e.stopPropagation();
                   setItems(state => state.filter(i => i.key !== item.key));
@@ -87,9 +103,6 @@ const defaultStyle = (props, theme) =>
       width: "100%",
       padding: 20,
       marginBottom: 10
-    },
-    text: {
-      color: "#fff"
     }
   });
 

@@ -29,7 +29,10 @@ import {
   TextInput,
   ActionSheet,
   Chart,
-  Grid
+  Grid,
+  ButtonGroup,
+  NoSSR,
+  Page
 } from "unikit";
 
 const prettier = require("prettier/standalone");
@@ -57,191 +60,14 @@ const scope = {
   Icon
 };
 
-const components = [
-  {
-    name: "Box",
-    comp: Box,
-    group: "Primitives",
-    example: `
-    <React.Fragment>
-        <Box  height={100} backgroundColor="primary" />
-        <Box  height={100} backgroundColor="primary" backgroundColorLightness={0.8} />
-        <Box  height={100} backgroundColor="primary" backgroundColorLightness={0.5} />
-      </React.Fragment>
-    `
-  },
-  {
-    name: "Block",
-    comp: Block,
-    group: "Primitives",
-    example: `
-    <React.Fragment>
-        <Block inline width={100} height={100} backgroundColor="primary" />
-        <Block inline width={100} height={100} backgroundColor="primary" backgroundColorLightness={0.8} />
-        <Block inline width={100} height={100} backgroundColor="primary" backgroundColorLightness={0.5} />
-      </React.Fragment>
-    `
-  },
-  {
-    name: "Flex",
-    comp: Flex,
-    group: "Primitives",
-    example: `
-    <React.Fragment>
-      <Flex flexDirection="row" justifyContent="space-between" flexWrap="wrap">
-        <Box width={100} height={100} backgroundColor="primary" />
-        <Box width={100} height={100} backgroundColor="primary" backgroundColorLightness={0.8} />
-        <Box width={100} height={100} backgroundColor="primary" backgroundColorLightness={0.5} />
-      </Flex>
-      </React.Fragment>
-    `
-  },
-  {
-    name: "Image",
-    comp: Image,
-    group: "Primitives",
-    example: `
-    <React.Fragment>
-      <Image full source={{
-        uri:
-          "https://images.unsplash.com/photo-1551334787-21e6bd3ab135?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
-      }} />
-
-      <Image marginTop="20px" width={200} height={200} resizeMode="cover" source={{
-        uri:
-          "https://images.unsplash.com/photo-1551446591-142875a901a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
-      }} />
-
-      <Image marginTop="20px" width={200} height={200} blurRadius={10} resizeMode="cover" source={{
-        uri:
-          "https://images.unsplash.com/photo-1551446591-142875a901a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
-      }} />
-      </React.Fragment>
-    `
-  },
-  {
-    name: "Avatar",
-    comp: Avatar,
-    group: "User Interface",
-    example: `
-    <Flex>
-    <Avatar
-    source={{
-      uri:
-        "https://images.unsplash.com/photo-1550794119-0e83682d0be2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1275&q=80"
-    }}
-  />
-  <Avatar
-    size={30}
-    char="U"
-    marginTop="20px"
-    color="#FFF"
-  />
-  <Avatar
-    relative
-    char="U"
-    marginTop="20px"
-    color="#FFF"
-    source={{
-      uri:
-        "https://images.unsplash.com/photo-1529680459049-bf0340fa0755?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
-    }}
-  >
-    <Box border="3px solid"
-    borderColor="primary"
-    borderColorLightness={0.96} 
-    backgroundColor="success" width="20px" height="20px" borderRadius="10px" right="0" bottom="0" position="absolute" />
-  </Avatar>
-      </Flex>
-    `
-  },
-  {
-    name: "Button",
-    comp: Button,
-    group: "User Interface",
-    example: `
-    <React.Fragment>
-        <Button marginRight="10px">text</Button>
-        <Button marginRight="10px" disabled>
-          text
-        </Button>
-        <Button marginRight="10px" loading>
-          text
-        </Button>
-      </React.Fragment>
-    `
-  },
-  {
-    name: "Progress",
-    comp: Progress,
-    group: "User Interface",
-    example: `
-      <Flex>
-        <Progress progress={10} circleWidth={20} trackWidth={30} />
-        <Progress progress={90} angle={180} rotate={-45} circleWidth={10} trackWidth={10} marginTop={20} />
-        <Progress marginTop={20} circleWidth={20} trackWidth={30} loading />
-        <Progress circleColor="#FFF" size={30} marginTop={20} circleWidth={5} trackWidth={6} loading />
-      </Flex>
-    `
-  },
-  {
-    name: "Switch",
-    comp: Switch,
-    group: "User Interface",
-    example: `
-      <Flex>
-        <Switch />
-        <Switch circleSize={50} marginTop="20px" />
-      </Flex>
-    `
-  },
-  {
-    name: "Swiper",
-    comp: Swiper,
-    group: "User Interface",
-    example: `
-    <React.Fragment>
-        <Swiper dots dotsOffset={-10} autoplay>
-        <Box width="100%" height="200px" backgroundColor="primary" />
-        <Box width="100%" height="200px" backgroundColor="primary" backgroundColorLightness={0.8} />
-        <Box width="100%" height="200px" backgroundColor="primary" backgroundColorLightness={0.5} />
-        </Swiper>
-
-        <Swiper marginTop="30px" height="500px" width="100%" index={0} dots dotsPosition="left" vertical>
-            <Box
-              width="100%"
-              height="100px"
-              backgroundColor="primary"
-              padding={50}
-              borderRadius={30}
-            />
-            <Box
-              width="100%"
-              height="100px"
-              backgroundColor="primary"
-              padding={50}
-              backgroundColorLightness={0.8}
-            />
-            <Box
-              width="100%"
-              height="100px"
-              backgroundColor="primary"
-              backgroundColorLightness={0.5}
-            >
-              <Animate onVisible>
-                <Text>HI</Text>
-              </Animate>
-            </Box>
-          </Swiper>
-      </React.Fragment>
-    `
-  }
-];
-
 const ButtonWithTheme = props => {
   const theme = useTheme();
+  console.log({ theme });
   return (
-    <Button onPress={() => theme.alert({ type: "error", message: "fidosn" })}>
+    <Button
+      style={props.style}
+      onPress={() => theme.alert({ type: "success", message: "fidosn" })}
+    >
       Send Alert
     </Button>
   );
@@ -292,16 +118,86 @@ export default () => {
 
   return (
     <UniProvider>
-      <Box backgroundColor="background">
-        <Chart
-          onPress={() => alert("pressed")}
-          data={[
-            { label: "2010", value: 10 },
-            { label: "2011", value: 15 },
-            { label: "2013", value: -7 }
-          ]}
+      <Page
+        style={{ height: 700 }}
+        renderHeader={() => (
+          <Box
+            width="1005"
+            height="100px"
+            backgroundColor="primary"
+            shadow={1}
+          />
+        )}
+      >
+        <NoSSR>
+          <Chart
+            style={{ marginTop: 100 }}
+            data={[
+              33530,
+              253530,
+              2535353,
+              633535,
+              -153534,
+              6435344,
+              2343454,
+              73453453,
+              3345344,
+              23454354
+            ]}
+            xAxis
+          />
+        </NoSSR>
+        <Input
+          type="text"
+          label="bla"
+          labelColor="primary"
+          value={undefined}
+          placeholder="test"
+          textColor="primary"
         />
-        <Flex flexDirection="row">
+        <Headline animate>PropTypes</Headline>
+        <Headline animate level={2}>
+          PropTypes
+        </Headline>
+        <Headline animate level={3}>
+          PropTypes
+        </Headline>
+        {/* <Grid
+          maxRow={2}
+          gap={0}
+          min={500}
+          style={{ marginVertical: 100, height: 600 }}
+        >
+          <Animate onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+          <Animate onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+          <Animate onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+        </Grid>
+        {/* <Headline animated>Das ist ein test</Headline> */}
+        {/* <Flex flexDirection="row">
           <Box
             width="100px"
             height="200px"
@@ -326,10 +222,71 @@ export default () => {
             shadow={10}
           />
         </Flex>
-        <Slider value={1} />
-        <Button onPress={() => setState({ ...state, actionSheet: true })}>
+        <Box
+          width="100px"
+          height="1200px"
+          margin={10}
+          backgroundColor="primary"
+          backgroundColorLighten={0.3}
+          shadow={10}
+        /> */}
+
+        {/* <Grid>
+          <Animate style={{ display: "inline-block", width: "auto" }} onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+          <Animate style={{ display: "inline-block", width: "auto" }} onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+          <Animate style={{ display: "inline-block", width: "auto" }} onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+        </Grid> */}
+        <Button
+          as={Box}
+          loading
+          onPress={() => setState({ ...state, actionSheet: true })}
+        >
           Show Sheet
         </Button>
+        <ButtonGroup>
+          <Button onPress={() => setState({ ...state, actionSheet: true })}>
+            Show Sheet
+          </Button>
+          <Button
+            loading
+            progressProps={{
+              size: 40
+            }}
+            onPress={() => setState({ ...state, actionSheet: true })}
+          >
+            Show Sheet 2
+          </Button>
+          <ButtonWithTheme
+            onPress={() => theme.alert({ type: "success", message: "yolo" })}
+          >
+            ALert
+          </ButtonWithTheme>
+        </ButtonGroup>
+        {/* 
         <ActionSheet
           visible={state.actionSheet}
           onClose={() => {
@@ -346,7 +303,11 @@ export default () => {
           ]}
         />
         <Input type="date" label="bla" />
-        <Input type="select" placeholder="bla" options={["1", "2", "3"]} />
+        <Input
+          type="select"
+          placeholder="bla"
+          options={[{ value: "1", label: "Eins" }]}
+        /> */}
         {/* <Overlay
         position="bottom"
         height="auto"
@@ -370,7 +331,6 @@ export default () => {
           Open Overlay 2
         </Button>
       </Overlay> */}
-
         {/* <Image
         width={200}
         source={{
@@ -555,7 +515,7 @@ export default () => {
           Open Overlay 2
         </Button>
       </Overlay> */}
-      </Box>
+      </Page>
     </UniProvider>
   );
 };
