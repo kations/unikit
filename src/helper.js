@@ -1,8 +1,21 @@
 import React from "react";
+import { Dimensions, Platform, StatusBar } from "react-native";
 import PropTypes from "prop-types";
 import color from "color";
 
 import { withTheme } from "./style/Theme";
+
+export const isIphoneX = () => {
+  const dimen = Dimensions.get("window");
+  return (
+    Platform.OS === "ios" &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    (dimen.height === 812 ||
+      dimen.width === 812 ||
+      (dimen.height === 896 || dimen.width === 896))
+  );
+};
 
 const createComponentFunc = config => {
   const {
@@ -84,7 +97,9 @@ const ColorStyles = [
 
 export const getColorMode = colorString => {
   if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(colorString)) {
-    return color(colorString).isDark() ? "dark" : "light";
+    const { r, g, b } = color(colorString).object();
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 180 ? "dark" : "light";
   }
   return "light";
 };

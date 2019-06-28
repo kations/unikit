@@ -26,7 +26,8 @@ export default class Visible extends Component {
     }
   }
 
-  startWatching() {
+  startWatching = () => {
+    const { offset } = this.props;
     if (this.interval) {
       return;
     }
@@ -36,14 +37,14 @@ export default class Visible extends Component {
       }
       this.myview.measure((x, y, width, height, pageX, pageY) => {
         this.setState({
-          rectTop: pageY,
-          rectBottom: pageY + height,
+          rectTop: pageY + offset,
+          rectBottom: pageY + height + offset,
           rectWidth: pageX + width
         });
       });
       this.isInViewPort();
     }, this.props.delay || 100);
-  }
+  };
 
   stopWatching() {
     this.interval = clearInterval(this.interval);

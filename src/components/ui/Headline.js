@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Platform, StyleSheet, Text } from "react-native";
+import { Platform, View, Text } from "react-native";
 import PropTypes from "prop-types";
 
 import styled from "../../style/styled";
@@ -17,7 +17,7 @@ const Comp = ({
   animate,
   animateType = "word",
   onVisible,
-  delay,
+  delay = 100,
   from,
   to,
   config,
@@ -27,7 +27,12 @@ const Comp = ({
     var splittedString = children.split(animateType === "word" ? " " : "");
     return (
       <Headline
-        style={style}
+        style={
+          Platform.OS !== "web"
+            ? { ...style, ...{ flexDirection: "row" } }
+            : style
+        }
+        as={Platform.OS !== "web" ? View : undefined}
         accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
         aria-level={level}
         level={level}
@@ -67,10 +72,6 @@ const Comp = ({
       {children}
     </Headline>
   );
-};
-
-Comp.defaultProps = {
-  delay: 150
 };
 
 Comp.propTypes = {

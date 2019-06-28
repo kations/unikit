@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   useSpring,
   animated,
@@ -53,17 +53,20 @@ const Comp = props => {
 
   if (onVisible) {
     return (
-      <Visible
-        disabled={visible && stayVisible}
-        onChange={isVisible => {
-          console.log({ isVisible });
-          setVisible(isVisible);
-        }}
-      >
-        {({ isVisible }) => {
-          return AnimatedComp;
-        }}
-      </Visible>
+      <Fragment>
+        <Visible
+          disabled={visible && stayVisible}
+          onChange={isVisible => {
+            setVisible(isVisible);
+          }}
+          offset={100}
+        >
+          {({ isVisible }) => {
+            return <View />;
+          }}
+        </Visible>
+        {AnimatedComp}
+      </Fragment>
     );
   }
 

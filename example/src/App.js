@@ -162,6 +162,32 @@ export default () => {
         <Headline animate level={3}>
           PropTypes
         </Headline>
+        <Grid
+          maxRow={2}
+          gap={0}
+          min={500}
+          style={{ marginVertical: 100, height: 600 }}
+        >
+          <Animate onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+          {null}
+          <Animate onVisible>
+            <Box
+              width="100%"
+              height="200px"
+              backgroundColor="primary"
+              backgroundColorLighten={0.3}
+              shadow={10}
+            />
+          </Animate>
+        </Grid>
         {/* <Grid
           maxRow={2}
           gap={0}
@@ -267,6 +293,15 @@ export default () => {
         >
           Show Sheet
         </Button>
+        <Animate onVisible>
+          <Box
+            width="100%"
+            height="200px"
+            backgroundColor="primary"
+            backgroundColorLighten={0.3}
+            shadow={10}
+          />
+        </Animate>
         <ButtonGroup>
           <Button onPress={() => setState({ ...state, actionSheet: true })}>
             Show Sheet
@@ -286,6 +321,15 @@ export default () => {
             ALert
           </ButtonWithTheme>
         </ButtonGroup>
+        <Animate onVisible>
+          <Box
+            width="100%"
+            height="200px"
+            backgroundColor="primary"
+            backgroundColorLighten={0.3}
+            shadow={10}
+          />
+        </Animate>
         {/* 
         <ActionSheet
           visible={state.actionSheet}

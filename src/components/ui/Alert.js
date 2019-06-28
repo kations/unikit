@@ -1,32 +1,60 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { Platform, Text, StyleSheet, SafeAreaView } from "react-native";
-import {
-  useSpring,
-  useTransition,
-  useSprings,
-  animated
-} from "react-spring/native";
+import { Platform, StyleSheet, SafeAreaView } from "react-native";
+import { useTransition, animated } from "react-spring/native";
 
+import styled from "../../style/styled";
 import Icon from "../ui/Icon";
-import Flex from "../primitives/Flex";
-import Box from "../primitives/Box";
 import { useTheme } from "../../style/Theme";
-import { getColorMode } from "../../helper";
+import { getColorMode, isIphoneX } from "../../helper";
 
-const Message = animated(Box);
+const Container = styled.View(({ alertPostion, gap }) => ({
+  position: Platform.OS === "web" ? "fixed" : "absolute",
+  left: 0,
+  bottom: alertPostion === "bottom" ? 0 : "auto",
+  top: alertPostion === "top" ? 0 : "auto",
+  width: "100%",
+  zIndex: 500,
+  paddingHorizontal: gap,
+  paddingVertical: isIphoneX() ? gap / 2 + 25 : gap / 2
+}));
+
+const Message = styled.View(({ type, gap, maxWidth }) => ({
+  flexBasis: "100%",
+  alignItems: "center",
+  backgroundColor: type || "surface",
+  justifyContent: "space-between",
+  flexDirection: "row",
+  marginVertical: gap / 2,
+  width: "100%",
+  maxWidth: maxWidth,
+  alignSelf: "center"
+}));
+
+const Text = styled.Text(({ color }) => ({
+  maxWidth: 400,
+  width: "100%",
+  padding: 20,
+  color: color
+}));
+
+const AnimatedMessage = animated(Message);
 let id = 0;
 
-const Comp = props => {
-  const { alert, timeout = 3000 } = props;
-
+const Comp = ({
+  alert,
+  timeout = 2000,
+  position = "bottom",
+  gap = 15,
+  maxWidth = 700,
+  ...rest
+}) => {
   const theme = useTheme();
   const [items, setItems] = useState([]);
-  const { container, message, text } = defaultStyle(props, theme);
 
   const transitions = useTransition(items, items => items.key, {
-    from: { opacity: 0, top: 30 },
+    from: { opacity: 0, top: position === "bottom" ? 30 : -30 },
     enter: { opacity: 1, top: 0 },
-    leave: { opacity: 0, top: 30 },
+    leave: { opacity: 0, top: position === "bottom" ? 30 : -30 },
     onRest: item =>
       setTimeout(() => {
         setItems(state => state.filter(i => i.key !== item.key));
@@ -35,84 +63,68 @@ const Comp = props => {
 
   useEffect(() => {
     if (alert) {
-      setItems(state => [
-        ...state,
-        { key: id++, message: alert.message, type: alert.type }
-      ]);
+      if (position === "bottom") {
+        setItems(state => [
+          ...state,
+          { key: id++, message: alert.message, type: alert.type }
+        ]);
+      } else {
+        setItems(state => [
+          { key: id++, message: alert.message, type: alert.type },
+          ...state
+        ]);
+      }
     }
   }, [alert]);
 
   return (
-    <Box style={container}>
-      <SafeAreaView>
-        {transitions.map(({ item, props, key }) => (
-          <Message key={key} style={props} width="100%" alignItems="center">
-            <Flex
-              style={message}
-              backgroundColor={item.type || "surface"}
-              shadow={5}
-            >
-              {/* <Box style={{ right: life }} /> */}
-              <Text
-                style={text}
-                color={
-                  getColorMode(theme.colors[item.type || "surface"]) === "light"
-                    ? "#000"
-                    : "#FFF"
-                }
-              >
-                {item.message}
-              </Text>
-              <Icon
-                style={{
-                  position: "absolute",
-                  top: 17,
-                  right: 15
-                }}
-                size={20}
-                color={
-                  getColorMode(theme.colors[item.type || "surface"]) === "light"
-                    ? "#000"
-                    : "#FFF"
-                }
-                onPress={e => {
-                  e.stopPropagation();
-                  setItems(state => state.filter(i => i.key !== item.key));
-                }}
-              />
-            </Flex>
-          </Message>
-        ))}
-      </SafeAreaView>
-    </Box>
+    <Container
+      alertPostion={position}
+      gap={gap}
+      pointerEvents="box-none"
+      {...rest}
+    >
+      {/* {position === "top" ? <SafeAreaView collapsable={false} /> : null} */}
+      {transitions.map(({ item, props, key }) => (
+        <AnimatedMessage
+          key={key}
+          style={props}
+          type={item.type}
+          position={position}
+          gap={gap}
+          maxWidth={maxWidth}
+        >
+          <Text
+            color={
+              getColorMode(theme.colors[item.type || "surface"]) === "light"
+                ? "#000"
+                : "#FFF"
+            }
+          >
+            {item.message}
+          </Text>
+          <Icon
+            style={{
+              position: "absolute",
+              top: 17,
+              right: 15
+            }}
+            size={20}
+            color={
+              getColorMode(theme.colors[item.type || "surface"]) === "light"
+                ? "#000"
+                : "#FFF"
+            }
+            onPress={e => {
+              e.stopPropagation();
+              setItems(state => state.filter(i => i.key !== item.key));
+            }}
+          />
+        </AnimatedMessage>
+      ))}
+      {/* {position === "bottom" ? <SafeAreaView collapsable={false} /> : null} */}
+    </Container>
   );
-};
-
-const defaultStyle = (props, theme) =>
-  StyleSheet.create({
-    container: {
-      position: Platform.OS === "web" ? "fixed" : "absolute",
-      right: 0,
-      bottom: 0,
-      width: "100%",
-      zIndex: props.zIndex,
-      paddingHorizontal: 15
-    },
-    message: {
-      maxWidth: 400,
-      width: "100%",
-      padding: 20,
-      marginBottom: 10
-    }
-  });
-
-Comp.defaultProps = {
-  min: 0,
-  max: 100,
-  steps: 1,
-  ticks: 10,
-  showValue: true,
-  timeout: 2000
 };
 
 export default Comp;

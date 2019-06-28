@@ -71,7 +71,7 @@ const styled = Component => {
       //   RenderComp.displayName = `styled(${getDisplayName(RenderComp)})`;
       // }
 
-      //console.log(RenderComp.displayName, "in");
+      // console.log(RenderComp.displayName, composed);
 
       return (
         <RenderComp style={composed} {...rest}>

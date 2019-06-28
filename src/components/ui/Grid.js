@@ -10,8 +10,7 @@ const Grid = styled.View(({ theme, gap }) => ({
 
 const GridItem = styled.View(({ width, gap, i }) => ({
   width: `${width}%`,
-  padding: gap / 2,
-  backgroundColor: "#000"
+  padding: gap / 2
 }));
 
 export default ({
@@ -42,11 +41,19 @@ export default ({
       style={style}
     >
       {Children.map(children, (child, i) => {
-        return (
-          <GridItem key={i} i={i} width={rowWidth} gap={gap} style={itemStyle}>
-            {child}
-          </GridItem>
-        );
+        if (child) {
+          return (
+            <GridItem
+              key={i}
+              i={i}
+              width={rowWidth}
+              gap={gap}
+              style={itemStyle}
+            >
+              {child}
+            </GridItem>
+          );
+        }
       })}
     </Grid>
   );

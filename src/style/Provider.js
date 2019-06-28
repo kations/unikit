@@ -27,25 +27,12 @@ export function mergeDeep(target, ...sources) {
 }
 
 let key = 1;
-export default ({ theme = {}, children }) => {
+export default ({ theme = {}, children, alertProps }) => {
   const [state, setState] = useState({
     width: 0,
     height: 0,
     alert: null
   });
-
-  // useEffect(() => {
-
-  // }, [])
-
-  // setInterval(() => {
-  //   const alerts = state.alerts;
-  //   alerts.push({ key: key++, message: "yolo" });
-  //   setState({
-  //     ...state,
-  //     alerts: alerts
-  //   });
-  // }, 5000);
 
   const enhancedDefaultTheme = Object.assign({}, defaultTheme, {
     alert: alert => {
@@ -66,7 +53,7 @@ export default ({ theme = {}, children }) => {
         >
           {children}
           <GatewayDest name="unikit" component={props => <View {...props} />} />
-          <Alert alert={state.alert} />
+          <Alert alert={state.alert} {...alertProps} />
         </View>
       </ThemeProvider>
     </GatewayProvider>

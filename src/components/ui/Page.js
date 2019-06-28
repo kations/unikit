@@ -13,6 +13,7 @@ export default ({
   hasSafeArea,
   scrollable,
   renderHeader,
+  renderFooter,
   scrollViewProps,
   ...rest
 }) => {
@@ -32,13 +33,8 @@ export default ({
   return (
     <Page as={hasSafeArea ? SafeAreaView : undefined} {...rest}>
       {renderHeader ? renderHeader(top) : null}
-      <Scroller
-        onScroll={scrollable ? onScroll : undefined}
-        scrollEventThrottle={100}
-        {...(scrollable ? ScrollerProps : {})}
-      >
-        {children}
-      </Scroller>
+      <Scroller {...(scrollable ? ScrollerProps : {})}>{children}</Scroller>
+      {renderFooter ? renderFooter(top) : null}
     </Page>
   );
 };
