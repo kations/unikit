@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { useTheme } from "../../style/Theme";
 import styled from "../../style/styled";
 
 import Headline from "./Headline";
 import Text from "../primitives/Text";
 import Button from "./Button";
 import Overlay from "./Overlay";
+import { isIphoneX } from "../../helper";
 
-const CloseButton = styled(Button)(props => ({
+const ActionButton = styled(Button)({
   backgroundColor: "surface",
-  borderBottomWidth: 1,
-  borderColor: "rgba(0,0,0,0.05)"
-}));
+  borderColor: "rgba(0,0,0,0.05)",
+  borderBottomWidth: 1
+});
 
 const Comp = props => {
   const {
@@ -26,7 +26,6 @@ const Comp = props => {
     desc,
     ...rest
   } = props;
-  const theme = useTheme();
 
   //console.log("==>>>>", buttonProps);
 
@@ -36,8 +35,9 @@ const Comp = props => {
       {desc && <Text>{desc}</Text>}
       {actions.map((action, index) => {
         return (
-          <Button
+          <ActionButton
             key={`action-${index}`}
+            buttonTextProps={{ style: { color: "primary" } }}
             onPress={() => {
               if (action.onPress) {
                 action.onPress();
@@ -46,19 +46,20 @@ const Comp = props => {
                 onActionPress(action);
               }
             }}
-            color="primary"
-            backgroundColor="surface"
-            borderBottomWidth={1}
-            borderColor="rgba(0,0,0,0.05)"
           >
             {action.label}
-          </Button>
+          </ActionButton>
         );
       })}
 
-      <CloseButton onPress={onClose || null} color={cancelColor}>
+      <ActionButton
+        buttonTextProps={{ style: { color: "error" } }}
+        style={{ marginBottom: isIphoneX() ? 30 : 0 }}
+        onPress={onClose || null}
+        color={cancelColor}
+      >
         {cancelText}
-      </CloseButton>
+      </ActionButton>
     </Overlay>
   );
 };

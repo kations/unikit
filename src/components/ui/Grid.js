@@ -1,5 +1,6 @@
 import React, { Children, useState, useEffect } from "react";
 import styled from "../../style/styled";
+import { useTheme } from "../../style/Theme";
 
 const Grid = styled.View(({ theme, gap }) => ({
   width: "100%",
@@ -10,6 +11,7 @@ const Grid = styled.View(({ theme, gap }) => ({
 
 const GridItem = styled.View(({ width, gap, i }) => ({
   width: `${width}%`,
+  flexBasis: `${width}%`,
   padding: gap / 2
 }));
 
@@ -21,15 +23,16 @@ export default ({
   style,
   itemStyle
 }) => {
-  const [width, setWidth] = useState(0);
-  const [rowWidth, setRowWidth] = useState(0);
-  const [rows, setRows] = useState(0);
+  const theme = useTheme();
+  const [width, setWidth] = useState(theme.width || 0);
+  const [rowWidth, setRowWidth] = useState(theme.width || 0);
 
   useEffect(() => {
-    const rows = width / min > maxRows ? maxRows : Math.round(width / min);
-    const rowWidth = 100 / rows;
-    setRows(rows);
-    setRowWidth(rowWidth);
+    if (width) {
+      const rows = width / min > maxRows ? maxRows : Math.round(width / min);
+      const rowWidth = 100 / rows;
+      setRowWidth(rowWidth);
+    }
   }, [width]);
 
   return (

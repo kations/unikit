@@ -26,11 +26,20 @@ export function mergeDeep(target, ...sources) {
   return mergeDeep(target, ...sources);
 }
 
+const getDimensions = () => {
+  if (Dimensions.get("window")) {
+    const { width, height } = Dimensions.get("window");
+    return { width, height };
+  } else {
+    return { width: 0, height: 0 };
+  }
+};
+
 let key = 1;
 export default ({ theme = {}, children, alertProps }) => {
   const [state, setState] = useState({
-    width: 0,
-    height: 0,
+    width: getDimensions().width,
+    height: getDimensions().height,
     alert: null
   });
 

@@ -12,6 +12,13 @@ const aliases = `ActivityIndicator ActivityIndicatorIOS Button DatePickerIOS Dra
 
 const colorStyles = ["color", "backgroundColor", "borderColor"];
 
+const interpolate = (min, max, value) => {
+  var theVariable = value * 3; // 1 to 100
+  var distance = max - min;
+  var position = min + (theVariable / 100) * distance;
+  return position;
+};
+
 const getThemeStyle = (style, theme) => {
   const themeStyle = { ...style };
   colorStyles.map(key => {
@@ -28,7 +35,15 @@ const getThemeStyle = (style, theme) => {
 const styled = Component => {
   const comp = arg => {
     return withTheme(props => {
-      const { style, children, theme, as, ...rest } = props;
+      const {
+        style,
+        children,
+        theme,
+        as,
+        shadow,
+        shadowColor,
+        ...rest
+      } = props;
 
       const RenderComp = as ? as : Component;
 
@@ -37,6 +52,26 @@ const styled = Component => {
       } else {
         var styles = arg;
       }
+
+      if (shadow) {
+        styles = Object.assign(
+          {},
+          {
+            shadowColor: theme.globals.shadowColor || "#000",
+            shadowOffset: {
+              width: 0,
+              height: Math.round(shadow / 2)
+            },
+            shadowOpacity:
+              theme.globals.shadowOpacity || interpolate(0.1, 0.5, shadow),
+            shadowRadius:
+              theme.globals.shadowRadius || interpolate(1, 25, shadow),
+            elevation: shadow
+          },
+          styles
+        );
+      }
+
       let composed = [];
       if (styles) {
         const themeStyle = getThemeStyle(styles, theme);

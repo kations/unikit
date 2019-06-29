@@ -40,6 +40,7 @@ const Comp = props => {
     color,
     progressProps,
     buttonTextProps,
+    pill,
     ...rest
   } = props;
 
@@ -47,7 +48,7 @@ const Comp = props => {
 
   return (
     <Button
-      as={as || TouchableOpacity}
+      as={as || pill ? undefined : TouchableOpacity}
       onPress={disabled || loading ? null : onPress || null}
       disabled={disabled}
       loading={loading}
@@ -76,17 +77,21 @@ const Comp = props => {
       ) : (
         <Fragment>
           {renderLeft}
-          <ButtonText
-            textColor={
-              getColorMode(theme.colors[color] || color) === "light"
-                ? "#000"
-                : "#FFF"
-            }
-            size={size}
-            {...buttonTextProps}
-          >
-            {children}
-          </ButtonText>
+          {typeof children === "string" ? (
+            <ButtonText
+              textColor={
+                getColorMode(theme.colors[color] || color) === "light"
+                  ? "#000"
+                  : "#FFF"
+              }
+              size={size}
+              {...buttonTextProps}
+            >
+              {children}
+            </ButtonText>
+          ) : (
+            children
+          )}
           {renderRight}
         </Fragment>
       )}
@@ -107,7 +112,7 @@ Comp.propTypes = {
 Comp.defaultProps = {
   loading: false,
   disabled: false,
-  size: 44,
+  size: 48,
   color: "primary"
 };
 

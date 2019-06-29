@@ -110,7 +110,6 @@ const Comp = props => {
   });
 
   //const springs = useSprings(data.length, data.map(item => ({ height: getHeight(item) }))
-  console.log({ min, factor });
   return (
     <Chart
       style={{

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity, Platform, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import styled from "../../style/styled";
 
 const Icon = styled.View(({ size }) => ({
+  position: "relative",
   width: size,
   height: size
 }));
 
-import { useTheme } from "../../style/Theme";
-import { getProp } from "../../helper";
-import Box from "../primitives/Box";
-import Flex from "../primitives/Flex";
-
-const Line = animated(Box);
+const Line = animated(
+  styled.View(({ color, lineWidth }) => ({
+    position: "absolute",
+    backgroundColor: color,
+    height: lineWidth
+  }))
+);
 
 const first = {
   x: {
@@ -24,7 +26,8 @@ const first = {
     top: 50,
     left: 0
   },
-  arrowDown: { rotate: 45, width: 55, top: 50, left: 7 },
+  arrowDown: { rotate: 45, width: 50, top: 50, left: 7 },
+  arrowTop: { rotate: -45, width: 50, top: 50, left: 7 },
   plus: {
     rotate: 90,
     width: 100,
@@ -36,6 +39,12 @@ const first = {
     left: 0,
     top: 50,
     rotate: 0
+  },
+  burger: {
+    width: 100,
+    left: 0,
+    top: 35,
+    rotate: 0
   }
 };
 
@@ -46,23 +55,30 @@ const sec = {
     top: 50,
     left: 0
   },
-  arrowDown: { rotate: -45, width: 55, top: 50, left: 40 },
+  arrowDown: { rotate: -45, width: 50, top: 50, left: 40 },
+  arrowTop: { rotate: 45, width: 50, top: 50, left: 40 },
   plus: {
     width: 100,
     left: 0,
     top: 50,
     rotate: 0
+  },
+  burger: {
+    width: 100,
+    left: 0,
+    top: 65,
+    rotate: 0
   }
 };
 
-const Comp = props => {
-  const { type, onPress, color, ...rest } = props;
-
-  const theme = useTheme();
-
-  const lineColor = theme.colors[color] || color || theme.colors.primary;
-  const { icon } = defaultStyle(props, theme);
-
+const Comp = ({
+  size = 44,
+  lineWidth = 2,
+  type = "x",
+  onPress,
+  color = "primary",
+  ...rest
+}) => {
   const firstStyle = useSpring({
     to: first[type]
   });
@@ -76,12 +92,13 @@ const Comp = props => {
       as={onPress ? TouchableOpacity : undefined}
       onPress={onPress || null}
       activeOpacity={onPress ? 0.8 : undefined}
+      size={size}
       {...rest}
     >
       <Line
         position="absolute"
-        height={getProp(props, theme, "lineWidth", "icon")}
-        backgroundColor={lineColor}
+        color={color}
+        lineWidth={lineWidth}
         style={{
           left: firstStyle.left.interpolate(l => `${l}%`),
           top: firstStyle.top.interpolate(l => `${l}%`),
@@ -92,8 +109,8 @@ const Comp = props => {
       {["minus"].indexOf(type) > -1 ? null : (
         <Line
           position="absolute"
-          height={getProp(props, theme, "lineWidth", "icon")}
-          backgroundColor={lineColor}
+          color={color}
+          lineWidth={lineWidth}
           style={{
             left: secStyle.left.interpolate(l => `${l}%`),
             top: secStyle.top.interpolate(l => `${l}%`),
@@ -104,21 +121,6 @@ const Comp = props => {
       )}
     </Icon>
   );
-};
-
-const defaultStyle = (props, theme) =>
-  StyleSheet.create({
-    icon: {
-      width: getProp(props, theme, "size", "icon"),
-      height: getProp(props, theme, "size", "icon")
-    }
-  });
-
-Comp.defaultProps = {
-  type: "x",
-  size: 44,
-  lineWidth: 2,
-  color: "primary"
 };
 
 export default Comp;

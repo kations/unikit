@@ -46,7 +46,8 @@ const Comp = props => {
       if (typeof options[0] === "string") {
         return value;
       } else {
-        return options.find(e => e.value === value).label;
+        const option = options.find(e => e.value === value);
+        return option ? option.label : undefined;
       }
     }
     return value;
@@ -55,7 +56,7 @@ const Comp = props => {
   const renderPicker = () => {
     return (
       <Picker
-        selectedValue={getValue()}
+        selectedValue={value}
         onValueChange={(itemValue, itemIndex) =>
           onChange ? onChange(itemValue) : null
         }
@@ -100,7 +101,7 @@ const Comp = props => {
           <TextInput
             type="text"
             editable={false}
-            value={value}
+            value={getValue()}
             placeholder={placeholder}
             pointerEvents={Platform.OS === "web" ? "all" : "none"}
             {...inputProps}

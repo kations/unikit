@@ -17,61 +17,6 @@ export const isIphoneX = () => {
   );
 };
 
-const createComponentFunc = config => {
-  const {
-    name,
-    style,
-    omitProps = [],
-    propTypes = {},
-    render = ({ Comp, ...props }) => <Comp {...props} />,
-    defaultComponent = "div",
-    system = fullSystem,
-    applySystem = system => props => ({
-      "&&": system.props(props)
-    }),
-    InnerComponent: InnerComponentFromConfig,
-    theme
-  } = config();
-
-  const InnerComponent =
-    InnerComponentFromConfig ||
-    function Component({ as, forwardedRef, ...props }) {
-      const Comp = as || defaultComponent;
-
-      const renderProps = {
-        ref: forwardedRef,
-        Comp,
-        ...props
-      };
-
-      return render(renderProps);
-    };
-
-  InnerComponent.displayName = `uni-${name}`;
-
-  function forwardRef(props, ref) {
-    return <InnerComponent {...props} forwardedRef={ref} />;
-  }
-  forwardRef.displayName = InnerComponent.displayName;
-
-  const RefComponent = React.forwardRef(forwardRef);
-  RefComponent.displayName = InnerComponent.displayName;
-
-  RefComponent.propTypes = {
-    theme: PropTypes.object
-  };
-
-  const defaultProps = theme[name];
-
-  RefComponent.defaultProps = {
-    ...defaultProps
-  };
-
-  return RefComponent;
-};
-
-export const createComponent = withTheme(createComponentFunc);
-
 export const getObjValue = (o, s) => {
   s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
   s = s.replace(/^\./, ""); // strip a leading dot
@@ -87,21 +32,10 @@ export const getObjValue = (o, s) => {
   return o;
 };
 
-const ColorStyles = [
-  "color",
-  "backgroundColor",
-  "borderColor",
-  "bodyBackground",
-  "headerBackground"
-];
-
 export const getColorMode = colorString => {
-  if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(colorString)) {
-    const { r, g, b } = color(colorString).object();
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness < 180 ? "dark" : "light";
-  }
-  return "light";
+  const { r, g, b } = color(colorString).object();
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness < 180 ? "dark" : "light";
 };
 
 export const getProp = (props, theme, key, comp, subKey, forceSubKey) => {

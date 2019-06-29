@@ -32,7 +32,6 @@ const Comp = ({
             ? { ...style, ...{ flexDirection: "row" } }
             : style
         }
-        as={Platform.OS !== "web" ? View : undefined}
         accessibilityRole={Platform.OS === "web" ? "heading" : undefined}
         aria-level={level}
         level={level}

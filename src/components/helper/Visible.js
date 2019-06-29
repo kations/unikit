@@ -55,9 +55,7 @@ export default class Visible extends Component {
     const isVisible =
       this.state.rectBottom != 0 &&
       this.state.rectTop >= 0 &&
-      this.state.rectBottom <= window.height &&
-      this.state.rectWidth > 0 &&
-      this.state.rectWidth <= window.width;
+      this.state.rectBottom <= window.height;
     if (this.lastValue !== isVisible) {
       this.lastValue = isVisible;
       this.setState({ isVisible: isVisible });

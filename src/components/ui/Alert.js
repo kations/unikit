@@ -18,17 +18,19 @@ const Container = styled.View(({ alertPostion, gap }) => ({
   paddingVertical: isIphoneX() ? gap / 2 + 25 : gap / 2
 }));
 
-const Message = styled.View(({ type, gap, maxWidth }) => ({
-  flexBasis: "100%",
-  alignItems: "center",
-  backgroundColor: type || "surface",
-  justifyContent: "space-between",
-  flexDirection: "row",
-  marginVertical: gap / 2,
-  width: "100%",
-  maxWidth: maxWidth,
-  alignSelf: "center"
-}));
+const Message = animated(
+  styled.View(({ type, gap, maxWidth }) => ({
+    flexBasis: "100%",
+    alignItems: "center",
+    backgroundColor: type || "surface",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginVertical: gap / 2,
+    width: "100%",
+    maxWidth: maxWidth,
+    alignSelf: "center"
+  }))
+);
 
 const Text = styled.Text(({ color }) => ({
   maxWidth: 400,
@@ -37,7 +39,6 @@ const Text = styled.Text(({ color }) => ({
   color: color
 }));
 
-const AnimatedMessage = animated(Message);
 let id = 0;
 
 const Comp = ({
@@ -86,13 +87,14 @@ const Comp = ({
     >
       {/* {position === "top" ? <SafeAreaView collapsable={false} /> : null} */}
       {transitions.map(({ item, props, key }) => (
-        <AnimatedMessage
+        <Message
           key={key}
           style={props}
           type={item.type}
           position={position}
           gap={gap}
           maxWidth={maxWidth}
+          shadow={3}
         >
           <Text
             color={
@@ -120,7 +122,7 @@ const Comp = ({
               setItems(state => state.filter(i => i.key !== item.key));
             }}
           />
-        </AnimatedMessage>
+        </Message>
       ))}
       {/* {position === "bottom" ? <SafeAreaView collapsable={false} /> : null} */}
     </Container>
