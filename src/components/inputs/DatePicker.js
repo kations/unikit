@@ -1,15 +1,19 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { useSpring, animated } from "react-spring/native";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   Platform,
-  TouchableOpacity,
   DatePickerIOS,
   DatePickerAndroid,
   TimePickerAndroid
 } from "react-native";
 import { createElement } from "react-native";
 import dayjs from "dayjs";
+
+import styled from "../../style/styled";
+
+const Touchable = styled.TouchableOpacity({
+  width: "100%"
+});
 
 import TextInput from "./TextInput";
 import Box from "../primitives/Box";
@@ -58,7 +62,18 @@ var isMobile = {
 };
 
 const Comp = props => {
-  const { value, style, type, onChange, ...rest } = props;
+  const {
+    value,
+    style,
+    type,
+    onChange,
+    textInputProps = {},
+    overlayProps = {},
+    doneText = "Done",
+    min,
+    max,
+    ...rest
+  } = props;
   const [show, setShow] = useState(false);
   const format = types[type].format;
   const date = value ? dayjs(value).toDate() : new Date();
@@ -68,7 +83,9 @@ const Comp = props => {
       const { action, year, month, day } = await DatePickerAndroid.open({
         // Use `new Date()` for current date.
         // May 25 2020. Month 0 is January.
-        date: date
+        date: date,
+        minDate: min,
+        maxDate: max
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
@@ -107,7 +124,7 @@ const Comp = props => {
 
   return (
     <Fragment>
-      <TouchableOpacity
+      <Touchable
         onPress={() => {
           if (Platform.OS === "android") {
             if (type === "date" || type === "datetime") {
@@ -127,6 +144,7 @@ const Comp = props => {
           }
         }}
         style={{ width: "100%" }}
+        {...rest}
       >
         <TextInput
           as={Platform.OS === "web" ? DateInput : undefined}
@@ -136,24 +154,33 @@ const Comp = props => {
           pointerEvents={
             Platform.OS === "web" ? (isMobile.any() ? "all" : "none") : "none"
           }
+          min={min ? dayjs(min).format(format) : undefined}
+          max={max ? dayjs(max).format(format) : undefined}
+          {...textInputProps}
         />
-      </TouchableOpacity>
+      </Touchable>
 
       <Overlay
         position="bottom"
         height="auto"
         visible={show}
         onClose={() => setShow(false)}
-        padding="20px"
+        overlayContentProps={{
+          style: {
+            padding: 20
+          }
+        }}
         backdrop
         usePan={false}
-        {...rest}
+        {...overlayProps}
       >
         <Box width="100%">
           {Platform.OS === "ios" ? (
             <DatePickerIOS
               date={date ? date : new Date()}
               mode={type}
+              minimumDate={min}
+              maximumDate={max}
               onDateChange={date => {
                 if (onChange) {
                   onChange(date);
@@ -161,7 +188,7 @@ const Comp = props => {
               }}
             />
           ) : null}
-          <Button onPress={() => setShow(false)}>Fertig</Button>
+          <Button onPress={() => setShow(false)}>{doneText}</Button>
         </Box>
       </Overlay>
     </Fragment>
@@ -170,7 +197,8 @@ const Comp = props => {
 
 Comp.propTypes = {
   style: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  textInputProps: PropTypes.object
 };
 
 export default Comp;

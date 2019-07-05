@@ -10,7 +10,13 @@ const aliases = `ActivityIndicator ActivityIndicatorIOS Button DatePickerIOS Dra
  Touchable TouchableHighlight TouchableNativeFeedback TouchableOpacity TouchableWithoutFeedback
  View ViewPagerAndroid WebView FlatList SectionList VirtualizedList`;
 
-const colorStyles = ["color", "backgroundColor", "borderColor"];
+const colorStyles = [
+  "color",
+  "backgroundColor",
+  "borderColor",
+  "borderBottomColor",
+  "borderTopColor"
+];
 
 const interpolate = (min, max, value) => {
   var theVariable = value * 3; // 1 to 100

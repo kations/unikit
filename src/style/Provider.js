@@ -56,8 +56,9 @@ export default ({ theme = {}, children, alertProps }) => {
       <ThemeProvider theme={mergeDeep(enhancedDefaultTheme, theme)}>
         <View
           style={{ flex: 1, position: "relative" }}
-          onLayout={({ nativeEvent: { layout } }) => {
-            setState({ ...state, width: layout.width, height: layout.height });
+          onLayout={() => {
+            const { width, height } = Dimensions.get("window");
+            setState({ ...state, width, height });
           }}
         >
           {children}

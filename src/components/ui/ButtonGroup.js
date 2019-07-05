@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 
 import styled from "../../style/styled";
 
@@ -30,26 +30,24 @@ const getBorderRadius = (index, length) => {
   }
 };
 
-const Comp = ({ children, gap, buttonStyle, ...rest }) => {
+const Comp = ({ children, gap = 1, buttonStyle = {}, ...rest }) => {
   return (
     <ButtonGroup {...rest}>
-      {React.Children.map(children, (c, i) =>
-        React.cloneElement(c, {
-          style: {
-            flex: 1,
-            marginLeft: i === 0 ? 0 : gap,
-            marginTop: gap,
-            ...getBorderRadius(i, React.Children.count(children)),
-            ...buttonStyle
-          }
-        })
-      )}
+      {Children.map(children, (child, i) => {
+        if (child) {
+          return React.cloneElement(child, {
+            style: {
+              flex: 1,
+              marginLeft: i === 0 ? 0 : gap,
+              marginTop: gap,
+              ...getBorderRadius(i, React.Children.count(children)),
+              ...buttonStyle
+            }
+          });
+        }
+      })}
     </ButtonGroup>
   );
-};
-
-Comp.defaultProps = {
-  gap: 1
 };
 
 export default Comp;

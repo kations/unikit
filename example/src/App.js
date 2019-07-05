@@ -90,6 +90,7 @@ export default () => {
     color: "#000",
     number: -2,
     actionSheet: false,
+    select: ["1"],
     data: [
       { label: "2010", value: 62 },
       { label: "2011", value: 52 },
@@ -129,6 +130,7 @@ export default () => {
           />
         )}
       >
+        <Input type="date" label="bla" />
         <NoSSR>
           <Chart
             style={{ marginTop: 100 }}
@@ -293,6 +295,20 @@ export default () => {
         >
           Show Sheet
         </Button>
+        <Input
+          label="MultiSelect"
+          value={state.select}
+          type="multiselect"
+          placeholder="bla"
+          onChange={select => {
+            setState({ ...state, select });
+          }}
+          options={[
+            { value: "1", label: "Eins" },
+            { value: "2", label: "Zwei" },
+            { value: "3", label: "Drei" }
+          ]}
+        />
         <Animate onVisible>
           <Box
             width="100%"

@@ -53,7 +53,7 @@ const Comp = props => {
         height="auto"
         visible={visible}
         onClose={() => setVisible(false)}
-        padding={20}
+        overlayContentProps={{ style: { padding: 15 } }}
         backdrop
         {...rest}
       >

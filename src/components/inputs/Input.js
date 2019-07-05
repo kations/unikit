@@ -35,6 +35,7 @@ import Color from "./Color";
 import Select from "./Select";
 import Number from "./Number";
 import Checkbox from "./Checkbox";
+import MultiSelect from "./MultiSelect";
 
 const types = {
   text: TextInput,
@@ -46,7 +47,8 @@ const types = {
   range: Slider,
   color: Color,
   number: Number,
-  checkbox: Checkbox
+  checkbox: Checkbox,
+  multiselect: MultiSelect
 };
 
 const typesProps = {

@@ -56,6 +56,7 @@ const Comp = props => {
         if (onMouseEnter) onMouseEnter(e);
         console.log("hover");
       }}
+      activeOpacity={0.9}
       size={size}
       color={color}
       {...rest}

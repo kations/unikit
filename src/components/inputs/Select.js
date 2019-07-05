@@ -116,7 +116,11 @@ const Comp = props => {
           height="auto"
           visible={show}
           onClose={() => setShow(false)}
-          padding="20px"
+          overlayContentProps={{
+            style: {
+              padding: 20
+            }
+          }}
           backdrop
           usePan={false}
           {...overlayProps}
