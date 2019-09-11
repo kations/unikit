@@ -1,19 +1,55 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ScrollView
-} from "react-native";
+import React, { useState, useEffect, Fragment } from "react";
 import { useSpring, animated } from "react-spring/native";
 
-import { useTheme } from "../../style/Theme";
-import { getProp } from "../../helper";
+import styled from "../../style/styled";
 import Swiper from "./Swiper";
-import Box from "../primitives/Box";
 
-const AnimatedIndicator = animated(View);
+const Tabs = styled.View(
+  ({ background, roundness, gap, tabsSize, vertical }) => ({
+    width: vertical ? tabsSize + gap * 2 : "100%",
+    height: vertical ? "100%" : tabsSize + gap * 2,
+    backgroundColor: background,
+    borderRadius: roundness > 0 ? roundness + gap : roundness,
+    overflow: "hidden",
+    padding: gap
+  })
+);
+
+const Track = styled.View(({ tabsSize, vertical }) => ({
+  position: "relative",
+  height: vertical ? "100%" : tabsSize,
+  width: vertical ? tabsSize : "100%",
+  flexDirection: vertical ? "column" : "row",
+  justifyContent: "space-between",
+  backgroundColor: "transparent",
+  zIndex: 0
+}));
+
+const Tab = styled.TouchableOpacity(({ active, vertical }) => ({
+  position: "relative",
+  height: "100%",
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 100
+}));
+
+const TabLabel = styled.Text(({ active, activeColor, color }) => ({
+  fontSize: "label",
+  color: active ? activeColor : color
+}));
+
+const Indicator = animated(
+  styled.View(({ roundness, indicatorColor, vertical }) => ({
+    position: "absolute",
+    left: 0,
+    bottom: vertical ? "auto" : 0,
+    top: vertical ? 0 : "auto",
+    backgroundColor: indicatorColor,
+    borderRadius: roundness,
+    zIndex: 10
+  }))
+);
 
 const isString = option => {
   return typeof option === "string" ? true : false;
@@ -23,231 +59,145 @@ const Comp = props => {
   const {
     value,
     onChange,
-    style,
     options,
     children,
-    indicatorHeight,
-    borderRadius,
+    indicatorSize = "100%",
+    indicatorColor = "primary",
+    gap = 0,
+    roundness = 0,
     swipeIndex,
     hideLabels,
+    tabsSize = 50,
+    backgroundColor = "surface",
+    activeColor = "#FFF",
+    color = "primary",
+    swiperProps = {},
+    indicatorProps = {},
+    tabProps = {},
+    tabLabelProps = {},
+    trackProps = {},
+    vertical = false,
     ...rest
   } = props;
 
-  const scrollRef = useRef(null);
-  const theme = useTheme();
-
-  const { select, item, track, label, indicator } = defaultStyle(props, theme);
-
-  const selectedIndex = options.findIndex(
+  const findIndex = options.findIndex(
     option => option === value || option.value === value
   );
 
-  const [state, setState] = useState({
-    width: 0,
-    swipeIndex: selectedIndex || 0,
-    index: selectedIndex || 0,
-    swipe: false
-  });
-
-  const width = state.width / options.length;
+  const [selectedIndex, setIndex] = useState(findIndex);
+  const [swipe, setSwipe] = useState(false);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    const newIndex =
-      swipeIndex && swipeIndex !== state.swipeIndex
-        ? swipeIndex
-        : selectedIndex;
+    setIndex(findIndex);
+  }, [findIndex]);
 
-    setState({
-      ...state,
-      index: Math.round(newIndex),
-      swipeIndex: newIndex
-    });
-  }, [selectedIndex, swipeIndex]);
+  useEffect(() => {
+    if (!swipe) {
+      setIndex(selectedIndex);
+    }
+  }, [selectedIndex]);
 
-  const springStyle = useSpring({
-    x: Math.round(state.swipeIndex * width),
-    width: width,
-    config: { mass: 1, tension: 300, friction: 30 }
+  const { x } = useSpring({
+    x: Math.round(selectedIndex * (width / options.length)),
+    config: { mass: 1, tension: 300, friction: 30, duration: 300 },
+    onRest: () => setSwipe(false)
   });
 
   const TabsComp = (
-    <Box
-      style={select}
-      onLayout={({ nativeEvent }) => {
-        const width = state.width / options.length;
-        setState({
-          ...state,
-          width: nativeEvent.layout.width
-        });
-      }}
+    <Tabs
+      background={backgroundColor}
+      roundness={roundness}
+      gap={gap}
+      tabsSize={tabsSize}
+      vertical={vertical}
+      {...rest}
     >
-      <ScrollView
-        horizontal
-        ref={scrollRef}
-        showsHorizontalScrollIndicator={false}
-        keyboardShouldPersistTaps={
-          getProp(props, theme, "keyboardShouldPersistTaps", "tabs") || "never"
-        }
-        scrollEnabled={getProp(props, theme, "scrollable", "tabs") || false}
+      <Track
+        tabsSize={tabsSize}
+        vertical={vertical}
+        onLayout={({ nativeEvent }) => {
+          const { width, height } = nativeEvent.layout;
+          setWidth(vertical ? height : width);
+        }}
+        {...trackProps}
       >
-        <View style={track}>
-          {options.map((option, index) => {
-            const active = index === state.index ? true : false;
-            return (
-              <TouchableOpacity
-                style={StyleSheet.flatten([
-                  item,
-                  {
-                    width: width
-                  }
-                ])}
-                active={state.index === index}
-                activeOpacity={state.index === index ? 1 : 0.6}
-                onPress={() => {
-                  setState({
-                    ...state,
-                    index: index,
-                    swipeIndex: index,
-                    swipe: true
-                  });
+        {options.map((option, index) => {
+          const active = Math.round(selectedIndex) === index;
+          return (
+            <Tab
+              active={active}
+              vertical={vertical}
+              activeOpacity={active ? 1 : 0.8}
+              onPress={() => {
+                setSwipe(true);
+                setIndex(index);
+                // setTimeout(() => {
+                //   setSwipe(false);
+                // }, 3000);
 
-                  if (onChange) {
-                    onChange(isString(option) ? option : option.value);
-                  }
-                }}
-                key={`item-${index}`}
-              >
-                {!hideLabels && (
-                  <Text
-                    style={StyleSheet.flatten([
-                      label,
-                      {
-                        color: getProp(
-                          props,
-                          theme,
-                          "color",
-                          "tabs",
-                          active ? "indicatorColor" : undefined,
-                          active
-                        )
-                      }
-                    ])}
-                    active={Math.round(state.swipeIndex) === index}
-                  >
-                    {isString(option) ? option : option.label}
-                  </Text>
-                )}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+                if (onChange) {
+                  onChange(isString(option) ? option : option.value);
+                }
+              }}
+              key={`item-${index}`}
+              {...tabProps}
+            >
+              {!hideLabels && (
+                <TabLabel
+                  active={active}
+                  activeColor={activeColor}
+                  color={color}
+                  {...tabLabelProps}
+                >
+                  {isString(option) ? option : option.label}
+                </TabLabel>
+              )}
+            </Tab>
+          );
+        })}
 
         {value && (
-          <AnimatedIndicator
-            style={StyleSheet.flatten([
-              indicator,
-              {
-                transform: springStyle.x.interpolate(x => [{ translateX: x }]),
-                width: width
-              }
-            ])}
-            indicatorHeight={indicatorHeight}
-            borderRadius={borderRadius}
+          <Indicator
+            vertical={vertical}
+            roundness={roundness}
+            indicatorColor={indicatorColor}
+            {...indicatorProps}
+            style={{
+              ...indicatorProps.style,
+              transform: vertical ? [{ translateY: x }] : [{ translateX: x }],
+              width: vertical ? indicatorSize : `${100 / options.length}%`,
+              height: !vertical ? indicatorSize : `${100 / options.length}%`
+            }}
           />
         )}
-      </ScrollView>
-    </Box>
+      </Track>
+    </Tabs>
   );
 
   if (children) {
     return (
-      <Box style={style} {...rest}>
+      <Fragment>
         {TabsComp}
         <Swiper
-          index={state.index}
-          swipeIndex={state.swipeIndex}
-          onSwipe={swipeIndex => {
-            if (!state.swipe) {
-              setState({
-                ...state,
-                swipeIndex: swipeIndex,
-                index: Math.round(swipeIndex)
-              });
-            } else if (swipeIndex === state.index) {
-              setState({
-                ...state,
-                swipe: false
-              });
-            }
+          updateSwipe={!swipe}
+          index={selectedIndex}
+          onSwipe={(swipeIndex, index) => {
+            setIndex(swipeIndex);
           }}
           onSwipeEnd={index => {
             console.log("onSwipeEnd", index);
-            setState({
-              ...state,
-              index: index,
-              swipeIndex: index,
-              swipe: false
-            });
+            setIndex(index);
           }}
-          flex={props.flex || style.flex || 0}
+          {...swiperProps}
         >
           {children}
         </Swiper>
-      </Box>
+      </Fragment>
     );
   } else {
-    return (
-      <Box style={style} {...rest}>
-        {TabsComp}
-      </Box>
-    );
+    return TabsComp;
   }
-};
-
-const defaultStyle = (props, theme) =>
-  StyleSheet.create({
-    select: {
-      flex: 0,
-      flexBasis: getProp(props, theme, "tabsHeight", "tabs"),
-      position: "relative",
-      height: getProp(props, theme, "tabsHeight", "tabs"),
-      width: "100%",
-      backgroundColor: getProp(props, theme, "backgroundColor", "tabs"),
-      borderRadius: getProp(props, theme, "borderRadius", "tabs"),
-      flexDirection: "row",
-      justifyContent: "space-between",
-      overflow: "hidden"
-    },
-    track: {
-      position: "relative",
-      flexDirection: "row",
-      height: "100%",
-      zIndex: 10
-    },
-    item: {
-      flex: 1,
-      height: "100%",
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    label: {
-      fontSize: 14,
-      color: getProp(props, theme, "color", "tabs", "backgroundColor")
-    },
-    indicator: {
-      position: "absolute",
-      height: getProp(props, theme, "indicatorHeight", "tabs"),
-      left: 0,
-      top: 0,
-      backgroundColor: getProp(props, theme, "indicatorColor", "tabs"),
-      borderRadius: getProp(props, theme, "borderRadius", "tabs"),
-      zIndex: 0
-    }
-  });
-
-Comp.defaultProps = {
-  threshold: 5,
-  style: {}
 };
 
 export default Comp;

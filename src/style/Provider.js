@@ -35,7 +35,6 @@ const getDimensions = () => {
   }
 };
 
-let key = 1;
 export default ({ theme = {}, children, alertProps }) => {
   const [state, setState] = useState({
     width: getDimensions().width,

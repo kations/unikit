@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import color from "color";
 import { Dimensions, TouchableOpacity, Text, View } from "react-native";
-import { useTransition, animated } from "react-spring/native";
+import { useTransition, animated, useSpring } from "react-spring/native";
 
 import { useTheme } from "../../style/Theme";
 import styled from "../../style/styled";
@@ -20,13 +20,31 @@ const InputWrapper = styled.View(({ theme }) => ({
   height: "auto",
   minHeight: 55,
   padding: 15,
-  overflow: "hidden",
   borderRadius: theme.globals.roundness,
   paddingBottom: 4
 }));
 
-import Flex from "../primitives/Flex";
+const BorderWrap = styled.View(({ size, borderBlurColor }) => ({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  height: 2,
+  width: size,
+  backgroundColor: borderBlurColor,
+  zIndex: 100,
+  overflow: "hidden"
+}));
 
+const Border = animated(
+  styled.View(({ x, borderFocusColor }) => ({
+    height: "100%",
+    width: "100%",
+    backgroundColor: borderFocusColor,
+    transform: [{ translateX: x }]
+  }))
+);
+
+import Flex from "../primitives/Flex";
 import Switch from "./Switch";
 import TextInput from "./TextInput";
 import DatePicker from "./DatePicker";
@@ -36,6 +54,7 @@ import Select from "./Select";
 import Number from "./Number";
 import Checkbox from "./Checkbox";
 import MultiSelect from "./MultiSelect";
+import Tags from "./Tags";
 
 const types = {
   text: TextInput,
@@ -48,7 +67,8 @@ const types = {
   color: Color,
   number: Number,
   checkbox: Checkbox,
-  multiselect: MultiSelect
+  multiselect: MultiSelect,
+  tags: Tags
 };
 
 const typesProps = {
@@ -90,8 +110,6 @@ const typesProps = {
   }
 };
 
-const Border = animated(Flex);
-
 const Comp = props => {
   const {
     children,
@@ -104,6 +122,9 @@ const Comp = props => {
     onChange,
     value,
     labelColor,
+    borderProps = {},
+    borderBlurColor = "transparent",
+    borderFocusColor = "primary",
     ...rest
   } = props;
 
@@ -184,22 +205,18 @@ const Comp = props => {
             })
           )
         : null}
-      {transitions.map(({ item, key, props }) =>
-        item ? (
-          <Border
-            key={key}
-            position="absolute"
-            bottom={0}
-            left={0}
-            height={2}
-            width={width}
-            backgroundColor="primary"
-            style={{
-              transform: props.left.interpolate(l => [{ translateX: l }])
-            }}
-          />
-        ) : null
-      )}
+      <BorderWrap size={width} borderBlurColor={borderBlurColor}>
+        {transitions.map(({ item, key, props }) =>
+          item ? (
+            <Border
+              key={key}
+              x={props.left}
+              borderFocusColor={borderFocusColor}
+              {...borderProps}
+            />
+          ) : null
+        )}
+      </BorderWrap>
     </InputWrapper>
   );
 };

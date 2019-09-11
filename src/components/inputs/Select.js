@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import { Platform, Picker, TouchableOpacity } from "react-native";
 
 import styled from "../../style/styled";
+import { useTheme } from "../../style/Theme";
+
+const Box = styled.View({
+  width: "100%",
+  position: "relative"
+});
 
 const Headline = styled.Text({
   fontSize: "h3",
   color: "text"
 });
 
-import Box from "../primitives/Box";
 import Overlay from "../ui/Overlay";
 import Button from "../ui/Button";
 import Icon from "../ui/Icon";
@@ -17,7 +22,7 @@ import TextInput from "./TextInput";
 const SelectIcon = styled(Icon)({
   position: "absolute",
   top: 10,
-  right: 0
+  right: 5
 });
 
 const Comp = props => {
@@ -27,10 +32,11 @@ const Comp = props => {
     options,
     style,
     placeholder,
-    overlayProps,
-    inputProps
+    overlayProps = {},
+    inputProps = {},
+    pickerProps = {}
   } = props;
-
+  const theme = useTheme();
   const [show, setShow] = useState(false);
 
   const renderCheckbox = (option, index) => {
@@ -60,7 +66,8 @@ const Comp = props => {
         onValueChange={(itemValue, itemIndex) =>
           onChange ? onChange(itemValue) : null
         }
-        itemStyle={{ textAlign: "center" }}
+        itemStyle={{ textAlign: "center", color: theme.colors.text }}
+        {...pickerProps}
         style={[
           {
             width: "100%",
@@ -77,7 +84,7 @@ const Comp = props => {
               }
             })
           },
-          style
+          pickerProps.style
         ]}
       >
         <Picker.Item label={placeholder} value={null} />
@@ -89,7 +96,7 @@ const Comp = props => {
   };
 
   return (
-    <Box width="100%" position="relative">
+    <Box width="100%" position="relative" style={style}>
       {Platform.OS !== "ios" ? renderPicker() : null}
       {Platform.OS === "ios" ? (
         <TouchableOpacity

@@ -83,7 +83,7 @@ export default () => {
     tab: "Meine",
     tab2: "Meine",
     value: "yolo",
-    sliderValue: 20,
+    sliderValue: 100,
     switch: true,
     date: false,
     arrowType: "x",
@@ -91,6 +91,7 @@ export default () => {
     number: -2,
     actionSheet: false,
     select: ["1"],
+    array: [],
     data: [
       { label: "2010", value: 62 },
       { label: "2011", value: 52 },
@@ -120,7 +121,6 @@ export default () => {
   return (
     <UniProvider>
       <Page
-        style={{ height: 700 }}
         renderHeader={() => (
           <Box
             width="1005"
@@ -130,25 +130,206 @@ export default () => {
           />
         )}
       >
-        <Input type="date" label="bla" />
-        <NoSSR>
+        <Input
+          type="datetime"
+          label="bla"
+          onChange={value => alert(value)}
+          min={new Date()}
+        />
+        <Input
+          label={"appSettings.user"}
+          placeholder={"appSettings.user"}
+          type="text"
+          value={"username"}
+          style={{
+            borderRadius: 0,
+            width: 290
+          }}
+          borderBlurColor="#CCC"
+        />
+        <Input
+          type="number"
+          value={5}
+          onChange={value => alert(value)}
+          style={{ width: 150 }}
+        />
+        <Input
+          value={state.array}
+          type="tags"
+          label="Tags"
+          onChange={array => setState({ ...state, array })}
+        />
+        <Input
+          type="range"
+          value={state.sliderValue}
+          label="bla"
+          trackColor="#FFF"
+          handleSize={30}
+          trackHeight={10}
+          showValue={true}
+          showTicks={false}
+          onChange={value => setState({ ...state, sliderValue: value })}
+          handleProps={{ style: { borderWidth: 2, borderColor: "#E63452" } }}
+        />
+        <Tabs
+          value={state.tab2}
+          options={["Meine", "Alle", "Archiv"]}
+          onChange={value => setState({ ...state, tab2: value })}
+          tabsSize={300}
+          style={{ height: 200 }}
+          activeColor="primary"
+          indicatorProps={{ style: { left: "auto", right: 0 } }}
+          tabProps={{
+            style: {
+              alignItems: "flex-end",
+              paddingRight: 20
+            }
+          }}
+          tabLabelProps={{
+            style: {
+              fontSize: "h4"
+            }
+          }}
+          vertical
+          indicatorSize={3}
+        />
+        <Swiper index={1}>
+          <Box
+            width="100%"
+            height="200px"
+            backgroundColor="primary"
+            backgroundColorLighten={0.3}
+            shadow={10}
+          />
+          <Box
+            width="100%"
+            height="200px"
+            backgroundColor="primary"
+            backgroundColorLighten={0.5}
+            shadow={10}
+          />
+          <Box
+            width="100%"
+            height="200px"
+            backgroundColor="primary"
+            backgroundColorLighten={0.7}
+            shadow={10}
+          />
+        </Swiper>
+        {/* <NoSSR>
           <Chart
             style={{ marginTop: 100 }}
+            valueKeys={["value", "test"]}
+            showValue
+            selected={2}
+            selectedBarColor="#CCC"
+            onPress={item => {
+              alert(item.index);
+            }}
+            maxValue={10}
+            tickCount={2}
+            formatLabel={label => {
+              if (label === 2) {
+                return "yolosdff";
+              }
+              return label;
+            }}
             data={[
-              33530,
-              253530,
-              2535353,
-              633535,
-              -153534,
-              6435344,
-              2343454,
-              73453453,
-              3345344,
-              23454354
+              {
+                label: "Jan",
+                value: 1,
+                key: "test",
+                color: "#000"
+              },
+              {
+                label: "Feb",
+                value: 2
+              },
+              {
+                label: "Mar",
+                value: 3
+              }
             ]}
             xAxis
+            yAxis
           />
-        </NoSSR>
+
+          <Chart
+            style={{ marginTop: 100 }}
+            valueKeys={["value", "test"]}
+            onPress={item => {
+              alert(item.index);
+            }}
+            scrollable
+            yAxis
+            data={[
+              {
+                label: "Jan",
+                value: 20,
+                color: "#000"
+              },
+              {
+                label: "Jan",
+                value: 10
+              },
+              {
+                label: "Feb",
+                value: 4,
+                color: "#000"
+              },
+              {
+                label: "Feb",
+                value: -14
+              },
+
+              {
+                label: "Mar",
+                value: 5,
+                color: "#000"
+              },
+              {
+                label: "Mar",
+                value: 15
+              },
+              {
+                label: "Apr",
+                value: 5,
+                color: "#000"
+              },
+              {
+                label: "Apr",
+                value: 15
+              },
+              {
+                label: "Mai",
+                value: 5,
+                color: "#000"
+              },
+              {
+                label: "Mai",
+                value: 15
+              },
+              {
+                label: "sf",
+                value: 5,
+                color: "#000"
+              },
+              {
+                label: "sf",
+                value: 15
+              },
+              {
+                label: "sdfdsf",
+                value: 5,
+                color: "#000"
+              },
+              {
+                label: "sdfdsf",
+                value: 15
+              }
+            ]}
+          />
+        </NoSSR> */}
         <Input
           type="text"
           label="bla"

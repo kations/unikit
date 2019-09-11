@@ -26,7 +26,8 @@ const Comp = props => {
       backgroundColor: active
         ? getProp(props, theme, "activeBackground", "switch")
         : getProp(props, theme, "backgroundColor", "switch")
-    }
+    },
+    config: { duration: 300 }
   });
 
   useEffect(() => {

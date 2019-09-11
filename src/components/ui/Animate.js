@@ -9,8 +9,7 @@ import Visible from "../helper/Visible";
 
 import styled from "../../style/styled";
 
-const Box = styled.View();
-const AnimatedBox = animated(Box);
+const Box = animated(styled.View());
 
 const Comp = props => {
   const {
@@ -24,7 +23,8 @@ const Comp = props => {
     reverse,
     config,
     style,
-    as
+    as,
+    ...rest
   } = props;
 
   const [visible, setVisible] = useState(false);
@@ -39,16 +39,17 @@ const Comp = props => {
   });
 
   const AnimatedComp = (
-    <AnimatedBox
+    <Box
       as={as}
       style={{
         ...style,
         opacity: opacity,
         transform: [{ translateY: y || 0 }, { translateX: x || 0 }]
       }}
+      {...rest}
     >
       {children}
-    </AnimatedBox>
+    </Box>
   );
 
   if (onVisible) {

@@ -26,6 +26,7 @@ export default {
     surface: "#FFF",
     placeholder: "",
     success: "#8bc34a",
+    warning: "#ffbb33",
     error: "#f44336"
   },
   fontSize: {

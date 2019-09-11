@@ -79,6 +79,9 @@ const Comp = ({
   color = "primary",
   ...rest
 }) => {
+  if (!first[type]) {
+    return null;
+  }
   const firstStyle = useSpring({
     to: first[type]
   });

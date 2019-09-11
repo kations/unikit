@@ -18,10 +18,11 @@ const GridItem = styled.View(({ width, gap, i }) => ({
 export default ({
   children,
   min = 500,
-  maxRows = 3,
+  maxRows,
+  minRows = 1,
   gap = 5,
-  style,
-  itemStyle
+  style = {},
+  itemStyle = {}
 }) => {
   const theme = useTheme();
   const [width, setWidth] = useState(theme.width || 0);
@@ -29,8 +30,14 @@ export default ({
 
   useEffect(() => {
     if (width) {
-      const rows = width / min > maxRows ? maxRows : Math.round(width / min);
-      const rowWidth = 100 / rows;
+      let rowCount = Math.ceil(width / min);
+      if (maxRows && rowCount > maxRows) {
+        rowCount = maxRows;
+      }
+      if (minRows && rowCount < minRows) {
+        rowCount = minRows;
+      }
+      const rowWidth = 100 / rowCount;
       setRowWidth(rowWidth);
     }
   }, [width]);

@@ -47,6 +47,7 @@ const styled = Component => {
         theme,
         as,
         shadow,
+        shadowCasting,
         shadowColor,
         ...rest
       } = props;
@@ -60,13 +61,14 @@ const styled = Component => {
       }
 
       if (shadow) {
+        let shadowOffset = Math.round(shadow / 2);
         styles = Object.assign(
           {},
           {
             shadowColor: theme.globals.shadowColor || "#000",
             shadowOffset: {
               width: 0,
-              height: Math.round(shadow / 2)
+              height: shadowCasting === "top" ? -shadowOffset : shadowOffset
             },
             shadowOpacity:
               theme.globals.shadowOpacity || interpolate(0.1, 0.5, shadow),
@@ -112,7 +114,7 @@ const styled = Component => {
       //   RenderComp.displayName = `styled(${getDisplayName(RenderComp)})`;
       // }
 
-      // console.log(RenderComp.displayName, composed);
+      //console.log({ ref });
 
       return (
         <RenderComp style={composed} {...rest}>

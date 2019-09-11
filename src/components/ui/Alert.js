@@ -7,11 +7,11 @@ import Icon from "../ui/Icon";
 import { useTheme } from "../../style/Theme";
 import { getColorMode, isIphoneX } from "../../helper";
 
-const Container = styled.View(({ alertPostion, gap }) => ({
+const Container = styled.View(({ from, gap }) => ({
   position: Platform.OS === "web" ? "fixed" : "absolute",
   left: 0,
-  bottom: alertPostion === "bottom" ? 0 : "auto",
-  top: alertPostion === "top" ? 0 : "auto",
+  bottom: from === "bottom" ? 0 : "auto",
+  top: from === "top" ? 0 : "auto",
   width: "100%",
   zIndex: 500,
   paddingHorizontal: gap,
@@ -19,7 +19,7 @@ const Container = styled.View(({ alertPostion, gap }) => ({
 }));
 
 const Message = animated(
-  styled.View(({ type, gap, maxWidth }) => ({
+  styled.View(({ theme, type, gap, maxWidth }) => ({
     flexBasis: "100%",
     alignItems: "center",
     backgroundColor: type || "surface",
@@ -28,7 +28,8 @@ const Message = animated(
     marginVertical: gap / 2,
     width: "100%",
     maxWidth: maxWidth,
-    alignSelf: "center"
+    alignSelf: "center",
+    borderRadius: theme.globals.roundness
   }))
 );
 
@@ -44,7 +45,7 @@ let id = 0;
 const Comp = ({
   alert,
   timeout = 2000,
-  position = "bottom",
+  from = "bottom",
   gap = 15,
   maxWidth = 700,
   ...rest
@@ -53,9 +54,9 @@ const Comp = ({
   const [items, setItems] = useState([]);
 
   const transitions = useTransition(items, items => items.key, {
-    from: { opacity: 0, top: position === "bottom" ? 30 : -30 },
+    from: { opacity: 0, top: from === "bottom" ? 30 : -30 },
     enter: { opacity: 1, top: 0 },
-    leave: { opacity: 0, top: position === "bottom" ? 30 : -30 },
+    leave: { opacity: 0, top: from === "bottom" ? 30 : -30 },
     onRest: item =>
       setTimeout(() => {
         setItems(state => state.filter(i => i.key !== item.key));
@@ -64,7 +65,7 @@ const Comp = ({
 
   useEffect(() => {
     if (alert) {
-      if (position === "bottom") {
+      if (from === "bottom") {
         setItems(state => [
           ...state,
           { key: id++, message: alert.message, type: alert.type }
@@ -79,19 +80,14 @@ const Comp = ({
   }, [alert]);
 
   return (
-    <Container
-      alertPostion={position}
-      gap={gap}
-      pointerEvents="box-none"
-      {...rest}
-    >
-      {/* {position === "top" ? <SafeAreaView collapsable={false} /> : null} */}
+    <Container from={from} gap={gap} pointerEvents="box-none" {...rest}>
+      {from === "top" ? <SafeAreaView collapsable={false} /> : null}
       {transitions.map(({ item, props, key }) => (
         <Message
           key={key}
           style={props}
           type={item.type}
-          position={position}
+          from={from}
           gap={gap}
           maxWidth={maxWidth}
           shadow={3}
@@ -124,7 +120,7 @@ const Comp = ({
           />
         </Message>
       ))}
-      {/* {position === "bottom" ? <SafeAreaView collapsable={false} /> : null} */}
+      {/* {from === "bottom" ? <SafeAreaView collapsable={false} /> : null} */}
     </Container>
   );
 };

@@ -11,7 +11,7 @@ import { isIphoneX } from "../../helper";
 const safePan = {
   bottom: {
     paddingTop: 20,
-    paddingBottom: isIphoneX() && 30
+    paddingBottom: isIphoneX() ? 30 : 0
   },
   center: {
     paddingTop: 20
@@ -24,7 +24,7 @@ const safePan = {
   },
   top: {
     paddingBottom: 20,
-    paddingTop: isIphoneX() && 30
+    paddingTop: isIphoneX() ? 30 : 0
   }
 };
 
@@ -166,16 +166,19 @@ const Comp = ({
     right: theme.width
   };
 
+  const move = moves[position];
+
   const transitions = useTransition(show, null, {
     from: {
       opacity: 0,
-      move: moves[position]
+      move: move || 500 //moves[position]
     },
     enter: { opacity: 1, move: 0 },
     leave: {
       opacity: 0,
-      move: moves[position]
-    }
+      move: move || 500 //moves[position]
+    },
+    config: { duration: 300 }
   });
 
   const PortalComp = portal ? Portal : Fragment;
@@ -193,7 +196,7 @@ const Comp = ({
                     style={{
                       opacity: props.opacity
                     }}
-                    pointerEvents={"none"}
+                    pointerEvents={show ? "auto" : "none"}
                     {...backdropProps}
                   />
                 </TouchableOpacity>

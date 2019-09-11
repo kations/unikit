@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.0.98",
+  "version": "1.1.53",
   "description": "",
   "author": "kations",
   "license": "MIT",
@@ -50,7 +50,7 @@
     "react": "^16.8.3",
     "react-art": "^16.8.1",
     "react-dom": "^16.8.3",
-    "react-native": "^0.59.0-rc.2",
+    "react-native": "^0.60.5",
     "react-primitives": "^0.7.0",
     "react-scripts": "^1.1.4",
     "rollup": "^0.64.1",

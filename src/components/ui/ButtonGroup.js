@@ -12,7 +12,6 @@ const ButtonGroup = styled.View(({ size }) => ({
 }));
 
 const getBorderRadius = (index, length) => {
-  console.log({ index, length });
   if (index === 0) {
     return {
       borderTopRightRadius: 0,

@@ -128,7 +128,8 @@ class Pan extends Component {
   }
 
   render() {
-    return <View {...this.props} {...this._panResponder.panHandlers} />;
+    const RenderComp = this.props.as ? this.props.as : View;
+    return <RenderComp {...this.props} {...this._panResponder.panHandlers} />;
   }
 }
 

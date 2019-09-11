@@ -5,6 +5,14 @@ import color from "color";
 
 import { withTheme } from "./style/Theme";
 
+export const invlerp = (a, b, v) => {
+  return (v - a) / (b - a);
+};
+
+export const lerp = (start, end, t) => {
+  return start * (1 - t) + end * t;
+};
+
 export const isIphoneX = () => {
   const dimen = Dimensions.get("window");
   return (
@@ -91,4 +99,16 @@ export const getProp = (props, theme, key, comp, subKey, forceSubKey) => {
   }
 
   return value;
+};
+
+export const calculateTicks = (min, max, tickCount = 10) => {
+  if (tickCount < 4) tickCount = 4;
+  var factor = Math.round(Math.ceil(max / Math.round(tickCount)));
+  var step = Math.round(max / factor);
+  const ticks = [];
+  for (var i = min; i < max; i += step) {
+    ticks.push(i);
+  }
+  ticks.push(max);
+  return ticks;
 };

@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSpring, animated } from "react-spring/native";
 import PropTypes from "prop-types";
-import { View, ScrollView, StyleSheet } from "react-native";
-//import { disablePageScroll, enablePageScroll } from "scroll-lock";
+import { ScrollView, FlatList } from "react-native";
 
-import Box from "../primitives/Box";
 // import Tabs from "./Tabs";
+import styled from "../../style/styled";
+import { useTheme } from "../../style/Theme";
 
-const AnimatedContent = animated(View);
+const Content = styled.View(({ vertical, gap, itemSize }) => ({
+  width: vertical ? "100%" : itemSize,
+  height: !vertical ? "100%" : itemSize,
+  padding: gap / 2
+}));
 
 const Comp = props => {
   const {
+    useScrollView = false,
     onSwipe,
     onSwipeEnd,
+    onChangeIndex,
     index,
     swipeIndex,
     style,
@@ -26,239 +31,155 @@ const Comp = props => {
     dotsOffset,
     autoplay,
     duration,
-    vertical,
+    vertical = false,
+    updateSwipe = true,
     ...rest
   } = props;
 
   const scrollRef = useRef(null);
+  const theme = useTheme();
 
-  const { root, wrap, dotswrap } = defaultStyle(props);
+  const [selectedIndex, setIndex] = useState(index);
+  const [width, setWidth] = useState(itemSize || theme.width || 0);
 
-  const [state, setState] = useState({
-    width: itemSize || 0,
-    height: itemSize || 0,
-    swipeIndex: 0,
-    index: 0,
-    offset: {
-      x: 0,
-      y: 0
-    }
-  });
-
-  useEffect(() => {
-    const newIndex =
-      swipeIndex && swipeIndex !== state.swipeIndex ? swipeIndex : index;
-
-    setState({
-      ...state,
-      index: Math.round(newIndex)
-    });
-    // if (index !== state.index) {
-    //   setState({ ...state, index: index, swipeIndex: index });
-    // }
-    // if (swipeIndex !== state.swipeIndex) {
-    //   setState({
-    //     ...state,
-    //     swipeIndex: swipeIndex,
-    //     offset: {
-    //       x: swipeIndex * -state.width,
-    //       y: 0
-    //     }
-    //   });
-    // }
-  }, [index, swipeIndex]);
-
-  useEffect(() => {
-    scrollRef.current.scrollTo({
-      x: vertical ? 0 : state.index * state.width,
-      y: vertical ? state.index * state.width : 0,
-      animated: true
-    });
-  }, [state.index]);
-
-  useEffect(() => {
-    if (autoplay) {
-      const interval = setInterval(() => {
-        const maxIndex = React.Children.count(children) - 1;
-        const newIndex = state.index + 1 > maxIndex ? 0 : state.index + 1;
-        setState({ ...state, index: newIndex });
-      }, duration);
-
-      return () => clearInterval(interval);
+  const scrollTo = () => {
+    if (useScrollView) {
+      scrollRef.current.scrollTo({
+        x: vertical ? 0 : index * width,
+        y: vertical ? index * width : 0,
+        animated: true
+      });
     } else {
-      return () => null;
+      scrollRef.current.scrollToOffset({ offset: index * width });
     }
-  });
+  };
 
-  // const contentSpring = useSpring({
-  //   to: {
-  //     left: state.swipeIndex * -state.width,
-  //     moveX: state.moveX,
-  //     swipeIndex: state.swipeIndex
-  //   },
-  //   config: { mass: 1, tension: 300, friction: 30 },
-  //   immediate: name => state.swipe && name === "moveX"
-  // });
+  useEffect(() => {
+    if (!(index % 1 != 0) && index !== selectedIndex) {
+      console.log({ index });
+      setIndex(index);
+      scrollTo();
+    }
+  }, [index]);
 
-  return (
-    <Box
-      onLayout={({ nativeEvent }) => {
-        const width = itemSize || nativeEvent.layout.width;
-        setState({
-          ...state,
-          width: width,
-          offset: {
-            x: vertical ? 0 : state.index * width,
-            y: vertical ? state.index * width : 0
-          }
-        });
-      }}
-      style={StyleSheet.flatten([
-        root,
-        {
-          flex: flex || undefined
-        },
-        style
-      ])}
-      {...rest}
-    >
+  useEffect(() => {
+    if (!(selectedIndex % 1 != 0)) {
+      if (onSwipeEnd) onSwipeEnd(selectedIndex);
+    }
+  }, [selectedIndex]);
+
+  const defaultProps = {
+    ref: scrollRef,
+    pagingEnabled: true,
+    snapToInterval: width,
+    horizontal: !vertical,
+    automaticallyAdjustContentInsets: false,
+    scrollsToTop: false,
+    bounces: true,
+    scrollEventThrottle: 16,
+    showsHorizontalScrollIndicator: false,
+    showsVerticalScrollIndicator: false,
+    directionalLockEnabled: true,
+    disableScrollViewPanResponder: true,
+    callbackOffsetMargin: 5,
+    enableMomentum: false,
+    decelerationRate: "fast",
+    snapToAlignment: "left",
+    alwaysBounceVertical: false,
+    keyboardDismissMode: "on-drag",
+    style: {
+      flex: 1,
+      width: "100%",
+      height: vertical ? width : "auto",
+      position: "relative",
+      padding: gap / 2,
+      flexDirection: vertical ? "column" : "row",
+      ...style
+    },
+    onLayout: ({ nativeEvent }) => {
+      const { width, height } = nativeEvent.layout;
+      if (vertical) {
+        setWidth(itemSize || height);
+      } else {
+        setWidth(itemSize || width);
+      }
+    },
+    onScroll: ({ nativeEvent }) => {
+      const { x, y } = nativeEvent.contentOffset;
+      if (!vertical) {
+        var swipeIndex = x / width;
+      } else {
+        var swipeIndex = y / width;
+      }
+      setIndex(swipeIndex);
+      if (onSwipe && updateSwipe) onSwipe(swipeIndex);
+    },
+    onMomentumScrollBegin: ({ nativeEvent }) => {
+      console.log("onMomentumScrollBegin");
+    },
+    onMomentumScrollEnd: ({ nativeEvent }) => {
+      const { x, y } = nativeEvent.contentOffset;
+      if (!vertical) {
+        var indexNew = Math.round(x / width);
+      } else {
+        var indexNew = Math.round(y / width);
+      }
+      console.log("onMomentumScrollEnd");
+      if (onSwipeEnd) onSwipeEnd(indexNew);
+      setIndex(indexNew);
+    }
+  };
+
+  if (useScrollView) {
+    return (
       <ScrollView
-        ref={scrollRef}
-        style={wrap}
-        horizontal={!vertical}
-        pagingEnabled
-        snapToInterval={state.width}
-        decelerationRate="fast"
-        snapToAlignment="left"
-        automaticallyAdjustContentInsets={false}
-        scrollsToTop={false}
-        bounces={true}
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        directionalLockEnabled
-        disableScrollViewPanResponder
-        contentOffset={state.offset}
-        alwaysBounceVertical={false}
-        keyboardDismissMode="on-drag"
-        onScroll={({ nativeEvent }) => {
-          //if (Platform.OS === "web") disablePageScroll();
-          if (!vertical) {
-            var swipeIndex = nativeEvent.contentOffset.x / state.width;
-          } else {
-            var swipeIndex = nativeEvent.contentOffset.y / state.width;
-          }
-
-          if (onSwipe) onSwipe(swipeIndex);
-          setState({ ...state, swipeIndex: swipeIndex });
-        }}
-        onMomentumScrollEnd={({ nativeEvent }) => {
-          //if (Platform.OS === "web") enablePageScroll();
-          var indexNew = Math.round(nativeEvent.contentOffset.x / state.width);
-          if (!vertical) {
-            var indexNew = Math.round(
-              nativeEvent.contentOffset.x / state.width
-            );
-          } else {
-            var indexNew = Math.round(
-              nativeEvent.contentOffset.y / state.width
-            );
-          }
-          console.log("onMomentumScrollEnd");
-          if (onSwipeEnd) onSwipeEnd(indexNew);
-          setState({
-            ...state,
-            index: indexNew
-          });
-        }}
-        style={{
-          flex: flex || undefined,
-          flexDirection: vertical ? "column" : "row"
-        }}
         contentContainerStyle={{
           width: vertical ? "100%" : "auto"
         }}
+        {...defaultProps}
+        {...rest}
       >
-        {React.Children.map(children, (child, index) => {
-          return (
-            <AnimatedContent
-              style={{
-                flex: 1,
-                padding: gap / 2,
-                width: vertical ? "100%" : state.width,
-                height: vertical ? state.width : "100%"
-              }}
-            >
-              {child}
-            </AnimatedContent>
-          );
+        {React.Children.map(children, (child, i) => {
+          if (child) {
+            return (
+              <Content itemSize={width} gap={gap} vertical={vertical} key={i}>
+                {child}
+              </Content>
+            );
+          }
         })}
       </ScrollView>
-      {/* {dots && (
-        <Box
-          style={StyleSheet.flatten([
-            dotswrap,
-            {
-              [dotsPosition]: dotsOffset
-            }
-          ])}
-        >
-          {{React.Children.map(children, (child, index) => (
-            <Dot active={index === state.index} />
-          ))}}
-          <Tabs
-            style={{
-              width: 70,
-              height: 6,
-              backgroundColor: "rgba(0,0,0,0.2)",
-              transform: [{ rotate: vertical ? "90deg" : "0deg" }]
-            }}
-            onChange={(value, index) => {
-              setState({ ...state, index: index });
-            }}
-            borderRadius={3}
-            value={`${state.index}`}
-            swipeIndex={state.swipeIndex}
-            options={React.Children.map(children, (child, index) => `${index}`)}
-            hideLabels
-          />
-        </Box>
-      )} */}
-    </Box>
+    );
+  }
+
+  return (
+    <FlatList
+      data={children}
+      renderItem={({ item, index }) => {
+        if (item) {
+          return (
+            <Content itemSize={width} gap={gap} vertical={vertical}>
+              {item}
+            </Content>
+          );
+        }
+      }}
+      keyExtractor={(item, index) => index.toString()}
+      getItemLayout={(data, index) => ({
+        length: width,
+        offset: width * index,
+        index
+      })}
+      contentContainerStyle={{
+        width: vertical ? "100%" : "auto",
+        flexGrow: 1
+      }}
+      initialScrollIndex={index}
+      {...defaultProps}
+      {...rest}
+    />
   );
 };
-
-const defaultStyle = (props, theme) =>
-  StyleSheet.create({
-    root: {
-      width: "100%",
-      position: "relative"
-    },
-    wrap: {
-      flexDirection: "row"
-    },
-    dotswrap: {
-      position: "absolute",
-      left: props.dotsPosition !== "right" ? 0 : "auto",
-      right: props.dotsPosition === "right" ? 0 : "auto",
-      bottom: props.dotsPosition === "bottom" ? 0 : "auto",
-      top: props.dotsPosition !== "bottom" ? 0 : "auto",
-      display: "flex",
-      justifyContent: "center",
-      flexDirection:
-        props.dotsPosition === "bottom" || p.dotsPosition === "top"
-          ? "row"
-          : "column",
-      width:
-        props.dotsPosition === "bottom" || p.dotsPosition === "top"
-          ? "100%"
-          : "auto",
-      height:
-        props.dotsPosition === "bottom" || p.dotsPosition === "top"
-          ? "auto"
-          : "100%"
-    }
-  });
 
 Comp.propTypes = {
   index: PropTypes.number,
@@ -272,7 +193,6 @@ Comp.propTypes = {
 };
 
 Comp.defaultProps = {
-  vertical: false,
   flex: undefined,
   index: 0,
   gap: 0,

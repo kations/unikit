@@ -47,6 +47,7 @@ const Comp = props => {
       as={as || undefined}
       onChangeText={text => (onChange ? onChange(text) : null)}
       placeholderTextColor={color(placeholderTextColor).alpha(0.35)}
+      underlineColorAndroid="transparent"
       onFocus={() => {
         if (setFocus) {
           setFocus(true);
