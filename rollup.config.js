@@ -5,7 +5,7 @@ import postcss from "rollup-plugin-postcss";
 import resolve from "rollup-plugin-node-resolve";
 import url from "rollup-plugin-url";
 import svgr from "@svgr/rollup";
-import nodeResolve from "rollup-plugin-node-resolve";
+import json from "rollup-plugin-json";
 
 import pkg from "./package.json";
 
@@ -23,17 +23,7 @@ export default {
       sourcemap: true
     }
   ],
-  external: [
-    "react",
-    "react-spring",
-    "react-native",
-    "react-theme-provider"
-  ],
-  globals: {
-    react: "React"
-  },
   plugins: [
-    nodeResolve(),
     external(),
     postcss({
       modules: true
@@ -45,6 +35,37 @@ export default {
       plugins: ["external-helpers"]
     }),
     resolve(),
-    commonjs()
-  ]
+    commonjs({
+      include: "node_modules/**",
+      namedExports: {
+        "node_modules/react-is/index.js": [
+          "isElement",
+          "ForwardRef",
+          "isValidElementType"
+        ]
+      }
+    }),
+    json({
+      // All JSON files will be parsed by default,
+      // but you can also specifically include/exclude files
+      include: "node_modules/**",
+      exclude: [],
+
+      // for tree-shaking, properties will be declared as
+      // variables, using either `var` or `const`
+      preferConst: true, // Default: false
+
+      // specify indentation for the generated default export —
+      // defaults to '\t'
+      indent: "  ",
+
+      // ignores indent and generates the smallest code
+      compact: true, // Default: false
+
+      // generate a named export for every property of the JSON object
+      namedExports: true // Default: true
+    })
+  ],
+  external: ["styled-components", "react", "react-spring", "react-native"],
+  globals: { react: "React", "styled-components": "styled" }
 };

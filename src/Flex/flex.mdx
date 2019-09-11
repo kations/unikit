@@ -1,0 +1,36 @@
+---
+name: Flex
+route: /flex
+menu: Primitives
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Box} from '../index'
+
+# Button
+
+## Usage
+
+```bash
+import {Flex} from 'unikit'
+```
+
+
+<Playground>
+    <Flex row wrap content="space-around">
+   <Flex row content="space-around">
+    <Box type="primary" style={{width: 50, height: 50}} /> 
+   <Box type="primary" lighten={0.5} style={{width: 50, height: 50}} /> 
+   <Box type="primary" lighten={0.25} style={{width: 50, height: 50}} /> 
+    </Flex>
+    <Flex content="space-around">
+    <Box type="primary" style={{width: 50, height: 50}} /> 
+   <Box type="primary" lighten={0.5} style={{width: 50, height: 50}} /> 
+   <Box type="primary" lighten={0.25} style={{width: 50, height: 50}} /> 
+    </Flex> 
+    </Flex>
+</Playground>
+
+## Props
+
+<Props of={Flex} />
