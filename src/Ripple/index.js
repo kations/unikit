@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as PropTypes from "prop-types";
 import color from "color";
-import { useTransition, animated } from "react-spring";
+import { useTransition, animated } from "react-spring/native";
 
 import styled from "../styled";
 

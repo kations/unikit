@@ -3,6 +3,8 @@ import { Dimensions } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import color from "color";
 
+import Alert from "./Alert";
+
 export function isObject(item) {
   return item && typeof item === "object" && !Array.isArray(item);
 }
@@ -29,9 +31,13 @@ const primary = "#673fb4";
 const DefaultTheme = {
   colors: {
     primary: primary,
-    background: "#FFF",
+    background: color(primary)
+      .alpha(0.1)
+      .toString(),
     accent: "",
-    text: color(primary).darken(0.6),
+    text: color(primary)
+      .darken(0.6)
+      .toString(),
     surface: "#FFF",
     placeholder: "",
     success: "#8bc34a",
@@ -60,14 +66,24 @@ const DefaultTheme = {
   }
 };
 
-export default ({ children, theme }) => {
+export default ({ children, theme = {}, alertProps = {} }) => {
+  const [alert, setAlert] = useState(null);
   const [defaultTheme, setTheme] = useState(() =>
-    mergeDeep(DefaultTheme, theme)
+    mergeDeep(
+      {
+        ...DefaultTheme,
+        alert: obj => {
+          setAlert(obj);
+        }
+      },
+      theme
+    )
   );
+
   const dimensionHandler = ({ window, screen }) => {
-    console.log({ window, screen });
     setTheme({ ...defaultTheme, window, screen });
   };
+
   useEffect(() => {
     dimensionHandler({
       window: Dimensions.get("window"),
@@ -78,5 +94,11 @@ export default ({ children, theme }) => {
       Dimensions.removeEventListener("change", dimensionHandler);
     };
   }, []);
-  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>;
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      {children}
+      <Alert alert={alert} {...alertProps} />
+    </ThemeProvider>
+  );
 };

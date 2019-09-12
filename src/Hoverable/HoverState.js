@@ -1,9 +1,6 @@
+import { canUseDOM } from "../util";
+
 let isEnabled = false;
-var canUseDOM = !!(
-  typeof window !== "undefined" &&
-  window.document &&
-  window.document.createElement
-);
 
 if (canUseDOM) {
   /**

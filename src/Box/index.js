@@ -1,7 +1,8 @@
 import styled from "../styled";
 import color from "color";
+import PropTypes from "prop-types";
 
-const getStyle = ({ theme, type, lighten, darken }) => {
+const getStyle = ({ theme, type, lighten, darken, alpha }) => {
   const style = {};
 
   if (type) {
@@ -19,6 +20,12 @@ const getStyle = ({ theme, type, lighten, darken }) => {
         .toString();
     }
 
+    if (alpha) {
+      col = color(col)
+        .alpha(alpha)
+        .toString();
+    }
+
     style["backgroundColor"] = col;
   }
 
@@ -28,5 +35,14 @@ const getStyle = ({ theme, type, lighten, darken }) => {
 const Box = styled.View(props => ({
   ...getStyle(props)
 }));
+
+Box.propTypes = {
+  type: PropTypes.string,
+  lighten: PropTypes.number,
+  darken: PropTypes.number,
+  alpha: PropTypes.number,
+  style: PropTypes.object,
+  children: PropTypes.node
+};
 
 export default Box;

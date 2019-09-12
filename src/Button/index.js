@@ -2,9 +2,10 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import color from "color";
 
-import styled from "../styled";
+import styled, { useTheme } from "../styled";
 import Hoverable from "../Hoverable";
 import Ripple from "../Ripple";
+import Progress from "../Progress";
 import { isDark } from "../util";
 
 const getBackground = ({ type, theme, isHovered, outlined, light }) => {
@@ -34,6 +35,7 @@ const getBackground = ({ type, theme, isHovered, outlined, light }) => {
 
 const Touchable = styled.TouchableOpacity(
   ({ theme, size, isHovered, outlined, rounded, light, type }) => ({
+    flexDirection: "row",
     width: "auto",
     height: size,
     paddingHorizontal: size / 2,
@@ -48,7 +50,7 @@ const Touchable = styled.TouchableOpacity(
     }),
     borderWidth: outlined ? 3 : 0,
     borderColor: theme.colors[type] || type,
-    borderRadius: rounded ? size : 0,
+    borderRadius: rounded ? size : theme.globals.roundness,
     web: {
       cursor: "pointer"
     }
@@ -58,22 +60,22 @@ const Touchable = styled.TouchableOpacity(
   })
 );
 
-const Label = styled.Text(({ type, theme, color, outlined, light, size }) => ({
-  fontSize: size / 3,
-  color: color
-    ? color
-    : outlined || light
-    ? theme.colors[type] || type
-    : isDark(theme.colors[type] || type)
-    ? "#FFF"
-    : "#000"
-}));
+const Label = styled.Text(
+  ({ type, theme, textColor, outlined, light, size }) => ({
+    fontSize: size / 3,
+    color: textColor
+  })
+);
 
-// const BoxTwo = styled.View`
-//   width: 100px;
-//   height: 10px;
-//   background: red;
-// `;
+const LoadingWrap = styled.View({
+  position: "absolute",
+  left: 0,
+  top: 0,
+  width: "100%",
+  height: "100%",
+  alignItems: "center",
+  justifyContent: "center"
+});
 
 export default function Button({
   children,
@@ -86,8 +88,18 @@ export default function Button({
   color,
   labelProps = {},
   ripple = false,
+  loading = false,
+  progress,
   ...rest
 }) {
+  const theme = useTheme();
+  const textColor = color
+    ? color
+    : outlined || light
+    ? theme.colors[type] || type
+    : isDark(theme.colors[type] || type)
+    ? "#FFF"
+    : "#000";
   return (
     <Hoverable>
       {isHovered => (
@@ -103,8 +115,22 @@ export default function Button({
           rippleColor={ripple ? type : undefined}
           {...rest}
         >
+          {loading || progress ? (
+            <LoadingWrap>
+              <Progress
+                trackColor="transparent"
+                circleColor={textColor}
+                size={size / 2}
+                circleWidth={3}
+                value={progress}
+                loading={loading}
+              />
+            </LoadingWrap>
+          ) : null}
           <Label
-            color={color}
+            textColor={
+              loading === true || progress < 100 ? "transparent" : textColor
+            }
             outlined={outlined ? 1 : 0}
             light={light ? 1 : 0}
             size={size}
@@ -130,5 +156,7 @@ Button.propTypes = {
   outlined: PropTypes.bool,
   rounded: PropTypes.bool,
   light: PropTypes.bool,
-  ripple: PropTypes.bool
+  ripple: PropTypes.bool,
+  loading: PropTypes.bool,
+  progress: PropTypes.number
 };

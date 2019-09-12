@@ -1,5 +1,5 @@
-import * as React from "react";
-import scStyled from "styled-components/native";
+import React, { useContext } from "react";
+import scStyled, { ThemeContext } from "styled-components/native";
 import * as reactNative from "react-native";
 
 const colorStyles = [
@@ -9,6 +9,8 @@ const colorStyles = [
   "borderBottomColor",
   "borderTopColor"
 ];
+
+export const useTheme = () => useContext(ThemeContext);
 
 function isFunction(functionToCheck) {
   return (

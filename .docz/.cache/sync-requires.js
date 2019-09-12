@@ -5,9 +5,15 @@ const preferDefault = m => m && m.default || m
 
 
 exports.components = {
-  "component---readme-md": hot(preferDefault(require("/Users/kations/Projekte/unikit/README.md"))),
-  "component---src-flex-flex-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Flex/flex.mdx"))),
+  "component---cache-dev-404-page-js": hot(preferDefault(require("/Users/kations/Projekte/unikit/.docz/.cache/dev-404-page.js"))),
+  "component---src-pages-404-js": hot(preferDefault(require("/Users/kations/Projekte/unikit/.docz/src/pages/404.js"))),
+  "component---src-box-box-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Box/box.mdx"))),
   "component---src-button-button-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Button/button.mdx"))),
-  "component---src-pages-404-js": hot(preferDefault(require("/Users/kations/Projekte/unikit/.docz/src/pages/404.js")))
+  "component---src-alert-alert-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Alert/alert.mdx"))),
+  "component---src-avatar-avatar-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx"))),
+  "component---src-button-group-button-group-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx"))),
+  "component---src-flex-flex-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Flex/flex.mdx"))),
+  "component---src-progress-index-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/Progress/index.mdx"))),
+  "component---src-index-mdx": hot(preferDefault(require("/Users/kations/Projekte/unikit/src/index.mdx")))
 }
 
