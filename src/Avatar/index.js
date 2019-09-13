@@ -80,6 +80,7 @@ Avatar.propTypes = {
   size: PropTypes.number,
   source: PropTypes.object,
   onPress: PropTypes.func,
+  textColor: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.node
 };

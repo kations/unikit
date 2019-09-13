@@ -42,6 +42,9 @@ export default {
           "isElement",
           "ForwardRef",
           "isValidElementType"
+        ],
+        "node_modules/react-native-web/node_modules/fbjs/lib/ExecutionEnvironment.js": [
+          "canUseDOM"
         ]
       }
     }),
@@ -66,6 +69,15 @@ export default {
       namedExports: true // Default: true
     })
   ],
-  external: ["styled-components", "react", "react-spring", "react-native"],
-  globals: { react: "React", "styled-components": "styled" }
+  external: [
+    "styled-components",
+    "react",
+    "react-spring",
+    "react-native",
+    "react-native-web"
+  ],
+  globals: {
+    react: "React",
+    "styled-components": "styled"
+  }
 };

@@ -42,7 +42,8 @@ const DefaultTheme = {
     placeholder: "",
     success: "#8bc34a",
     warning: "#ffbb33",
-    error: "#f44336"
+    error: "#f44336",
+    shadow: "rgba(0,0,0,0.2)"
   },
   fontSize: {
     h1: 30,
@@ -60,7 +61,6 @@ const DefaultTheme = {
     desktop: 99999
   },
   globals: {
-    shadowColor: "rgba(0,0,0,0.5)",
     borderRadius: 3,
     roundness: 5
   }

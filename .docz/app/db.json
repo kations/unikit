@@ -84,36 +84,6 @@
       }
     },
     {
-      "key": "src/Avatar/avatar.mdx",
-      "value": {
-        "name": "Avatar",
-        "route": "/Avatar",
-        "menu": "UI",
-        "id": "6ade582e19312f6e67fbcaa06b767656",
-        "filepath": "src/Avatar/avatar.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
-        "link": "",
-        "slug": "src-avatar-avatar",
-        "headings": [
-          {
-            "slug": "avatar",
-            "depth": 1,
-            "value": "Avatar"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/Button/button.mdx",
       "value": {
         "name": "Button",
@@ -144,21 +114,21 @@
       }
     },
     {
-      "key": "src/ButtonGroup/ButtonGroup.mdx",
+      "key": "src/Avatar/avatar.mdx",
       "value": {
-        "name": "ButtonGroup",
-        "route": "/ButtonGroup",
+        "name": "Avatar",
+        "route": "/Avatar",
         "menu": "UI",
-        "id": "05addf9dc7efeacf95a8ccb696c31a15",
-        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
+        "id": "6ade582e19312f6e67fbcaa06b767656",
+        "filepath": "src/Avatar/avatar.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
         "link": "",
-        "slug": "src-button-group-button-group",
+        "slug": "src-avatar-avatar",
         "headings": [
           {
-            "slug": "buttongroup",
+            "slug": "avatar",
             "depth": 1,
-            "value": "ButtonGroup"
+            "value": "Avatar"
           },
           {
             "slug": "usage",
@@ -189,6 +159,36 @@
             "slug": "box",
             "depth": 1,
             "value": "Box"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/ButtonGroup/ButtonGroup.mdx",
+      "value": {
+        "name": "ButtonGroup",
+        "route": "/ButtonGroup",
+        "menu": "UI",
+        "id": "05addf9dc7efeacf95a8ccb696c31a15",
+        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
+        "link": "",
+        "slug": "src-button-group-button-group",
+        "headings": [
+          {
+            "slug": "buttongroup",
+            "depth": 1,
+            "value": "ButtonGroup"
           },
           {
             "slug": "usage",
@@ -263,6 +263,5 @@
         ]
       }
     }
-  ],
-  "props": []
+  ]
 }

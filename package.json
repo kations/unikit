@@ -39,7 +39,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.1.4",
-    "docz": "^2.0.0-rc.38",
+    "docz": "2.0.0-rc.38",
     "eslint": "^5.0.1",
     "eslint-config-react-app": "^5.0.1",
     "eslint-config-standard": "^11.0.0",

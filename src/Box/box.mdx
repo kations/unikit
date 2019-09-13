@@ -17,8 +17,10 @@ import {Box} from 'unikit'
 
 
 <Playground>
-    <Flex row wrap content="space-around">
-    <Box type="primary" style={{width: 50, height: 50}} /> 
+    <Flex type="background" p={30} row wrap content="space-around">
+    <Box type="primary" style={{width: 50, height: 50}} />
+    <Box type="primary" alpha={0.5} style={{width: 50, height: 50}} />
+    <Box type="surface" shadow={5} style={{width: 50, height: 50}} /> 
     </Flex>
 </Playground>
 
