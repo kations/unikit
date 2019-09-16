@@ -33,6 +33,9 @@ export default function styled(component) {
           //console.log({ found: key });
           style[key] = props.theme.colors[style[key]] || style[key];
         }
+        if (key === "fontSize") {
+          style[key] = props.theme.fontSize[style[key]] || style[key];
+        }
         if (key === reactNative.Platform.OS) {
           style = Object.assign({}, style, style[key]);
         }

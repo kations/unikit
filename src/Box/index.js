@@ -18,15 +18,29 @@ const getStyle = ({
   lighten,
   darken,
   alpha,
+  w,
+  h,
   p,
   px,
-  py
+  py,
+  m,
+  mx,
+  my,
+  mt
 }) => {
   const style = {};
+
+  if (w) style["width"] = w;
+  if (h) style["height"] = h;
 
   if (p) style["padding"] = p;
   if (px) style["paddingHorizontal"] = px;
   if (py) style["paddingVertical"] = py;
+
+  if (m) style["margin"] = m;
+  if (mx) style["marginHorizontal"] = mx;
+  if (my) style["marginVertical"] = my;
+  if (mt) style["marginTop"] = mt;
 
   if (type) {
     let col = theme.colors[type] || type;
@@ -63,7 +77,7 @@ const getStyle = ({
     style["elevation"] = shadow;
   }
 
-  console.log({ style });
+  //console.log({ style });
 
   return style;
 };

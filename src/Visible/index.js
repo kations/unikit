@@ -59,7 +59,8 @@ export default class Visible extends Component {
     if (this.lastValue !== isVisible) {
       this.lastValue = isVisible;
       this.setState({ isVisible: isVisible });
-      this.props.onChange(isVisible);
+      if (isVisible && this.props.stayVisible) this.stopWatching();
+      if (this.props.onChange) this.props.onChange(isVisible);
     }
   }
 

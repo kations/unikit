@@ -1,0 +1,29 @@
+---
+name: Slider
+route: /Slider
+menu: Inputs
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Slider} from '../index'
+
+# Slider
+
+### Usage
+
+```bash
+import { Slider } from 'unikit'
+```
+
+
+<Playground>
+    <Flex content="center" align="center">
+        <Slider value={30} showValue />
+        <Slider value={30} mt={50} sliderHeight={300} showValue vertical />
+        <Slider value={30} steps={10} mt={50} onChange={value => console.log(value)} />
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Slider} />

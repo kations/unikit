@@ -1,0 +1,29 @@
+---
+name: Grid
+route: /Grid
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Grid, Box} from '../index'
+
+# Box
+
+### Usage
+
+```bash
+import { Grid } from 'unikit'
+```
+
+
+<Playground>
+    <Grid min={300}>
+        <Box type="primary" style={{width: '100%', height: 100}} />
+        <Box type="primary" alpha={0.5} style={{width: '100%', height: 100}} />
+        <Box type="primary" alpha={0.25}  style={{width: '100%', height: 100}} /> 
+    </Grid>
+</Playground>
+
+### Props
+
+<Props of={Grid} />
