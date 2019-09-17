@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import scStyled, { ThemeContext } from "styled-components/native";
+import scStyled, { ThemeContext, withTheme } from "styled-components/native";
 import * as reactNative from "react-native";
 
 const colorStyles = [
@@ -11,6 +11,32 @@ const colorStyles = [
 ];
 
 export const useTheme = () => useContext(ThemeContext);
+
+export const useThemeProps = (props, name) => {
+  const theme = useTheme();
+  return Object.assign({}, theme.globals[name], props);
+};
+
+export const withThemeProps = (WrappedComponent, name) => {
+  class WithSubscription extends React.Component {
+    render() {
+      const themeProps = Object.assign(
+        {},
+        this.props.theme.globals[name],
+        this.props
+      );
+      return <WrappedComponent {...themeProps} />;
+    }
+  }
+  WithSubscription.displayName = `withThemeProps(${getDisplayName(
+    WrappedComponent
+  )})`;
+  return withTheme(WithSubscription);
+};
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+}
 
 function isFunction(functionToCheck) {
   return (

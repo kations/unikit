@@ -270,9 +270,13 @@ const Comp = ({
             size={size}
             pointerEvents="none"
           >
-            {getTicks().map(step => {
+            {getTicks().map((step, index) => {
               return (
-                <Tick vertical={vertical} handleSize={handleSize}>
+                <Tick
+                  key={`step-${index}`}
+                  vertical={vertical}
+                  handleSize={handleSize}
+                >
                   <View>
                     <Text
                       style={{

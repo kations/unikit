@@ -23,10 +23,17 @@ const getStyle = ({
   p,
   px,
   py,
+  pt,
+  pb,
+  pl,
+  pr,
   m,
   mx,
   my,
-  mt
+  mt,
+  mb,
+  ml,
+  mr
 }) => {
   const style = {};
 
@@ -36,11 +43,18 @@ const getStyle = ({
   if (p) style["padding"] = p;
   if (px) style["paddingHorizontal"] = px;
   if (py) style["paddingVertical"] = py;
+  if (pt) style["paddingTop"] = pt;
+  if (pb) style["paddingBottom"] = pb;
+  if (pl) style["paddingLeft"] = pl;
+  if (pr) style["paddingRight"] = pr;
 
   if (m) style["margin"] = m;
   if (mx) style["marginHorizontal"] = mx;
   if (my) style["marginVertical"] = my;
   if (mt) style["marginTop"] = mt;
+  if (mb) style["marginBottom"] = mb;
+  if (ml) style["marginLeft"] = ml;
+  if (mr) style["marginRight"] = mr;
 
   if (type) {
     let col = theme.colors[type] || type;

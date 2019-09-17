@@ -1,0 +1,39 @@
+---
+name: Inputs
+route: /Inputs
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import { Input, Flex } from '../index'
+
+# Inputs
+
+### Usage
+
+```bash
+import { Input } from 'unikit'
+```
+
+## Input 
+
+<Playground>
+    <Flex p={30} type="background">
+        <Input type="text" label="Text" />
+        <Input type="range" label="Slider" />
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Input} />
+
+## Slider 
+
+<Playground>
+    <Flex p={30} type="background">
+        <Input.Slider value={30} showValue />
+        <Input.Slider value={30} mt={50} sliderHeight={300} showValue vertical />
+        <Input.Slider value={30} steps={10} mt={50} onChange={value => console.log(value)} />
+    </Flex>
+</Playground>

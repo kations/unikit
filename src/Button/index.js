@@ -121,7 +121,7 @@ export default function Button({
                 trackColor="transparent"
                 circleColor={textColor}
                 size={size / 2}
-                circleWidth={3}
+                circleWidth={2}
                 value={progress}
                 loading={loading}
               />

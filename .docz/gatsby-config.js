@@ -10,7 +10,7 @@ try {
 const config = {
   siteMetadata: {
     title: 'Unikit',
-    description: 'universal component library for web and native',
+    description: 'universal component library for react and react-native',
   },
   plugins: [
     {
@@ -46,7 +46,7 @@ const config = {
         'edit-branch': 'master',
         config: '',
         title: 'Unikit',
-        description: 'universal component library for web and native',
+        description: 'universal component library for react and react-native',
         host: 'localhost',
         port: 3000,
         p: 3000,

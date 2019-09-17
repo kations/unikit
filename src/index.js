@@ -1,6 +1,7 @@
+import color from "color";
 import { isDark } from "./util";
 import styled, { useTheme } from "./styled";
-export { isDark, styled, useTheme };
+export { isDark, styled, useTheme, color };
 
 export { default as ThemeProvider } from "./ThemeProvider";
 
@@ -17,9 +18,13 @@ export { default as Avatar } from "./Avatar";
 export { default as Progress } from "./Progress";
 export { default as Grid } from "./Grid";
 export { default as Icon } from "./Icon";
+export { default as Page } from "./Page";
+export { default as Tabs } from "./Tabs";
+export { default as Swiper } from "./Swiper";
+export { default as Chart } from "./Chart";
 
 //Inputs
-export { default as Slider } from "./Slider";
+export { default as Input } from "./Input";
 
 //Aktions
 export { default as Hoverable } from "./Hoverable";
