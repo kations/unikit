@@ -1,0 +1,30 @@
+---
+name: Avatar
+route: /Avatar
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Avatar} from '../index'
+
+# Avatar
+
+### Usage
+
+```bash
+import { Avatar } from 'unikit'
+```
+
+
+<Playground>
+    <Flex row wrap content="space-around" align="center">
+        <Avatar type="primary" char="UN" /> 
+        <Avatar size={66} source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} /> 
+        <Avatar size={66} char="IK" source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} /> 
+        <Avatar type="success" darken={0.5} char="IT" /> 
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Avatar} />

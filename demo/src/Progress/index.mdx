@@ -1,0 +1,28 @@
+---
+name: Progress
+route: /Progress
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Progress} from '../index'
+
+# Progress
+
+### Usage
+
+```bash
+import { Progress } from 'unikit'
+```
+
+<Playground>
+    <Flex row wrap content="space-around" align="center">
+        <Progress value={77} /> 
+        <Progress value={33} size={100} /> 
+        <Progress loading />
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Progress} />

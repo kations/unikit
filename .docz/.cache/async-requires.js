@@ -10,15 +10,16 @@ exports.components = {
   "component---src-box-box-mdx": () => import("/Users/kations/Projekte/unikit/src/Box/box.mdx" /* webpackChunkName: "component---src-box-box-mdx" */),
   "component---src-button-button-mdx": () => import("/Users/kations/Projekte/unikit/src/Button/button.mdx" /* webpackChunkName: "component---src-button-button-mdx" */),
   "component---src-button-group-button-group-mdx": () => import("/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx" /* webpackChunkName: "component---src-button-group-button-group-mdx" */),
-  "component---src-flex-flex-mdx": () => import("/Users/kations/Projekte/unikit/src/Flex/flex.mdx" /* webpackChunkName: "component---src-flex-flex-mdx" */),
   "component---src-chart-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Chart/index.mdx" /* webpackChunkName: "component---src-chart-index-mdx" */),
+  "component---src-flex-flex-mdx": () => import("/Users/kations/Projekte/unikit/src/Flex/flex.mdx" /* webpackChunkName: "component---src-flex-flex-mdx" */),
   "component---src-grid-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Grid/index.mdx" /* webpackChunkName: "component---src-grid-index-mdx" */),
   "component---src-icon-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Icon/index.mdx" /* webpackChunkName: "component---src-icon-index-mdx" */),
-  "component---src-image-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Image/index.mdx" /* webpackChunkName: "component---src-image-index-mdx" */),
   "component---src-input-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Input/index.mdx" /* webpackChunkName: "component---src-input-index-mdx" */),
+  "component---src-image-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Image/index.mdx" /* webpackChunkName: "component---src-image-index-mdx" */),
   "component---src-progress-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Progress/index.mdx" /* webpackChunkName: "component---src-progress-index-mdx" */),
   "component---src-swiper-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Swiper/index.mdx" /* webpackChunkName: "component---src-swiper-index-mdx" */),
   "component---src-tabs-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Tabs/index.mdx" /* webpackChunkName: "component---src-tabs-index-mdx" */),
-  "component---src-text-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Text/index.mdx" /* webpackChunkName: "component---src-text-index-mdx" */)
+  "component---src-text-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Text/index.mdx" /* webpackChunkName: "component---src-text-index-mdx" */),
+  "component---src-overlay-index-mdx": () => import("/Users/kations/Projekte/unikit/src/Overlay/index.mdx" /* webpackChunkName: "component---src-overlay-index-mdx" */)
 }
 

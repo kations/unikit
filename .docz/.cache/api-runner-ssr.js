@@ -1,6 +1,6 @@
 var plugins = [{
       plugin: require('/Users/kations/Projekte/unikit/node_modules/gatsby-plugin-mdx/gatsby-ssr'),
-      options: {"plugins":[],"extensions":[".md",".mdx"],"remarkPlugins":[[null,{"type":"yaml","marker":"-"}],null],"rehypePlugins":[null,null],"defaultLayouts":{"default":"/Users/kations/Projekte/unikit/node_modules/gatsby-theme-docz/src/base/Layout.js"}},
+      options: {"plugins":[],"extensions":[".md",".mdx"],"remarkPlugins":[[null,{"type":"yaml","marker":"-"}],null],"rehypePlugins":[null,null],"gatsbyRemarkPlugins":[],"defaultLayouts":{"default":"/Users/kations/Projekte/unikit/node_modules/gatsby-theme-docz/src/base/Layout.js"}},
     },{
       plugin: require('/Users/kations/Projekte/unikit/node_modules/gatsby-plugin-react-helmet/gatsby-ssr'),
       options: {"plugins":[]},

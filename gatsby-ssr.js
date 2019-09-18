@@ -9,7 +9,7 @@ export const wrapRootElement = ({ element, props }) => {
       theme={{
         globals: {
           Input: {
-            mt: 5
+            mt: 10
           }
         }
       }}

@@ -1,0 +1,24 @@
+---
+name: Chart
+route: /Chart
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import { Chart } from '../index'
+
+# Chart
+
+### Usage
+
+```bash
+import { Chart } from 'unikit'
+```
+
+<Playground>
+    <Chart data={[10,15,13,12,17,12]} onPress={bar => alert(bar.index)} />
+</Playground>
+
+### Props
+
+<Props of={Chart} />

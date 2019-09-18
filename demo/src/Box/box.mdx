@@ -1,0 +1,29 @@
+---
+name: Box
+route: /Box
+menu: Primitives
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Box} from '../index'
+
+# Box
+
+### Usage
+
+```bash
+import {Box} from 'unikit'
+```
+
+
+<Playground>
+    <Flex type="background" p={30} row wrap content="space-around">
+    <Box type="primary" style={{width: 50, height: 50}} />
+    <Box type="primary" alpha={0.5} style={{width: 50, height: 50}} />
+    <Box type="surface" shadow={5} style={{width: 50, height: 50}} /> 
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Box} />

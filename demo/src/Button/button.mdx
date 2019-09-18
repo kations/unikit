@@ -1,0 +1,33 @@
+---
+name: Button
+route: /button
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Button, Flex} from '../index'
+
+# Button
+
+### Usage
+
+```bash
+import { Button, Flex } from 'unikit'
+```
+
+
+<Playground>
+<Flex row wrap content="space-around">
+    <Button type="#000" onPress={() => alert('hi')}>Basic</Button>  
+     <Button outlined>Outlined</Button>
+     <Button rounded>Rounded</Button>   
+     <Button loading>Loading</Button>  
+     <Button progress={77}>Progress</Button>  
+     <Button rounded light>Light</Button>
+     <Button rounded light ripple>Ripple</Button>   
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Button} />

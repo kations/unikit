@@ -1,4 +1,4 @@
-const { merge } = require('lodash/fp')
+const { mergeWith } = require('lodash/fp')
 
 let custom
 try {
@@ -8,6 +8,8 @@ try {
 }
 
 const config = {
+  pathPrefix: '/',
+
   siteMetadata: {
     title: 'Unikit',
     description: 'universal component library for react and react-native',
@@ -80,5 +82,11 @@ const config = {
     },
   ],
 }
+
+const merge = mergeWith((objValue, srcValue) => {
+  if (Array.isArray(objValue)) {
+    return objValue.concat(srcValue)
+  }
+})
 
 module.exports = merge(config, custom)

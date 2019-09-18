@@ -1,0 +1,31 @@
+---
+name: Text
+route: /Text
+menu: Primitives
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Text} from '../index'
+
+# Text
+
+### Usage
+
+```bash
+import {Text} from 'unikit'
+```
+
+<Playground>
+    <Flex  align="center">
+        <Text level={1} mt={10}>Headline 1</Text>
+        <Text level={2} mt={10}>Headline 2</Text>
+        <Text level={3} mt={10}>Headline 3</Text>
+        <Text level={4} mt={10}>Headline 4</Text>
+        <Text level={5} mt={10}>Headline 5</Text>
+        <Text mt={10}>Paragraph</Text>
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Text} />
