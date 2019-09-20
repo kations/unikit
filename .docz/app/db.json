@@ -111,21 +111,21 @@
       }
     },
     {
-      "key": "src/Box/box.mdx",
+      "key": "src/Animate/index.mdx",
       "value": {
-        "name": "Box",
-        "route": "/Box",
-        "menu": "Primitives",
-        "id": "c1e6beb9406ebbd372370abf7966b204",
-        "filepath": "src/Box/box.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
+        "name": "Animate",
+        "route": "/Animate",
+        "menu": "UI",
+        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
+        "filepath": "src/Animate/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
         "link": "",
-        "slug": "src-box-box",
+        "slug": "src-animate-index",
         "headings": [
           {
-            "slug": "box",
+            "slug": "animate",
             "depth": 1,
-            "value": "Box"
+            "value": "Animate"
           },
           {
             "slug": "usage",
@@ -141,21 +141,21 @@
       }
     },
     {
-      "key": "src/Button/button.mdx",
+      "key": "src/Box/box.mdx",
       "value": {
-        "name": "Button",
-        "route": "/button",
-        "menu": "UI",
-        "id": "dabf605616d90c798219ec4ecf9f988f",
-        "filepath": "src/Button/button.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Button/button.mdx",
+        "name": "Box",
+        "route": "/Box",
+        "menu": "Primitives",
+        "id": "c1e6beb9406ebbd372370abf7966b204",
+        "filepath": "src/Box/box.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
         "link": "",
-        "slug": "src-button-button",
+        "slug": "src-box-box",
         "headings": [
           {
-            "slug": "button",
+            "slug": "box",
             "depth": 1,
-            "value": "Button"
+            "value": "Box"
           },
           {
             "slug": "usage",
@@ -201,6 +201,36 @@
       }
     },
     {
+      "key": "src/Button/button.mdx",
+      "value": {
+        "name": "Button",
+        "route": "/button",
+        "menu": "UI",
+        "id": "dabf605616d90c798219ec4ecf9f988f",
+        "filepath": "src/Button/button.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Button/button.mdx",
+        "link": "",
+        "slug": "src-button-button",
+        "headings": [
+          {
+            "slug": "button",
+            "depth": 1,
+            "value": "Button"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/Chart/index.mdx",
       "value": {
         "name": "Chart",
@@ -231,6 +261,36 @@
       }
     },
     {
+      "key": "src/Dropdown/index.mdx",
+      "value": {
+        "name": "Dropdown",
+        "route": "/Dropdown",
+        "menu": "UI",
+        "id": "e40161d6af1c3f2778a6f0362ad23dcc",
+        "filepath": "src/Dropdown/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Dropdown/index.mdx",
+        "link": "",
+        "slug": "src-dropdown-index",
+        "headings": [
+          {
+            "slug": "dropdown",
+            "depth": 1,
+            "value": "Dropdown"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/Flex/flex.mdx",
       "value": {
         "name": "Flex",
@@ -246,6 +306,36 @@
             "slug": "flex",
             "depth": 1,
             "value": "Flex"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Headline/index.mdx",
+      "value": {
+        "name": "Headline",
+        "route": "/Headline",
+        "menu": "UI",
+        "id": "7286514c5f50172c42b0f4497dbd5dc3",
+        "filepath": "src/Headline/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Headline/index.mdx",
+        "link": "",
+        "slug": "src-headline-index",
+        "headings": [
+          {
+            "slug": "headline",
+            "depth": 1,
+            "value": "Headline"
           },
           {
             "slug": "usage",
@@ -543,117 +633,6 @@
   ],
   "props": [
     {
-      "key": "src/Input/Slider.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Comp",
-          "methods": [],
-          "actualName": "Comp",
-          "props": {
-            "value": {
-              "defaultValue": {
-                "value": "0",
-                "computed": false
-              },
-              "required": false
-            },
-            "progressColor": {
-              "defaultValue": {
-                "value": "\"primary\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "trackColor": {
-              "defaultValue": {
-                "value": "\"background\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "trackHeight": {
-              "defaultValue": {
-                "value": "10",
-                "computed": false
-              },
-              "required": false
-            },
-            "handleSize": {
-              "defaultValue": {
-                "value": "30",
-                "computed": false
-              },
-              "required": false
-            },
-            "handleColor": {
-              "defaultValue": {
-                "value": "\"#FFF\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "min": {
-              "defaultValue": {
-                "value": "0",
-                "computed": false
-              },
-              "required": false
-            },
-            "max": {
-              "defaultValue": {
-                "value": "100",
-                "computed": false
-              },
-              "required": false
-            },
-            "steps": {
-              "defaultValue": {
-                "value": "1",
-                "computed": false
-              },
-              "required": false
-            },
-            "ticks": {
-              "defaultValue": {
-                "value": "10",
-                "computed": false
-              },
-              "required": false
-            },
-            "showValue": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "showTicks": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "vertical": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "handleProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        }
-      ]
-    },
-    {
       "key": "src/Input/Text.js",
       "value": [
         {
@@ -801,17 +780,6 @@
               "required": false
             }
           }
-        }
-      ]
-    },
-    {
-      "key": "demo/App.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "App",
-          "methods": [],
-          "actualName": "App"
         }
       ]
     },
@@ -1062,13 +1030,24 @@
       ]
     },
     {
-      "key": "dist/index.js",
+      "key": "demo/src/Animate/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Button$1",
+          "displayName": "Animate",
           "methods": [],
-          "actualName": "Button$1",
+          "actualName": "Animate"
+        }
+      ]
+    },
+    {
+      "key": "demo/src/Button/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Button",
+          "methods": [],
+          "actualName": "Button",
           "props": {
             "children": {
               "type": {
@@ -1089,14 +1068,22 @@
                 "name": "number"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              }
             },
             "type": {
               "type": {
                 "name": "string"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              }
             },
             "color": {
               "type": {
@@ -1117,42 +1104,66 @@
                 "name": "object"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
             },
             "outlined": {
               "type": {
                 "name": "bool"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             },
             "rounded": {
               "type": {
                 "name": "bool"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             },
             "light": {
               "type": {
                 "name": "bool"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             },
             "ripple": {
               "type": {
                 "name": "bool"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             },
             "loading": {
               "type": {
                 "name": "bool"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             },
             "progress": {
               "type": {
@@ -1160,6 +1171,20 @@
               },
               "required": false,
               "description": ""
+            },
+            "activeOpacity": {
+              "defaultValue": {
+                "value": "0.9",
+                "computed": false
+              },
+              "required": false
+            },
+            "disabled": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
             }
           }
         }
@@ -1713,6 +1738,1032 @@
               },
               "required": false,
               "description": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Visible/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Visible",
+          "methods": [
+            {
+              "name": "startWatching",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            },
+            {
+              "name": "stopWatching",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            },
+            {
+              "name": "isInViewPort",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            }
+          ],
+          "actualName": "Visible"
+        }
+      ]
+    },
+    {
+      "key": "src/Image/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Image",
+          "methods": [],
+          "actualName": "Image",
+          "props": {
+            "blurRadius": {
+              "defaultValue": {
+                "value": "10",
+                "computed": false
+              },
+              "required": false
+            },
+            "lazy": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Text/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Text",
+          "methods": [],
+          "actualName": "Text"
+        }
+      ]
+    },
+    {
+      "key": "demo/src/Icon/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "size": {
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              },
+              "required": false
+            },
+            "lineWidth": {
+              "defaultValue": {
+                "value": "2",
+                "computed": false
+              },
+              "required": false
+            },
+            "name": {
+              "defaultValue": {
+                "value": "\"x\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "color": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "demo/App.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "App",
+          "methods": [],
+          "actualName": "App"
+        }
+      ]
+    },
+    {
+      "key": "src/Headline/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Headline",
+          "methods": [],
+          "actualName": "Headline",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            },
+            "as": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "from": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "to": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "level": {
+              "defaultValue": {
+                "value": "1",
+                "computed": false
+              },
+              "required": false
+            },
+            "animateType": {
+              "defaultValue": {
+                "value": "\"char\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "stayVisible": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "delay": {
+              "defaultValue": {
+                "value": "100",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "demo/src/Headline/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Headline",
+          "methods": [],
+          "actualName": "Headline",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            },
+            "as": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "from": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "to": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "level": {
+              "defaultValue": {
+                "value": "1",
+                "computed": false
+              },
+              "required": false
+            },
+            "animateType": {
+              "defaultValue": {
+                "value": "\"char\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "stayVisible": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "delay": {
+              "defaultValue": {
+                "value": "100",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Select.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp"
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Tags.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "value": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "[]",
+                "computed": false
+              }
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "textInputProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "placeholder": {
+              "defaultValue": {
+                "value": "\"Add Tag...\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "submitOnString": {
+              "defaultValue": {
+                "value": "[\" \", \",\"]",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Number.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp"
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Checkbox.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "value": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "circleSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "30",
+                "computed": false
+              }
+            },
+            "borderSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "2",
+                "computed": false
+              }
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "type": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Grid/index.js",
+      "value": [
+        {
+          "description": "",
+          "methods": [],
+          "props": {
+            "min": {
+              "defaultValue": {
+                "value": "500",
+                "computed": false
+              },
+              "required": false
+            },
+            "minRows": {
+              "defaultValue": {
+                "value": "1",
+                "computed": false
+              },
+              "required": false
+            },
+            "gap": {
+              "defaultValue": {
+                "value": "5",
+                "computed": false
+              },
+              "required": false
+            },
+            "style": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "itemStyle": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Button/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Button",
+          "methods": [],
+          "actualName": "Button",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "onPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              }
+            },
+            "type": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              }
+            },
+            "color": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelStyle": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelProps": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
+            },
+            "outlined": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "rounded": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "light": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "ripple": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "loading": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "progress": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "activeOpacity": {
+              "defaultValue": {
+                "value": "0.9",
+                "computed": false
+              },
+              "required": false
+            },
+            "disabled": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "renderLeft": {
+              "defaultValue": {
+                "value": "null",
+                "computed": false
+              },
+              "required": false
+            },
+            "renderRight": {
+              "defaultValue": {
+                "value": "null",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Form/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Form",
+          "methods": [],
+          "actualName": "Form",
+          "props": {
+            "button": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "buttonLabel": {
+              "defaultValue": {
+                "value": "\"Submit\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "buttonProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Switch.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "value": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "circleSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "borderSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "defaultValue": {
+                "value": "40",
+                "computed": false
+              },
+              "required": false
+            },
+            "gap": {
+              "defaultValue": {
+                "value": "5",
+                "computed": false
+              },
+              "required": false
+            },
+            "trackColor": {
+              "defaultValue": {
+                "value": "\"background\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "activeTrackColor": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "dist/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Button$1",
+          "methods": [],
+          "actualName": "Button$1",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "onPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "type": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "color": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelStyle": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelProps": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "outlined": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "rounded": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "light": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "ripple": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "loading": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "progress": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Input/DatePicker.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "textInputProps": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Input/Slider.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "value": {
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              },
+              "required": false
+            },
+            "progressColor": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "trackColor": {
+              "defaultValue": {
+                "value": "\"background\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "trackHeight": {
+              "defaultValue": {
+                "value": "10",
+                "computed": false
+              },
+              "required": false
+            },
+            "handleSize": {
+              "defaultValue": {
+                "value": "30",
+                "computed": false
+              },
+              "required": false
+            },
+            "handleColor": {
+              "defaultValue": {
+                "value": "\"#FFF\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "min": {
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              },
+              "required": false
+            },
+            "max": {
+              "defaultValue": {
+                "value": "100",
+                "computed": false
+              },
+              "required": false
+            },
+            "steps": {
+              "defaultValue": {
+                "value": "1",
+                "computed": false
+              },
+              "required": false
+            },
+            "ticks": {
+              "defaultValue": {
+                "value": "10",
+                "computed": false
+              },
+              "required": false
+            },
+            "showValue": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "showTicks": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "vertical": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "handleProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Animate/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Animate",
+          "methods": [],
+          "actualName": "Animate"
+        }
+      ]
+    },
+    {
+      "key": "src/Dropdown/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Dropdown",
+          "methods": [],
+          "actualName": "Dropdown",
+          "props": {
+            "downProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "content": {
+              "defaultValue": {
+                "value": "null",
+                "computed": false
+              },
+              "required": false
             }
           }
         }

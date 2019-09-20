@@ -44,7 +44,7 @@ const DefaultTheme = {
     success: "#8bc34a",
     warning: "#ffbb33",
     error: "#f44336",
-    shadow: "rgba(0,0,0,0.2)"
+    shadow: "rgba(0,0,0,0.1)"
   },
   fontSize: {
     h1: 30,

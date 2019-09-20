@@ -9,7 +9,6 @@ import Progress from "../Progress";
 import { isDark } from "../util";
 
 const getBackground = ({ type, theme, isHovered, outlined, light }) => {
-  console.log({ type });
   if (outlined) {
     return isHovered
       ? color(theme.colors[type] || type)
@@ -35,6 +34,7 @@ const getBackground = ({ type, theme, isHovered, outlined, light }) => {
 
 const Touchable = styled.TouchableOpacity(
   ({ theme, size, isHovered, outlined, rounded, light, type }) => ({
+    position: "relative",
     flexDirection: "row",
     width: "auto",
     height: size,
@@ -54,9 +54,6 @@ const Touchable = styled.TouchableOpacity(
     web: {
       cursor: "pointer"
     }
-    // "769": {
-    //   backgroundtype: 'blue',
-    // },
   })
 );
 
@@ -71,8 +68,8 @@ const LoadingWrap = styled.View({
   position: "absolute",
   left: 0,
   top: 0,
-  width: "100%",
-  height: "100%",
+  right: 0,
+  bottom: 0,
   alignItems: "center",
   justifyContent: "center"
 });
@@ -89,7 +86,10 @@ export default function Button({
   labelProps = {},
   ripple = false,
   loading = false,
+  disabled = false,
   progress,
+  renderLeft = null,
+  renderRight = null,
   ...rest
 }) {
   const theme = useTheme();
@@ -113,6 +113,7 @@ export default function Button({
           light={light ? 1 : 0}
           type={type}
           rippleColor={ripple ? type : undefined}
+          disabled={loading ? true : disabled}
           {...rest}
         >
           {loading || progress ? (
@@ -127,6 +128,7 @@ export default function Button({
               />
             </LoadingWrap>
           ) : null}
+          {renderLeft}
           <Label
             textColor={
               loading === true || progress < 100 ? "transparent" : textColor
@@ -139,6 +141,7 @@ export default function Button({
           >
             {children}
           </Label>
+          {renderRight}
         </Touchable>
       )}
     </Hoverable>

@@ -1,0 +1,38 @@
+---
+name: Animate
+route: /Animate
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import { Flex, Animate, Box } from '../index'
+
+# Animate
+
+### Usage
+
+```bash
+import { Animate } from 'unikit'
+```
+
+
+<Playground>
+    <Flex row wrap content="space-around" align="center">
+        <Animate>
+            <Box w={100} h={100} type="primary" />
+        </Animate>
+        <Animate from={{ opacity: 0, y: -100 }}>
+            <Box w={100} h={100} type="primary" />
+        </Animate>
+        <Animate from={{ opacity: 0, x: 100 }}>
+            <Box w={100} h={100} type="primary" />
+        </Animate>
+        <Animate from={{ opacity: 0, x: -100 }}>
+            <Box w={100} h={100} type="primary" />
+        </Animate>
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Animate} />

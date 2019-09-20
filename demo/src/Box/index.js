@@ -81,14 +81,14 @@ const getStyle = ({
   }
 
   if (shadow) {
-    const shadowOffset =
+    const ssOffset =
       shadowCasting === "top"
         ? -Math.round(shadow / 2)
         : Math.round(shadow / 2);
-    const shadowColor = shadowColor || theme.colors.shadow;
-    const shadowRadius = interpolate(1, 20, shadow);
+    const sCololor = shadowColor || theme.colors.shadow;
+    const sRadius = interpolate(1, 20, shadow);
     style["elevation"] = shadow;
-    style["boxShadow"] = `0 ${shadowOffset}px ${shadowRadius}px ${shadowColor}`;
+    style["boxShadow"] = `0 ${ssOffset}px ${sRadius}px ${sCololor}`;
   }
 
   //console.log({ style });

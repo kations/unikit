@@ -24,6 +24,7 @@ export { default as Tabs } from "./Tabs";
 export { default as Swiper } from "./Swiper";
 export { default as Chart } from "./Chart";
 export { default as Overlay } from "./Overlay";
+export { default as Headline } from "./Headline";
 
 //Inputs
 export { default as Input } from "./Input";

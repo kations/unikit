@@ -24,9 +24,12 @@ export { default as Tabs } from "./Tabs";
 export { default as Swiper } from "./Swiper";
 export { default as Chart } from "./Chart";
 export { default as Overlay } from "./Overlay";
+export { default as Headline } from "./Headline";
+export { default as Dropdown } from "./Dropdown";
 
 //Inputs
 export { default as Input } from "./Input";
+export { default as Form } from "./Form";
 
 //Aktions
 export { default as Hoverable } from "./Hoverable";

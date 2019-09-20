@@ -13,8 +13,8 @@ const Box = animated(styled.View());
 
 export default function Animate(props) {
   const {
-    from = { opacity: 0, y: 100 },
-    to = { opacity: 1, y: 0 },
+    from = { opacity: 0, y: 100, x: 0 },
+    to = { opacity: 1, y: 0, x: 0 },
     children,
     stayVisible = true,
     onVisible,

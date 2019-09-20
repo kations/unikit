@@ -49,7 +49,7 @@ function isFunction(functionToCheck) {
 export default function styled(component) {
   return arg => {
     return scStyled(component)(props => {
-      let style = arg;
+      let style = arg || {};
       if (isFunction(style)) {
         style = style(props);
       }

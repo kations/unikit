@@ -4,33 +4,33 @@ import { Dimensions, TouchableOpacity } from "react-native";
 import { useTransition, animated } from "react-spring/native";
 import PropTypes from "prop-types";
 
-import styled, { useTheme, useThemeProps, withThemeProps } from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Box from "../Box";
 import Flex from "../Flex";
-// import Switch from "./Switch";
+import Switch from "./Switch";
 import Text from "./Text";
-// import DatePicker from "./DatePicker";
+import DatePicker from "./DatePicker";
 import Slider from "./Slider";
 // import Color from "./Color";
-// import Select from "./Select";
-// import Number from "./Number";
-// import Checkbox from "./Checkbox";
+import Select from "./Select";
+import Number from "./Number";
+import Checkbox from "./Checkbox";
 // import MultiSelect from "./MultiSelect";
-// import Tags from "./Tags";
+import Tags from "./Tags";
 
 const types = {
   text: Text,
-  // select: Select,
-  // switch: Switch,
-  // date: DatePicker,
+  select: Select,
+  switch: Switch,
+  date: DatePicker,
   // datetime: DatePicker,
   // time: DatePicker,
-  range: Slider
+  range: Slider,
   // color: Color,
-  // number: Number,
-  // checkbox: Checkbox,
+  number: Number,
+  checkbox: Checkbox,
   // multiselect: MultiSelect,
-  // tags: Tags
+  tags: Tags
 };
 
 const Label = styled.Text(({ color }) => ({
@@ -125,6 +125,7 @@ const Comp = ({
   borderProps = {},
   borderBlurColor = "transparent",
   borderFocusColor = "primary",
+  required = false,
   theme,
   ...rest
 }) => {
@@ -169,6 +170,7 @@ const Comp = ({
             {...TypeProps.labelProps}
           >
             {label}
+            {required ? "*" : null}
           </Label>
         ) : null}
         {desc ? (
@@ -186,6 +188,7 @@ const Comp = ({
           setFocus={setFocus}
           type={type}
           label={label}
+          required={required}
           {...TypeProps}
           {...rest}
         />
@@ -198,6 +201,7 @@ const Comp = ({
               value,
               type,
               label,
+              required,
               ...children.props,
               ...rest
             })
@@ -229,4 +233,11 @@ ThemeComp.propTypes = {
 };
 
 ThemeComp["Slider"] = Slider;
+ThemeComp["Tags"] = Tags;
+ThemeComp["Switch"] = Switch;
+ThemeComp["Select"] = Select;
+ThemeComp["Number"] = Number;
+ThemeComp["Checkbox"] = Checkbox;
+ThemeComp["DatePicker"] = DatePicker;
+
 export default ThemeComp;

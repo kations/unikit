@@ -1,0 +1,29 @@
+---
+name: Headline
+route: /Headline
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Flex, Headline} from '../index'
+
+# Headline
+
+### Usage
+
+```bash
+import { Headline } from 'unikit'
+```
+
+<Playground>
+    <Flex h={800} content="space-around" align="center">
+        <Headline>Headline</Headline>
+        <Headline animate>Animated Headline</Headline>
+        <Headline animate onVisible>Animated Headline</Headline>
+        <Headline animate onVisible stayVisible={false}>Animated Headline</Headline>
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Headline} />
