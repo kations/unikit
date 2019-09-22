@@ -20,7 +20,9 @@ import { Input } from 'unikit'
 <Playground>
     <Flex p={30} type="background">
         <Form onSubmit={(doc) => alert(JSON.stringify(doc))} buttonProps={{mt: 10}}>
+            <Flex p={30} type="background">
             <Input key="text" type="text" label="Text" required />
+            </Flex>
             <Input key="range" type="range" label="Slider" />
             <Input key="tags" type="tags" label="Tags" value={['Tag']} />
             <Input key="switch" type="switch" label="Switch"  />

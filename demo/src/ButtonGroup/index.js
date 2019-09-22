@@ -2,23 +2,36 @@ import React, { Children } from "react";
 import * as PropTypes from "prop-types";
 
 import styled from "../styled";
+import Box from "../Box";
 
-const Group = styled.View(({ theme }) => ({
+const Group = styled(Box)(({ theme }) => ({
   width: "100%",
-  flexDirection: "row",
+  height: "auto",
   justifyContent: "space-between",
   alignItems: "stretch",
   borderRadius: theme.globals.roundness,
   overflow: "hidden"
 }));
 
-const getBorderRadius = (index, length) => {
+const getBorderRadius = (index, length, vertical) => {
   if (index === 0) {
+    if (vertical) {
+      return {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0
+      };
+    }
     return {
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0
     };
   } else if (index === length - 1) {
+    if (vertical) {
+      return {
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0
+      };
+    }
     return {
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0
@@ -34,19 +47,21 @@ export default function ButtonGroup({
   children,
   gap = 1,
   buttonStyle = {},
+  vertical = false,
   ...rest
 }) {
   return (
-    <Group {...rest}>
+    <Group row={!vertical} {...rest}>
       {Children.map(children, (child, i) => {
         if (child) {
           return React.cloneElement(child, {
             style: {
-              flex: 1,
+              flex: vertical ? undefined : 1,
               marginLeft: i === 0 ? 0 : gap,
               marginTop: gap,
-              ...getBorderRadius(i, React.Children.count(children)),
-              ...buttonStyle
+              ...getBorderRadius(i, React.Children.count(children), vertical),
+              ...buttonStyle,
+              ...child.props.style
             }
           });
         }

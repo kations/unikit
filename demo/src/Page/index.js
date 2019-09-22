@@ -14,19 +14,21 @@ export default ({
   renderHeader,
   renderFooter,
   scrollViewProps,
+  onScroll,
   ...rest
 }) => {
   const [top, setTop] = useState(0);
 
-  const onScroll = e => {
+  const onScrollPage = e => {
     const scrollSensitivity = 4 / 3;
     const offset = e.nativeEvent.contentOffset.y / scrollSensitivity;
+    if (onScroll) onScroll(e.nativeEvent.contentOffset);
     setTop(offset);
   };
 
   const Scroller = scrollable ? ScrollView : Fragment;
   const ScrollerProps = {
-    ...{ onScroll, scrollEventThrottle: 100 },
+    ...{ onScroll: onScrollPage, scrollEventThrottle: 100 },
     ...scrollViewProps
   };
   return (

@@ -45,7 +45,7 @@ const Comp = props => {
 
   return (
     <TextInput
-      value={value || ""}
+      value={value !== undefined && value !== null ? value.toString() : ""}
       as={as || undefined}
       onChangeText={text => (onChange ? onChange(text) : null)}
       placeholderTextColor={color(placeholderTextColor).alpha(0.35)}

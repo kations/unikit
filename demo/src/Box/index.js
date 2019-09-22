@@ -9,6 +9,17 @@ const interpolate = (min, max, value) => {
   return position;
 };
 
+const isColor = col => {
+  try {
+    color(col)
+      .lighten(lighten)
+      .toString();
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 const getStyle = ({
   theme,
   type,
@@ -18,8 +29,14 @@ const getStyle = ({
   lighten,
   darken,
   alpha,
+  absolute,
+  relative,
   w,
   h,
+  t,
+  r,
+  b,
+  l,
   p,
   px,
   py,
@@ -37,26 +54,34 @@ const getStyle = ({
 }) => {
   const style = {};
 
-  if (w) style["width"] = w;
-  if (h) style["height"] = h;
+  if (absolute) style["position"] = "absolute";
+  if (relative) style["position"] = "relative";
 
-  if (p) style["padding"] = p;
-  if (px) style["paddingHorizontal"] = px;
-  if (py) style["paddingVertical"] = py;
-  if (pt) style["paddingTop"] = pt;
-  if (pb) style["paddingBottom"] = pb;
-  if (pl) style["paddingLeft"] = pl;
-  if (pr) style["paddingRight"] = pr;
+  if (w !== undefined) style["width"] = w;
+  if (h !== undefined) style["height"] = h;
 
-  if (m) style["margin"] = m;
-  if (mx) style["marginHorizontal"] = mx;
-  if (my) style["marginVertical"] = my;
-  if (mt) style["marginTop"] = mt;
-  if (mb) style["marginBottom"] = mb;
-  if (ml) style["marginLeft"] = ml;
-  if (mr) style["marginRight"] = mr;
+  if (t !== undefined) style["top"] = t;
+  if (r !== undefined) style["right"] = r;
+  if (b !== undefined) style["bottom"] = b;
+  if (l !== undefined) style["left"] = l;
 
-  if (type) {
+  if (p !== undefined) style["padding"] = p;
+  if (px !== undefined) style["paddingHorizontal"] = px;
+  if (py !== undefined) style["paddingVertical"] = py;
+  if (pt !== undefined) style["paddingTop"] = pt;
+  if (pb !== undefined) style["paddingBottom"] = pb;
+  if (pl !== undefined) style["paddingLeft"] = pl;
+  if (pr !== undefined) style["paddingRight"] = pr;
+
+  if (m !== undefined) style["margin"] = m;
+  if (mx !== undefined) style["marginHorizontal"] = mx;
+  if (my !== undefined) style["marginVertical"] = my;
+  if (mt !== undefined) style["marginTop"] = mt;
+  if (mb !== undefined) style["marginBottom"] = mb;
+  if (ml !== undefined) style["marginLeft"] = ml;
+  if (mr !== undefined) style["marginRight"] = mr;
+
+  if ((type && isColor(type) === true) || (type && theme.colors[type])) {
     let col = theme.colors[type] || type;
 
     if (lighten) {
@@ -83,8 +108,8 @@ const getStyle = ({
   if (shadow) {
     const ssOffset =
       shadowCasting === "top"
-        ? -Math.round(shadow / 2)
-        : Math.round(shadow / 2);
+        ? -Math.round(shadow / 3)
+        : Math.round(shadow / 3);
     const sCololor = shadowColor || theme.colors.shadow;
     const sRadius = interpolate(1, 20, shadow);
     style["elevation"] = shadow;

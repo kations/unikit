@@ -5,7 +5,7 @@ menu: UI
 ---
 
 import { Playground, Props } from 'docz'
-import { Input, Flex } from '../index'
+import { Input, Flex, Form } from '../index'
 
 # Inputs
 
@@ -19,8 +19,18 @@ import { Input } from 'unikit'
 
 <Playground>
     <Flex p={30} type="background">
-        <Input type="text" label="Text" />
-        <Input type="range" label="Slider" />
+        <Form onSubmit={(doc) => alert(JSON.stringify(doc))} buttonProps={{mt: 10}}>
+            <Flex p={30} type="background">
+            <Input key="text" type="text" label="Text" required />
+            </Flex>
+            <Input key="range" type="range" label="Slider" />
+            <Input key="tags" type="tags" label="Tags" value={['Tag']} />
+            <Input key="switch" type="switch" label="Switch"  />
+            <Input key="select" type="select" label="Select" options={['One', 'Two']}  />
+            <Input key="number" type="number" label="Number"  />
+            <Input key="checkbox" type="checkbox" label="Checkbox"  />
+            <Input key="date" type="date" label="DatePicker"  />
+        </Form>
     </Flex>
 </Playground>
 

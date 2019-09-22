@@ -79,7 +79,10 @@ const Ticks = styled.View(({ vertical, trackHeight, handleSize, size }) => ({
   position: "absolute",
   bottom: vertical ? -handleSize / 2 : -trackHeight - 20,
   right: vertical ? -trackHeight - 20 : -handleSize / 2,
-  zIndex: 0
+  zIndex: 0,
+  web: {
+    userSelect: "none"
+  }
 }));
 
 const Tick = styled.View(({ vertical, handleSize }) => ({

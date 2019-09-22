@@ -1,29 +1,34 @@
 # unikit
 
-> universal component library for web and native
+> universal component library for react and react-native
 
 [![NPM](https://img.shields.io/npm/v/unikit.svg)](https://www.npmjs.com/package/unikit) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## Install
+### Install
 
 ```bash
-npm install --save unikit
+yarn add unikit react-spring swgs styled-components@beta
 ```
 
-## Usage
+```bash
+npm install --save unikit react-spring swgs styled-components@beta
+```
+
+### Usage
 
 ```jsx
-import React, { Component } from "react";
+import React from "react";
+import { ThemeProvider, Box } from "unikit";
 
-import MyComponent from "unikit";
-
-class Example extends Component {
-  render() {
-    return <MyComponent />;
-  }
+function App {
+    return (
+        <ThemeProvider>
+            <Box />
+        </ThemeProvider>
+    );
 }
 ```
 
-## License
+### License
 
 MIT © [kations](https://github.com/kations)

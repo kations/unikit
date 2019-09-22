@@ -18,6 +18,7 @@ export default function Animate(props) {
     children,
     stayVisible = true,
     onVisible,
+    isVisible,
     delay,
     reset,
     reverse,
@@ -27,11 +28,11 @@ export default function Animate(props) {
     ...rest
   } = props;
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(isVisible);
 
   const { opacity, x, y, z } = useSpring({
     from,
-    to: !visible && onVisible ? from : to,
+    to: (!visible && onVisible) || isVisible === false ? from : to,
     config: springConfig[config] || config || springConfig.default,
     delay: delay || 0,
     reset: reset || false,

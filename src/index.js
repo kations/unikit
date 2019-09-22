@@ -12,6 +12,7 @@ export { default as Image } from "./Image";
 export { default as Text } from "./Text";
 
 //UI
+export { default as ActionSheet } from "./ActionSheet";
 export { default as Animate } from "./Animate";
 export { default as Button } from "./Button";
 export { default as ButtonGroup } from "./ButtonGroup";

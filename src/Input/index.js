@@ -33,9 +33,9 @@ const types = {
   tags: Tags
 };
 
-const Label = styled.Text(({ color }) => ({
+const Label = styled.Text(({ color, size }) => ({
   color: color,
-  fontSize: "label"
+  fontSize: size || "label"
 }));
 
 const Desc = styled.Text({});
@@ -83,9 +83,7 @@ const typesProps = {
       }
     },
     labelProps: {
-      style: {
-        fontSize: "p"
-      }
+      size: "p"
     }
   },
   checkbox: {
@@ -98,8 +96,8 @@ const typesProps = {
       }
     },
     labelProps: {
+      size: "p",
       style: {
-        fontSize: "p",
         marginLeft: 10
       }
     }
@@ -229,7 +227,16 @@ const Comp = ({
 const ThemeComp = withThemeProps(Comp, "Input");
 
 ThemeComp.propTypes = {
-  type: PropTypes.oneOf(["text", "range"])
+  type: PropTypes.oneOf([
+    "text",
+    "range",
+    "date",
+    "checkbox",
+    "number",
+    "select",
+    "switch",
+    "tags"
+  ])
 };
 
 ThemeComp["Slider"] = Slider;

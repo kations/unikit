@@ -1,10 +1,13 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import { TouchableOpacity } from "react-native";
 import color from "color";
 
 import styled, { useTheme } from "../styled";
 import Hoverable from "../Hoverable";
 import Ripple from "../Ripple";
+import Box from "../Box";
+
 import Progress from "../Progress";
 import { isDark } from "../util";
 
@@ -32,7 +35,7 @@ const getBackground = ({ type, theme, isHovered, outlined, light }) => {
     : theme.colors[type] || type;
 };
 
-const Touchable = styled.TouchableOpacity(
+const Touchable = styled(Box)(
   ({ theme, size, isHovered, outlined, rounded, light, type }) => ({
     position: "relative",
     flexDirection: "row",
@@ -104,7 +107,7 @@ export default function Button({
     <Hoverable>
       {isHovered => (
         <Touchable
-          as={ripple ? Ripple : undefined}
+          as={ripple ? Ripple : TouchableOpacity}
           isHovered={isHovered}
           activeOpacity={activeOpacity}
           size={size}

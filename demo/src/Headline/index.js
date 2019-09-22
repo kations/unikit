@@ -79,7 +79,9 @@ export default function Headline({
       <Text
         {...(Platform.OS !== "web" ? { as: Box } : {})}
         style={
-          Platform.OS !== "web" ? { ...style, flexDirection: "row" } : style
+          Platform.OS !== "web"
+            ? { ...style, ...{ flexDirection: "row" } }
+            : style
         }
         level={level}
         {...rest}

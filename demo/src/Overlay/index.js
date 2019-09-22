@@ -3,7 +3,7 @@ import { Platform, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import { useTransition, animated } from "react-spring";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
 import Box from "../Box";
 import { BlackPortal } from "../Portal";
 import { isIphoneX } from "../util";
@@ -99,23 +99,25 @@ const Overlay = animated(
   }))
 );
 
-const OverlayContent = styled(Box)(({ width, height, overlayPosition }) => ({
-  position: "relative",
-  backgroundColor: "surface",
-  width,
-  height,
-  maxHeight: "100%",
-  maxWidth: "100%",
-  ...safePan[overlayPosition]
-}));
+const OverlayContent = styled(Box)(
+  ({ theme, roundness, width, height, overlayPosition }) => ({
+    position: "relative",
+    width,
+    height,
+    maxHeight: "100%",
+    maxWidth: "100%",
+    borderRadius: roundness || theme.globals.roundness,
+    ...safePan[overlayPosition]
+  })
+);
 
 const Backdrop = animated(
   styled.View(({ zIndex, theme }) => ({
     position: Platform.OS === "web" ? "fixed" : "absolute",
     left: 0,
     bottom: 0,
-    width: "100%",
-    height: "100%",
+    top: 0,
+    right: 0,
     backgroundColor: "rgba(0,0,0,0.1)",
     zIndex: zIndex + 5
   }))
@@ -129,22 +131,22 @@ const Pan = styled.View(({ overlayPosition }) => ({
 }));
 
 const Comp = ({
-  width,
+  width = "100%",
   height,
   position = "center",
   visible,
   children,
   onClose,
   content,
-  backdrop,
+  backdrop = true,
   contentMove,
   contentMoveStyle,
   containerStyle,
   usePan = false,
-  shadow,
+  shadow = 15,
   overlayContentProps,
   backdropProps,
-  style,
+  roundness,
   zIndex = 5000,
   portal = true,
   ...rest
@@ -188,20 +190,20 @@ const Comp = ({
           item && (
             <Fragment key={key}>
               {backdrop ? (
-                <TouchableOpacity onPress={onClose} activeOpacity={0.9}>
-                  <Backdrop
-                    zIndex={zIndex}
-                    style={{
-                      opacity: props.opacity
-                    }}
-                    pointerEvents={show ? "auto" : "none"}
-                    {...backdropProps}
-                  />
-                </TouchableOpacity>
+                <Backdrop
+                  as={TouchableOpacity}
+                  zIndex={zIndex}
+                  style={{
+                    opacity: props.opacity
+                  }}
+                  pointerEvents={show ? "auto" : "none"}
+                  onPress={onClose}
+                  activeOpacity={1}
+                  {...backdropProps}
+                />
               ) : null}
               <Overlay
                 style={{
-                  ...style,
                   transform: props.move.interpolate(m =>
                     position === "top" ||
                     position === "bottom" ||
@@ -215,11 +217,13 @@ const Comp = ({
                 zIndex={zIndex}
               >
                 <OverlayContent
+                  type="surface"
                   width={width || theme.width}
                   height={height || theme.height}
                   pointerEvents={show ? "auto" : "none"}
                   overlayPosition={position}
                   shadow={shadow}
+                  roundness={roundness}
                   {...rest}
                 >
                   {usePan ? <Pan overlayPosition={position} /> : null}
@@ -233,17 +237,12 @@ const Comp = ({
   );
 };
 
-Comp.propTypes = {
+const ThemeComp = withThemeProps(Comp, "Overlay");
+
+ThemeComp.propTypes = {
   overlayContentProps: PropTypes.object,
   backdropProps: PropTypes.object,
   style: PropTypes.object
 };
 
-Comp.defaultProps = {
-  backdrop: true,
-  position: "bottom",
-  usePan: false,
-  shadow: 5
-};
-
-export default Comp;
+export default ThemeComp;

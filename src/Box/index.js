@@ -9,6 +9,17 @@ const interpolate = (min, max, value) => {
   return position;
 };
 
+const isColor = col => {
+  try {
+    color(col)
+      .lighten(0.9)
+      .toString();
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 const getStyle = ({
   theme,
   type,
@@ -70,7 +81,7 @@ const getStyle = ({
   if (ml !== undefined) style["marginLeft"] = ml;
   if (mr !== undefined) style["marginRight"] = mr;
 
-  if (type) {
+  if ((type && isColor(type) === true) || (type && theme.colors[type])) {
     let col = theme.colors[type] || type;
 
     if (lighten) {

@@ -22,7 +22,6 @@ export default ({
   maxRows,
   minRows = 1,
   gap = 5,
-  style = {},
   itemStyle = {},
   ...rest
 }) => {

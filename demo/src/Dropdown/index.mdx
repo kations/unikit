@@ -1,0 +1,29 @@
+---
+name: Dropdown
+route: /Dropdown
+menu: UI
+---
+
+import { Playground, Props } from 'docz'
+import {Button, Flex, Dropdown} from '../index'
+
+# Dropdown
+
+### Usage
+
+```bash
+import { Dropdown  } from 'unikit'
+```
+
+
+<Playground>
+    <Flex  p={30} h={300} content="center">
+        <Dropdown content={<Button>Dropdown</Button>}>
+            <Button>Dropdown</Button>
+        </Dropdown>   
+    </Flex>
+</Playground>
+
+### Props
+
+<Props of={Button} />
