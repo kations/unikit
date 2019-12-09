@@ -7,11 +7,6 @@ import Button from "../Button";
 import Overlay from "../Overlay";
 import ButtonGroup from "../ButtonGroup";
 
-const ActionButton = styled(Button)({
-  borderColor: "rgba(0,0,0,0.05)",
-  borderBottomWidth: 1
-});
-
 const Comp = props => {
   const {
     overrides,
@@ -35,6 +30,7 @@ const Comp = props => {
       position="bottom"
       height="auto"
       onClose={onClose}
+      px={20}
       {...rest}
     >
       {title && <Headline>{title}</Headline>}

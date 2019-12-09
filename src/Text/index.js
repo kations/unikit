@@ -4,9 +4,10 @@ import { Platform } from "react-native";
 import styled from "../styled";
 import Box from "../Box";
 
-const Txt = styled.Text(({ fontSize, color, level }) => ({
+const Txt = styled.Text(({ theme, fontSize, color, level }) => ({
   fontSize: level ? `h${level}` : fontSize || "p",
-  color: color || "text"
+  color: color || "text",
+  fontFamily: theme.globals.fontFamily
 }));
 
 export default function Text({ children, level, ...rest }) {

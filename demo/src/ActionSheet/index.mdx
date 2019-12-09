@@ -1,0 +1,53 @@
+---
+name: ActionSheet
+route: /ActionSheet
+menu: UI
+---
+
+import { useState } from 'react'
+import { Playground, Props } from 'docz'
+import {Flex, Button, ActionSheet} from '../index'
+
+# ActionSheet
+
+### Usage
+
+```bash
+import { ActionSheet } from 'unikit'
+```
+
+<Playground>
+    {() => {
+        const [actionSheet, setActionSheet] = useState(false);
+        return (
+     
+            <Flex type="background" p={30} content="center">
+                <Button onPress={() => setActionSheet(true)}>show ActionSheet</Button>
+                <ActionSheet  
+                    visible={actionSheet}  
+                    onClose={() => setActionSheet(false)}
+                    actions={[
+                        {
+                            label: 'Action 1',
+                            onPress: () => alert('Action 1')
+                        },
+                        {
+                            label: 'Action 2',
+                            onPress: () => alert('Action 2')
+                        },
+                        {
+                            label: 'Action 3',
+                            onPress: () => alert('Action 3')
+                        }
+                    ]}
+                />
+            </Flex>
+    
+        )
+    }}
+    
+</Playground>
+
+### Props
+
+<Props of={ActionSheet} />

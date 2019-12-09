@@ -1,9 +1,8 @@
 import React, { Children, useState } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
 
 import styled from "../styled";
-import Box from "../Box";
 import Button from "../Button";
+import Box from "../Box";
 
 const FormWrap = styled(Box)({
   width: "100%"
@@ -29,14 +28,16 @@ const getDefaultState = (children, state) => {
     if (child.key) {
       state[child.key] = getDefaultValue({ child });
     }
-    if (child.props.children) getDefaultState(child.props.children, state);
+    if (child.props && child.props.children)
+      getDefaultState(child.props.children, state);
   });
   return state;
 };
 
 const renderChildren = (children, doc, setDoc) => {
-  return Children.map(children, child =>
-    React.cloneElement(child, {
+  return Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      key: child.key || `child-${index}`,
       value: doc[child.key],
       onChange: value => {
         if (child.key) {
@@ -44,11 +45,14 @@ const renderChildren = (children, doc, setDoc) => {
           setDoc({ ...doc, [child.key]: value });
         }
       },
-      children: child.props.children
-        ? renderChildren(child.props.children, doc, setDoc)
-        : undefined
-    })
-  );
+      children:
+        child.props &&
+        child.props.children &&
+        typeof child.props.children !== "string"
+          ? renderChildren(child.props.children, doc, setDoc)
+          : child.props.children
+    });
+  });
 };
 
 export default function Form({

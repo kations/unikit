@@ -14,6 +14,12 @@ const lerp = (start, end, t) => {
   return start * (1 - t) + end * t;
 };
 
+const SliderWrapper = styled.View(({ theme }) => ({
+  paddingHorizontal: theme.globals.inputGap,
+  paddingTop: theme.globals.inputGap / 2,
+  width: "100%"
+}));
+
 const Slider = styled(Box)(
   ({ showValue, showTicks, vertical, sliderHeight, handleSize }) => ({
     padding: handleSize / 2,
@@ -21,7 +27,7 @@ const Slider = styled(Box)(
     paddingBottom: vertical ? 15 : showTicks ? 40 : handleSize / 2,
     paddingRight: vertical ? (showValue ? 45 : 30) : handleSize / 2,
     width: vertical ? "auto" : "100%",
-    height: vertical ? sliderHeight : "auto%",
+    height: vertical ? sliderHeight : "auto",
     flexDirection: vertical ? "row" : "column"
   })
 );
@@ -170,133 +176,134 @@ const Comp = ({
   });
 
   return (
-    <Slider
-      showValue={showValue}
-      showTicks={showTicks}
-      vertical={vertical}
-      sliderHeight={sliderHeight}
-      handleSize={handleSize}
-      {...rest}
-    >
-      <Track
-        type={trackColor}
-        trackHeight={trackHeight}
+    <SliderWrapper {...rest}>
+      <Slider
+        showValue={showValue}
+        showTicks={showTicks}
         vertical={vertical}
-        onLayout={({ nativeEvent }) => {
-          setSize(
-            vertical ? nativeEvent.layout.height : nativeEvent.layout.width
-          );
-        }}
+        sliderHeight={sliderHeight}
+        handleSize={handleSize}
       >
-        <Progress
-          type={progressColor}
-          style={{
-            width: vertical ? "100%" : slidePosition,
-            height: vertical ? slidePosition : "100%"
-          }}
-        />
-        <Pan
-          as={HandleBox}
-          onSwipe={(direction, gestureState) => {
-            let { dx, dy } = gestureState;
-            let dist = vertical ? dy : dx;
-            let newPosition = position + dist;
-            let newProgress = invlerp(0, size, newPosition);
-            let newValue = Math.round(lerp(min, max, newProgress));
-            if (newPosition > size) {
-              dist = size - position;
-              newValue = max;
-            } else if (newPosition < 0) {
-              dist = -position;
-              newValue = min;
-            }
-            setValue(newValue);
-            setDistance(dist);
-            setSwipe(true);
-            if (onSwipe) onSwipe(newValue);
-          }}
-          onSwipeEnd={(direction, gestureState) => {
-            let newPosition = position + distance;
-            let newProgress = invlerp(0, size, newPosition);
-            let newValue = Math.round(lerp(min, max, newProgress));
-            if ((newValue / steps) % 1 != 0) {
-              newValue = Math.round(newValue / steps) * steps;
-              newProgress = invlerp(min, max, newValue);
-              newPosition = lerp(0, size, newProgress);
-            }
-            setPosition(newPosition);
-            setValue(newValue);
-            setDistance(0);
-            setSwipe(false);
-            if (onChange) onChange(newValue);
-          }}
-          vertical={vertical}
+        <Track
+          bg={trackColor}
           trackHeight={trackHeight}
-          handleSize={handleSize}
-          style={{
-            transform: vertical
-              ? [{ translateY: slidePosition }]
-              : [{ translateX: slidePosition }]
+          vertical={vertical}
+          onLayout={({ nativeEvent }) => {
+            setSize(
+              vertical ? nativeEvent.layout.height : nativeEvent.layout.width
+            );
           }}
         >
-          <Handle
+          <Progress
+            bg={progressColor}
+            style={{
+              width: vertical ? "100%" : slidePosition,
+              height: vertical ? slidePosition : "100%"
+            }}
+          />
+          <Pan
+            as={HandleBox}
+            onSwipe={(direction, gestureState) => {
+              let { dx, dy } = gestureState;
+              let dist = vertical ? dy : dx;
+              let newPosition = position + dist;
+              let newProgress = invlerp(0, size, newPosition);
+              let newValue = Math.round(lerp(min, max, newProgress));
+              if (newPosition > size) {
+                dist = size - position;
+                newValue = max;
+              } else if (newPosition < 0) {
+                dist = -position;
+                newValue = min;
+              }
+              setValue(newValue);
+              setDistance(dist);
+              setSwipe(true);
+              if (onSwipe) onSwipe(newValue);
+            }}
+            onSwipeEnd={(direction, gestureState) => {
+              let newPosition = position + distance;
+              let newProgress = invlerp(0, size, newPosition);
+              let newValue = Math.round(lerp(min, max, newProgress));
+              if ((newValue / steps) % 1 != 0) {
+                newValue = Math.round(newValue / steps) * steps;
+                newProgress = invlerp(min, max, newValue);
+                newPosition = lerp(0, size, newProgress);
+              }
+              setPosition(newPosition);
+              setValue(newValue);
+              setDistance(0);
+              setSwipe(false);
+              if (onChange) onChange(newValue);
+            }}
             vertical={vertical}
             trackHeight={trackHeight}
             handleSize={handleSize}
-            handleColor={handleColor}
-            shadow={5}
-            {...handleProps}
-          />
-        </Pan>
-        {showValue ? (
-          <Value
-            type={"primary"}
-            vertical={vertical}
             style={{
               transform: vertical
                 ? [{ translateY: slidePosition }]
                 : [{ translateX: slidePosition }]
             }}
-            pointerEvents="none"
           >
-            <Text style={{ color: "#FFF", fontSize: 10 }}>
-              {val}
-              {valueSuffix ? valueSuffix : ""}
-            </Text>
-          </Value>
-        ) : null}
-        {showTicks ? (
-          <Ticks
-            vertical={vertical}
-            trackHeight={trackHeight}
-            handleSize={handleSize}
-            size={size}
-            pointerEvents="none"
-          >
-            {getTicks().map((step, index) => {
-              return (
-                <Tick
-                  key={`step-${index}`}
-                  vertical={vertical}
-                  handleSize={handleSize}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 9
-                      }}
-                      numberOfLines={1}
-                    >
-                      {step}
-                    </Text>
-                  </View>
-                </Tick>
-              );
-            })}
-          </Ticks>
-        ) : null}
-      </Track>
-    </Slider>
+            <Handle
+              vertical={vertical}
+              trackHeight={trackHeight}
+              handleSize={handleSize}
+              handleColor={handleColor}
+              shadow={5}
+              {...handleProps}
+            />
+          </Pan>
+          {showValue ? (
+            <Value
+              bg={"primary"}
+              vertical={vertical}
+              style={{
+                transform: vertical
+                  ? [{ translateY: slidePosition }]
+                  : [{ translateX: slidePosition }]
+              }}
+              pointerEvents="none"
+            >
+              <Text style={{ color: "#FFF", fontSize: 10 }}>
+                {val}
+                {valueSuffix ? valueSuffix : ""}
+              </Text>
+            </Value>
+          ) : null}
+          {showTicks ? (
+            <Ticks
+              vertical={vertical}
+              trackHeight={trackHeight}
+              handleSize={handleSize}
+              size={size}
+              pointerEvents="none"
+            >
+              {getTicks().map((step, index) => {
+                return (
+                  <Tick
+                    key={`step-${index}`}
+                    vertical={vertical}
+                    handleSize={handleSize}
+                  >
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 9
+                        }}
+                        numberOfLines={1}
+                      >
+                        {step}
+                      </Text>
+                    </View>
+                  </Tick>
+                );
+              })}
+            </Ticks>
+          ) : null}
+        </Track>
+      </Slider>
+    </SliderWrapper>
   );
 };
 

@@ -19,7 +19,6 @@ const Animated = animated(
 );
 
 const AnimatedText = ({ strings = [], level = 1, animateType }) => {
-  console.log({ strings });
   const transitions = useTransition(strings, data => data, {
     from: { opacity: 0, y: 100, x: 0 },
     leave: { opacity: 0, y: 100, x: 0 },

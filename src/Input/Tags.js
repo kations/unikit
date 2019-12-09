@@ -4,24 +4,30 @@ import PropTypes from "prop-types";
 import styled from "../styled";
 import TextInput from "./Text";
 import Icon from "../Icon";
+import Animate from "../Animate";
 
 const TagInput = styled.View({
   width: "100%",
   position: "relative",
   flexDirection: "row",
   flexWrap: "wrap",
-  paddingVertical: 5
+  alignItems: "center"
 });
 
+const Pills = styled.View(({ theme }) => ({
+  paddingLeft: theme.globals.inputGap,
+  flexDirection: "row",
+  flexWrap: "wrap"
+}));
+
 const Pill = styled.TouchableOpacity({
-  paddingVertical: 10,
+  paddingVertical: 8,
   paddingHorizontal: 18,
   backgroundColor: "primary",
   flexDirection: "row",
   alignItems: "center",
   borderRadius: 25,
-  marginRight: 5,
-  marginBottom: 5
+  marginRight: 5
 });
 
 const PillLabel = styled.Text({
@@ -60,16 +66,21 @@ const Comp = ({
   };
   return (
     <TagInput {...rest}>
-      {value.map((string, index) => (
-        <Pill
-          key={`pill-${index}`}
-          activeOpacity={0.8}
-          onPress={() => revert(index)}
-        >
-          <PillLabel>{string}</PillLabel>
-          <Icon name="x" color="#FFF" size={15} lineWidth={1} />
-        </Pill>
-      ))}
+      {value && value.length > 0 ? (
+        <Pills>
+          {value.map((string, index) => (
+            <Animate
+              as={Pill}
+              key={`pill-${index}`}
+              activeOpacity={0.8}
+              onPress={() => revert(index)}
+            >
+              <PillLabel>{string}</PillLabel>
+              <Icon name="x" color="#FFF" size={15} lineWidth={1} />
+            </Animate>
+          ))}
+        </Pills>
+      ) : null}
       <TextInput
         value={text}
         onChange={value => {

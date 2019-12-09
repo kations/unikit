@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import { animated, useTransition } from "react-spring/native";
-import { TouchableOpacity, Dimensions, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
 
-import styled from "../styled";
+import styled, { useTheme } from "../styled";
 import Box from "../Box";
 
 const ChartWrap = styled(Box)({
@@ -100,7 +100,8 @@ const BarsRenderer = ({
   barProps,
   barValueStyle,
   onPress,
-  minBarWidth
+  minBarWidth,
+  maxBarWidth
 }) => {
   const transitions = useTransition(bars, data => data.index, {
     from: { height: 0, opacity: 0 },
@@ -128,6 +129,7 @@ const BarsRenderer = ({
         display: "flex",
         flexGrow: 1,
         minWidth: minBarWidth,
+        maxWidth: maxBarWidth || "100%",
         marginHorizontal: gap / 2,
         height: height.interpolate(h => Math.abs(h)),
         marginBottom: height.interpolate(h =>
@@ -163,6 +165,7 @@ const Comp = props => {
     width,
     maxValue,
     minBarWidth = 15,
+    maxBarWidth,
     gap = 10,
     barColor = "primary",
     selected,
@@ -170,6 +173,7 @@ const Comp = props => {
     grid = true,
     xAxis = false,
     yAxis = false,
+    axisColor = "rgba(0,0,0,0.1)",
     barValueStyle = {},
     formatValue,
     formatLabel,
@@ -183,9 +187,9 @@ const Comp = props => {
     ...rest
   } = props;
 
-  if (data.length === 0) return null;
+  const theme = useTheme();
 
-  const Screen = Dimensions.get("window");
+  if (data.length === 0) return null;
 
   if (typeof data[0] === "number") {
     var max = maxValue ? maxValue : Math.max.apply(null, data);
@@ -273,13 +277,16 @@ const Comp = props => {
         <YAxis
           height={height - min * factor - 1}
           gridWidth={gridWidth}
-          gridColor={gridColor}
+          gridColor={axisColor}
           showValue={showValue}
         >
           {calculateTicks().map((y, index) => (
             <Label key={`y-${index}`}>
               <LabelText
-                style={{ color: labelColor, fontSize: labelSize }}
+                style={{
+                  color: theme.colors[labelColor] || labelColor,
+                  fontSize: theme.fontSize[labelSize] || labelSize
+                }}
                 numberOfLines={1}
               >
                 {formatLabel ? formatLabel(y) : y}
@@ -337,6 +344,7 @@ const Comp = props => {
                 barValueStyle={barValueStyle}
                 barColor={barColor}
                 minBarWidth={minBarWidth}
+                maxBarWidth={maxBarWidth}
                 onPress={onPress}
               />
               {group.bars.length > 1 ? <Spacer gap={gap} /> : null}
@@ -344,17 +352,28 @@ const Comp = props => {
           ))}
         </Box>
         {xAxis ? (
-          <XAxis>
+          <XAxis
+            style={{
+              paddingHorizontal: gap / 2,
+              borderTopWidth: 2,
+              borderColor: axisColor
+            }}
+          >
             {groupedData.map((group, index) => (
               <Label
                 key={`label-${index}`}
                 style={{
                   flex: group.bars.length,
-                  marginHorizontal: gap
+                  minWidth: minBarWidth,
+                  maxWidth: maxBarWidth || "100%",
+                  marginHorizontal: gap / 2
                 }}
               >
                 <LabelText
-                  style={{ color: labelColor, fontSize: labelSize }}
+                  style={{
+                    color: theme.colors[labelColor] || labelColor,
+                    fontSize: theme.fontSize[labelSize] || labelSize
+                  }}
                   numberOfLines={1}
                 >
                   {group.label}

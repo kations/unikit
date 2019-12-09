@@ -1,9 +1,15 @@
-import React, { Children, useState } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
+import React, {
+  Children,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from "react";
 
 import styled from "../styled";
-import Box from "../Box";
 import Button from "../Button";
+import Box from "../Box";
+import { getObjValue, setObjValue } from "../util";
 
 const FormWrap = styled(Box)({
   width: "100%"
@@ -11,9 +17,6 @@ const FormWrap = styled(Box)({
 
 const getDefaultValue = ({ child: { props } }) => {
   let value = undefined;
-  if (props.type === "text") {
-    value = "";
-  }
   if (props.type === "number" || props.type === "range") {
     value = 0;
   }
@@ -25,44 +28,69 @@ const getDefaultValue = ({ child: { props } }) => {
 };
 
 const getDefaultState = (children, state) => {
-  Children.map(children, (child, i) => {
-    if (child.key) {
-      state[child.key] = getDefaultValue({ child });
+  React.Children.map(children, (child, i) => {
+    if (
+      child.key &&
+      typeof child.key === "string" &&
+      !getObjValue(state, child.key)
+    ) {
+      state = setObjValue(state, child.key, getDefaultValue({ child }));
     }
-    if (child.props.children) getDefaultState(child.props.children, state);
+    if (child.props && child.props.children)
+      getDefaultState(child.props.children, state);
   });
   return state;
 };
 
 const renderChildren = (children, doc, setDoc) => {
-  return Children.map(children, child =>
-    React.cloneElement(child, {
-      value: doc[child.key],
+  return React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      key: child.key || `child-${index}`,
+      value: child.key ? getObjValue(doc, child.key) : undefined,
       onChange: value => {
         if (child.key) {
-          console.log({ value, key: child.key });
-          setDoc({ ...doc, [child.key]: value });
+          const newDoc = Object.assign({}, doc);
+          setDoc(setObjValue(newDoc || {}, child.key, value));
         }
       },
-      children: child.props.children
-        ? renderChildren(child.props.children, doc, setDoc)
-        : undefined
-    })
-  );
+      children:
+        child.props &&
+        child.props.children &&
+        typeof child.props.children !== "string"
+          ? renderChildren(child.props.children, doc, setDoc)
+          : child.props.children
+    });
+  });
 };
 
-export default function Form({
-  children,
-  schema,
-  onSubmit,
-  button = true,
-  buttonLabel = "Submit",
-  buttonProps = {},
-  ...rest
-}) {
+function Form(
+  {
+    children,
+    schema,
+    onSubmit,
+    onChange,
+    button = true,
+    buttonLabel = "Submit",
+    buttonProps = {},
+    defaultDoc = {},
+    ...rest
+  },
+  ref
+) {
   const [doc, setDoc] = useState(() => {
-    return getDefaultState(children, {});
+    return getDefaultState(children, defaultDoc);
   });
+
+  useEffect(() => {
+    if (onChange) onChange(doc);
+  }, [doc]);
+
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      return doc;
+    }
+  }));
+
   return (
     <FormWrap {...rest}>
       {renderChildren(children, doc, setDoc)}
@@ -77,3 +105,5 @@ export default function Form({
     </FormWrap>
   );
 }
+
+export default forwardRef(Form);

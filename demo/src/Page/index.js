@@ -4,7 +4,9 @@ import { ScrollView, SafeAreaView } from "react-native";
 import styled from "../styled";
 import Box from "../Box";
 
-const Page = styled(Box)({});
+const Page = styled(Box)({
+  flex: 1
+});
 
 export default ({
   type = "background",

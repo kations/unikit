@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Platform,
@@ -122,11 +122,15 @@ const CalendarMonth = styled.Text(({ active }) => ({
 
 const Calendar = ({ min, max, onChange, currentDate, type }) => {
   const [month, setMonth] = useState(currentDate);
-  const [mode, setMode] = useState("date");
   const firstDay = dayjs(month).startOf("month");
   const lastDay = dayjs(month).endOf("month");
   const offsetStart = firstDay.get("day");
   const offsetEnd = 6 - lastDay.get("day");
+
+  useEffect(() => {
+    setMonth(currentDate);
+  }, [currentDate]);
+
   return (
     <Fragment>
       <CalendarView style={{ justifyContent: "space-between" }}>
@@ -277,8 +281,8 @@ const Calendar = ({ min, max, onChange, currentDate, type }) => {
             )
           }
           options={Array.from(Array(100).keys()).map(number => ({
-            label: `${parseInt(dayjs(currentDate).format("YYYY")) - number}`,
-            value: parseInt(dayjs(currentDate).format("YYYY")) - number
+            label: `${parseInt(dayjs().format("YYYY")) - number}`,
+            value: parseInt(dayjs().format("YYYY")) - number
           }))}
           style={{
             flex: 1,
@@ -325,9 +329,10 @@ const Comp = props => {
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
         console.log({ action, year, month, day });
-        onChange(dayjs(`${year}-${month + 1}-${day}`).toDate());
+        const newDate = dayjs(`${year}-${month + 1}-${day}`).toDate();
+        onChange(newDate);
         if (type === "datetime") {
-          openTimePicker();
+          openTimePicker(newDate);
         }
       }
     } catch ({ code, message }) {
@@ -335,7 +340,7 @@ const Comp = props => {
     }
   }
 
-  async function openTimePicker() {
+  async function openTimePicker(newDate) {
     try {
       const { action, hour, minute } = await TimePickerAndroid.open({
         hour: 14,
@@ -343,13 +348,11 @@ const Comp = props => {
         is24Hour: false // Will display '2 PM'
       });
       if (action !== TimePickerAndroid.dismissedAction) {
-        dayjs().set("date", 1);
-        onChange(
-          dayjs(date)
-            .set("hour", hour)
-            .set("minute", minute)
-            .toDate()
-        );
+        const newDateWithTime = dayjs(newDate || date)
+          .set("hour", hour)
+          .set("minute", minute)
+          .toDate();
+        onChange(newDateWithTime);
         // Selected hour (0-23), minute (0-59)
       }
     } catch ({ code, message }) {
@@ -362,7 +365,7 @@ const Comp = props => {
       {Platform.OS === "web" && isMobile.any() ? (
         <StyledDateInput
           value={date ? dayjs(date).format(format) : undefined}
-          type={type}
+          type={type === "datetime" ? "datetime-local" : type}
           onChange={event => {
             onChange(event.target.value);
           }}

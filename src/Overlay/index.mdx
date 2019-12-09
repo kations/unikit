@@ -21,9 +21,9 @@ import { Overlay } from 'unikit'
         const [overlay, setOverlay] = useState(false);
         return (
      
-            <Flex type="background" p={30} content="center">
+            <Flex bg="background" p={30} content="center">
                 <Button onPress={() => setOverlay(true)}>show overlay</Button>
-                <Overlay p={30} position="center" width={800} height="auto" visible={overlay}  onPress={() => setOverlay(false)}>
+                <Overlay p={30} position="center" width={800} height="auto" visible={overlay} onClose={() => setOverlay(false)}>
                     <Button onPress={() => setOverlay(false)}>close overlay</Button>
                 </Overlay>
             </Flex>

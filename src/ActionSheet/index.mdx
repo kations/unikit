@@ -21,7 +21,7 @@ import { ActionSheet } from 'unikit'
         const [actionSheet, setActionSheet] = useState(false);
         return (
      
-            <Flex type="background" p={30} content="center">
+            <Flex bg="background" p={30} content="center">
                 <Button onPress={() => setActionSheet(true)}>show ActionSheet</Button>
                 <ActionSheet  
                     visible={actionSheet}  

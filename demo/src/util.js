@@ -26,3 +26,11 @@ export const isIphoneX = () => {
       (dimen.height === 896 || dimen.width === 896))
   );
 };
+
+export const getProgress = (a, b, v) => {
+  return (v - a) / (b - a);
+};
+
+export const getValueByProgress = (start, end, t) => {
+  return start * (1 - t) + end * t;
+};

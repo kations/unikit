@@ -325,9 +325,10 @@ const Comp = props => {
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
         console.log({ action, year, month, day });
-        onChange(dayjs(`${year}-${month + 1}-${day}`).toDate());
+        const newDate = dayjs(`${year}-${month + 1}-${day}`).toDate();
+        onChange(newDate);
         if (type === "datetime") {
-          openTimePicker();
+          openTimePicker(newDate);
         }
       }
     } catch ({ code, message }) {
@@ -335,7 +336,7 @@ const Comp = props => {
     }
   }
 
-  async function openTimePicker() {
+  async function openTimePicker(newDate) {
     try {
       const { action, hour, minute } = await TimePickerAndroid.open({
         hour: 14,
@@ -343,13 +344,11 @@ const Comp = props => {
         is24Hour: false // Will display '2 PM'
       });
       if (action !== TimePickerAndroid.dismissedAction) {
-        dayjs().set("date", 1);
-        onChange(
-          dayjs(date)
-            .set("hour", hour)
-            .set("minute", minute)
-            .toDate()
-        );
+        const newDateWithTime = dayjs(newDate || date)
+          .set("hour", hour)
+          .set("minute", minute)
+          .toDate();
+        onChange(newDateWithTime);
         // Selected hour (0-23), minute (0-59)
       }
     } catch ({ code, message }) {

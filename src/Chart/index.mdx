@@ -5,7 +5,7 @@ menu: UI
 ---
 
 import { Playground, Props } from 'docz'
-import { Chart } from '../index'
+import { Chart, Flex } from '../index'
 
 # Chart
 
@@ -16,7 +16,10 @@ import { Chart } from 'unikit'
 ```
 
 <Playground>
-    <Chart data={[10,15,13,12,17,12]} onPress={bar => alert(bar.index)} />
+    <Flex p={30} h={800} content="space-around">
+        <Chart data={[10,15,13,12,17,12]} onPress={bar => alert(bar.index)} />
+        <Chart data={[10,15,13,12,17,12,10,15,13,12,17,12]} scrollable scrollToEnd yAxis xAxis minBarWidth={100} maxBarWidth={100} />
+    </Flex>
 </Playground>
 
 ### Props

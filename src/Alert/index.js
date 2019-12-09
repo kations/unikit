@@ -84,7 +84,7 @@ export default function Alert({
       {from === "top" ? <SafeAreaView collapsable={false} /> : null}
       {transitions.map(({ item, props, key }) => (
         <Message
-          type={item.type || "surface"}
+          bg={item.type || "surface"}
           key={key}
           style={props}
           from={from}

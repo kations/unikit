@@ -4,7 +4,7 @@ import { ThemeProvider } from "styled-components/native";
 import color from "color";
 
 import Alert from "./Alert";
-import { PortalProvider, WhitePortal } from "./Portal";
+import { PortalProvider, PortalExit } from "./Portal";
 
 export function isObject(item) {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -62,6 +62,7 @@ const DefaultTheme = {
     desktop: 99999
   },
   globals: {
+    fontFamily: "System",
     borderRadius: 3,
     roundness: 5
   }
@@ -82,8 +83,16 @@ export default ({ children, theme = {}, alertProps = {} }) => {
   );
 
   const dimensionHandler = ({ window, screen }) => {
-    setTheme({ ...defaultTheme, window, screen });
+    setTheme({
+      ...defaultTheme,
+      ...{ width: window.width, height: window.height }
+    });
   };
+
+  useEffect(() => {
+    console.log("setTheme");
+    setTheme(mergeDeep(defaultTheme, theme));
+  }, [theme]);
 
   useEffect(() => {
     dimensionHandler({
@@ -102,7 +111,7 @@ export default ({ children, theme = {}, alertProps = {} }) => {
         <Fragment>
           {children}
           <Alert alert={alert} {...alertProps} />
-          <WhitePortal name="unikit" />
+          <PortalExit />
         </Fragment>
       </ThemeProvider>
     </PortalProvider>

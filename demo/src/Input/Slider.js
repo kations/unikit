@@ -21,7 +21,7 @@ const Slider = styled(Box)(
     paddingBottom: vertical ? 15 : showTicks ? 40 : handleSize / 2,
     paddingRight: vertical ? (showValue ? 45 : 30) : handleSize / 2,
     width: vertical ? "auto" : "100%",
-    height: vertical ? sliderHeight : "auto%",
+    height: vertical ? sliderHeight : "auto",
     flexDirection: vertical ? "row" : "column"
   })
 );

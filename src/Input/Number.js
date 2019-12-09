@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
 import Box from "../Box";
@@ -7,7 +7,12 @@ import Icon from "../Icon";
 
 import TextInput from "./Text";
 
+function isFloat(n) {
+  return Number(n) === n && n % 1 !== 0;
+}
+
 const Comp = props => {
+  const [stringValue, setValue] = useState((props.value || "").toString());
   const { style, onChange, value, step = 1, ...rest } = props;
 
   return (
@@ -17,7 +22,7 @@ const Comp = props => {
         absolute
         t="0px"
         r="0px"
-        type="background"
+        bg="background"
         row
         h="80%"
         px={5}
@@ -29,7 +34,16 @@ const Comp = props => {
         <Flex
           as={TouchableOpacity}
           onPress={() => {
-            if (onChange) onChange(parseInt(value) - step);
+            if (onChange) {
+              let newValue =
+                isNaN(value) === false && value !== null && value !== undefined
+                  ? isFloat(value)
+                    ? parseFloat(value) - step
+                    : parseInt(value) - step
+                  : 0;
+              onChange(newValue);
+              setValue(newValue.toString());
+            }
           }}
           w={38}
           h="100%"
@@ -42,7 +56,16 @@ const Comp = props => {
         <Flex
           as={TouchableOpacity}
           onPress={() => {
-            if (onChange) onChange(parseInt(value) + step);
+            if (onChange) {
+              let newValue =
+                isNaN(value) === false && value !== null && value !== undefined
+                  ? isFloat(value)
+                    ? parseFloat(value) + step
+                    : parseInt(value) + step
+                  : 1;
+              onChange(newValue);
+              setValue(newValue.toString());
+            }
           }}
           w={38}
           h="100%"
@@ -54,8 +77,19 @@ const Comp = props => {
       </Flex>
       <TextInput
         keyboardType="numeric"
-        value={value}
-        onChange={onChange}
+        value={stringValue}
+        onChange={text => {
+          if (!isNaN(text) && text.toString().indexOf(".") !== -1) {
+            onChange(parseFloat(text));
+          } else if (!isNaN(text)) {
+            onChange(parseInt(text));
+          } else if (text.length === 0) {
+            onChange(null);
+          }
+          if (text.length === 0 || !isNaN(text)) {
+            setValue(text);
+          }
+        }}
         {...rest}
       />
     </Box>

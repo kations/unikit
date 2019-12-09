@@ -4,8 +4,9 @@ route: /Inputs
 menu: UI
 ---
 
+import {useRef} from 'react'
 import { Playground, Props } from 'docz'
-import { Input, Flex, Form } from '../index'
+import { Input, Flex, Form, Button } from '../index'
 
 # Inputs
 
@@ -18,20 +19,31 @@ import { Input } from 'unikit'
 ## Input 
 
 <Playground>
-    <Flex p={30} type="background">
-        <Form onSubmit={(doc) => alert(JSON.stringify(doc))} buttonProps={{mt: 10}}>
-            <Flex p={30} type="background">
-            <Input key="text" type="text" label="Text" required />
-            </Flex>
-            <Input key="range" type="range" label="Slider" />
-            <Input key="tags" type="tags" label="Tags" value={['Tag']} />
-            <Input key="switch" type="switch" label="Switch"  />
-            <Input key="select" type="select" label="Select" options={['One', 'Two']}  />
-            <Input key="number" type="number" label="Number"  />
-            <Input key="checkbox" type="checkbox" label="Checkbox"  />
-            <Input key="date" type="date" label="DatePicker"  />
-        </Form>
+ {() => {
+    const formRef = useRef(null)
+    return (
+      <>
+      <Button onPress={() => alert(formRef.current.submit())}>Custom trigger</Button>
+        <Flex p={30} bg="background">
+            <Form ref={formRef} onSubmit={(doc) => alert(JSON.stringify(doc))} buttonProps={{mt: 10}}>
+                <Flex p={30} type="background">
+                <Input key="text.bla" type="text" label="Text" clean={false} required />
+                <Input key="text.blub" type="textarea" label="Text" required />
+                </Flex>
+                <Input key="range" type="range" label="Slider" />
+                <Input key="tags" type="tags" label="Tags" value={['Tag']} />
+                <Input key="switch" type="switch" label="Switch"  />
+                <Input key="select" type="select" label="Select" options={['One', 'Two']}  />
+                <Input key="multi" type="multiselect" label="MultiSelect" options={['One', 'Two']}  />
+                <Input key="number" type="number" label="Number"  />
+                <Input key="checkbox" type="checkbox" label="Checkbox"  />
+                <Input key="date" type="date" label="DatePicker"  />
+                <Input key="color" type="color" label="Color"  />
+            </Form>
     </Flex>
+     </>
+    )
+  }}
 </Playground>
 
 ### Props

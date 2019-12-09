@@ -2,9 +2,9 @@ import React, { Children } from "react";
 import * as PropTypes from "prop-types";
 
 import styled from "../styled";
-import Box from "../Box";
+import Flex from "../Flex";
 
-const Group = styled(Box)(({ theme }) => ({
+const Group = styled(Flex)(({ theme }) => ({
   width: "100%",
   height: "auto",
   justifyContent: "space-between",
@@ -51,7 +51,7 @@ export default function ButtonGroup({
   ...rest
 }) {
   return (
-    <Group row={!vertical} {...rest}>
+    <Group row={vertical ? false : true} {...rest}>
       {Children.map(children, (child, i) => {
         if (child) {
           return React.cloneElement(child, {

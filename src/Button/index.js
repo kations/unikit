@@ -11,61 +11,46 @@ import Box from "../Box";
 import Progress from "../Progress";
 import { isDark } from "../util";
 
-const getBackground = ({ type, theme, isHovered, outlined, light }) => {
+const getBackground = ({ bg, theme, isHovered, outlined, light }) => {
   if (outlined) {
     return isHovered
-      ? color(theme.colors[type] || type)
+      ? color(theme.colors[bg] || bg)
           .alpha(0.1)
           .toString()
       : "transparent";
   }
   if (light) {
     return isHovered
-      ? color(theme.colors[type] || type)
+      ? color(theme.colors[bg] || bg)
           .alpha(0.15)
           .toString()
-      : color(theme.colors[type] || type)
+      : color(theme.colors[bg] || bg)
           .alpha(0.1)
           .toString();
   }
   return isHovered
-    ? color(theme.colors[type] || type)
+    ? color(theme.colors[bg] || bg)
         .darken(0.1)
         .toString()
-    : theme.colors[type] || type;
+    : theme.colors[bg] || bg;
 };
 
-const Touchable = styled(Box)(
-  ({ theme, size, isHovered, outlined, rounded, light, type }) => ({
-    position: "relative",
-    flexDirection: "row",
-    width: "auto",
-    height: size,
-    paddingHorizontal: size / 2,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: getBackground({
-      type,
-      theme,
-      outlined,
-      isHovered,
-      light
-    }),
-    borderWidth: outlined ? 3 : 0,
-    borderColor: theme.colors[type] || type,
-    borderRadius: rounded ? size : theme.globals.roundness,
-    web: {
-      cursor: "pointer"
-    }
-  })
-);
+const Touchable = styled.View({
+  position: "relative",
+  flexDirection: "row",
+  width: "auto",
+  alignItems: "center",
+  justifyContent: "center",
+  web: {
+    cursor: "pointer"
+  }
+});
 
-const Label = styled.Text(
-  ({ type, theme, textColor, outlined, light, size }) => ({
-    fontSize: size / 3,
-    color: textColor
-  })
-);
+const Label = styled.Text(({ textColor, size }) => ({
+  fontSize: size / 3,
+  color: textColor,
+  textAlign: "center"
+}));
 
 const LoadingWrap = styled.View({
   position: "absolute",
@@ -80,7 +65,7 @@ const LoadingWrap = styled.View({
 export default function Button({
   children,
   size = 44,
-  type = "primary",
+  bg = "primary",
   activeOpacity = 0.9,
   outlined = false,
   rounded = false,
@@ -99,8 +84,8 @@ export default function Button({
   const textColor = color
     ? color
     : outlined || light
-    ? theme.colors[type] || type
-    : isDark(theme.colors[type] || type)
+    ? theme.colors[bg] || bg
+    : isDark(theme.colors[bg] || bg)
     ? "#FFF"
     : "#000";
   return (
@@ -114,13 +99,19 @@ export default function Button({
           outlined={outlined ? 1 : 0}
           rounded={rounded ? 1 : 0}
           light={light ? 1 : 0}
-          type={type}
-          rippleColor={ripple ? type : undefined}
+          bg={getBackground({ bg, theme, outlined, isHovered, light })}
+          bc={theme.colors[bg] || bg}
+          bw={outlined ? 3 : 0}
+          br={rounded ? size : theme.globals.roundness}
+          h={size}
+          px={size / 2}
+          rippleColor={ripple ? bg : undefined}
           disabled={loading ? true : disabled}
+          accessibilityRole="button"
           {...rest}
         >
           {loading || progress ? (
-            <LoadingWrap>
+            <LoadingWrap pointerEvents="none">
               <Progress
                 trackColor="transparent"
                 circleColor={textColor}
@@ -132,18 +123,23 @@ export default function Button({
             </LoadingWrap>
           ) : null}
           {renderLeft}
-          <Label
-            textColor={
-              loading === true || progress < 100 ? "transparent" : textColor
-            }
-            outlined={outlined ? 1 : 0}
-            light={light ? 1 : 0}
-            size={size}
-            type={type}
-            {...labelProps}
-          >
-            {children}
-          </Label>
+          {typeof children === "string" ? (
+            <Label
+              textColor={
+                loading === true || progress < 100 ? "transparent" : textColor
+              }
+              outlined={outlined ? 1 : 0}
+              light={light ? 1 : 0}
+              size={size}
+              pointerEvents="none"
+              {...labelProps}
+            >
+              {children}
+            </Label>
+          ) : (
+            children
+          )}
+
           {renderRight}
         </Touchable>
       )}
@@ -155,7 +151,7 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   onPress: PropTypes.func,
   size: PropTypes.number,
-  type: PropTypes.string,
+  bg: PropTypes.string,
   color: PropTypes.string,
   labelStyle: PropTypes.object,
   labelProps: PropTypes.object,

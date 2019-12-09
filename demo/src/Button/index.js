@@ -63,7 +63,8 @@ const Touchable = styled(Box)(
 const Label = styled.Text(
   ({ type, theme, textColor, outlined, light, size }) => ({
     fontSize: size / 3,
-    color: textColor
+    color: textColor,
+    textAlign: "center"
   })
 );
 
@@ -120,7 +121,7 @@ export default function Button({
           {...rest}
         >
           {loading || progress ? (
-            <LoadingWrap>
+            <LoadingWrap pointerEvents="none">
               <Progress
                 trackColor="transparent"
                 circleColor={textColor}
@@ -132,18 +133,24 @@ export default function Button({
             </LoadingWrap>
           ) : null}
           {renderLeft}
-          <Label
-            textColor={
-              loading === true || progress < 100 ? "transparent" : textColor
-            }
-            outlined={outlined ? 1 : 0}
-            light={light ? 1 : 0}
-            size={size}
-            type={type}
-            {...labelProps}
-          >
-            {children}
-          </Label>
+          {typeof children === "string" ? (
+            <Label
+              textColor={
+                loading === true || progress < 100 ? "transparent" : textColor
+              }
+              outlined={outlined ? 1 : 0}
+              light={light ? 1 : 0}
+              size={size}
+              type={type}
+              pointerEvents="none"
+              {...labelProps}
+            >
+              {children}
+            </Label>
+          ) : (
+            children
+          )}
+
           {renderRight}
         </Touchable>
       )}

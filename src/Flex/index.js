@@ -1,5 +1,4 @@
 import styled from "../styled";
-import Box from "../Box";
 
 const getStyle = props => {
   const style = {};
@@ -21,7 +20,7 @@ const getStyle = props => {
   return style;
 };
 
-const Flex = styled(Box)(props => ({
+const Flex = styled.View(props => ({
   ...getStyle(props)
 }));
 

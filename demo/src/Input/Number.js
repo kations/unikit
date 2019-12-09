@@ -29,7 +29,12 @@ const Comp = props => {
         <Flex
           as={TouchableOpacity}
           onPress={() => {
-            if (onChange) onChange(parseInt(value) - step);
+            if (onChange)
+              onChange(
+                isNaN(value) === false && value !== null && value !== undefined
+                  ? parseInt(value) - step
+                  : 0
+              );
           }}
           w={38}
           h="100%"
@@ -42,7 +47,12 @@ const Comp = props => {
         <Flex
           as={TouchableOpacity}
           onPress={() => {
-            if (onChange) onChange(parseInt(value) + step);
+            if (onChange)
+              onChange(
+                isNaN(value) === false && value !== null && value !== undefined
+                  ? parseInt(value) + step
+                  : 1
+              );
           }}
           w={38}
           h="100%"

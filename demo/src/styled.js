@@ -46,7 +46,7 @@ function isFunction(functionToCheck) {
   );
 }
 // @ts-ignore
-export default function styled(component) {
+export default function styled(component, alias) {
   return arg => {
     return scStyled(component)(props => {
       let style = arg || {};
@@ -68,6 +68,9 @@ export default function styled(component) {
           style = Object.assign({}, style, style[key]);
         }
       });
+      if (alias === "Text" && !style["fontFamily"]) {
+        style["fontFamily"] = props.theme.globals.fontFamily;
+      }
       delete style["web"];
       delete style["android"];
       delete style["ios"];
@@ -88,7 +91,7 @@ Object.keys(scStyled).forEach(alias => {
     enumerable: true,
     configurable: false,
     get() {
-      return styled(reactNative[alias]);
+      return styled(reactNative[alias], alias);
     }
   });
 });

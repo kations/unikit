@@ -138,7 +138,6 @@ const Comp = props => {
         >
           <Box width="100%">
             {placeholder && <Headline>{placeholder}</Headline>}
-
             {renderPicker()}
 
             <Button m={0} onPress={() => setShow(false)}>

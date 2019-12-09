@@ -12,7 +12,7 @@ const interpolate = (min, max, value) => {
 const isColor = col => {
   try {
     color(col)
-      .lighten(lighten)
+      .lighten(0.9)
       .toString();
     return true;
   } catch (err) {

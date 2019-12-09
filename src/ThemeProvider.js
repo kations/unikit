@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Dimensions } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import color from "color";
 
 import Alert from "./Alert";
-import { PortalProvider, WhitePortal } from "./Portal";
+import { PortalProvider, PortalExit } from "./Portal";
+import { useWindowDimensions } from "./hooks";
 
 export function isObject(item) {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -25,6 +25,10 @@ export function mergeDeep(target, ...sources) {
     }
   }
   return mergeDeep(target, ...sources);
+}
+
+function capitalizeFLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
 }
 
 const primary = "#673fb4";
@@ -62,13 +66,16 @@ const DefaultTheme = {
     desktop: 99999
   },
   globals: {
+    fontFamily: "System",
     borderRadius: 3,
-    roundness: 5
+    roundness: 5,
+    inputGap: 15
   }
 };
 
 export default ({ children, theme = {}, alertProps = {} }) => {
   const [alert, setAlert] = useState(null);
+  const dimensions = useWindowDimensions();
   const [defaultTheme, setTheme] = useState(() =>
     mergeDeep(
       {
@@ -81,20 +88,30 @@ export default ({ children, theme = {}, alertProps = {} }) => {
     )
   );
 
-  const dimensionHandler = ({ window, screen }) => {
-    setTheme({ ...defaultTheme, window, screen });
+  const dimensionHandler = ({ width, height }) => {
+    const is = {};
+    let breakIndex = 0;
+    Object.keys(defaultTheme.breaks).map((key, index) => {
+      is[`is${capitalizeFLetter(key)}`] = defaultTheme.breaks[key] < width;
+      if (defaultTheme.breaks[key] < width) {
+        breakIndex = index;
+      }
+    });
+    setTheme({
+      ...defaultTheme,
+      ...{ width: width, height: height, ...is, breakIndex }
+    });
   };
 
   useEffect(() => {
-    dimensionHandler({
-      window: Dimensions.get("window"),
-      screen: Dimensions.get("screen")
-    });
-    Dimensions.addEventListener("change", dimensionHandler);
-    return () => {
-      Dimensions.removeEventListener("change", dimensionHandler);
-    };
-  }, []);
+    setTheme(mergeDeep(defaultTheme, theme));
+  }, [theme]);
+
+  useEffect(() => {
+    if (dimensions.width !== defaultTheme.width) {
+      dimensionHandler(dimensions);
+    }
+  }, [dimensions]);
 
   return (
     <PortalProvider>
@@ -102,7 +119,7 @@ export default ({ children, theme = {}, alertProps = {} }) => {
         <Fragment>
           {children}
           <Alert alert={alert} {...alertProps} />
-          <WhitePortal name="unikit" />
+          <PortalExit />
         </Fragment>
       </ThemeProvider>
     </PortalProvider>

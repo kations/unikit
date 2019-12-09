@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
 import { useTransition, animated } from "react-spring";
 
 import styled, { useTheme, withThemeProps } from "../styled";
 import Box from "../Box";
-import { BlackPortal } from "../Portal";
+import { PortalEnter } from "../Portal";
 import { isIphoneX } from "../util";
 
 const safePan = {
@@ -123,12 +123,29 @@ const Backdrop = animated(
   }))
 );
 
+const BackdropPress = styled.TouchableOpacity(({ zIndex, theme }) => ({
+  position: Platform.OS === "web" ? "fixed" : "absolute",
+  left: 0,
+  bottom: 0,
+  top: 0,
+  right: 0
+}));
+
 const Pan = styled.View(({ overlayPosition }) => ({
   position: "absolute",
   backgroundColor: "background",
   borderRadius: 4,
   ...panStyle[overlayPosition]
 }));
+
+const getId = () => {
+  return (
+    "_" +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+  );
+};
 
 const Comp = ({
   width = "100%",
@@ -149,10 +166,12 @@ const Comp = ({
   roundness,
   zIndex = 5000,
   portal = true,
+  config = {},
   ...rest
 }) => {
   const theme = useTheme();
   const [show, set] = useState(visible);
+  const [id] = useState(() => getId());
 
   useEffect(() => {
     set(visible);
@@ -160,7 +179,7 @@ const Comp = ({
 
   const moves = {
     bottom: theme.screen ? theme.screen.height : 0,
-    center: theme.screen ? theme.screen.height : 0,
+    center: theme.screen ? 200 : 0,
     top: theme.screen ? -theme.screen.height : 0,
     left: theme.screen ? -theme.screen.width : 0,
     right: theme.screen ? theme.screen.width : 0
@@ -178,59 +197,64 @@ const Comp = ({
       opacity: 0,
       move: move || 500 //moves[position]
     },
-    config: { duration: 300 }
+    config
   });
 
-  const PortalComp = portal ? BlackPortal : Fragment;
+  const PortalComp = portal ? PortalEnter : Fragment;
 
   return (
-    <PortalComp name="unikit">
-      {transitions.map(
-        ({ item, key, props }) =>
-          item && (
-            <Fragment key={key}>
-              {backdrop ? (
+    <PortalComp name={id}>
+      {backdrop
+        ? transitions.map(
+            ({ item, key, props }) =>
+              item && (
                 <Backdrop
-                  as={TouchableOpacity}
+                  key={key}
                   zIndex={zIndex}
                   style={{
                     opacity: props.opacity
                   }}
                   pointerEvents={show ? "auto" : "none"}
-                  onPress={onClose}
-                  activeOpacity={1}
                   {...backdropProps}
-                />
-              ) : null}
-              <Overlay
-                style={{
-                  transform: props.move.interpolate(m =>
-                    position === "top" ||
-                    position === "bottom" ||
-                    position === "center"
-                      ? [{ translateY: m }]
-                      : [{ translateX: m }]
-                  )
-                }}
-                overlayPosition={position}
-                pointerEvents={"box-none"}
-                zIndex={zIndex}
-              >
-                <OverlayContent
-                  type="surface"
-                  width={width || theme.width}
-                  height={height || theme.height}
-                  pointerEvents={show ? "auto" : "none"}
-                  overlayPosition={position}
-                  shadow={shadow}
-                  roundness={roundness}
-                  {...rest}
                 >
-                  {usePan ? <Pan overlayPosition={position} /> : null}
-                  {children}
-                </OverlayContent>
-              </Overlay>
-            </Fragment>
+                  <BackdropPress onPress={onClose} activeOpacity={1} />
+                </Backdrop>
+              )
+          )
+        : null}
+      {transitions.map(
+        ({ item, key, props }) =>
+          item && (
+            <Overlay
+              key={key}
+              style={{
+                opacity: position === "center" ? props.opacity : 1,
+                transform: props.move.interpolate(m =>
+                  position === "top" ||
+                  position === "bottom" ||
+                  position === "center"
+                    ? [{ translateY: m }]
+                    : [{ translateX: m }]
+                )
+              }}
+              overlayPosition={position}
+              pointerEvents={"box-none"}
+              zIndex={zIndex}
+            >
+              <OverlayContent
+                type="surface"
+                width={width || theme.width}
+                height={height || theme.height}
+                pointerEvents={show ? "auto" : "none"}
+                overlayPosition={position}
+                shadow={shadow}
+                roundness={roundness}
+                {...rest}
+              >
+                {usePan ? <Pan overlayPosition={position} /> : null}
+                {children}
+              </OverlayContent>
+            </Overlay>
           )
       )}
     </PortalComp>

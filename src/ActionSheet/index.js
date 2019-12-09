@@ -25,7 +25,7 @@ const Comp = props => {
 
   return (
     <Overlay
-      type="transparent"
+      bg="transparent"
       shadow={0}
       position="bottom"
       height="auto"
@@ -39,7 +39,7 @@ const Comp = props => {
         {actions.map((action, index) => {
           return (
             <Button
-              type="surface"
+              bg="surface"
               alpha={0.9}
               key={`action-${index}`}
               color="primary"
@@ -63,7 +63,7 @@ const Comp = props => {
       </ButtonGroup>
 
       <Button
-        type="surface"
+        bg="surface"
         color="error"
         onPress={onClose || null}
         color={cancelColor}

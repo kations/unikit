@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import scStyled, { ThemeContext, withTheme } from "styled-components/native";
 import * as reactNative from "react-native";
+//import Box from "./Box";
+import { getStyle } from "./util";
 
 const colorStyles = [
   "color",
@@ -46,9 +48,9 @@ function isFunction(functionToCheck) {
   );
 }
 // @ts-ignore
-export default function styled(component) {
+export default function styled(component, alias) {
   return arg => {
-    return scStyled(component)(props => {
+    const StyledComp = scStyled(component)(props => {
       let style = arg || {};
       if (isFunction(style)) {
         style = style(props);
@@ -56,6 +58,7 @@ export default function styled(component) {
       if (typeof style[0] === "string") {
         console.log({ isString: true, split: style[0].split(":") });
       }
+      // console.log({ getStyle: getStyle(props) });
       Object.keys(style).map(key => {
         if (colorStyles.indexOf(key) > -1) {
           //console.log({ found: key });
@@ -68,11 +71,15 @@ export default function styled(component) {
           style = Object.assign({}, style, style[key]);
         }
       });
+      if (alias === "Text" && !style["fontFamily"]) {
+        style["fontFamily"] = props.theme.globals.fontFamily;
+      }
       delete style["web"];
       delete style["android"];
       delete style["ios"];
-      return style;
+      return Object.assign({}, style, getStyle(props));
     });
+    return StyledComp;
   };
 }
 // export default function styled(component) {
@@ -88,7 +95,7 @@ Object.keys(scStyled).forEach(alias => {
     enumerable: true,
     configurable: false,
     get() {
-      return styled(reactNative[alias]);
+      return styled(reactNative[alias], alias);
     }
   });
 });

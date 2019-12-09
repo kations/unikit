@@ -2,12 +2,13 @@ import React, { Fragment, useState } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 
 import styled from "../styled";
-import Box from "../Box";
 
-const Page = styled(Box)({});
+const Page = styled.View({
+  flex: 1
+});
 
 export default ({
-  type = "background",
+  bg = "background",
   children,
   hasSafeArea,
   scrollable,
@@ -28,11 +29,20 @@ export default ({
 
   const Scroller = scrollable ? ScrollView : Fragment;
   const ScrollerProps = {
-    ...{ onScroll: onScrollPage, scrollEventThrottle: 100 },
+    ...{
+      onScroll: onScrollPage,
+      scrollEventThrottle: 100,
+      showsVerticalScrollIndicator: false
+    },
     ...scrollViewProps
   };
   return (
-    <Page type={type} as={hasSafeArea ? SafeAreaView : undefined} {...rest}>
+    <Page
+      bg={bg}
+      as={hasSafeArea ? SafeAreaView : undefined}
+      accessibilityRole="main"
+      {...rest}
+    >
       {renderHeader ? renderHeader(top) : null}
       <Scroller {...(scrollable ? ScrollerProps : {})}>{children}</Scroller>
       {renderFooter ? renderFooter(top) : null}

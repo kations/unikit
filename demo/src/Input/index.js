@@ -11,25 +11,26 @@ import Switch from "./Switch";
 import Text from "./Text";
 import DatePicker from "./DatePicker";
 import Slider from "./Slider";
-// import Color from "./Color";
+import Color from "./Color";
 import Select from "./Select";
 import Number from "./Number";
 import Checkbox from "./Checkbox";
-// import MultiSelect from "./MultiSelect";
+import MultiSelect from "./MultiSelect";
 import Tags from "./Tags";
 
 const types = {
   text: Text,
+  textarea: Text,
   select: Select,
   switch: Switch,
   date: DatePicker,
-  // datetime: DatePicker,
-  // time: DatePicker,
+  datetime: DatePicker,
+  time: DatePicker,
   range: Slider,
-  // color: Color,
+  color: Color,
   number: Number,
   checkbox: Checkbox,
-  // multiselect: MultiSelect,
+  multiselect: MultiSelect,
   tags: Tags
 };
 
@@ -116,10 +117,12 @@ const Comp = ({
   error,
   style,
   direction,
-  type = "text",
+  type,
   onChange,
   value,
   labelColor = "text",
+  clean = false,
+  floating = false,
   borderProps = {},
   borderBlurColor = "transparent",
   borderFocusColor = "primary",
@@ -229,16 +232,21 @@ const ThemeComp = withThemeProps(Comp, "Input");
 ThemeComp.propTypes = {
   type: PropTypes.oneOf([
     "text",
+    "textarea",
     "range",
     "date",
+    "time",
+    "datetime",
     "checkbox",
     "number",
     "select",
+    "multiselect",
     "switch",
     "tags"
   ])
 };
 
+ThemeComp["Text"] = Text;
 ThemeComp["Slider"] = Slider;
 ThemeComp["Tags"] = Tags;
 ThemeComp["Switch"] = Switch;
@@ -246,5 +254,7 @@ ThemeComp["Select"] = Select;
 ThemeComp["Number"] = Number;
 ThemeComp["Checkbox"] = Checkbox;
 ThemeComp["DatePicker"] = DatePicker;
+ThemeComp["Color"] = Color;
+ThemeComp["MultiSelect"] = MultiSelect;
 
 export default ThemeComp;

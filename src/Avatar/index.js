@@ -4,10 +4,9 @@ import PropTypes from "prop-types";
 import styled, { useTheme } from "../styled";
 import { isDark } from "../util";
 
-import Box from "../Box";
 import Button from "../Button";
 
-const Wrap = styled(Box)(({ size }) => ({
+const Wrap = styled.View(({ size }) => ({
   justifyContent: "center",
   alignItems: "center",
   height: size,
@@ -43,7 +42,7 @@ const Label = styled.Text(({ theme, type, textColor, size }) => ({
 
 export default function Avatar(props) {
   const {
-    type = "primary",
+    bg = "primary",
     children,
     size = 44,
     char = "",
@@ -55,7 +54,7 @@ export default function Avatar(props) {
   const theme = useTheme();
   return (
     <Wrap
-      type={type}
+      bg={bg}
       as={onPress ? Button : undefined}
       onPress={onPress || null}
       activeOpacity={onPress ? 0.8 : undefined}

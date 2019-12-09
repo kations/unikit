@@ -1,7 +1,21 @@
+//import "resize-observer-polyfill/dist/ResizeObserver.global";
 import color from "color";
-import { isDark } from "./util";
+import { isDark, setObjValue, getObjValue } from "./util";
 import styled, { useTheme, withTheme } from "./styled";
-export { isDark, styled, useTheme, withTheme, color };
+import { useWindowDimensions, useGesture, useDebounce } from "./hooks";
+
+export {
+  isDark,
+  styled,
+  useTheme,
+  withTheme,
+  color,
+  setObjValue,
+  getObjValue,
+  useWindowDimensions,
+  useGesture,
+  useDebounce
+};
 
 export { default as ThemeProvider } from "./ThemeProvider";
 

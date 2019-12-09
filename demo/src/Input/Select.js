@@ -138,6 +138,7 @@ const Comp = props => {
         >
           <Box width="100%">
             {placeholder && <Headline>{placeholder}</Headline>}
+            <Headline>{value}</Headline>
 
             {renderPicker()}
 

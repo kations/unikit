@@ -106,7 +106,7 @@ const Comp = props => {
 
   const TabsComp = (
     <Tabs
-      type={backgroundColor}
+      bg={backgroundColor}
       roundness={roundness}
       gap={gap}
       tabsSize={tabsSize}
@@ -162,7 +162,7 @@ const Comp = props => {
         })}
 
         <Indicator
-          type={indicatorColor}
+          bg={indicatorColor}
           vertical={vertical}
           roundness={roundness}
           {...indicatorProps}
