@@ -3,23 +3,25 @@ import React from "react";
 import styled from "../styled";
 import Checkbox from "./Checkbox";
 
-const Wrap = styled.View({
+const Wrap = styled.View(({ theme }) => ({
   width: "100%",
-  position: "relative"
-});
+  position: "relative",
+  borderRadius: theme.globals.roundness
+}));
 
-const Select = styled.TouchableOpacity(({ last }) => ({
+const Select = styled.TouchableOpacity(({ theme, last }) => ({
   width: "100%",
   position: "relative",
   flexDirection: "row",
   alignItems: "center",
-  height: 50,
+  paddingVertical: theme.globals.inputGap / 1.3,
+  paddingHorizontal: theme.globals.inputGap,
   borderBottomWidth: last ? 0 : 1,
   borderBottomColor: "background"
 }));
 
 const Label = styled.Text({
-  fontSize: "p",
+  font: "p",
   marginLeft: 15
 });
 

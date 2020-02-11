@@ -111,18 +111,6 @@ export default function Progress(props) {
     config: { duration: 1000 }
   });
 
-  //   const loops = 1;
-  //   const { loadingRotate } = useSpring({
-  //     from: { loadingRotate: 0 },
-  //     to: async next => {
-  //       while (1) {
-  //         await next({ loadingRotate: loops * 360 });
-  //         await next({ loadingRotate: 0 });
-  //       }
-  //     },
-  //     onRest: () => loops++
-  //   });
-
   const backgroundPath = circlePath(
     size / 2,
     size / 2,

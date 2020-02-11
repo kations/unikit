@@ -1,10 +1,18 @@
 const { mergeWith } = require('lodash/fp')
+const fs = require('fs-extra')
 
-let custom
-try {
-  custom = require('./gatsby-config.custom')
-} catch (err) {
-  custom = {}
+let custom = {}
+const hasGatsbyConfig = fs.existsSync('./gatsby-config.custom.js')
+
+if (hasGatsbyConfig) {
+  try {
+    custom = require('./gatsby-config.custom')
+  } catch (err) {
+    console.error(
+      `Failed to load your gatsby-config.js file : `,
+      JSON.stringify(err),
+    )
+  }
 }
 
 const config = {
@@ -20,6 +28,7 @@ const config = {
       options: {
         themeConfig: {},
         themesDir: 'src',
+        mdxExtensions: ['.md', '.mdx'],
         docgenConfig: {},
         menu: [],
         mdPlugins: [],
@@ -57,17 +66,10 @@ const config = {
           root: '/Users/kations/Projekte/unikit',
           templates:
             '/Users/kations/Projekte/unikit/node_modules/docz-core/dist/templates',
-          packageJson: '/Users/kations/Projekte/unikit/package.json',
           docz: '/Users/kations/Projekte/unikit/.docz',
           cache: '/Users/kations/Projekte/unikit/.docz/.cache',
           app: '/Users/kations/Projekte/unikit/.docz/app',
-          appPublic: '/Users/kations/Projekte/unikit/.docz/public',
-          appNodeModules: '/Users/kations/Projekte/unikit/node_modules',
           appPackageJson: '/Users/kations/Projekte/unikit/package.json',
-          appYarnLock:
-            '/Users/kations/Projekte/unikit/node_modules/docz-core/yarn.lock',
-          ownNodeModules:
-            '/Users/kations/Projekte/unikit/node_modules/docz-core/node_modules',
           gatsbyConfig: '/Users/kations/Projekte/unikit/gatsby-config.js',
           gatsbyBrowser: '/Users/kations/Projekte/unikit/gatsby-browser.js',
           gatsbyNode: '/Users/kations/Projekte/unikit/gatsby-node.js',

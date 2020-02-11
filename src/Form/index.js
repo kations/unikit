@@ -8,16 +8,16 @@ import React, {
 
 import styled from "../styled";
 import Button from "../Button";
-import Box from "../Box";
+import Flex from "../Flex";
 import { getObjValue, setObjValue } from "../util";
 
-const FormWrap = styled(Box)({
+const FormWrap = styled.View({
   width: "100%"
 });
 
 const getDefaultValue = ({ child: { props } }) => {
   let value = undefined;
-  if (props.type === "number" || props.type === "range") {
+  if (props.type === "range") {
     value = 0;
   }
   if (props.type === "switch" || props.type === "checkbox") {
@@ -28,13 +28,15 @@ const getDefaultValue = ({ child: { props } }) => {
 };
 
 const getDefaultState = (children, state) => {
-  React.Children.map(children, (child, i) => {
+  React.Children.toArray(children).map((child, i) => {
+    const key = child.props.field || undefined;
     if (
-      child.key &&
-      typeof child.key === "string" &&
-      !getObjValue(state, child.key)
+      key &&
+      typeof key === "string" &&
+      key.length > 0 &&
+      !getObjValue(state, key)
     ) {
-      state = setObjValue(state, child.key, getDefaultValue({ child }));
+      state = setObjValue(state, key, getDefaultValue({ child }));
     }
     if (child.props && child.props.children)
       getDefaultState(child.props.children, state);
@@ -43,14 +45,15 @@ const getDefaultState = (children, state) => {
 };
 
 const renderChildren = (children, doc, setDoc) => {
-  return React.Children.map(children, (child, index) => {
+  return React.Children.toArray(children).map((child, index) => {
+    const key = child.props.field || undefined;
     return React.cloneElement(child, {
-      key: child.key || `child-${index}`,
-      value: child.key ? getObjValue(doc, child.key) : undefined,
+      key: key || `child-${index}`,
+      value: key ? getObjValue(doc, key) : undefined,
       onChange: value => {
-        if (child.key) {
+        if (key) {
           const newDoc = Object.assign({}, doc);
-          setDoc(setObjValue(newDoc || {}, child.key, value));
+          setDoc(setObjValue(newDoc || {}, key, value));
         }
       },
       children:
@@ -69,10 +72,13 @@ function Form(
     schema,
     onSubmit,
     onChange,
+    onValidate,
     button = true,
     buttonLabel = "Submit",
     buttonProps = {},
     defaultDoc = {},
+    leftAction,
+    rightAction,
     ...rest
   },
   ref
@@ -85,23 +91,40 @@ function Form(
     if (onChange) onChange(doc);
   }, [doc]);
 
+  const reset = () => {
+    setDoc(getDefaultState(children, defaultDoc));
+  };
+
   useImperativeHandle(ref, () => ({
     submit: () => {
-      return doc;
+      if (onSubmit) onSubmit(doc, reset);
     }
   }));
 
   return (
-    <FormWrap {...rest}>
+    <FormWrap {...rest} accessibilityRole="form">
       {renderChildren(children, doc, setDoc)}
-      {button ? (
-        <Button
-          onPress={() => (onSubmit ? onSubmit(doc) : null)}
-          {...buttonProps}
-        >
-          {buttonLabel}
-        </Button>
-      ) : null}
+      <Flex row jc="space-between">
+        {leftAction}
+        {button ? (
+          <Button
+            onPress={() => {
+              if (onValidate) {
+                const valid = onValidate(doc);
+                if (valid && onSubmit) {
+                  onSubmit(doc);
+                }
+              } else if (onSubmit) {
+                onSubmit(doc, reset);
+              }
+            }}
+            {...buttonProps}
+          >
+            {buttonLabel}
+          </Button>
+        ) : null}
+        {rightAction}
+      </Flex>
     </FormWrap>
   );
 }

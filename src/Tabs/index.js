@@ -34,7 +34,7 @@ const Tab = styled.TouchableOpacity(({ active, vertical }) => ({
 }));
 
 const TabLabel = styled.Text(({ active, activeColor, color }) => ({
-  fontSize: "label",
+  font: "label",
   color: active ? activeColor : color
 }));
 

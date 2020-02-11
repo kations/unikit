@@ -1,83 +1,58 @@
 import React, { Children, useState, useEffect } from "react";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
 import Box from "../Box";
+import { useLayout } from "../hooks";
 
-const Grid = styled(Box)(({ theme, gap, w }) => ({
-  width: w || "100%",
+const GridWrap = styled(Box)(({ theme }) => ({
+  position: "relative",
   flexDirection: "row",
-  flexWrap: "wrap",
-  padding: gap
+  flexWrap: "wrap"
 }));
 
 const GridItem = styled.View(({ rowWidth, gap, noRightGap, noBottomGap }) => ({
   width: `${rowWidth}%`,
-  flexBasis: `${rowWidth}%`,
-  paddingRight: noRightGap ? 0 : gap,
-  paddingBottom: noBottomGap ? 0 : gap
+  flexBasis: `${rowWidth}%`
 }));
 
-export default ({
+function Grid({
   children,
-  min = 500,
-  maxRows,
-  minRows = 1,
+  min = 250,
+  maxCols = 50,
+  minCols = 1,
   gap = 5,
-  gridGap,
+  outerGap = false,
   itemStyle = {},
   ...rest
-}) => {
-  const theme = useTheme();
-  const [width, setWidth] = useState(theme.width || 0);
-  const [rowWidth, setRowWidth] = useState(theme.width || 0);
-  const [rowCount, setRowCount] = useState(0);
-
-  const childCount = Children.count(children);
-  const rows = Math.ceil(childCount / rowCount);
-
+}) {
+  const { onLayout, width } = useLayout();
+  const [columns, setColumns] = useState(() => Math.floor(width / min));
+  const [colWidth, setColWidth] = useState(100);
   useEffect(() => {
-    if (width) {
-      let rowCount = Math.floor(width / min);
-      if (rowCount > childCount && min <= width) {
-        rowCount = childCount;
-      }
-      if (maxRows && rowCount > maxRows) {
-        rowCount = maxRows;
-      }
-      if (minRows && rowCount < minRows) {
-        rowCount = minRows;
-      }
-      const rowWidth = 100 / rowCount;
-      setRowWidth(rowWidth);
-      setRowCount(rowCount);
-    }
-  }, [width, children]);
+    let columns = Math.floor(width / min);
+    if (columns < minCols) columns = minCols;
+    if (columns > maxCols) columns = maxCols;
+    const colWidth = 100 / columns;
+    setColumns(columns);
+    setColWidth(colWidth);
+  }, [width]);
 
   return (
-    <Grid
-      onLayout={({ nativeEvent: { layout } }) => {
-        setWidth(layout.width);
-      }}
-      gap={gridGap !== undefined ? gridGap : gap}
+    <GridWrap
+      onLayout={onLayout}
+      p={outerGap ? gap / 2 : 0}
+      ml={outerGap ? 0 : -gap / 2}
+      mr={outerGap ? 0 : -gap / 2}
+      w={"auto"}
       {...rest}
     >
       {React.Children.toArray(children).map((child, i) => {
         if (child) {
-          var row = Math.ceil((i + 1) / rowCount);
-          var noRightGap = false;
-          var noBottomGap = false;
-          if (((i + 1) / rowCount) % 1 === 0) {
-            noRightGap = true;
-          }
-          if (row === rows) {
-            noBottomGap = true;
-          }
           return (
             <GridItem
               key={i}
-              noRightGap={noRightGap}
-              noBottomGap={noBottomGap}
-              rowWidth={rowWidth}
+              p={gap / 2}
+              rowWidth={colWidth}
               gap={gap}
               style={itemStyle}
             >
@@ -86,6 +61,8 @@ export default ({
           );
         }
       })}
-    </Grid>
+    </GridWrap>
   );
-};
+}
+
+export default withThemeProps(Grid, "Grid");

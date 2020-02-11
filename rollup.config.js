@@ -32,9 +32,15 @@ export default {
     svgr(),
     babel({
       exclude: "node_modules/**",
-      plugins: ["external-helpers"]
+      plugins: [
+        "external-helpers",
+        "transform-object-rest-spread",
+        "transform-remove-console"
+      ]
     }),
-    resolve(),
+    resolve({
+      extensions: [".web.js", ".js", ".jsx", ".json", ".native.js"]
+    }),
     commonjs({
       include: "node_modules/**",
       namedExports: {

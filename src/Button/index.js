@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import { TouchableOpacity } from "react-native";
 import color from "color";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
 import Hoverable from "../Hoverable";
 import Ripple from "../Ripple";
 import Box from "../Box";
@@ -11,7 +11,15 @@ import Box from "../Box";
 import Progress from "../Progress";
 import { isDark } from "../util";
 
-const getBackground = ({ bg, theme, isHovered, outlined, light }) => {
+const getBackground = ({
+  bg,
+  theme,
+  isHovered,
+  outlined,
+  light,
+  clean,
+  textColor
+}) => {
   if (outlined) {
     return isHovered
       ? color(theme.colors[bg] || bg)
@@ -28,6 +36,13 @@ const getBackground = ({ bg, theme, isHovered, outlined, light }) => {
           .alpha(0.1)
           .toString();
   }
+  if (clean) {
+    return isHovered
+      ? color(theme.colors[textColor] || textColor)
+          .alpha(0.1)
+          .toString()
+      : "transparent";
+  }
   return isHovered
     ? color(theme.colors[bg] || bg)
         .darken(0.1)
@@ -42,7 +57,9 @@ const Touchable = styled.View({
   alignItems: "center",
   justifyContent: "center",
   web: {
-    cursor: "pointer"
+    cursor: "pointer",
+    transitionProperty: "all",
+    transitionDuration: "250ms"
   }
 });
 
@@ -62,7 +79,7 @@ const LoadingWrap = styled.View({
   justifyContent: "center"
 });
 
-export default function Button({
+function Button({
   children,
   size = 44,
   bg = "primary",
@@ -70,6 +87,7 @@ export default function Button({
   outlined = false,
   rounded = false,
   light = false,
+  clean = false,
   color,
   labelProps = {},
   ripple = false,
@@ -83,7 +101,7 @@ export default function Button({
   const theme = useTheme();
   const textColor = color
     ? color
-    : outlined || light
+    : outlined || light || clean
     ? theme.colors[bg] || bg
     : isDark(theme.colors[bg] || bg)
     ? "#FFF"
@@ -99,7 +117,16 @@ export default function Button({
           outlined={outlined ? 1 : 0}
           rounded={rounded ? 1 : 0}
           light={light ? 1 : 0}
-          bg={getBackground({ bg, theme, outlined, isHovered, light })}
+          clean={clean ? 1 : 0}
+          bg={getBackground({
+            bg,
+            theme,
+            outlined,
+            isHovered,
+            light,
+            clean,
+            textColor
+          })}
           bc={theme.colors[bg] || bg}
           bw={outlined ? 3 : 0}
           br={rounded ? size : theme.globals.roundness}
@@ -158,7 +185,10 @@ Button.propTypes = {
   outlined: PropTypes.bool,
   rounded: PropTypes.bool,
   light: PropTypes.bool,
+  clean: PropTypes.bool,
   ripple: PropTypes.bool,
   loading: PropTypes.bool,
   progress: PropTypes.number
 };
+
+export default withThemeProps(Button, "Button");

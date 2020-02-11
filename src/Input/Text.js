@@ -4,20 +4,19 @@ import color from "color";
 import styled, { useTheme } from "../styled";
 
 const TextInput = styled.TextInput(({ theme, textColor }) => ({
-  fontSize: "p",
+  font: "p",
   backgroundColor: "transparent",
   width: "100%",
   paddingVertical: theme.globals.inputGap,
   paddingHorizontal: theme.globals.inputGap,
-  borderRadius: 0,
+  borderRadius: theme.globals.roundness,
   fontSize: 15,
   margin: 0,
   borderWidth: 0,
   color: textColor || "text",
   fontFamily: theme.globals.fontFamily,
   web: {
-    outlineWidth: 0,
-    outlineColor: "unset",
+    outlineStyle: "none",
     borderColor: "transparent"
   }
 }));

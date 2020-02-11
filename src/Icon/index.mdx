@@ -6,7 +6,8 @@ menu: UI
 
 import {useState} from 'react'
 import { Playground, Props } from 'docz'
-import {Flex, Icon} from '../index'
+import {Flex, Icon, useInterval, Grid, Text, useTheme} from '../index'
+import icons from "./icons";
 
 # Icon
 
@@ -20,12 +21,23 @@ import { Icon } from 'unikit'
 <Playground>
     
     {() => {
-    const names = ['burger', 'x', 'plus', 'minus', 'arrowTop', 'arrowDown']
+    const names = Object.keys(icons)
     const [index, setIndex] = useState(0)
+    const theme = useTheme()
+    console.log({theme})
+    
     return (
       <>
-        <Flex p={30}>
-            <Icon name={names[index]} onPress={() => setIndex((index + 1) % names.length)} />
+        <Flex align="center" w="100%" p={30}>
+            <Flex align="center" w="100%" py={50}>
+              <Icon size={150} width={1} name={names[index]} onPress={() => {
+                setIndex((index + 1) % names.length)
+                theme.update({mode: "dark"})
+                }} />
+            </Flex>
+            <Grid min={100} w="100%">
+              {names.sort((a,b) => a > b).map((name) => <Flex align="center" my={20} w="100%"><Icon name={name} /><Text mt={10}>{name}</Text></Flex> )}
+            </Grid>
         </Flex>
       </>
     )

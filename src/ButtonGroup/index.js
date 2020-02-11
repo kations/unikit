@@ -1,10 +1,9 @@
 import React, { Children } from "react";
 import * as PropTypes from "prop-types";
 
-import styled from "../styled";
-import Flex from "../Flex";
+import styled, { withThemeProps } from "../styled";
 
-const Group = styled(Flex)(({ theme }) => ({
+const GroupWrap = styled.View(({ theme }) => ({
   width: "100%",
   height: "auto",
   justifyContent: "space-between",
@@ -43,22 +42,23 @@ const getBorderRadius = (index, length, vertical) => {
   }
 };
 
-export default function ButtonGroup({
+function Group({
   children,
-  gap = 1,
+  gap = 0,
   buttonStyle = {},
   vertical = false,
   ...rest
 }) {
   return (
-    <Group row={vertical ? false : true} {...rest}>
+    <GroupWrap row={vertical ? false : true} {...rest}>
       {Children.map(children, (child, i) => {
         if (child) {
           return React.cloneElement(child, {
+            ...child.props,
             style: {
               flex: vertical ? undefined : 1,
-              marginLeft: i === 0 ? 0 : gap,
-              marginTop: gap,
+              marginLeft: i === 0 ? 0 : vertical ? 0 : gap,
+              marginTop: i === 0 ? 0 : vertical ? gap : 0,
               ...getBorderRadius(i, React.Children.count(children), vertical),
               ...buttonStyle,
               ...child.props.style
@@ -66,12 +66,14 @@ export default function ButtonGroup({
           });
         }
       })}
-    </Group>
+    </GroupWrap>
   );
 }
 
-ButtonGroup.propTypes = {
+Group.propTypes = {
   children: PropTypes.node.isRequired,
   gap: PropTypes.number,
   buttonStyle: PropTypes.object
 };
+
+export default withThemeProps(Group, "Group");

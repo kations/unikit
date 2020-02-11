@@ -27,7 +27,7 @@ const Comp = ({
   type = "primary",
   value,
   onChange,
-  circleSize = 30,
+  circleSize = 26,
   style,
   borderSize = 2,
   ...rest

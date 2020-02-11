@@ -1,12 +1,5 @@
 import React from "react";
-import { createGlobalStyle } from "styled-components";
 import { ThemeProvider } from "../src";
-
-const GlobalStyle = createGlobalStyle`
- * {
-   outline: none!important;
- }
-`;
 
 export const wrapRootElement = ({ element, props }) => {
   // props provide same data to Layout as Page element will get
@@ -14,17 +7,23 @@ export const wrapRootElement = ({ element, props }) => {
   return (
     <ThemeProvider
       theme={{
-        globals: {
-          Input: {
-            wrapperProps: {
-              mt: 5
-            },
-            clean: true
+        colors: {
+          modes: {
+            dark: {
+              text: "#FFF",
+              primary: "#CCC"
+            }
           }
+        },
+        Input: {
+          wrapperProps: {
+            mt: 5
+          },
+          shadow: 0,
+          clean: false
         }
       }}
     >
-      <GlobalStyle />
       {element}
     </ThemeProvider>
   );

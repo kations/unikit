@@ -100,6 +100,7 @@ export default function Alert({
             {item.message}
           </Text>
           <Icon
+            name="x"
             style={{
               position: "absolute",
               top: 17,

@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring/native";
 import PropTypes from "prop-types";
 import { TouchableOpacity } from "react-native";
+import Svg, { Path, Polyline } from "swgs";
+import { svgPathProperties } from "svg-path-properties";
 
-import styled from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
 import Box from "../Box";
+import { usePrevious } from "../hooks";
+import icons from "./icons";
 
 const Icon = styled(Box)(({ size }) => ({
   position: "relative",
@@ -12,85 +16,36 @@ const Icon = styled(Box)(({ size }) => ({
   height: size
 }));
 
-const Line = animated(
-  styled.View(({ color, lineWidth }) => ({
-    position: "absolute",
-    backgroundColor: color,
-    height: lineWidth
-  }))
-);
-
-const first = {
-  x: {
-    rotate: 45,
-    width: 100,
-    top: 50,
-    left: 0
-  },
-  arrowDown: { rotate: 45, width: 50, top: 50, left: 7 },
-  arrowTop: { rotate: -45, width: 50, top: 50, left: 7 },
-  plus: {
-    rotate: 90,
-    width: 100,
-    left: 0,
-    top: 50
-  },
-  minus: {
-    width: 100,
-    left: 0,
-    top: 50,
-    rotate: 0
-  },
-  burger: {
-    width: 100,
-    left: 0,
-    top: 35,
-    rotate: 0
-  }
-};
-
-const sec = {
-  x: {
-    rotate: -45,
-    width: 100,
-    top: 50,
-    left: 0
-  },
-  arrowDown: { rotate: -45, width: 50, top: 50, left: 40 },
-  arrowTop: { rotate: 45, width: 50, top: 50, left: 40 },
-  plus: {
-    width: 100,
-    left: 0,
-    top: 50,
-    rotate: 0
-  },
-  burger: {
-    width: 100,
-    left: 0,
-    top: 65,
-    rotate: 0
-  }
-};
+const AnimatedPath = animated(Path);
 
 const Comp = ({
   size = 44,
-  lineWidth = 2,
+  width = 1.5,
+  lineCap = "round",
+  fill = false,
   name = "x",
   onPress,
   color = "primary",
+  animate = true,
+  animateOpacity = false,
+  springConfig = { config: { duration: 750 } },
   ...rest
 }) => {
-  const firstStyle = useSpring({
-    to: first[name]
+  const [icon, setIcon] = useState(icons[name] || icons["x"]);
+  const strokeDasharray = new svgPathProperties(icon).getTotalLength();
+
+  const prev = usePrevious(icon);
+  const theme = useTheme();
+  const springProps = useSpring({
+    from: { t: strokeDasharray, opacity: 0 },
+    to: { t: 0, opacity: 1 },
+    reset: prev !== icon,
+    ...springConfig
   });
 
-  const secStyle = useSpring({
-    to: sec[name]
-  });
-
-  if (!first[name]) {
-    return null;
-  }
+  useEffect(() => {
+    setIcon(icons[name]);
+  }, [name]);
 
   return (
     <Icon
@@ -100,32 +55,28 @@ const Comp = ({
       size={size}
       {...rest}
     >
-      <Line
-        position="absolute"
-        color={color}
-        lineWidth={lineWidth}
-        style={{
-          left: firstStyle.left.interpolate(l => `${l}%`),
-          top: firstStyle.top.interpolate(l => `${l}%`),
-          width: firstStyle.width.interpolate(l => `${l}%`),
-          transform: firstStyle.rotate.interpolate(l => [{ rotate: `${l}deg` }])
-        }}
-      />
-      {["minus"].indexOf(name) > -1 ? null : (
-        <Line
-          position="absolute"
-          color={color}
-          lineWidth={lineWidth}
+      <Svg
+        width={size}
+        height={size}
+        style={{ backgroundColor: "transparent" }}
+      >
+        <AnimatedPath
+          d={icon}
+          scale={size / 24}
+          strokeWidth={width}
+          strokeLinecap={lineCap}
+          strokeDasharray={strokeDasharray}
+          strokeDashoffset={animate ? springProps.t : 0}
+          fill="transparent"
           style={{
-            left: secStyle.left.interpolate(l => `${l}%`),
-            top: secStyle.top.interpolate(l => `${l}%`),
-            width: secStyle.width.interpolate(l => `${l}%`),
-            transform: secStyle.rotate.interpolate(l => [{ rotate: `${l}deg` }])
+            fill: fill ? theme.colors[color] || color : "transparent",
+            stroke: theme.colors[color] || color,
+            opacity: animateOpacity ? springProps.opacity : 1
           }}
         />
-      )}
+      </Svg>
     </Icon>
   );
 };
 
-export default Comp;
+export default withThemeProps(Comp, "Icon");

@@ -74,7 +74,7 @@ const BarValueWrap = styled.View(({ theme }) => ({
 
 const BarValueText = styled.Text({
   width: "100%",
-  fontSize: "label",
+  font: "label",
   textAlign: "center"
 });
 
@@ -178,10 +178,10 @@ const Comp = props => {
     formatValue,
     formatLabel,
     showValue = false,
-    labelColor = "text",
-    labelSize = "label",
+    labelFont = "label",
     gridWidth = 2,
     gridColor = "primary",
+    labelColor = "text",
     scrollable = false,
     tickCount = 5,
     scrollToEnd = false,
@@ -299,7 +299,7 @@ const Comp = props => {
               <LabelText
                 style={{
                   color: theme.colors[labelColor] || labelColor,
-                  fontSize: theme.fontSize[labelSize] || labelSize
+                  ...theme.fonts[labelFont]
                 }}
                 numberOfLines={1}
               >
@@ -387,7 +387,7 @@ const Comp = props => {
                 <LabelText
                   style={{
                     color: theme.colors[labelColor] || labelColor,
-                    fontSize: theme.fontSize[labelSize] || labelSize
+                    ...theme.fonts[labelFont]
                   }}
                   numberOfLines={1}
                 >

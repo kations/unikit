@@ -4,7 +4,7 @@ import { Dimensions, TouchableOpacity } from "react-native";
 import { useTransition, animated } from "react-spring/native";
 import PropTypes from "prop-types";
 
-import styled, { withThemeProps } from "../styled";
+import styled, { withThemeProps, useTheme } from "../styled";
 import Flex from "../Flex";
 import Switch from "./Switch";
 import Text from "./Text";
@@ -17,11 +17,78 @@ import Checkbox from "./Checkbox";
 import MultiSelect from "./MultiSelect";
 import Tags from "./Tags";
 
+const Label = styled.Text(({ color, size }) => ({
+  color: color,
+  font: "label"
+}));
+
+const InputWrapper = styled.View(({ theme }) => ({
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  width: "100%",
+  height: "auto",
+  borderRadius: theme.globals.roundness
+}));
+
+const BorderWrap = styled.View(({ theme, size }) => ({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  height: "100%",
+  width: size,
+  zIndex: 100,
+  overflow: "hidden",
+  borderRadius: theme.globals.roundness,
+  justifyContent: "flex-end"
+}));
+
+const BorderBlur = styled.View(({ borderBlurColor }) => ({
+  position: "absolute",
+  left: 0,
+  bottom: 0,
+  width: "100%",
+  height: 2,
+  width: "100%",
+  backgroundColor: borderBlurColor
+}));
+
+const Border = animated(
+  styled.View(({ borderFocusColor }) => ({
+    height: 2,
+    width: "100%",
+    backgroundColor: borderFocusColor
+  }))
+);
+
+const SwitchInput = ({ label, bg, shadow, clean, labelColor, ...rest }) => {
+  const theme = useTheme();
+  return (
+    <Flex
+      p={theme.globals.inputGap * 0.5}
+      pl={theme.globals.inputGap}
+      mt={clean ? theme.globals.inputGap : 0}
+      br={theme.globals.roundness}
+      row
+      w="100%"
+      content="space-between"
+      align="center"
+      bg={bg}
+      shadow={shadow}
+    >
+      <Label font="p" color={labelColor}>
+        {label}
+      </Label>
+      <Switch size={35} {...rest} />
+    </Flex>
+  );
+};
+
 const types = {
   text: Text,
   textarea: Text,
   select: Select,
-  switch: Switch,
+  switch: SwitchInput,
   date: DatePicker,
   datetime: DatePicker,
   time: DatePicker,
@@ -33,51 +100,13 @@ const types = {
   tags: Tags
 };
 
-const Label = styled.Text(({ color, size }) => ({
-  color: color,
-  fontSize: size || "label"
-}));
-
-const Desc = styled.Text({});
-
-const InputWrapper = styled.View(({ theme }) => ({
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "flex-start",
-  width: "100%",
-  height: "auto",
-  minHeight: 55,
-  borderRadius: theme.globals.roundness,
-  paddingBottom: 4
-}));
-
-const BorderWrap = styled.View(({ size, borderBlurColor }) => ({
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  height: 2,
-  width: size,
-  backgroundColor: borderBlurColor,
-  zIndex: 100,
-  overflow: "hidden"
-}));
-
-const Border = animated(
-  styled.View(({ borderFocusColor }) => ({
-    height: "100%",
-    width: "100%",
-    backgroundColor: borderFocusColor
-  }))
-);
-
 const typesProps = {
   switch: {
     wrapperProps: {
       style: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        paddingBottom: 15
+        justifyContent: "space-between"
       }
     },
     labelProps: {
@@ -114,7 +143,7 @@ const typesProps = {
 const Comp = ({
   children,
   label,
-  desc,
+  indentLabel = false,
   error,
   style,
   direction,
@@ -165,38 +194,33 @@ const Comp = ({
         setWidth(width);
       }}
       activeOpacity={0.8}
-      shadow={shadow}
+      shadow={clean ? undefined : shadow}
       style={{
         ...style,
         ...(TypeProps.wrapperProps ? TypeProps.wrapperProps.style : {})
       }}
       {...wrapperProps}
     >
-      <Flex>
-        {label ? (
-          <Label
-            color={error ? "error" : focused ? "primary" : labelColor}
-            mb={clean ? 5 : 0}
-            ml={clean ? 0 : theme.globals.inputGap}
-            mt={theme.globals.inputGap}
-            {...TypeProps.labelProps}
-          >
-            {label}
-            {required ? "*" : null}
-          </Label>
-        ) : null}
-        {desc ? (
-          <Desc
-            style={{ color: color(theme.colors.text).alpha(0.5), fontSize: 10 }}
-          >
-            {desc}
-          </Desc>
-        ) : null}
-      </Flex>
+      {label || desc ? (
+        <Flex>
+          {label && ["switch"].indexOf(type) === -1 ? (
+            <Label
+              accessibilityRole="label"
+              color={error ? "error" : focused ? "primary" : labelColor}
+              mb={clean ? 5 : 0}
+              ml={clean && indentLabel !== true ? 0 : theme.globals.inputGap}
+              mt={theme.globals.inputGap}
+              {...TypeProps.labelProps}
+            >
+              {label}
+              {required ? "*" : null}
+            </Label>
+          ) : null}
+        </Flex>
+      ) : null}
       {InputComp ? (
         <InputComp
           bg={clean ? "surface" : "transparent"}
-          br={theme.globals.roundness}
           onChange={onChange}
           value={value}
           setFocus={setFocus}
@@ -205,6 +229,9 @@ const Comp = ({
           required={required}
           options={options}
           placeholder={placeholder}
+          shadow={clean ? shadow : undefined}
+          labelColor={error ? "error" : focused ? "primary" : labelColor}
+          clean={clean}
           {...TypeProps}
           {...rest}
         />
@@ -218,12 +245,15 @@ const Comp = ({
               type,
               label,
               required,
+              clean,
+              labelColor: error ? "error" : focused ? "primary" : labelColor,
               ...children.props,
               ...rest
             })
           )
         : null}
-      <BorderWrap size={width} borderBlurColor={borderBlurColor}>
+      <BorderWrap size={width} pointerEvents="none">
+        <BorderBlur borderBlurColor={borderBlurColor} />
         {transitions.map(({ item, key, props }) =>
           item ? (
             <Border

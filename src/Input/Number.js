@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
+import styled, { useTheme } from "../styled";
+
 import Box from "../Box";
 import Flex from "../Flex";
 import Icon from "../Icon";
@@ -12,86 +14,98 @@ function isFloat(n) {
 }
 
 const Comp = props => {
-  const [stringValue, setValue] = useState((props.value || "").toString());
+  const theme = useTheme();
+  const [stringValue, setValue] = useState(
+    (props.value && !isNaN(props.value) ? props.value : "").toString()
+  );
   const { style, onChange, value, step = 1, ...rest } = props;
 
   return (
     <Box relative w="100%" style={style}>
-      <Flex
-        as={TouchableOpacity}
-        absolute
-        t="0px"
-        r="0px"
-        bg="background"
-        row
-        h="80%"
-        px={5}
-        style={{
-          borderRadius: 20,
-          zIndex: 10
-        }}
-      >
-        <Flex
-          as={TouchableOpacity}
-          onPress={() => {
-            if (onChange) {
-              let newValue =
-                isNaN(value) === false && value !== null && value !== undefined
-                  ? isFloat(value)
-                    ? parseFloat(value) - step
-                    : parseInt(value) - step
-                  : 0;
-              onChange(newValue);
-              setValue(newValue.toString());
-            }
-          }}
-          w={38}
-          h="100%"
-          align="center"
-          content="center"
-          style={{ borderRightWidth: 2, borderRightColor: "#FFF" }}
-        >
-          <Icon size={15} name="minus" />
-        </Flex>
-        <Flex
-          as={TouchableOpacity}
-          onPress={() => {
-            if (onChange) {
-              let newValue =
-                isNaN(value) === false && value !== null && value !== undefined
-                  ? isFloat(value)
-                    ? parseFloat(value) + step
-                    : parseInt(value) + step
-                  : 1;
-              onChange(newValue);
-              setValue(newValue.toString());
-            }
-          }}
-          w={38}
-          h="100%"
-          align="center"
-          content="center"
-        >
-          <Icon size={15} name="plus" />
-        </Flex>
-      </Flex>
       <TextInput
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
+        autoCapitalize="words"
         value={stringValue}
         onChange={text => {
+          var number;
+          text = text.replace(",", ".");
           if (!isNaN(text) && text.toString().indexOf(".") !== -1) {
-            onChange(parseFloat(text));
+            number = parseFloat(text);
           } else if (!isNaN(text)) {
-            onChange(parseInt(text));
-          } else if (text.length === 0) {
-            onChange(null);
+            number = parseInt(text);
           }
-          if (text.length === 0 || !isNaN(text)) {
-            setValue(text);
+          if (text.length === 0) {
+            number = null;
           }
+          setValue(text);
+          if (number === undefined) return;
+          if (number === NaN) return;
+          onChange(number);
         }}
         {...rest}
       />
+      <Flex p={theme.globals.inputGap / 2} h="100%" t={0} r={0} absolute>
+        <Flex
+          bg="background"
+          row
+          h="100%"
+          style={{
+            borderRadius: theme.globals.roundness,
+            zIndex: 50
+          }}
+        >
+          <Flex
+            as={TouchableOpacity}
+            onPress={() => {
+              if (onChange) {
+                let newValue =
+                  isNaN(value) === false &&
+                  value !== null &&
+                  value !== undefined
+                    ? isFloat(value)
+                      ? parseFloat(value) - step
+                      : parseInt(value) - step
+                    : 0;
+                onChange(newValue);
+                setValue(newValue.toString());
+              }
+            }}
+            w={38}
+            h="100%"
+            align="center"
+            content="center"
+            style={{
+              borderRightWidth: 2,
+              borderRightColor: theme.colors.surface
+            }}
+          >
+            <Icon size={22} name="minus" />
+          </Flex>
+          <Flex
+            as={TouchableOpacity}
+            onPress={() => {
+              if (onChange) {
+                let newValue =
+                  isNaN(value) === false &&
+                  value !== null &&
+                  value !== undefined
+                    ? isFloat(value)
+                      ? parseFloat(value) + step
+                      : parseInt(value) + step
+                    : 1;
+                onChange(newValue);
+                setValue(newValue.toString());
+              }
+            }}
+            w={38}
+            h="100%"
+            align="center"
+            content="center"
+          >
+            <Icon size={22} name="plus" />
+          </Flex>
+        </Flex>
+      </Flex>
     </Box>
   );
 };

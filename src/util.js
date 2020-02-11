@@ -65,11 +65,21 @@ const isColor = col => {
   }
 };
 
+const colorStyles = [
+  "color",
+  "backgroundColor",
+  "borderColor",
+  "borderBottomColor",
+  "borderTopColor"
+];
+
 const styles = {
   absolute: "position",
   fixed: "position",
   relative: "position",
   sticky: "position",
+  color: "color",
+  position: "position",
   w: 'width',
   h: 'height',
   br: 'borderRadius',
@@ -94,8 +104,32 @@ const styles = {
   mt: 'marginTop',
   mb: 'marginBottom',
   ml: 'marginLeft',
-  mr: 'marginRight'
+  mr: 'marginRight',
+  width: 'width',
+  height: 'height',
+  maxWidth: "maxWidth",
+  maxHeight: "maxHeight",
+  flex: "flex",
+  align: 'alignItems',
+  justify: 'justifyContent',
+  wrap: 'flexWrap',
+  direction: "flexDirection",
+  content: 'justifyContent',
+  align: 'alignItems',
+  row: "flexDirection",
+  zi: "zIndex",
+  fz: "fontSize",
+  fontSize: "fontSize",
 }
+
+const getValueByBreak = (value, breakIndex = 0) => {
+  if (value !== undefined && value !== null && typeof value === "object") {
+    let index = (value.length - 1) < breakIndex ? value.length - 1 : breakIndex;
+    value = value[index || 0]
+  }
+  return value;
+}
+
 
 export const getStyle = ({
   theme,
@@ -107,18 +141,44 @@ export const getStyle = ({
   darken,
   alpha,
   bg,
+  font,
+  absoluteFill,
   ...rest,
 }) => {
-  const style = {};
+  let style = {};
 
   Object.keys(rest).map((key) => {
+    let value = getValueByBreak(rest[key], theme.breakIndex);
     if (styles[key]) {
-      style[styles[key]] = typeof rest[key] === "boolean" ? key : rest[key]
+      if (typeof value === "boolean" && key === 'row') {
+        style[styles[key]] = value === true ? 'row' : "column"
+      } else {
+        if (colorStyles.indexOf(key) > -1) {
+          style[styles[key]] = theme.colors[value] || value;
+        } else {
+          style[styles[key]] = typeof value === "boolean" ? key : value
+        }
+        
+      }
+      
     }
   })
 
+  if (font && theme.fonts[font]) {
+    style = {...style, ...theme.fonts[font]}
+  }
+
+
+  if (absoluteFill) {
+    style = {
+      ...style,
+      ...{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }
+    };
+  }
+
   if ((bg && isColor(bg) === true) || (bg && theme.colors[bg])) {
-    let col = theme.colors[bg] || bg;
+    let value = getValueByBreak(bg, theme.breakIndex);
+    let col = theme.colors[value] || value;
 
     if (lighten) {
       col = color(col)

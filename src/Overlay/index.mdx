@@ -23,7 +23,7 @@ import { Overlay } from 'unikit'
      
             <Flex bg="background" p={30} content="center">
                 <Button onPress={() => setOverlay(true)}>show overlay</Button>
-                <Overlay p={30} position="center" width={800} height="auto" visible={overlay} onClose={() => setOverlay(false)}>
+                <Overlay scrollable p={30} position="center" contentProps={{ p: 20, maxWidth: 500, width: "90%", bg: "surface" }} visible={overlay} onClose={() => setOverlay(false)}>
                     <Button onPress={() => setOverlay(false)}>close overlay</Button>
                 </Overlay>
             </Flex>

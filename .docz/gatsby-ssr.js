@@ -7,12 +7,12 @@ export const wrapRootElement = ({ element, props }) => {
   return (
     <ThemeProvider
       theme={{
-        globals: {
-          Input: {
-            wrapperProps: {
-              mt: 10
-            }
-          }
+        Input: {
+          wrapperProps: {
+            mt: 5
+          },
+          shadow: 30,
+          clean: false
         }
       }}
     >

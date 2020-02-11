@@ -1,5 +1,4 @@
 import styled from "../styled";
-import color from "color";
 import PropTypes from "prop-types";
 
 const Box = styled.View();

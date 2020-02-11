@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.1.81",
+  "version": "1.2.17",
   "description": "universal component library for react and react-native",
   "author": "kations",
   "license": "MIT",
@@ -32,15 +32,19 @@
     "swgs": "*"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
     "@svgr/rollup": "^2.4.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.5",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-expo": "^8.0.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.1.4",
-    "docz": "2.0.0-rc.41",
+    "docz": "2.2.0",
     "eslint": "^5.0.1",
     "eslint-config-react-app": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
@@ -50,10 +54,11 @@
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.1.0",
+    "expo": "^36.0.2",
+    "gatsby-plugin-react-native-web": "^3.0.0-beta.7",
     "gh-pages": "^1.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-native-svg": "^9.9.3",
     "react-native-web": "^0.11.7",
     "react-scripts": "^1.1.4",
     "react-spring": "^8.0.27",
@@ -66,7 +71,7 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-url": "^1.4.0",
     "scheduler": "0.15.0",
-    "styled-components": "^5.0.0-beta.8",
+    "styled-components": "^5.0.0",
     "swgs": "^3.3.0"
   },
   "files": [
@@ -78,10 +83,11 @@
   "dependencies": {
     "color": "^3.1.2",
     "dayjs": "^1.8.16",
+    "deepmerge": "^4.2.2",
     "get-value": "^3.0.1",
     "object-set": "^1.0.1",
     "prop-types": "^15.7.2",
-    "resize-observer-polyfill": "^1.5.1",
-    "set-value": "^3.0.1"
+    "set-value": "^3.0.1",
+    "svg-path-properties": "^1.0.2"
   }
 }

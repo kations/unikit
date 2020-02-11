@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef, useEffect } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 
 import styled from "../styled";
@@ -15,10 +15,14 @@ export default ({
   renderHeader,
   renderFooter,
   scrollViewProps,
+  scrollViewComponent,
   onScroll,
+  scrollTop,
+  scrollAnimated = true,
   ...rest
 }) => {
   const [top, setTop] = useState(0);
+  const scrollRef = useRef(null);
 
   const onScrollPage = e => {
     const scrollSensitivity = 4 / 3;
@@ -27,7 +31,17 @@ export default ({
     setTop(offset);
   };
 
-  const Scroller = scrollable ? ScrollView : Fragment;
+  useEffect(() => {
+    if (scrollRef && scrollRef.current && scrollRef.current.scrollTo) {
+      scrollRef.current.scrollTo({
+        x: scrollTop,
+        y: 0,
+        animated: scrollAnimated
+      });
+    }
+  }, [scrollTop]);
+
+  const Scroller = scrollable ? scrollViewComponent || ScrollView : Fragment;
   const ScrollerProps = {
     ...{
       onScroll: onScrollPage,
@@ -44,7 +58,9 @@ export default ({
       {...rest}
     >
       {renderHeader ? renderHeader(top) : null}
-      <Scroller {...(scrollable ? ScrollerProps : {})}>{children}</Scroller>
+      <Scroller ref={scrollRef} {...(scrollable ? ScrollerProps : {})}>
+        {children}
+      </Scroller>
       {renderFooter ? renderFooter(top) : null}
     </Page>
   );

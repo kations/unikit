@@ -12,6 +12,7 @@ const Comp = props => {
     overrides,
     style,
     actions = [],
+    buttonSize = 50,
     onActionPress,
     onClose,
     cancelText = "Cancel",
@@ -25,28 +26,30 @@ const Comp = props => {
 
   return (
     <Overlay
-      bg="transparent"
-      shadow={0}
       position="bottom"
       height="auto"
       onClose={onClose}
-      px={20}
+      contentProps={{
+        maxWidth: 600,
+        bg: "transparent",
+        w: "90%",
+        shadow: 0
+      }}
       {...rest}
     >
       {title && <Headline>{title}</Headline>}
       {desc && <Text>{desc}</Text>}
-      <ButtonGroup mb={6} gap={0} shadow={10} vertical>
+      <ButtonGroup bg="surface" mb={6} gap={0} shadow={10} vertical>
         {actions.map((action, index) => {
           return (
             <Button
-              bg="surface"
-              alpha={0.9}
+              clean
               key={`action-${index}`}
-              color="primary"
               style={{
                 borderColor: "rgba(0,0,0,0.05)",
                 borderBottomWidth: 1
               }}
+              size={buttonSize}
               onPress={() => {
                 if (action.onPress) {
                   action.onPress();
@@ -62,17 +65,17 @@ const Comp = props => {
         })}
       </ButtonGroup>
 
-      <Button
-        bg="surface"
-        color="error"
-        onPress={onClose || null}
-        color={cancelColor}
-        shadow={10}
-        mb={20}
-        alpha={0.9}
-      >
-        {cancelText}
-      </Button>
+      <ButtonGroup bg="surface" mb={25} gap={0} shadow={10} vertical>
+        <Button
+          clean
+          size={buttonSize}
+          color="error"
+          onPress={onClose || null}
+          color={cancelColor}
+        >
+          {cancelText}
+        </Button>
+      </ButtonGroup>
     </Overlay>
   );
 };

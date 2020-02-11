@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Platform } from "react-native";
 import { useSpring, animated } from "react-spring/native";
+import color from "color";
 
 import Pan from "../Pan";
 import styled from "../styled";
@@ -17,14 +18,15 @@ const lerp = (start, end, t) => {
 const SliderWrapper = styled.View(({ theme }) => ({
   paddingHorizontal: theme.globals.inputGap,
   paddingTop: theme.globals.inputGap / 2,
-  width: "100%"
+  width: "100%",
+  borderRadius: theme.globals.roundness
 }));
 
 const Slider = styled(Box)(
   ({ showValue, showTicks, vertical, sliderHeight, handleSize }) => ({
     padding: handleSize / 2,
     paddingTop: vertical ? 15 : showValue ? 45 : handleSize / 2,
-    paddingBottom: vertical ? 15 : showTicks ? 40 : handleSize / 2,
+    paddingBottom: vertical ? 15 : showTicks ? 38 : handleSize / 2,
     paddingRight: vertical ? (showValue ? 45 : 30) : handleSize / 2,
     width: vertical ? "auto" : "100%",
     height: vertical ? sliderHeight : "auto",
@@ -62,20 +64,21 @@ const HandleBox = animated(
   }))
 );
 
-const Handle = styled(Box)(
-  ({ vertical, trackHeight, handleSize, handleColor }) => ({
-    width: handleSize,
-    height: handleSize,
-    borderRadius: handleSize / 2,
-    borderColor: "rgba(0,0,0,0.1)",
-    backgroundColor: handleColor,
-    ...(Platform.OS === "web"
-      ? {
-          cursor: "pointer"
-        }
-      : {})
-  })
-);
+const Handle = styled(Box)(({ theme, accent, handleSize, handleColor }) => ({
+  width: handleSize,
+  height: handleSize,
+  borderRadius: handleSize / 2,
+  backgroundColor: handleColor,
+  borderWidth: 2,
+  borderColor: color(theme.colors[accent] || accent)
+    .alpha(0.07)
+    .toString(),
+  ...(Platform.OS === "web"
+    ? {
+        cursor: "pointer"
+      }
+    : {})
+}));
 
 const Ticks = styled.View(({ vertical, trackHeight, handleSize, size }) => ({
   width: vertical ? 20 : size + handleSize,
@@ -251,6 +254,7 @@ const Comp = ({
               handleSize={handleSize}
               handleColor={handleColor}
               shadow={5}
+              accent={trackColor}
               {...handleProps}
             />
           </Pan>

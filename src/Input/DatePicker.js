@@ -9,7 +9,7 @@ import {
 import dayjs from "dayjs";
 import { createElement } from "react-native";
 
-import styled from "../styled";
+import styled, { useTheme } from "../styled";
 import Select from "./Select";
 import TextInput from "./Text";
 import Box from "../Box";
@@ -22,12 +22,12 @@ const Touchable = styled.TouchableOpacity({
   width: "100%"
 });
 
-const StyledDateInput = styled(DateInput)({
-  fontSize: "p",
+const StyledDateInput = styled(DateInput)(({ theme }) => ({
+  font: "p",
   backgroundColor: "transparent",
   width: "100%",
   paddingVertical: 10,
-  borderRadius: 0,
+  borderRadius: theme.globals.roundness,
   fontSize: 15,
   margin: 0,
   borderWidth: 0,
@@ -37,7 +37,7 @@ const StyledDateInput = styled(DateInput)({
     outlineColor: "unset",
     borderColor: "transparent"
   }
-});
+}));
 
 const types = {
   date: {
@@ -111,12 +111,12 @@ const CalendarItem = styled.TouchableOpacity(({ theme, active, disabled }) => ({
 }));
 
 const CalendarLabel = styled.Text(({ active }) => ({
-  fontSize: "p",
+  font: "p",
   color: active ? "#FFF" : "text"
 }));
 
 const CalendarMonth = styled.Text(({ active }) => ({
-  fontSize: "p",
+  font: "p",
   color: active ? "#FFF" : "text"
 }));
 
@@ -168,7 +168,7 @@ const Calendar = ({ min, max, onChange, currentDate, type }) => {
             key={key}
             style={{ height: 20, backgroundColor: "transparent" }}
           >
-            <CalendarLabel style={{ fontSize: "caption" }}>{key}</CalendarLabel>
+            <CalendarLabel font="caption">{key}</CalendarLabel>
           </CalendarItem>
         ))}
       </CalendarView>
@@ -280,7 +280,7 @@ const Calendar = ({ min, max, onChange, currentDate, type }) => {
                 .toDate()
             )
           }
-          options={Array.from(Array(100).keys()).map(number => ({
+          options={Array.from(Array(120).keys()).map(number => ({
             label: `${parseInt(dayjs().format("YYYY")) - number}`,
             value: parseInt(dayjs().format("YYYY")) - number
           }))}
@@ -313,6 +313,7 @@ const Comp = props => {
     max,
     ...rest
   } = props;
+  const theme = useTheme();
   const [show, setShow] = useState(false);
   const format = types[type].format;
   const date = value ? dayjs(value).toDate() : new Date();
@@ -387,6 +388,7 @@ const Comp = props => {
               setShow(true);
             }
           }}
+          br={theme.globals.roundness}
           style={{ width: "100%", ...style }}
           {...rest}
         >
@@ -404,8 +406,7 @@ const Comp = props => {
         height="auto"
         visible={show}
         onClose={() => setShow(false)}
-        p={20}
-        style={{ maxWidth: 500, width: "90%" }}
+        contentProps={{ p: 20, maxWidth: 500, w: "90%", bg: "surface" }}
         {...overlayProps}
       >
         <Box width="100%">

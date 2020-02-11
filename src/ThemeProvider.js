@@ -2,33 +2,20 @@ import React, { Fragment, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components/native";
 import color from "color";
 
+const merge = require("deepmerge");
+
 import Alert from "./Alert";
 import { PortalProvider, PortalExit } from "./Portal";
-import { useWindowDimensions } from "./hooks";
-
-export function isObject(item) {
-  return item && typeof item === "object" && !Array.isArray(item);
-}
-
-export function mergeDeep(target, ...sources) {
-  if (!sources.length) return target;
-  const source = sources.shift();
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
-    }
-  }
-  return mergeDeep(target, ...sources);
-}
+import { useDimensions } from "./hooks";
 
 function capitalizeFLetter(string) {
   return string[0].toUpperCase() + string.slice(1);
+}
+
+function isFunction(functionToCheck) {
+  return (
+    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
+  );
 }
 
 const primary = "#673fb4";
@@ -48,74 +35,116 @@ const DefaultTheme = {
     success: "#8bc34a",
     warning: "#ffbb33",
     error: "#f44336",
-    shadow: "rgba(0,0,0,0.1)"
+    shadow: color(primary)
+      .alpha(0.1)
+      .toString()
   },
-  fontSize: {
-    h1: 30,
-    h2: 25,
-    h3: 20,
-    h4: 18,
-    h5: 16,
-    p: 16,
-    caption: 10,
-    label: 12
+  fonts: {
+    h1: {
+      fontSize: 30
+    },
+    h2: {
+      fontSize: 25
+    },
+    h3: {
+      fontSize: 20
+    },
+    h4: {
+      fontSize: 18
+    },
+    h5: {
+      fontSize: 16
+    },
+    p: {
+      fontSize: 16
+    },
+    label: {
+      fontSize: 14
+    },
+    caption: {
+      fontSize: 10
+    }
   },
   breaks: {
     mobile: 768,
     tablet: 1024,
-    desktop: 99999
+    desktop: 10000
   },
   globals: {
     fontFamily: "System",
-    borderRadius: 3,
-    roundness: 5,
+    roundness: 3,
     inputGap: 15
   }
 };
 
-export default ({ children, theme = {}, alertProps = {} }) => {
+export default ({
+  children,
+  theme = {},
+  alertProps = {},
+  defaultMode = "default",
+  defaultWidth = 500
+}) => {
   const [alert, setAlert] = useState(null);
-  const dimensions = useWindowDimensions();
+  const dimensions = useDimensions();
+
+  const getColors = (colors, mode) => {
+    const newColors =
+      mode !== "default"
+        ? {
+            ...colors,
+            ...(colors.modes && colors.modes[mode] ? colors.modes[mode] : {})
+          }
+        : colors;
+    return newColors;
+  };
+
   const [defaultTheme, setTheme] = useState(() =>
-    mergeDeep(
+    merge(
       {
         ...DefaultTheme,
         alert: obj => {
           setAlert(obj);
-        }
+        },
+        update: state => {
+          setTheme({ ...defaultTheme, ...state });
+        },
+        mode: defaultMode
       },
       theme
     )
   );
 
-  const dimensionHandler = ({ width, height }) => {
+  const getDimensions = (width, height) => {
     const is = {};
     let breakIndex = 0;
+    let last = 0;
     Object.keys(defaultTheme.breaks).map((key, index) => {
-      is[`is${capitalizeFLetter(key)}`] = defaultTheme.breaks[key] < width;
+      is[`is${capitalizeFLetter(key)}`] =
+        width < defaultTheme.breaks[key] && width > last;
       if (defaultTheme.breaks[key] < width) {
         breakIndex = index;
       }
+      last = defaultTheme.breaks[key];
     });
-    setTheme({
-      ...defaultTheme,
-      ...{ width: width, height: height, ...is, breakIndex }
-    });
+    return { width, height, ...is, breakIndex };
   };
 
   useEffect(() => {
-    setTheme(mergeDeep(defaultTheme, theme));
+    setTheme(merge(defaultTheme, theme));
   }, [theme]);
-
-  useEffect(() => {
-    if (dimensions.width !== defaultTheme.width) {
-      dimensionHandler(dimensions);
-    }
-  }, [dimensions]);
 
   return (
     <PortalProvider>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider
+        theme={{
+          ...defaultTheme,
+          colors: getColors(defaultTheme.colors, defaultTheme.mode),
+          ...getDimensions(
+            dimensions.width || defaultWidth,
+            dimensions.height || 0
+          )
+        }}
+      >
         <Fragment>
           {children}
           <Alert alert={alert} {...alertProps} />

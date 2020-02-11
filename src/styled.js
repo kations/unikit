@@ -24,11 +24,7 @@ export const useThemeProps = (props, name) => {
 export const withThemeProps = (WrappedComponent, name) => {
   class WithSubscription extends React.Component {
     render() {
-      const themeProps = Object.assign(
-        {},
-        this.props.theme.globals[name],
-        this.props
-      );
+      const themeProps = Object.assign({}, this.props.theme[name], this.props);
       return <WrappedComponent {...themeProps} />;
     }
   }
@@ -51,6 +47,7 @@ function isFunction(functionToCheck) {
 export default function styled(component, alias) {
   return arg => {
     const StyledComp = scStyled(component)(props => {
+      const { theme } = props;
       let style = arg || {};
       if (isFunction(style)) {
         style = style(props);
@@ -62,18 +59,30 @@ export default function styled(component, alias) {
       Object.keys(style).map(key => {
         if (colorStyles.indexOf(key) > -1) {
           //console.log({ found: key });
-          style[key] = props.theme.colors[style[key]] || style[key];
+          style[key] = theme.colors[style[key]] || style[key];
         }
-        if (key === "fontSize") {
-          style[key] = props.theme.fontSize[style[key]] || style[key];
-        }
+
         if (key === reactNative.Platform.OS) {
           style = Object.assign({}, style, style[key]);
         }
       });
       if (alias === "Text" && !style["fontFamily"]) {
-        style["fontFamily"] = props.theme.globals.fontFamily;
+        style["fontFamily"] = theme.globals.fontFamily;
       }
+
+      if (style.font && props.theme.fonts[style.font]) {
+        style = { ...style, ...theme.fonts[style.font] };
+        delete style["font"];
+      }
+
+      if (style.absoluteFill) {
+        style = {
+          ...style,
+          ...{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }
+        };
+        delete style["absoluteFill"];
+      }
+
       delete style["web"];
       delete style["android"];
       delete style["ios"];

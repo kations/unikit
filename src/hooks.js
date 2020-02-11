@@ -1,7 +1,69 @@
 import { Dimensions, PanResponder } from "react-native";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 
-export const useWindowDimensions = () => {
+export const useInterval = (callback, delay, ...args) => {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current(...args);
+    }
+    if (delay !== null && delay !== undefined) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+};
+
+export const usePrevious = value => {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef();
+
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
+
+  // Return previous value (happens before update in useEffect above)
+  return ref.current;
+};
+
+export const useScaledSize = ({ multiple = 1 }) => {
+  const {
+    window: { width }
+  } = useDimensions();
+  let size = 16;
+
+  if (width >= 1408) size = 24;
+  else if (width >= 1216) size = 22;
+  else if (width >= 1024) size = 20;
+  else if (width >= 768) size = 18;
+
+  return size * multiple;
+};
+
+export const useLayout = () => {
+  const [layout, setLayout] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  });
+
+  const onLayout = useCallback(e => setLayout(e.nativeEvent.layout), []);
+
+  return {
+    onLayout,
+    ...layout
+  };
+};
+
+export const useDimensions = () => {
   const [screenData, setScreenData] = useState(Dimensions.get("window"));
   useEffect(() => {
     const onChange = result => setScreenData(result.window);

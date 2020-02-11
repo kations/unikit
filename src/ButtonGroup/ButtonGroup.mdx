@@ -1,28 +1,43 @@
 ---
-name: ButtonGroup
-route: /ButtonGroup
+name: Group
+route: /Group
 menu: UI
 ---
 
 import { Playground, Props } from 'docz'
-import {Button, ButtonGroup} from '../index'
+import { Flex, Button, Group, Input, Headline, Text, Form} from '../index'
 
 # ButtonGroup
 
 ### Usage
 
 ```bash
-import { Button, ButtonGroup } from 'unikit'
+import { Button, Group } from 'unikit'
 ```
 
 <Playground>
-    <ButtonGroup>
-        <Button>Label</Button>  
-        <Button>Label</Button>  
-        <Button>Label</Button>    
-    </ButtonGroup>
+    <Flex p={30}>
+        <Group gap={1}>
+            <Button>Label</Button>  
+            <Button>Label</Button>  
+            <Button>Label</Button>    
+        </Group>
+</Flex>
+ <Flex bg="primary" alpha={0.1} p={30}  align="center">
+        <Headline>Welcome back</Headline>
+        <Text o={0.5}>Login with your credentials</Text>
+        <Form maxWidth={600} buttonProps={{mt: 15}} onSubmit={(doc, reset) => {
+            alert(JSON.stringify(doc))
+            reset()
+        }}>
+        <Group mt={30} vertical >
+            <Input type="text" placeholder="E-Mail" field="mail" />  
+            <Input type="text" placeholder="Password" field="pw" />  
+        </Group>
+        </Form>
+    </Flex>
 </Playground>
 
 ### Props
 
-<Props of={ButtonGroup} />
+<Props of={Group} />

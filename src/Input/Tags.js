@@ -6,13 +6,14 @@ import TextInput from "./Text";
 import Icon from "../Icon";
 import Animate from "../Animate";
 
-const TagInput = styled.View({
+const TagInput = styled.View(({ theme }) => ({
   width: "100%",
   position: "relative",
   flexDirection: "row",
   flexWrap: "wrap",
-  alignItems: "center"
-});
+  alignItems: "center",
+  borderRadius: theme.globals.roundness
+}));
 
 const Pills = styled.View(({ theme }) => ({
   paddingLeft: theme.globals.inputGap,
@@ -31,7 +32,7 @@ const Pill = styled.TouchableOpacity({
 });
 
 const PillLabel = styled.Text({
-  fontSize: "label",
+  font: "label",
   color: "#FFF",
   marginRight: 5
 });

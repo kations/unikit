@@ -8,21 +8,15 @@ import Button from "../Button";
 import Icon from "../Icon";
 import TextInput from "./Text";
 
-const Box = styled.View({
+const Box = styled.View(({ theme }) => ({
   width: "100%",
   position: "relative"
-});
+}));
 
 const Headline = styled.Text({
-  fontSize: "h3",
+  font: "h3",
   color: "text"
 });
-
-// const SelectIcon = styled(Icon)({
-//   position: "absolute",
-//   top: 10,
-//   right: 5
-// });
 
 const Comp = props => {
   const {
@@ -33,7 +27,8 @@ const Comp = props => {
     placeholder = "Please select...",
     overlayProps = {},
     inputProps = {},
-    pickerProps = {}
+    pickerProps = {},
+    ...rest
   } = props;
   const theme = useTheme();
   const [show, setShow] = useState(false);
@@ -70,11 +65,13 @@ const Comp = props => {
         style={[
           {
             width: "100%",
-            paddingVertical: 10,
+            paddingVertical: theme.globals.inputGap,
+            paddingHorizontal: theme.globals.inputGap,
             margin: 0,
             borderRadius: 0,
             backgroundColor: "transparent",
-            fontSize: theme.fontSize.p,
+            fontSize: theme.fonts.p.fontSize,
+            color: theme.colors.text,
             ...Platform.select({
               web: {
                 outlineWidth: 0,
@@ -96,7 +93,13 @@ const Comp = props => {
   };
 
   return (
-    <Box width="100%" position="relative" style={style}>
+    <Box
+      width="100%"
+      br={theme.globals.roundness}
+      position="relative"
+      style={style}
+      {...rest}
+    >
       {Platform.OS !== "ios" ? renderPicker() : null}
       {Platform.OS === "ios" ? (
         <TouchableOpacity
@@ -115,16 +118,19 @@ const Comp = props => {
           />
         </TouchableOpacity>
       ) : null}
-      <Icon
-        name="arrowDown"
-        size={23}
-        color="primary"
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 5
-        }}
-      />
+      <Box
+        absolute
+        t={0}
+        r={theme.globals.inputGap}
+        align="center"
+        content="center"
+        h="100%"
+        zi={10}
+        w="auto"
+        pointerEvents="none"
+      >
+        <Icon name="arrowDown" size={23} color="primary" />
+      </Box>
 
       {Platform.OS === "ios" ? (
         <Overlay
@@ -132,8 +138,7 @@ const Comp = props => {
           height="auto"
           visible={show}
           onClose={() => setShow(false)}
-          p={20}
-          style={{ maxWidth: 500, width: "90%" }}
+          contentProps={{ p: 20, maxWidth: 500, w: "90%", bg: "surface" }}
           {...overlayProps}
         >
           <Box width="100%">
