@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
 import { isDark } from "../util";
 
 import Button from "../Button";
+import Text from "../Text";
 
 const Wrap = styled.View(({ size }) => ({
   justifyContent: "center",
@@ -28,7 +29,7 @@ const BackgroundImage = styled.ImageBackground(({ size }) => ({
   borderRadius: size / 2
 }));
 
-const Label = styled.Text(({ theme, type, textColor, size }) => ({
+const Label = styled(Text)(({ theme, type, textColor, size }) => ({
   color: textColor
     ? textColor
     : isDark(theme.colors[type] || type)
@@ -40,7 +41,7 @@ const Label = styled.Text(({ theme, type, textColor, size }) => ({
   fontWeight: "bold"
 }));
 
-export default function Avatar(props) {
+export function Avatar(props) {
   const {
     bg = "primary",
     children,
@@ -83,3 +84,5 @@ Avatar.propTypes = {
   style: PropTypes.object,
   children: PropTypes.node
 };
+
+export default withThemeProps(Avatar, "Avatar");

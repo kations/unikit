@@ -36,7 +36,7 @@ export default function Text({ children, level, font, ...rest }) {
           ? level
             ? "heading"
             : getAccessibilityRole(font)
-          : undefined
+          : "text"
       }
       level={level}
       font={level && !font ? `h${level}` : font}

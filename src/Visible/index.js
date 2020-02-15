@@ -1,25 +1,5 @@
 import React, { Component } from "react";
 import { View, Dimensions } from "react-native";
-import { useDimensions } from "../util";
-
-// export default const Visible = () => {
-//   const {width, height} = useDimensions()
-//   return (
-//     <View
-//         collapsable={false}
-//         ref={component => {
-//           this.myview = component;
-//         }}
-//         {...this.props}
-//       >
-//         {this.props.children instanceof Function
-//           ? this.props.children({
-//               isVisible: this.state.isVisible
-//             })
-//           : this.props.children}
-//       </View>
-//   );
-// }
 
 export default class Visible extends Component {
   constructor(props) {

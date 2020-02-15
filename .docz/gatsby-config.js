@@ -1,4 +1,4 @@
-const { mergeWith } = require('lodash/fp')
+const { mergeWith } = require('docz-utils')
 const fs = require('fs-extra')
 
 let custom = {}
@@ -27,6 +27,8 @@ const config = {
       resolve: 'gatsby-theme-docz',
       options: {
         themeConfig: {},
+        src: './',
+        gatsbyRoot: null,
         themesDir: 'src',
         mdxExtensions: ['.md', '.mdx'],
         docgenConfig: {},
@@ -40,14 +42,14 @@ const config = {
         'props-parser': true,
         debug: false,
         native: false,
-        openBrowser: false,
-        o: false,
-        open: false,
-        'open-browser': false,
+        openBrowser: null,
+        o: null,
+        open: null,
+        'open-browser': null,
         root: '/Users/kations/Projekte/unikit/.docz',
         base: '/',
         source: './',
-        src: './',
+        'gatsby-root': null,
         files: '**/*.{md,markdown,mdx}',
         public: '/public',
         dest: '.docz/dist',
@@ -70,6 +72,7 @@ const config = {
           cache: '/Users/kations/Projekte/unikit/.docz/.cache',
           app: '/Users/kations/Projekte/unikit/.docz/app',
           appPackageJson: '/Users/kations/Projekte/unikit/package.json',
+          appTsConfig: '/Users/kations/Projekte/unikit/tsconfig.json',
           gatsbyConfig: '/Users/kations/Projekte/unikit/gatsby-config.js',
           gatsbyBrowser: '/Users/kations/Projekte/unikit/gatsby-browser.js',
           gatsbyNode: '/Users/kations/Projekte/unikit/gatsby-node.js',

@@ -14,11 +14,23 @@ import {
 } from "./hooks";
 
 export const Header = forwardRef((props, ref) => {
-  return <Box accessibilityRole="banner" {...props} ref={ref} />;
+  return (
+    <Box
+      accessibilityRole={Platform.OS === "web" ? "banner" : "header"}
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 export const Nav = forwardRef((props, ref) => {
-  return <Box accessibilityRole="navigation" {...props} ref={ref} />;
+  return (
+    <Box
+      accessibilityRole={Platform.OS === "web" ? "navigation" : "menubar"}
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 export {
@@ -39,6 +51,7 @@ export {
 };
 
 export { default as ThemeProvider } from "./ThemeProvider";
+export { default as Visible } from "./Visible";
 
 ///Primitives
 export { default as Flex } from "./Flex";

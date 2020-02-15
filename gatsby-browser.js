@@ -15,6 +15,9 @@ export const wrapRootElement = ({ element, props }) => {
             }
           }
         },
+        Button: {
+          mt: 10
+        },
         Input: {
           wrapperProps: {
             mt: 5

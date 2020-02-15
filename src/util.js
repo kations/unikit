@@ -1,12 +1,12 @@
 import color from "color";
 import { Dimensions, Platform, StatusBar } from "react-native";
 
-const get = require('get-value');
-const set = require('set-value');
+const get = require("get-value");
+const set = require("set-value");
 
 export const setObjValue = (obj, path, value) => {
-  return set(obj, path, value)
-}
+  return set(obj, path, value);
+};
 
 export const getObjValue = (obj, path) => {
   return get(obj, path);
@@ -34,7 +34,7 @@ export const isIphoneX = () => {
     !Platform.isTVOS &&
     (dimen.height === 812 ||
       dimen.width === 812 ||
-      (dimen.height === 896 || dimen.width === 896))
+      dimen.height === 896 || dimen.width === 896)
   );
 };
 
@@ -45,7 +45,6 @@ export const getProgress = (a, b, v) => {
 export const getValueByProgress = (start, end, t) => {
   return start * (1 - t) + end * t;
 };
-
 
 const interpolate = (min, max, value) => {
   var theVariable = value * 3; // 1 to 100
@@ -80,56 +79,55 @@ const styles = {
   sticky: "position",
   color: "color",
   position: "position",
-  w: 'width',
-  h: 'height',
-  br: 'borderRadius',
-  bw: 'borderWidth',
-  bc: 'borderColor',
-  of: 'overflow',
-  o: 'opacity',
-  t: 'top',
-  r: 'right',
-  b: 'bottom',
-  l: 'left',
-  p: 'padding',
-  px: 'paddingHorizontal',
-  py: 'paddingVertical',
-  pt: 'paddingTop',
-  pb: 'paddingBottom',
-  pl: 'paddingLeft',
-  pr: 'paddingRight',
-  m: 'margin',
-  mx: 'marginHorizontal',
-  my: 'marginVertical',
-  mt: 'marginTop',
-  mb: 'marginBottom',
-  ml: 'marginLeft',
-  mr: 'marginRight',
-  width: 'width',
-  height: 'height',
+  w: "width",
+  h: "height",
+  br: "borderRadius",
+  bw: "borderWidth",
+  bc: "borderColor",
+  of: "overflow",
+  o: "opacity",
+  t: "top",
+  r: "right",
+  b: "bottom",
+  l: "left",
+  p: "padding",
+  px: "paddingHorizontal",
+  py: "paddingVertical",
+  pt: "paddingTop",
+  pb: "paddingBottom",
+  pl: "paddingLeft",
+  pr: "paddingRight",
+  m: "margin",
+  mx: "marginHorizontal",
+  my: "marginVertical",
+  mt: "marginTop",
+  mb: "marginBottom",
+  ml: "marginLeft",
+  mr: "marginRight",
+  width: "width",
+  height: "height",
   maxWidth: "maxWidth",
   maxHeight: "maxHeight",
   flex: "flex",
-  align: 'alignItems',
-  justify: 'justifyContent',
-  wrap: 'flexWrap',
+  align: "alignItems",
+  justify: "justifyContent",
+  wrap: "flexWrap",
   direction: "flexDirection",
-  content: 'justifyContent',
-  align: 'alignItems',
+  content: "justifyContent",
+  align: "alignItems",
   row: "flexDirection",
   zi: "zIndex",
   fz: "fontSize",
-  fontSize: "fontSize",
-}
+  fontSize: "fontSize"
+};
 
 const getValueByBreak = (value, breakIndex = 0) => {
   if (value !== undefined && value !== null && typeof value === "object") {
-    let index = (value.length - 1) < breakIndex ? value.length - 1 : breakIndex;
-    value = value[index || 0]
+    let index = value.length - 1 < breakIndex ? value.length - 1 : breakIndex;
+    value = value[index || 0];
   }
   return value;
-}
-
+};
 
 export const getStyle = ({
   theme,
@@ -143,31 +141,28 @@ export const getStyle = ({
   bg,
   font,
   absoluteFill,
-  ...rest,
+  ...rest
 }) => {
   let style = {};
 
-  Object.keys(rest).map((key) => {
+  Object.keys(rest).map(key => {
     let value = getValueByBreak(rest[key], theme.breakIndex);
     if (styles[key]) {
-      if (typeof value === "boolean" && key === 'row') {
-        style[styles[key]] = value === true ? 'row' : "column"
+      if (typeof value === "boolean" && key === "row") {
+        style[styles[key]] = value === true ? "row" : "column";
       } else {
         if (colorStyles.indexOf(key) > -1) {
           style[styles[key]] = theme.colors[value] || value;
         } else {
-          style[styles[key]] = typeof value === "boolean" ? key : value
+          style[styles[key]] = typeof value === "boolean" ? key : value;
         }
-        
       }
-      
     }
-  })
+  });
 
   if (font && theme.fonts[font]) {
-    style = {...style, ...theme.fonts[font]}
+    style = { ...style, ...theme.fonts[font] };
   }
-
 
   if (absoluteFill) {
     style = {

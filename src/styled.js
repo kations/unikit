@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, forwardRef } from "react";
 import scStyled, { ThemeContext, withTheme } from "styled-components/native";
 import * as reactNative from "react-native";
 //import Box from "./Box";
@@ -21,18 +21,32 @@ export const useThemeProps = (props, name) => {
   return Object.assign({}, theme.globals[name], props);
 };
 
-export const withThemeProps = (WrappedComponent, name) => {
-  class WithSubscription extends React.Component {
-    render() {
-      const themeProps = Object.assign({}, this.props.theme[name], this.props);
-      return <WrappedComponent {...themeProps} />;
-    }
-  }
-  WithSubscription.displayName = `withThemeProps(${getDisplayName(
-    WrappedComponent
-  )})`;
-  return withTheme(WithSubscription);
-};
+// export const withThemeProps = forwardRef((props, ref) => Comp => () => {
+//   const theme = useTheme();
+//   const themeProps = Object.assign({}, theme[name], props);
+//   return <Comp {...themeProps} ref={ref} />;
+// });
+
+export const withThemeProps = (Comp, name) =>
+  forwardRef((props, ref) => {
+    const theme = useTheme();
+    const themeProps = Object.assign({}, theme[name], props);
+    console.log({ themeProps });
+    return <Comp {...themeProps} ref={ref} />;
+  });
+
+// export const withThemeProps = (WrappedComponent, name) => {
+//   class WithSubscription extends React.Component {
+//     render() {
+//       const themeProps = Object.assign({}, this.props.theme[name], this.props);
+//       return <WrappedComponent {...themeProps} />;
+//     }
+//   }
+//   WithSubscription.displayName = `withThemeProps(${getDisplayName(
+//     WrappedComponent
+//   )})`;
+//   return withTheme(WithSubscription);
+// };
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || "Component";

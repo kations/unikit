@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import color from "color";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity, Platform } from "react-native";
 import { useTransition, animated } from "react-spring/native";
 import PropTypes from "prop-types";
 
@@ -201,11 +200,11 @@ const Comp = ({
       }}
       {...wrapperProps}
     >
-      {label || desc ? (
+      {label ? (
         <Flex>
           {label && ["switch"].indexOf(type) === -1 ? (
             <Label
-              accessibilityRole="label"
+              accessibilityRole={Platform.OS === "web" ? "label" : "text"}
               color={error ? "error" : focused ? "primary" : labelColor}
               mb={clean ? 5 : 0}
               ml={clean && indentLabel !== true ? 0 : theme.globals.inputGap}

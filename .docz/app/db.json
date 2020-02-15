@@ -7,7 +7,7 @@
       "Primitives",
       "UI"
     ],
-    "version": "1.2.15",
+    "version": "1.2.19",
     "repository": "https://github.com/kations/unikit",
     "native": true,
     "themeConfig": {},
@@ -25,6 +25,7 @@
         "filepath": "src/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/index.mdx",
+        "hidden": false,
         "slug": "src-index",
         "headings": [
           {
@@ -60,6 +61,7 @@
         "filepath": "src/ActionSheet/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/ActionSheet/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/ActionSheet/index.mdx",
+        "hidden": false,
         "slug": "src-action-sheet-index",
         "headings": [
           {
@@ -90,72 +92,13 @@
         "filepath": "src/Alert/alert.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Alert/alert.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Alert/alert.mdx",
+        "hidden": false,
         "slug": "src-alert-alert",
         "headings": [
           {
             "slug": "alert",
             "depth": 1,
             "value": "Alert"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Avatar/avatar.mdx",
-      "value": {
-        "name": "Avatar",
-        "route": "/Avatar",
-        "menu": "UI",
-        "id": "6ade582e19312f6e67fbcaa06b767656",
-        "filepath": "src/Avatar/avatar.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Avatar/avatar.mdx",
-        "slug": "src-avatar-avatar",
-        "headings": [
-          {
-            "slug": "avatar",
-            "depth": 1,
-            "value": "Avatar"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Animate/index.mdx",
-      "value": {
-        "name": "Animate",
-        "route": "/Animate",
-        "menu": "UI",
-        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
-        "filepath": "src/Animate/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
-        "slug": "src-animate-index",
-        "headings": [
-          {
-            "slug": "animate",
-            "depth": 1,
-            "value": "Animate"
           },
           {
             "slug": "usage",
@@ -180,42 +123,13 @@
         "filepath": "src/Box/box.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Box/box.mdx",
+        "hidden": false,
         "slug": "src-box-box",
         "headings": [
           {
             "slug": "box",
             "depth": 1,
             "value": "Box"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/ButtonGroup/ButtonGroup.mdx",
-      "value": {
-        "name": "Group",
-        "route": "/Group",
-        "menu": "UI",
-        "id": "05addf9dc7efeacf95a8ccb696c31a15",
-        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/ButtonGroup/ButtonGroup.mdx",
-        "slug": "src-button-group-button-group",
-        "headings": [
-          {
-            "slug": "buttongroup",
-            "depth": 1,
-            "value": "ButtonGroup"
           },
           {
             "slug": "usage",
@@ -240,12 +154,106 @@
         "filepath": "src/Button/button.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Button/button.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Button/button.mdx",
+        "hidden": false,
         "slug": "src-button-button",
         "headings": [
           {
             "slug": "button",
             "depth": 1,
             "value": "Button"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Animate/index.mdx",
+      "value": {
+        "name": "Animate",
+        "route": "/Animate",
+        "menu": "UI",
+        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
+        "filepath": "src/Animate/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
+        "hidden": false,
+        "slug": "src-animate-index",
+        "headings": [
+          {
+            "slug": "animate",
+            "depth": 1,
+            "value": "Animate"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Avatar/avatar.mdx",
+      "value": {
+        "name": "Avatar",
+        "route": "/Avatar",
+        "menu": "UI",
+        "id": "6ade582e19312f6e67fbcaa06b767656",
+        "filepath": "src/Avatar/avatar.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Avatar/avatar.mdx",
+        "hidden": false,
+        "slug": "src-avatar-avatar",
+        "headings": [
+          {
+            "slug": "avatar",
+            "depth": 1,
+            "value": "Avatar"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/ButtonGroup/ButtonGroup.mdx",
+      "value": {
+        "name": "Group",
+        "route": "/Group",
+        "menu": "UI",
+        "id": "05addf9dc7efeacf95a8ccb696c31a15",
+        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/ButtonGroup/ButtonGroup.mdx",
+        "hidden": false,
+        "slug": "src-button-group-button-group",
+        "headings": [
+          {
+            "slug": "buttongroup",
+            "depth": 1,
+            "value": "ButtonGroup"
           },
           {
             "slug": "usage",
@@ -270,6 +278,7 @@
         "filepath": "src/Chart/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Chart/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Chart/index.mdx",
+        "hidden": false,
         "slug": "src-chart-index",
         "headings": [
           {
@@ -300,6 +309,7 @@
         "filepath": "src/Dropdown/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Dropdown/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Dropdown/index.mdx",
+        "hidden": false,
         "slug": "src-dropdown-index",
         "headings": [
           {
@@ -330,6 +340,7 @@
         "filepath": "src/Flex/flex.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Flex/flex.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Flex/flex.mdx",
+        "hidden": false,
         "slug": "src-flex-flex",
         "headings": [
           {
@@ -360,6 +371,7 @@
         "filepath": "src/Grid/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Grid/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Grid/index.mdx",
+        "hidden": false,
         "slug": "src-grid-index",
         "headings": [
           {
@@ -390,6 +402,7 @@
         "filepath": "src/Headline/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Headline/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Headline/index.mdx",
+        "hidden": false,
         "slug": "src-headline-index",
         "headings": [
           {
@@ -420,6 +433,7 @@
         "filepath": "src/Icon/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Icon/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Icon/index.mdx",
+        "hidden": false,
         "slug": "src-icon-index",
         "headings": [
           {
@@ -450,6 +464,7 @@
         "filepath": "src/Image/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Image/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Image/index.mdx",
+        "hidden": false,
         "slug": "src-image-index",
         "headings": [
           {
@@ -480,6 +495,7 @@
         "filepath": "src/Input/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Input/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Input/index.mdx",
+        "hidden": false,
         "slug": "src-input-index",
         "headings": [
           {
@@ -520,6 +536,7 @@
         "filepath": "src/Overlay/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Overlay/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Overlay/index.mdx",
+        "hidden": false,
         "slug": "src-overlay-index",
         "headings": [
           {
@@ -550,6 +567,7 @@
         "filepath": "src/Progress/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Progress/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Progress/index.mdx",
+        "hidden": false,
         "slug": "src-progress-index",
         "headings": [
           {
@@ -580,42 +598,13 @@
         "filepath": "src/Swiper/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Swiper/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Swiper/index.mdx",
+        "hidden": false,
         "slug": "src-swiper-index",
         "headings": [
           {
             "slug": "swiper",
             "depth": 1,
             "value": "Swiper"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Text/index.mdx",
-      "value": {
-        "name": "Text",
-        "route": "/Text",
-        "menu": "Primitives",
-        "id": "60cad9fbdf8c52b2a55be0b360ee6140",
-        "filepath": "src/Text/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Text/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Text/index.mdx",
-        "slug": "src-text-index",
-        "headings": [
-          {
-            "slug": "text",
-            "depth": 1,
-            "value": "Text"
           },
           {
             "slug": "usage",
@@ -640,7 +629,39 @@
         "filepath": "src/Tabs/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Tabs/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Tabs/index.mdx",
+        "hidden": false,
         "slug": "src-tabs-index",
+        "headings": [
+          {
+            "slug": "text",
+            "depth": 1,
+            "value": "Text"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Text/index.mdx",
+      "value": {
+        "name": "Text",
+        "route": "/Text",
+        "menu": "Primitives",
+        "id": "60cad9fbdf8c52b2a55be0b360ee6140",
+        "filepath": "src/Text/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Text/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Text/index.mdx",
+        "hidden": false,
+        "slug": "src-text-index",
         "headings": [
           {
             "slug": "text",
@@ -662,6 +683,60 @@
     }
   ],
   "props": [
+    {
+      "key": "src/ThemeProvider.js",
+      "value": [
+        {
+          "description": "",
+          "methods": [],
+          "props": {
+            "theme": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "alertProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "defaultMode": {
+              "defaultValue": {
+                "value": "\"default\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "defaultWidth": {
+              "defaultValue": {
+                "value": "500",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Header",
+          "methods": []
+        },
+        {
+          "description": "",
+          "displayName": "Nav",
+          "methods": []
+        }
+      ]
+    },
     {
       "key": "src/ActionSheet/index.js",
       "value": [
@@ -749,40 +824,19 @@
       ]
     },
     {
-      "key": "src/Avatar/index.js",
+      "key": "src/Button/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Avatar",
+          "displayName": "Button",
           "methods": [],
-          "actualName": "Avatar",
+          "actualName": "Button",
           "props": {
-            "type": {
+            "children": {
               "type": {
-                "name": "string"
+                "name": "node"
               },
-              "required": false,
-              "description": ""
-            },
-            "char": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "source": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
+              "required": true,
               "description": ""
             },
             "onPress": {
@@ -792,26 +846,153 @@
               "required": false,
               "description": ""
             },
-            "textColor": {
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              }
+            },
+            "bg": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              }
+            },
+            "color": {
               "type": {
                 "name": "string"
               },
               "required": false,
               "description": ""
             },
-            "style": {
+            "labelStyle": {
               "type": {
                 "name": "object"
               },
               "required": false,
               "description": ""
             },
-            "children": {
+            "labelProps": {
               "type": {
-                "name": "node"
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
+            },
+            "outlined": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "rounded": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "light": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "clean": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "ripple": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "loading": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "progress": {
+              "type": {
+                "name": "number"
               },
               "required": false,
               "description": ""
+            },
+            "activeOpacity": {
+              "defaultValue": {
+                "value": "0.9",
+                "computed": false
+              },
+              "required": false
+            },
+            "disabled": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "renderLeft": {
+              "defaultValue": {
+                "value": "null",
+                "computed": false
+              },
+              "required": false
+            },
+            "renderRight": {
+              "defaultValue": {
+                "value": "null",
+                "computed": false
+              },
+              "required": false
             }
           }
         }
@@ -1132,142 +1313,85 @@
       ]
     },
     {
-      "key": "src/Pan/index.js",
+      "key": "src/Overlay/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Pan",
-          "methods": [
-            {
-              "name": "onMove",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "evt",
-                  "type": null
-                },
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+          "displayName": "Overlay",
+          "methods": [],
+          "actualName": "Overlay",
+          "props": {
+            "visible": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "onEnd",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "evt",
-                  "type": null
-                },
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "scrollable": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "onStart",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "event",
-                  "type": null
-                },
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "backdrop": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_handleShouldSetPanResponder",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "evt",
-                  "type": null
-                },
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "zIndex": {
+              "defaultValue": {
+                "value": "900",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_gestureIsClick",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "position": {
+              "defaultValue": {
+                "value": "\"center\"",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_handlePanResponderEnd",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "evt",
-                  "type": null
-                },
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "usePortal": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_getSwipeDirection",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "modalSpring": {
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_isValidHorizontalSwipe",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "contentSpring": {
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
+                "computed": false
+              },
+              "required": false
             },
-            {
-              "name": "_isValidVerticalSwipe",
-              "docblock": null,
-              "modifiers": [],
-              "params": [
-                {
-                  "name": "gestureState",
-                  "type": null
-                }
-              ],
-              "returns": null
+            "modalProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "contentProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
             }
-          ],
-          "actualName": "Pan"
+          }
         }
       ]
     },
@@ -1755,6 +1879,213 @@
       ]
     },
     {
+      "key": "src/Pan/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Pan",
+          "methods": [
+            {
+              "name": "onMove",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "evt",
+                  "optional": false,
+                  "type": null
+                },
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "onEnd",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "evt",
+                  "optional": false,
+                  "type": null
+                },
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "onStart",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "event",
+                  "optional": false,
+                  "type": null
+                },
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_handleShouldSetPanResponder",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "evt",
+                  "optional": false,
+                  "type": null
+                },
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_gestureIsClick",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_handlePanResponderEnd",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "evt",
+                  "optional": false,
+                  "type": null
+                },
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_getSwipeDirection",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_isValidHorizontalSwipe",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "_isValidVerticalSwipe",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "gestureState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            }
+          ],
+          "actualName": "Pan"
+        }
+      ]
+    },
+    {
+      "key": "src/Ripple/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Button",
+          "methods": [],
+          "actualName": "Button",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "rippleColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"#000\"",
+                "computed": false
+              }
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "50",
+                "computed": false
+              }
+            },
+            "overflow": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "key": "src/Progress/index.js",
       "value": [
         {
@@ -1839,59 +2170,6 @@
               },
               "required": false,
               "description": ""
-            }
-          }
-        }
-      ]
-    },
-    {
-      "key": "src/Ripple/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Button",
-          "methods": [],
-          "actualName": "Button",
-          "props": {
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": true,
-              "description": ""
-            },
-            "rippleColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "\"#000\"",
-                "computed": false
-              }
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "50",
-                "computed": false
-              }
-            },
-            "overflow": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              }
             }
           }
         }
@@ -2043,6 +2321,17 @@
       ]
     },
     {
+      "key": "src/Text/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Text",
+          "methods": [],
+          "actualName": "Text"
+        }
+      ]
+    },
+    {
       "key": "src/Visible/index.js",
       "value": [
         {
@@ -2076,154 +2365,6 @@
       ]
     },
     {
-      "key": "src/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Header",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "Nav",
-          "methods": []
-        }
-      ]
-    },
-    {
-      "key": "src/ThemeProvider.js",
-      "value": [
-        {
-          "description": "",
-          "methods": [],
-          "props": {
-            "theme": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "alertProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "defaultMode": {
-              "defaultValue": {
-                "value": "\"default\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "defaultWidth": {
-              "defaultValue": {
-                "value": "500",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        }
-      ]
-    },
-    {
-      "key": "src/Text/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Text",
-          "methods": [],
-          "actualName": "Text"
-        }
-      ]
-    },
-    {
-      "key": "src/Overlay/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Overlay",
-          "methods": [],
-          "actualName": "Overlay",
-          "props": {
-            "visible": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "scrollable": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "backdrop": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "zIndex": {
-              "defaultValue": {
-                "value": "900",
-                "computed": false
-              },
-              "required": false
-            },
-            "position": {
-              "defaultValue": {
-                "value": "\"center\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "usePortal": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        }
-      ]
-    },
-    {
       "key": "dist/index.js",
       "value": [
         {
@@ -2244,48 +2385,8 @@
       ]
     },
     {
-      "key": "dist/index.es.js",
+      "key": "src/Avatar/index.js",
       "value": [
-        {
-          "description": "",
-          "displayName": "Header",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "Nav",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "ThemeProvider$1",
-          "methods": [],
-          "actualName": "ThemeProvider$1"
-        },
-        {
-          "description": "",
-          "displayName": "Image$1",
-          "methods": [],
-          "actualName": "Image$1"
-        },
-        {
-          "description": "",
-          "displayName": "Text$2",
-          "methods": [],
-          "actualName": "Text$2"
-        },
-        {
-          "description": "",
-          "displayName": "Comp$1",
-          "methods": [],
-          "actualName": "Comp$1"
-        },
-        {
-          "description": "",
-          "displayName": "Animate$1",
-          "methods": [],
-          "actualName": "Animate$1"
-        },
         {
           "description": "",
           "displayName": "Avatar",
@@ -2349,6 +2450,51 @@
               "description": ""
             }
           }
+        }
+      ]
+    },
+    {
+      "key": "dist/index.es.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Header",
+          "methods": []
+        },
+        {
+          "description": "",
+          "displayName": "Nav",
+          "methods": []
+        },
+        {
+          "description": "",
+          "displayName": "ThemeProvider$1",
+          "methods": [],
+          "actualName": "ThemeProvider$1"
+        },
+        {
+          "description": "",
+          "displayName": "Image$1",
+          "methods": [],
+          "actualName": "Image$1"
+        },
+        {
+          "description": "",
+          "displayName": "Text$2",
+          "methods": [],
+          "actualName": "Text$2"
+        },
+        {
+          "description": "",
+          "displayName": "Comp$1",
+          "methods": [],
+          "actualName": "Comp$1"
+        },
+        {
+          "description": "",
+          "displayName": "Animate$1",
+          "methods": [],
+          "actualName": "Animate$1"
         },
         {
           "description": "",
@@ -2437,9 +2583,9 @@
         },
         {
           "description": "",
-          "displayName": "index",
+          "displayName": "index$1",
           "methods": [],
-          "actualName": "index"
+          "actualName": "index$1"
         },
         {
           "description": "",
@@ -2641,9 +2787,9 @@
         },
         {
           "description": "",
-          "displayName": "Headline",
+          "displayName": "Headline$1",
           "methods": [],
-          "actualName": "Headline",
+          "actualName": "Headline$1",
           "props": {
             "children": {
               "type": {

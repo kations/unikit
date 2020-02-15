@@ -28,6 +28,7 @@ const Comp = props => {
     overlayProps = {},
     inputProps = {},
     pickerProps = {},
+    name,
     ...rest
   } = props;
   const theme = useTheme();
@@ -56,6 +57,7 @@ const Comp = props => {
   const renderPicker = () => {
     return (
       <Picker
+        name={name}
         selectedValue={value}
         onValueChange={(itemValue, itemIndex) =>
           onChange ? onChange(itemValue) : null

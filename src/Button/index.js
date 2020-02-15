@@ -79,7 +79,7 @@ const LoadingWrap = styled.View({
   justifyContent: "center"
 });
 
-function Button({
+export function Button({
   children,
   size = 44,
   bg = "primary",

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useRef, useEffect } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
+import { ScrollView, SafeAreaView, Platform } from "react-native";
 
 import styled from "../styled";
 
@@ -54,7 +54,7 @@ export default ({
     <Page
       bg={bg}
       as={hasSafeArea ? SafeAreaView : undefined}
-      accessibilityRole="main"
+      accessibilityRole={Platform.OS === "web" ? "main" : "none"}
       {...rest}
     >
       {renderHeader ? renderHeader(top) : null}

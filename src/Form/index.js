@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from "react";
+import { Platform } from "react-native";
 
 import styled from "../styled";
 import Button from "../Button";
@@ -102,7 +103,10 @@ function Form(
   }));
 
   return (
-    <FormWrap {...rest} accessibilityRole="form">
+    <FormWrap
+      {...rest}
+      accessibilityRole={Platform.OS === "web" ? "form" : "none"}
+    >
       {renderChildren(children, doc, setDoc)}
       <Flex row jc="space-between">
         {leftAction}

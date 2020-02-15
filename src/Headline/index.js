@@ -10,13 +10,7 @@ import Box from "../Box";
 
 const AnimatedView = animated(styled.View({}));
 
-const Animated = animated(
-  styled.Text({
-    web: {
-      display: "inline-block"
-    }
-  })
-);
+const Animated = animated(Text);
 
 const AnimatedText = ({ strings = [], level = 1, animateType }) => {
   const transitions = useTransition(strings, data => data, {
