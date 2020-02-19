@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import styled, { useTheme, withThemeProps } from "../styled";
+import styled, { withThemeProps } from "../styled";
 import { isDark } from "../util";
 
 import Button from "../Button";
@@ -52,7 +52,6 @@ export function Avatar(props) {
     source,
     ...rest
   } = props;
-  const theme = useTheme();
   return (
     <Wrap
       bg={bg}

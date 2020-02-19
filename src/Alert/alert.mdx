@@ -3,7 +3,7 @@ name: Alert
 route: /alert
 menu: UI
 ---
-
+import {Fragment} from "react"
 import { Playground, Props } from 'docz'
 import {Button, Alert, useTheme} from '../index'
 
@@ -22,9 +22,9 @@ The Alert component gets automaticly injected throught the ThemeProvider.
 {() => {
     const theme = useTheme()
     return (
-      <>
+      <Fragment>
         <Button onPress={() => theme.alert({type: 'success', message: 'Hi from unikit'})}>Alert</Button>  
-      </>
+      </Fragment>
     )
   }}
     

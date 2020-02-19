@@ -7,11 +7,18 @@ export const wrapRootElement = ({ element, props }) => {
   return (
     <ThemeProvider
       theme={{
+        colors: {
+          modes: {
+            dark: {
+              text: "#FFF"
+            }
+          }
+        },
         Input: {
           wrapperProps: {
             mt: 5
           },
-          shadow: 30,
+          shadow: 0,
           clean: false
         }
       }}

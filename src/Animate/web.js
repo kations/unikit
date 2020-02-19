@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { View } from "react-native";
 
 import Visible from "../Visible";
 import Box from "../Box";
@@ -74,7 +73,7 @@ export default function Animate(props) {
           offset={100}
         >
           {({ isVisible }) => {
-            return <View />;
+            return <Box />;
           }}
         </Visible>
         {AnimatedComp}

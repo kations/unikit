@@ -1,5 +1,4 @@
 import React, {
-  Children,
   useState,
   useEffect,
   forwardRef,
@@ -30,7 +29,8 @@ const getDefaultValue = ({ child: { props } }) => {
 
 const getDefaultState = (children, state) => {
   React.Children.toArray(children).map((child, i) => {
-    const key = child.props.field || undefined;
+    const key =
+      child.props && child.props.field ? child.props.field : undefined;
     if (
       key &&
       typeof key === "string" &&
@@ -47,7 +47,8 @@ const getDefaultState = (children, state) => {
 
 const renderChildren = (children, doc, setDoc) => {
   return React.Children.toArray(children).map((child, index) => {
-    const key = child.props.field || undefined;
+    const key =
+      child.props && child.props.field ? child.props.field : undefined;
     return React.cloneElement(child, {
       key: key || `child-${index}`,
       value: key ? getObjValue(doc, key) : undefined,
@@ -57,6 +58,7 @@ const renderChildren = (children, doc, setDoc) => {
           setDoc(setObjValue(newDoc || {}, key, value));
         }
       },
+      doc,
       children:
         child.props &&
         child.props.children &&

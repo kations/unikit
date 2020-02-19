@@ -3,11 +3,11 @@
     "title": "Unikit",
     "description": "universal component library for react and react-native",
     "menu": [
-      "General",
+      "Getting Started",
       "Primitives",
       "UI"
     ],
-    "version": "1.2.19",
+    "version": "1.2.26",
     "repository": "https://github.com/kations/unikit",
     "native": true,
     "themeConfig": {},
@@ -20,13 +20,13 @@
       "value": {
         "name": "Getting Started",
         "route": "/",
-        "menu": "General",
         "id": "6576455a124f9aaefd860597f03a8fe4",
         "filepath": "src/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/index.mdx",
         "hidden": false,
         "slug": "src-index",
+        "menu": "",
         "headings": [
           {
             "slug": "unikit",
@@ -114,22 +114,22 @@
       }
     },
     {
-      "key": "src/Box/box.mdx",
+      "key": "src/Avatar/avatar.mdx",
       "value": {
-        "name": "Box",
-        "route": "/Box",
-        "menu": "Primitives",
-        "id": "c1e6beb9406ebbd372370abf7966b204",
-        "filepath": "src/Box/box.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Box/box.mdx",
+        "name": "Avatar",
+        "route": "/Avatar",
+        "menu": "UI",
+        "id": "6ade582e19312f6e67fbcaa06b767656",
+        "filepath": "src/Avatar/avatar.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Avatar/avatar.mdx",
         "hidden": false,
-        "slug": "src-box-box",
+        "slug": "src-avatar-avatar",
         "headings": [
           {
-            "slug": "box",
+            "slug": "avatar",
             "depth": 1,
-            "value": "Box"
+            "value": "Avatar"
           },
           {
             "slug": "usage",
@@ -176,53 +176,22 @@
       }
     },
     {
-      "key": "src/Animate/index.mdx",
+      "key": "src/Box/box.mdx",
       "value": {
-        "name": "Animate",
-        "route": "/Animate",
-        "menu": "UI",
-        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
-        "filepath": "src/Animate/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
+        "name": "Box",
+        "route": "/Box",
+        "menu": "Primitives",
+        "id": "c1e6beb9406ebbd372370abf7966b204",
+        "filepath": "src/Box/box.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Box/box.mdx",
         "hidden": false,
-        "slug": "src-animate-index",
+        "slug": "src-box-box",
         "headings": [
           {
-            "slug": "animate",
+            "slug": "box",
             "depth": 1,
-            "value": "Animate"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Avatar/avatar.mdx",
-      "value": {
-        "name": "Avatar",
-        "route": "/Avatar",
-        "menu": "UI",
-        "id": "6ade582e19312f6e67fbcaa06b767656",
-        "filepath": "src/Avatar/avatar.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Avatar/avatar.mdx",
-        "hidden": false,
-        "slug": "src-avatar-avatar",
-        "headings": [
-          {
-            "slug": "avatar",
-            "depth": 1,
-            "value": "Avatar"
+            "value": "Box"
           },
           {
             "slug": "usage",
@@ -254,6 +223,37 @@
             "slug": "buttongroup",
             "depth": 1,
             "value": "ButtonGroup"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Animate/index.mdx",
+      "value": {
+        "name": "Animate",
+        "route": "/Animate",
+        "menu": "UI",
+        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
+        "filepath": "src/Animate/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
+        "hidden": false,
+        "slug": "src-animate-index",
+        "headings": [
+          {
+            "slug": "animate",
+            "depth": 1,
+            "value": "Animate"
           },
           {
             "slug": "usage",
@@ -620,37 +620,6 @@
       }
     },
     {
-      "key": "src/Tabs/index.mdx",
-      "value": {
-        "name": "Tabs",
-        "route": "/Tabs",
-        "menu": "UI",
-        "id": "f0d8a2c11aeb4997ee50f4168c760715",
-        "filepath": "src/Tabs/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Tabs/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Tabs/index.mdx",
-        "hidden": false,
-        "slug": "src-tabs-index",
-        "headings": [
-          {
-            "slug": "text",
-            "depth": 1,
-            "value": "Text"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/Text/index.mdx",
       "value": {
         "name": "Text",
@@ -680,9 +649,60 @@
           }
         ]
       }
+    },
+    {
+      "key": "src/Tabs/index.mdx",
+      "value": {
+        "name": "Tabs",
+        "route": "/Tabs",
+        "menu": "UI",
+        "id": "f0d8a2c11aeb4997ee50f4168c760715",
+        "filepath": "src/Tabs/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Tabs/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Tabs/index.mdx",
+        "hidden": false,
+        "slug": "src-tabs-index",
+        "headings": [
+          {
+            "slug": "text",
+            "depth": 1,
+            "value": "Text"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
     }
   ],
   "props": [
+    {
+      "key": "dist/index.js",
+      "value": [
+        {
+          "description": "",
+          "methods": [],
+          "actualName": ""
+        },
+        {
+          "description": "",
+          "methods": [],
+          "actualName": ""
+        },
+        {
+          "description": "",
+          "methods": [],
+          "actualName": ""
+        }
+      ]
+    },
     {
       "key": "src/ThemeProvider.js",
       "value": [
@@ -813,13 +833,71 @@
       ]
     },
     {
-      "key": "src/Animate/index.js",
+      "key": "src/Avatar/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Animate",
+          "displayName": "Avatar",
           "methods": [],
-          "actualName": "Animate"
+          "actualName": "Avatar",
+          "props": {
+            "type": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "char": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "source": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "textColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
         }
       ]
     },
@@ -1286,6 +1364,132 @@
       ]
     },
     {
+      "key": "src/Icon/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Comp",
+          "methods": [],
+          "actualName": "Comp",
+          "props": {
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              }
+            },
+            "strokeWidth": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "1.5",
+                "computed": false
+              }
+            },
+            "lineCap": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"round\"",
+                "computed": false
+              }
+            },
+            "fill": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "name": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"x\"",
+                "computed": false
+              }
+            },
+            "color": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              }
+            },
+            "animate": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "withBg": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              }
+            },
+            "animateOpacity": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "springConfig": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{ config: { duration: 750 } }",
+                "computed": false
+              }
+            },
+            "onPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        }
+      ]
+    },
+    {
       "key": "src/Image/index.js",
       "value": [
         {
@@ -1304,89 +1508,6 @@
             "lazy": {
               "defaultValue": {
                 "value": "false",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        }
-      ]
-    },
-    {
-      "key": "src/Overlay/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Overlay",
-          "methods": [],
-          "actualName": "Overlay",
-          "props": {
-            "visible": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "scrollable": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "backdrop": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "zIndex": {
-              "defaultValue": {
-                "value": "900",
-                "computed": false
-              },
-              "required": false
-            },
-            "position": {
-              "defaultValue": {
-                "value": "\"center\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "usePortal": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentProps": {
-              "defaultValue": {
-                "value": "{}",
                 "computed": false
               },
               "required": false
@@ -1854,6 +1975,222 @@
       ]
     },
     {
+      "key": "src/Input/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Input",
+          "methods": [],
+          "actualName": "Input",
+          "props": {
+            "type": {
+              "type": {
+                "name": "enum",
+                "value": [
+                  {
+                    "value": "\"text\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"textarea\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"range\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"date\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"time\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"datetime\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"checkbox\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"number\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"select\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"multiselect\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"switch\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"tags\"",
+                    "computed": false
+                  }
+                ]
+              },
+              "required": false,
+              "description": ""
+            },
+            "indentLabel": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "labelColor": {
+              "defaultValue": {
+                "value": "\"text\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "borderProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "wrapperProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "borderBlurColor": {
+              "defaultValue": {
+                "value": "\"transparent\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "borderFocusColor": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "required": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "clean": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "floating": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Overlay/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Overlay",
+          "methods": [],
+          "actualName": "Overlay",
+          "props": {
+            "visible": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "scrollable": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "backdrop": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "zIndex": {
+              "defaultValue": {
+                "value": "900",
+                "computed": false
+              },
+              "required": false
+            },
+            "position": {
+              "defaultValue": {
+                "value": "\"center\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "usePortal": {
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              },
+              "required": false
+            },
+            "modalSpring": {
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
+                "computed": false
+              },
+              "required": false
+            },
+            "contentSpring": {
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
+                "computed": false
+              },
+              "required": false
+            },
+            "modalProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "contentProps": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
       "key": "src/Page/index.js",
       "value": [
         {
@@ -2033,59 +2370,6 @@
       ]
     },
     {
-      "key": "src/Ripple/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Button",
-          "methods": [],
-          "actualName": "Button",
-          "props": {
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": true,
-              "description": ""
-            },
-            "rippleColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "\"#000\"",
-                "computed": false
-              }
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "50",
-                "computed": false
-              }
-            },
-            "overflow": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
       "key": "src/Progress/index.js",
       "value": [
         {
@@ -2170,6 +2454,59 @@
               },
               "required": false,
               "description": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Ripple/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Button",
+          "methods": [],
+          "actualName": "Button",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "rippleColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"#000\"",
+                "computed": false
+              }
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "50",
+                "computed": false
+              }
+            },
+            "overflow": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
             }
           }
         }
@@ -2365,95 +2702,6 @@
       ]
     },
     {
-      "key": "dist/index.js",
-      "value": [
-        {
-          "description": "",
-          "methods": [],
-          "actualName": ""
-        },
-        {
-          "description": "",
-          "methods": [],
-          "actualName": ""
-        },
-        {
-          "description": "",
-          "methods": [],
-          "actualName": ""
-        }
-      ]
-    },
-    {
-      "key": "src/Avatar/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Avatar",
-          "methods": [],
-          "actualName": "Avatar",
-          "props": {
-            "type": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "char": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "source": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "onPress": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "textColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "style": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
-        }
-      ]
-    },
-    {
       "key": "dist/index.es.js",
       "value": [
         {
@@ -2489,12 +2737,6 @@
           "displayName": "Comp$1",
           "methods": [],
           "actualName": "Comp$1"
-        },
-        {
-          "description": "",
-          "displayName": "Animate$1",
-          "methods": [],
-          "actualName": "Animate$1"
         },
         {
           "description": "",
@@ -2787,9 +3029,9 @@
         },
         {
           "description": "",
-          "displayName": "Headline$1",
+          "displayName": "Headline",
           "methods": [],
-          "actualName": "Headline$1",
+          "actualName": "Headline",
           "props": {
             "children": {
               "type": {

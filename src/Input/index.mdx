@@ -4,7 +4,7 @@ route: /Inputs
 menu: UI
 ---
 
-import {useRef} from 'react'
+import {useRef, Fragment} from 'react'
 import { Playground, Props } from 'docz'
 import { Input, Flex, Form, Button } from '../index'
 
@@ -17,12 +17,11 @@ import { Input } from 'unikit'
 ```
 
 ## Input 
-
 <Playground>
  {() => {
     const formRef = useRef(null)
     return (
-      <>
+      <Fragment>
       <Button onPress={() => formRef.current.submit()}>Custom trigger</Button>
         <Flex p={30} bg="background">
             <Form ref={formRef} onSubmit={(doc, reset) => {
@@ -44,7 +43,7 @@ import { Input } from 'unikit'
                 <Input field="color" type="color" label="Color"  />
             </Form>
     </Flex>
-     </>
+     </Fragment>
     )
   }}
 </Playground>

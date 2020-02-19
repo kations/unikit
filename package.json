@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.2.19",
+  "version": "1.2.26",
   "description": "universal component library for react and react-native",
   "author": "kations",
   "license": "MIT",
@@ -56,6 +56,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "expo": "^36.0.2",
     "gatsby-plugin-react-native-web": "^3.0.0-beta.7",
+    "react-native-gesture-handler": "https://github.com/software-mansion/react-native-gesture-handler.git#95bfb4df7ce9b1e222d50ead99eee7e27cd79043",
     "gh-pages": "^1.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -85,7 +86,6 @@
     "dayjs": "^1.8.16",
     "deepmerge": "^4.2.2",
     "get-value": "^3.0.1",
-    "object-set": "^1.0.1",
     "prop-types": "^15.7.2",
     "set-value": "^3.0.1",
     "svg-path-properties": "^1.0.2"

@@ -31,7 +31,6 @@ export const withThemeProps = (Comp, name) =>
   forwardRef((props, ref) => {
     const theme = useTheme();
     const themeProps = Object.assign({}, theme[name], props);
-    console.log({ themeProps });
     return <Comp {...themeProps} ref={ref} />;
   });
 
@@ -76,7 +75,7 @@ export default function styled(component, alias) {
           style[key] = theme.colors[style[key]] || style[key];
         }
 
-        if (key === reactNative.Platform.OS) {
+        if (key === reactNative.Platform.OS || key === "native") {
           style = Object.assign({}, style, style[key]);
         }
       });
@@ -98,6 +97,7 @@ export default function styled(component, alias) {
       }
 
       delete style["web"];
+      delete style["native"];
       delete style["android"];
       delete style["ios"];
       return Object.assign({}, style, getStyle(props));

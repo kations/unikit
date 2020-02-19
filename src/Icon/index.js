@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring/native";
-import PropTypes from "prop-types";
+import t from "prop-types";
 import { TouchableOpacity } from "react-native";
-import Svg, { Path, Polyline } from "swgs";
+import Svg, { Path } from "swgs";
 import { svgPathProperties } from "svg-path-properties";
 
 import styled, { useTheme, withThemeProps } from "../styled";
@@ -18,34 +18,40 @@ const Icon = styled(Box)(({ size }) => ({
 
 const AnimatedPath = animated(Path);
 
-const Comp = ({
+export function Comp({
   size = 44,
-  width = 1.5,
+  strokeWidth = 1.5,
   lineCap = "round",
   fill = false,
   name = "x",
-  onPress,
   color = "primary",
-  animate = true,
-  animateOpacity = false,
+  animate = false,
+  withBg = true,
   springConfig = { config: { duration: 750 } },
+  onPress,
   ...rest
-}) => {
+}) {
   const [icon, setIcon] = useState(icons[name] || icons["x"]);
   const strokeDasharray = new svgPathProperties(icon).getTotalLength();
 
   const prev = usePrevious(icon);
   const theme = useTheme();
-  const springProps = useSpring({
-    from: { t: strokeDasharray, opacity: 0 },
-    to: { t: 0, opacity: 1 },
-    reset: prev !== icon,
-    ...springConfig
-  });
+  const springProps = animate
+    ? useSpring({
+        from: { t: strokeDasharray, opacity: 0 },
+        to: { t: 0, opacity: 1 },
+        reset: prev !== icon,
+        ...springConfig
+      })
+    : null;
 
   useEffect(() => {
     setIcon(icons[name]);
   }, [name]);
+
+  const iconProps = animate
+    ? { strokeDasharray: strokeDasharray, strokeDashoffset: springProps.t }
+    : {};
 
   return (
     <Icon
@@ -60,23 +66,48 @@ const Comp = ({
         height={size}
         style={{ backgroundColor: "transparent" }}
       >
+        {animate && withBg ? (
+          <Path
+            d={icon}
+            scale={size / 24}
+            strokeWidth={strokeWidth}
+            strokeLinecap={lineCap}
+            style={{
+              stroke: theme.colors[color] || color,
+              fill: "transparent",
+              opacity: 0.2
+            }}
+          />
+        ) : null}
         <AnimatedPath
           d={icon}
           scale={size / 24}
-          strokeWidth={width}
+          strokeWidth={strokeWidth}
           strokeLinecap={lineCap}
-          strokeDasharray={strokeDasharray}
-          strokeDashoffset={animate ? springProps.t : 0}
+          {...iconProps}
           fill="transparent"
           style={{
             fill: fill ? theme.colors[color] || color : "transparent",
-            stroke: theme.colors[color] || color,
-            opacity: animateOpacity ? springProps.opacity : 1
+            stroke: theme.colors[color] || color
           }}
         />
       </Svg>
     </Icon>
   );
+}
+
+Comp.propTypes = {
+  size: t.number,
+  strokeWidth: t.number,
+  lineCap: t.string,
+  fill: t.bool,
+  name: t.string,
+  color: t.string,
+  animate: t.bool,
+  withBg: t.bool,
+  animateOpacity: t.bool,
+  springConfig: t.object,
+  onPress: t.func
 };
 
 export default withThemeProps(Comp, "Icon");

@@ -2,5 +2,5 @@ export default {
   title: "Unikit",
   native: true,
   files: "src/**/*.{md,markdown,mdx}",
-  menu: ["General", "Primitives", "UI"]
+  menu: ["Getting Started", "Primitives", "UI"]
 };

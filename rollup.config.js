@@ -39,7 +39,7 @@ export default {
       ]
     }),
     resolve({
-      extensions: [".web.js", ".js", ".jsx", ".json", ".native.js"]
+      extensions: [".js", ".jsx", ".json", ".native.js"]
     }),
     commonjs({
       include: "node_modules/**",

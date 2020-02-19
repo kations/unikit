@@ -5,6 +5,9 @@ var plugins = [{
       plugin: require('/Users/kations/Projekte/unikit/node_modules/gatsby-plugin-react-helmet-async/gatsby-ssr'),
       options: {"plugins":[]},
     },{
+      plugin: require('/Users/kations/Projekte/unikit/node_modules/gatsby-plugin-react-native-web/gatsby-ssr'),
+      options: {"plugins":[]},
+    },{
       plugin: require('/Users/kations/Projekte/unikit/.docz/gatsby-ssr'),
       options: {"plugins":[]},
     }]

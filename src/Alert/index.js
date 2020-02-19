@@ -6,7 +6,6 @@ import * as PropTypes from "prop-types";
 import styled, { useTheme } from "../styled";
 import Icon from "../Icon";
 import { isDark, isIphoneX } from "../util";
-import Box from "../Box";
 
 const Container = styled.View(({ from, gap }) => ({
   position: Platform.OS === "web" ? "fixed" : "absolute",
@@ -20,7 +19,7 @@ const Container = styled.View(({ from, gap }) => ({
 }));
 
 const Message = animated(
-  styled(Box)(({ theme, gap, maxWidth }) => ({
+  styled.View(({ theme, gap, maxWidth }) => ({
     flexBasis: "100%",
     alignItems: "center",
     justifyContent: "space-between",
@@ -91,6 +90,7 @@ export default function Alert({
           gap={gap}
           maxWidth={maxWidth}
           shadow={3}
+          align="center"
         >
           <Text
             color={

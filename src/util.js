@@ -13,11 +13,15 @@ export const getObjValue = (obj, path) => {
 };
 
 export const isDark = colorString => {
-  const { r, g, b } = color(colorString)
-    .rgb()
-    .object();
-  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  return brightness < 180 ? true : false;
+  if (isColor(colorString)) {
+    const { r, g, b } = color(colorString)
+      .rgb()
+      .object();
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 180 ? true : false;
+  } else {
+    return false;
+  }
 };
 
 export const canUseDOM = !!(
@@ -34,7 +38,8 @@ export const isIphoneX = () => {
     !Platform.isTVOS &&
     (dimen.height === 812 ||
       dimen.width === 812 ||
-      dimen.height === 896 || dimen.width === 896)
+      dimen.height === 896 ||
+      dimen.width === 896)
   );
 };
 

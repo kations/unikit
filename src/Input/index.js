@@ -139,7 +139,7 @@ const typesProps = {
   }
 };
 
-const Comp = ({
+export function Input({
   children,
   label,
   indentLabel = false,
@@ -159,10 +159,10 @@ const Comp = ({
   clean = false,
   floating = false,
   options,
-  theme,
   shadow,
   ...rest
-}) => {
+}) {
+  const theme = useTheme();
   const [focused, setFocus] = useState(false);
   const [width, setWidth] = useState(Dimensions.get("window").width);
 
@@ -269,11 +269,9 @@ const Comp = ({
       </BorderWrap>
     </InputWrapper>
   );
-};
+}
 
-const ThemeComp = withThemeProps(Comp, "Input");
-
-ThemeComp.propTypes = {
+Input.propTypes = {
   type: PropTypes.oneOf([
     "text",
     "textarea",
@@ -290,15 +288,17 @@ ThemeComp.propTypes = {
   ])
 };
 
-ThemeComp["Text"] = Text;
-ThemeComp["Slider"] = Slider;
-ThemeComp["Tags"] = Tags;
-ThemeComp["Switch"] = Switch;
-ThemeComp["Select"] = Select;
-ThemeComp["Number"] = Number;
-ThemeComp["Checkbox"] = Checkbox;
-ThemeComp["DatePicker"] = DatePicker;
-ThemeComp["Color"] = Color;
-ThemeComp["MultiSelect"] = MultiSelect;
+const InputWithTheme = withThemeProps(Input, "Input");
 
-export default ThemeComp;
+InputWithTheme["Text"] = Text;
+InputWithTheme["Slider"] = Slider;
+InputWithTheme["Tags"] = Tags;
+InputWithTheme["Switch"] = Switch;
+InputWithTheme["Select"] = Select;
+InputWithTheme["Number"] = Number;
+InputWithTheme["Checkbox"] = Checkbox;
+InputWithTheme["DatePicker"] = DatePicker;
+InputWithTheme["Color"] = Color;
+InputWithTheme["MultiSelect"] = MultiSelect;
+
+export default InputWithTheme;

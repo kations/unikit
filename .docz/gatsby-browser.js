@@ -10,13 +10,9 @@ export const wrapRootElement = ({ element, props }) => {
         colors: {
           modes: {
             dark: {
-              text: "#FFF",
-              primary: "#CCC"
+              text: "#FFF"
             }
           }
-        },
-        Button: {
-          mt: 10
         },
         Input: {
           wrapperProps: {

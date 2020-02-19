@@ -17,6 +17,12 @@ const Comp = props => {
     onClose,
     cancelText = "Cancel",
     cancelColor = "error",
+    contentProps = {
+      maxWidth: 600,
+      bg: "transparent",
+      w: "90%",
+      shadow: 0
+    },
     title,
     desc,
     ...rest
@@ -29,18 +35,13 @@ const Comp = props => {
       position="bottom"
       height="auto"
       onClose={onClose}
-      contentProps={{
-        maxWidth: 600,
-        bg: "transparent",
-        w: "90%",
-        shadow: 0
-      }}
+      contentProps={contentProps}
       {...rest}
     >
       {title && <Headline>{title}</Headline>}
       {desc && <Text>{desc}</Text>}
       <ButtonGroup bg="surface" mb={6} gap={0} shadow={10} vertical>
-        {actions.map((action, index) => {
+        {actions.map(({ onPress, label, ...rest }, index) => {
           return (
             <Button
               clean
@@ -51,15 +52,16 @@ const Comp = props => {
               }}
               size={buttonSize}
               onPress={() => {
-                if (action.onPress) {
-                  action.onPress();
+                if (onPress) {
+                  onPress();
                 }
                 if (onActionPress) {
-                  onActionPress(action);
+                  onActionPress({ onPress, label, ...rest });
                 }
               }}
+              {...rest}
             >
-              {action.label}
+              {label}
             </Button>
           );
         })}

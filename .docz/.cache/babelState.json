@@ -3,7 +3,7 @@
     "develop": {
       "plugins": [
         {
-          "name": "@babel/plugin-proposal-object-rest-spread",
+          "name": "/Users/kations/Projekte/unikit/node_modules/@babel/plugin-proposal-object-rest-spread/lib/index.js",
           "options": {}
         },
         {
@@ -19,6 +19,12 @@
           "options": {
             "sourceMap": true,
             "autoLabel": true,
+            "plugins": []
+          }
+        },
+        {
+          "name": "/Users/kations/Projekte/unikit/node_modules/babel-preset-expo/index.js",
+          "options": {
             "plugins": []
           }
         }
@@ -31,7 +37,7 @@
     "develop-html": {
       "plugins": [
         {
-          "name": "@babel/plugin-proposal-object-rest-spread",
+          "name": "/Users/kations/Projekte/unikit/node_modules/@babel/plugin-proposal-object-rest-spread/lib/index.js",
           "options": {}
         },
         {
@@ -47,6 +53,12 @@
           "options": {
             "sourceMap": true,
             "autoLabel": true,
+            "plugins": []
+          }
+        },
+        {
+          "name": "/Users/kations/Projekte/unikit/node_modules/babel-preset-expo/index.js",
+          "options": {
             "plugins": []
           }
         }
@@ -59,7 +71,7 @@
     "build-html": {
       "plugins": [
         {
-          "name": "@babel/plugin-proposal-object-rest-spread",
+          "name": "/Users/kations/Projekte/unikit/node_modules/@babel/plugin-proposal-object-rest-spread/lib/index.js",
           "options": {}
         },
         {
@@ -77,6 +89,12 @@
             "autoLabel": true,
             "plugins": []
           }
+        },
+        {
+          "name": "/Users/kations/Projekte/unikit/node_modules/babel-preset-expo/index.js",
+          "options": {
+            "plugins": []
+          }
         }
       ],
       "options": {
@@ -87,7 +105,7 @@
     "build-javascript": {
       "plugins": [
         {
-          "name": "@babel/plugin-proposal-object-rest-spread",
+          "name": "/Users/kations/Projekte/unikit/node_modules/@babel/plugin-proposal-object-rest-spread/lib/index.js",
           "options": {}
         },
         {
@@ -103,6 +121,12 @@
           "options": {
             "sourceMap": true,
             "autoLabel": true,
+            "plugins": []
+          }
+        },
+        {
+          "name": "/Users/kations/Projekte/unikit/node_modules/babel-preset-expo/index.js",
+          "options": {
             "plugins": []
           }
         }
