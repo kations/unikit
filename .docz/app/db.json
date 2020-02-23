@@ -12,7 +12,9 @@
     "native": true,
     "themeConfig": {},
     "separator": "-",
-    "files": "src/**/*.{md,markdown,mdx}"
+    "files": "src/**/*.{md,markdown,mdx}",
+    "codeSandbox": false,
+    "notUseSpecifiers": true
   },
   "entries": [
     {
@@ -146,6 +148,36 @@
       }
     },
     {
+      "key": "src/Animate/index.mdx",
+      "value": {
+        "name": "Animate",
+        "route": "/Animate",
+        "menu": "UI",
+        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
+        "filepath": "src/Animate/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
+        "slug": "src-animate-index",
+        "headings": [
+          {
+            "slug": "animate",
+            "depth": 1,
+            "value": "Animate"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/Box/box.mdx",
       "value": {
         "name": "Box",
@@ -191,36 +223,6 @@
             "slug": "button",
             "depth": 1,
             "value": "Button"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Animate/index.mdx",
-      "value": {
-        "name": "Animate",
-        "route": "/Animate",
-        "menu": "UI",
-        "id": "26a74cda9f0fb6f9f0af03a85dfab510",
-        "filepath": "src/Animate/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
-        "slug": "src-animate-index",
-        "headings": [
-          {
-            "slug": "animate",
-            "depth": 1,
-            "value": "Animate"
           },
           {
             "slug": "usage",
@@ -326,36 +328,6 @@
       }
     },
     {
-      "key": "src/Grid/index.mdx",
-      "value": {
-        "name": "Grid",
-        "route": "/Grid",
-        "menu": "UI",
-        "id": "f3ce7b8d7bdf399cb7ee9691daedf3dc",
-        "filepath": "src/Grid/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Grid/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Grid/index.mdx",
-        "slug": "src-grid-index",
-        "headings": [
-          {
-            "slug": "box",
-            "depth": 1,
-            "value": "Box"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/Flex/flex.mdx",
       "value": {
         "name": "Flex",
@@ -371,6 +343,36 @@
             "slug": "flex",
             "depth": 1,
             "value": "Flex"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Grid/index.mdx",
+      "value": {
+        "name": "Grid",
+        "route": "/Grid",
+        "menu": "UI",
+        "id": "f3ce7b8d7bdf399cb7ee9691daedf3dc",
+        "filepath": "src/Grid/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Grid/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Grid/index.mdx",
+        "slug": "src-grid-index",
+        "headings": [
+          {
+            "slug": "box",
+            "depth": 1,
+            "value": "Box"
           },
           {
             "slug": "usage",
@@ -3041,6 +3043,402 @@
             }
           ],
           "actualName": "Visible"
+        }
+      ]
+    },
+    {
+      "key": "dist/index.es.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "ThemeProvider$1",
+          "methods": [],
+          "actualName": "ThemeProvider$1"
+        },
+        {
+          "description": "",
+          "displayName": "Image$1",
+          "methods": [],
+          "actualName": "Image$1"
+        },
+        {
+          "description": "",
+          "displayName": "Progress",
+          "methods": [],
+          "actualName": "Progress",
+          "props": {
+            "value": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "trackWidth": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "circleWidth": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "rotate": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "angle": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "trackColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "lineCap": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "circleColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "loading": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        },
+        {
+          "description": "",
+          "displayName": "index$2",
+          "methods": [],
+          "actualName": "index$2"
+        },
+        {
+          "description": "",
+          "displayName": "Comp$2",
+          "methods": [],
+          "actualName": "Comp$2"
+        },
+        {
+          "description": "",
+          "displayName": "Comp$1",
+          "methods": [],
+          "actualName": "Comp$1",
+          "props": {
+            "index": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              }
+            },
+            "swipeIndex": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              }
+            },
+            "threshold": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "5",
+                "computed": false
+              }
+            },
+            "hysteresis": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "0.6",
+                "computed": false
+              }
+            },
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "onSwipe": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onSwipeEnd": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "scale": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "flex": {
+              "defaultValue": {
+                "value": "undefined",
+                "computed": true
+              },
+              "required": false
+            },
+            "gap": {
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              },
+              "required": false
+            },
+            "dotsPosition": {
+              "defaultValue": {
+                "value": "\"bottom\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "dotsOffset": {
+              "defaultValue": {
+                "value": "20",
+                "computed": false
+              },
+              "required": false
+            },
+            "dots": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "autoplay": {
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              },
+              "required": false
+            },
+            "duration": {
+              "defaultValue": {
+                "value": "3000",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        },
+        {
+          "description": "",
+          "displayName": "Comp$3",
+          "methods": [],
+          "actualName": "Comp$3",
+          "props": {
+            "value": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "borderSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelProps": {
+              "defaultValue": {
+                "value": "{\n  style: {\n    color: \"text\"\n  }\n}",
+                "computed": false
+              },
+              "required": false
+            },
+            "barLabelStyle": {
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              },
+              "required": false
+            },
+            "barProps": {
+              "defaultValue": {
+                "value": "{ style: {} }",
+                "computed": false
+              },
+              "required": false
+            }
+          }
+        },
+        {
+          "description": "",
+          "displayName": "Dropdown",
+          "methods": [],
+          "actualName": "Dropdown"
+        },
+        {
+          "description": "",
+          "displayName": "Form",
+          "methods": [],
+          "actualName": "Form"
+        },
+        {
+          "description": "",
+          "displayName": "Button",
+          "methods": [],
+          "actualName": "Button",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "rippleColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "size": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "overflow": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        },
+        {
+          "description": "",
+          "displayName": "Alert",
+          "methods": [],
+          "actualName": "Alert",
+          "props": {
+            "alert": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            },
+            "timeout": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "from": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "gap": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "maxWidth": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
+        },
+        {
+          "description": "",
+          "displayName": "A",
+          "methods": []
         }
       ]
     }

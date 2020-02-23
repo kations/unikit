@@ -59,7 +59,7 @@ const config = {
         title: 'Unikit',
         description: 'universal component library for react and react-native',
         host: 'localhost',
-        port: 3000,
+        port: 3001,
         p: 3000,
         separator: '-',
         paths: {

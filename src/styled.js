@@ -14,6 +14,7 @@ export const useThemeProps = (props, name) => {
 
 export const withThemeProps = (Comp, name) =>
   forwardRef((props, ref) => {
+    Comp.displayName = name;
     const theme = useTheme();
     const themeProps = Object.assign({}, theme[name], props);
     return <Comp {...themeProps} ref={ref} />;
