@@ -2947,91 +2947,6 @@
       ]
     },
     {
-      "key": "src/ActionSheet/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "ActionSheet",
-          "methods": [],
-          "actualName": "ActionSheet",
-          "props": {
-            "actions": {
-              "type": {
-                "name": "array"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "[]",
-                "computed": false
-              }
-            },
-            "buttonSize": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "50",
-                "computed": false
-              }
-            },
-            "onActionPress": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "cancelText": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "\"Cancel\"",
-                "computed": false
-              }
-            },
-            "cancelColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "\"error\"",
-                "computed": false
-              }
-            },
-            "title": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "desc": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "contentProps": {
-              "defaultValue": {
-                "value": "{\n  maxWidth: 600,\n  bg: \"transparent\",\n  w: \"90%\",\n  shadow: 0\n}",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        }
-      ]
-    },
-    {
       "key": "dist/index.js",
       "value": [
         {
@@ -3060,63 +2975,6 @@
           "displayName": "Image$1",
           "methods": [],
           "actualName": "Image$1"
-        },
-        {
-          "description": "",
-          "displayName": "ActionSheet",
-          "methods": [],
-          "actualName": "ActionSheet",
-          "props": {
-            "actions": {
-              "type": {
-                "name": "array"
-              },
-              "required": false,
-              "description": ""
-            },
-            "buttonSize": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "onActionPress": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "cancelText": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "cancelColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "title": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "desc": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
         },
         {
           "description": "",
@@ -3496,6 +3354,54 @@
           "description": "",
           "displayName": "A",
           "methods": []
+        }
+      ]
+    },
+    {
+      "key": "src/ActionSheet/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "ActionSheet",
+          "methods": [],
+          "actualName": "ActionSheet",
+          "props": {
+            "actions": {
+              "defaultValue": {
+                "value": "[]",
+                "computed": false
+              },
+              "required": false
+            },
+            "buttonSize": {
+              "defaultValue": {
+                "value": "50",
+                "computed": false
+              },
+              "required": false
+            },
+            "cancelText": {
+              "defaultValue": {
+                "value": "\"Cancel\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "cancelColor": {
+              "defaultValue": {
+                "value": "\"error\"",
+                "computed": false
+              },
+              "required": false
+            },
+            "contentProps": {
+              "defaultValue": {
+                "value": "{\n  maxWidth: 600,\n  bg: \"transparent\",\n  w: \"90%\",\n  shadow: 0\n}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
         }
       ]
     }

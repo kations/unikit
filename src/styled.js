@@ -20,14 +20,6 @@ export const withThemeProps = (Comp, name) =>
     return <Comp {...themeProps} ref={ref} />;
   });
 
-export const withThemePropsTest = name => Comp =>
-  forwardRef((props, ref) => {
-    Comp.displayName = name;
-    const theme = useTheme();
-    const themeProps = Object.assign({}, theme[name], props);
-    return <Comp {...themeProps} ref={ref} />;
-  });
-
 function isFunction(functionToCheck) {
   return (
     functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"

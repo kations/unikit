@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { withThemePropsTest } from "../styled";
+import { withThemeProps } from "../styled";
 import Headline from "../Headline";
 import Text from "../Text";
 import Button from "../Button";
@@ -77,7 +77,9 @@ export function ActionSheet({
   );
 }
 
-ActionSheet.propTypes = {
+const ActionSheetThemed = withThemeProps(ActionSheet, "ActionSheet");
+
+ActionSheetThemed.propTypes = {
   actions: PropTypes.array,
   buttonSize: PropTypes.number,
   onActionPress: PropTypes.func,
@@ -87,4 +89,6 @@ ActionSheet.propTypes = {
   desc: PropTypes.string
 };
 
-export default withThemePropsTest("ActionSheet")(ActionSheet);
+ActionSheetThemed.displayName = "ActionSheet";
+
+export default ActionSheetThemed;
