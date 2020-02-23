@@ -1,8 +1,18 @@
 import color from "color";
-import { Dimensions, Platform, StatusBar } from "react-native";
+import { Dimensions, Platform, PixelRatio } from "react-native";
 
 const get = require("get-value");
 const set = require("set-value");
+
+export function rem(value) {
+  if (Platform.OS === "web") return `${value}rem`;
+  return PixelRatio.getFontScale() * 16 * value;
+}
+
+export function em(value) {
+  if (Platform.OS === "web") return `${value}em`;
+  return rem(value);
+}
 
 export const setObjValue = (obj, path, value) => {
   return set(obj, path, value);
@@ -123,7 +133,8 @@ const styles = {
   row: "flexDirection",
   zi: "zIndex",
   fz: "fontSize",
-  fontSize: "fontSize"
+  fontSize: "fontSize",
+  textAlign: "textAlign"
 };
 
 const getValueByBreak = (value, breakIndex = 0) => {

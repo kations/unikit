@@ -3,7 +3,7 @@ import { Platform } from "react-native";
 import PropTypes from "prop-types";
 import { animated, useTransition } from "react-spring/native";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Visible from "../Visible";
 import Text from "../Text";
 import Box from "../Box";
@@ -12,7 +12,7 @@ const AnimatedView = animated(styled.View({}));
 
 const Animated = animated(Text);
 
-const AnimatedText = ({ strings = [], level = 1, animateType }) => {
+const AnimatedText = ({ strings = [], level = 1, animateType, ...rest }) => {
   const transitions = useTransition(strings, data => data, {
     from: { opacity: 0, y: 100, x: 0 },
     leave: { opacity: 0, y: 100, x: 0 },
@@ -51,7 +51,7 @@ const AnimatedText = ({ strings = [], level = 1, animateType }) => {
   ));
 };
 
-export default function Headline({
+export function Headline({
   level = 1,
   children,
   style,
@@ -96,6 +96,7 @@ export default function Headline({
         <AnimatedText
           strings={(onVisible && visible) || !onVisible ? splittedString : []}
           animateType={animateType}
+          {...rest}
         />
       </Text>
     );
@@ -109,9 +110,11 @@ export default function Headline({
 }
 
 Headline.propTypes = {
+  level: PropTypes.number,
   children: PropTypes.node,
-  as: PropTypes.string,
   style: PropTypes.object,
-  from: PropTypes.object,
-  to: PropTypes.object
+  animate: PropTypes.bool,
+  animateType: PropTypes.oneOf(["char", "word"])
 };
+
+export default withThemeProps(Headline, "Headline");

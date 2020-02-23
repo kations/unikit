@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Text } from "react-native";
 
+import { withThemeProps } from "../styled";
 import UniText from "../Text";
 import Animate from "../Animate";
 
-export default function Headline({
+export function Headline({
   level = 1,
   children,
   animate,
@@ -52,9 +53,11 @@ export default function Headline({
 }
 
 Headline.propTypes = {
+  level: PropTypes.number,
   children: PropTypes.node,
-  as: PropTypes.string,
   style: PropTypes.object,
-  from: PropTypes.object,
-  to: PropTypes.object
+  animate: PropTypes.bool,
+  animateType: PropTypes.oneOf(["char", "word"])
 };
+
+export default withThemeProps(Headline, "Headline");

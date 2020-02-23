@@ -1,48 +1,52 @@
 import React from "react";
 import { Platform } from "react-native";
+import PropTypes from "prop-types";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Box from "../Box";
-
-const accessibilityRoles = [
-  "button",
-  "header",
-  "heading",
-  "label",
-  "link",
-  "listitem",
-  "none",
-  "text"
-];
 
 const Txt = styled.Text(({ theme }) => ({
   fontFamily: theme.globals.fontFamily,
   color: "text"
 }));
 
-export default function Text({ children, level, font, ...rest }) {
-  const getAccessibilityRole = font => {
-    return accessibilityRoles.indexOf(font) > -1 ? font : "text";
-  };
+const Touchable = styled.TouchableOpacity();
+
+export function Text({ children, level, font, ...rest }) {
   if (!level && !font) {
     font = "p";
   }
+
   return (
     <Box
-      as={Txt}
+      as={rest.onPress ? Touchable : Txt}
       aria-level={level}
-      accessibilityRole={
-        Platform.OS === "web"
-          ? level
-            ? "heading"
-            : getAccessibilityRole(font)
-          : "text"
-      }
       level={level}
       font={level && !font ? `h${level}` : font}
+      {...Platform.select({
+        web: {
+          ...(level ? { "aria-level": `${level}` } : {}),
+          accessibilityRole: level ? "heading" : rest.href ? "link" : "text"
+        },
+        default: {
+          accessibilityRole: rest.href ? "link" : "text"
+        }
+      })}
       {...rest}
     >
       {children}
     </Box>
   );
 }
+
+Text.propTypes = {
+  level: PropTypes.number,
+  children: PropTypes.node,
+  font: PropTypes.string,
+  href: PropTypes.string,
+  target: PropTypes.string,
+  onPress: PropTypes.func,
+  style: PropTypes.object
+};
+
+export default withThemeProps(Text, "Text");

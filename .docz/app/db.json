@@ -24,7 +24,6 @@
         "filepath": "src/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/index.mdx",
-        "hidden": false,
         "slug": "src-index",
         "menu": "",
         "headings": [
@@ -61,7 +60,6 @@
         "filepath": "src/ActionSheet/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/ActionSheet/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/ActionSheet/index.mdx",
-        "hidden": false,
         "slug": "src-action-sheet-index",
         "headings": [
           {
@@ -78,6 +76,11 @@
             "slug": "props",
             "depth": 3,
             "value": "Props"
+          },
+          {
+            "slug": "overlay-props",
+            "depth": 3,
+            "value": "Overlay Props"
           }
         ]
       }
@@ -92,7 +95,6 @@
         "filepath": "src/Alert/alert.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Alert/alert.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Alert/alert.mdx",
-        "hidden": false,
         "slug": "src-alert-alert",
         "headings": [
           {
@@ -123,44 +125,12 @@
         "filepath": "src/Avatar/avatar.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Avatar/avatar.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Avatar/avatar.mdx",
-        "hidden": false,
         "slug": "src-avatar-avatar",
         "headings": [
           {
             "slug": "avatar",
             "depth": 1,
             "value": "Avatar"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Button/button.mdx",
-      "value": {
-        "name": "Button",
-        "route": "/button",
-        "menu": "UI",
-        "id": "dabf605616d90c798219ec4ecf9f988f",
-        "filepath": "src/Button/button.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Button/button.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Button/button.mdx",
-        "hidden": false,
-        "slug": "src-button-button",
-        "headings": [
-          {
-            "slug": "button",
-            "depth": 1,
-            "value": "Button"
           },
           {
             "slug": "usage",
@@ -185,7 +155,6 @@
         "filepath": "src/Box/box.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Box/box.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Box/box.mdx",
-        "hidden": false,
         "slug": "src-box-box",
         "headings": [
           {
@@ -207,22 +176,21 @@
       }
     },
     {
-      "key": "src/ButtonGroup/ButtonGroup.mdx",
+      "key": "src/Button/button.mdx",
       "value": {
-        "name": "Group",
-        "route": "/Group",
+        "name": "Button",
+        "route": "/button",
         "menu": "UI",
-        "id": "05addf9dc7efeacf95a8ccb696c31a15",
-        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/ButtonGroup/ButtonGroup.mdx",
-        "hidden": false,
-        "slug": "src-button-group-button-group",
+        "id": "dabf605616d90c798219ec4ecf9f988f",
+        "filepath": "src/Button/button.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Button/button.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Button/button.mdx",
+        "slug": "src-button-button",
         "headings": [
           {
-            "slug": "buttongroup",
+            "slug": "button",
             "depth": 1,
-            "value": "ButtonGroup"
+            "value": "Button"
           },
           {
             "slug": "usage",
@@ -247,13 +215,42 @@
         "filepath": "src/Animate/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Animate/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Animate/index.mdx",
-        "hidden": false,
         "slug": "src-animate-index",
         "headings": [
           {
             "slug": "animate",
             "depth": 1,
             "value": "Animate"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/ButtonGroup/ButtonGroup.mdx",
+      "value": {
+        "name": "Group",
+        "route": "/Group",
+        "menu": "UI",
+        "id": "05addf9dc7efeacf95a8ccb696c31a15",
+        "filepath": "src/ButtonGroup/ButtonGroup.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/ButtonGroup/ButtonGroup.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/ButtonGroup/ButtonGroup.mdx",
+        "slug": "src-button-group-button-group",
+        "headings": [
+          {
+            "slug": "buttongroup",
+            "depth": 1,
+            "value": "ButtonGroup"
           },
           {
             "slug": "usage",
@@ -278,7 +275,6 @@
         "filepath": "src/Chart/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Chart/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Chart/index.mdx",
-        "hidden": false,
         "slug": "src-chart-index",
         "headings": [
           {
@@ -309,44 +305,12 @@
         "filepath": "src/Dropdown/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Dropdown/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Dropdown/index.mdx",
-        "hidden": false,
         "slug": "src-dropdown-index",
         "headings": [
           {
             "slug": "dropdown",
             "depth": 1,
             "value": "Dropdown"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Flex/flex.mdx",
-      "value": {
-        "name": "Flex",
-        "route": "/flex",
-        "menu": "Primitives",
-        "id": "48c7995e38998c32055c9500137f2534",
-        "filepath": "src/Flex/flex.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Flex/flex.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Flex/flex.mdx",
-        "hidden": false,
-        "slug": "src-flex-flex",
-        "headings": [
-          {
-            "slug": "flex",
-            "depth": 1,
-            "value": "Flex"
           },
           {
             "slug": "usage",
@@ -371,13 +335,42 @@
         "filepath": "src/Grid/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Grid/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Grid/index.mdx",
-        "hidden": false,
         "slug": "src-grid-index",
         "headings": [
           {
             "slug": "box",
             "depth": 1,
             "value": "Box"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Flex/flex.mdx",
+      "value": {
+        "name": "Flex",
+        "route": "/flex",
+        "menu": "Primitives",
+        "id": "48c7995e38998c32055c9500137f2534",
+        "filepath": "src/Flex/flex.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Flex/flex.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Flex/flex.mdx",
+        "slug": "src-flex-flex",
+        "headings": [
+          {
+            "slug": "flex",
+            "depth": 1,
+            "value": "Flex"
           },
           {
             "slug": "usage",
@@ -402,7 +395,6 @@
         "filepath": "src/Headline/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Headline/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Headline/index.mdx",
-        "hidden": false,
         "slug": "src-headline-index",
         "headings": [
           {
@@ -419,6 +411,16 @@
             "slug": "props",
             "depth": 3,
             "value": "Props"
+          },
+          {
+            "slug": "text-props",
+            "depth": 3,
+            "value": "Text Props"
+          },
+          {
+            "slug": "animate-props-if-animate-is-true",
+            "depth": 3,
+            "value": "Animate Props (if animate is true)"
           }
         ]
       }
@@ -433,7 +435,6 @@
         "filepath": "src/Icon/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Icon/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Icon/index.mdx",
-        "hidden": false,
         "slug": "src-icon-index",
         "headings": [
           {
@@ -464,7 +465,6 @@
         "filepath": "src/Image/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Image/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Image/index.mdx",
-        "hidden": false,
         "slug": "src-image-index",
         "headings": [
           {
@@ -495,7 +495,6 @@
         "filepath": "src/Input/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Input/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Input/index.mdx",
-        "hidden": false,
         "slug": "src-input-index",
         "headings": [
           {
@@ -536,7 +535,6 @@
         "filepath": "src/Overlay/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Overlay/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Overlay/index.mdx",
-        "hidden": false,
         "slug": "src-overlay-index",
         "headings": [
           {
@@ -567,7 +565,6 @@
         "filepath": "src/Progress/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Progress/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Progress/index.mdx",
-        "hidden": false,
         "slug": "src-progress-index",
         "headings": [
           {
@@ -598,44 +595,12 @@
         "filepath": "src/Swiper/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Swiper/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Swiper/index.mdx",
-        "hidden": false,
         "slug": "src-swiper-index",
         "headings": [
           {
             "slug": "swiper",
             "depth": 1,
             "value": "Swiper"
-          },
-          {
-            "slug": "usage",
-            "depth": 3,
-            "value": "Usage"
-          },
-          {
-            "slug": "props",
-            "depth": 3,
-            "value": "Props"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/Text/index.mdx",
-      "value": {
-        "name": "Text",
-        "route": "/Text",
-        "menu": "Primitives",
-        "id": "60cad9fbdf8c52b2a55be0b360ee6140",
-        "filepath": "src/Text/index.mdx",
-        "fullpath": "/Users/kations/Projekte/unikit/src/Text/index.mdx",
-        "link": "https://github.com/kations/unikit/edit/master/src/Text/index.mdx",
-        "hidden": false,
-        "slug": "src-text-index",
-        "headings": [
-          {
-            "slug": "text",
-            "depth": 1,
-            "value": "Text"
           },
           {
             "slug": "usage",
@@ -660,8 +625,37 @@
         "filepath": "src/Tabs/index.mdx",
         "fullpath": "/Users/kations/Projekte/unikit/src/Tabs/index.mdx",
         "link": "https://github.com/kations/unikit/edit/master/src/Tabs/index.mdx",
-        "hidden": false,
         "slug": "src-tabs-index",
+        "headings": [
+          {
+            "slug": "tabs",
+            "depth": 1,
+            "value": "Tabs"
+          },
+          {
+            "slug": "usage",
+            "depth": 3,
+            "value": "Usage"
+          },
+          {
+            "slug": "props",
+            "depth": 3,
+            "value": "Props"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/Text/index.mdx",
+      "value": {
+        "name": "Text",
+        "route": "/Text",
+        "menu": "Primitives",
+        "id": "60cad9fbdf8c52b2a55be0b360ee6140",
+        "filepath": "src/Text/index.mdx",
+        "fullpath": "/Users/kations/Projekte/unikit/src/Text/index.mdx",
+        "link": "https://github.com/kations/unikit/edit/master/src/Text/index.mdx",
+        "slug": "src-text-index",
         "headings": [
           {
             "slug": "text",
@@ -686,11 +680,6 @@
     {
       "key": "dist/index.js",
       "value": [
-        {
-          "description": "",
-          "methods": [],
-          "actualName": ""
-        },
         {
           "description": "",
           "methods": [],
@@ -743,28 +732,87 @@
       ]
     },
     {
-      "key": "src/index.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Header",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "Nav",
-          "methods": []
-        }
-      ]
-    },
-    {
       "key": "src/ActionSheet/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Comp",
+          "displayName": "ActionSheet",
           "methods": [],
-          "actualName": "Comp"
+          "actualName": "ActionSheet",
+          "props": {
+            "actions": {
+              "type": {
+                "name": "array"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "[]",
+                "computed": false
+              }
+            },
+            "buttonSize": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "50",
+                "computed": false
+              }
+            },
+            "onActionPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "cancelText": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"Cancel\"",
+                "computed": false
+              }
+            },
+            "cancelColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"error\"",
+                "computed": false
+              }
+            },
+            "title": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "desc": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "contentProps": {
+              "defaultValue": {
+                "value": "{\n  maxWidth: 600,\n  bg: \"transparent\",\n  w: \"90%\",\n  shadow: 0\n}",
+                "computed": false
+              },
+              "required": false
+            }
+          }
         }
       ]
     },
@@ -853,14 +901,22 @@
                 "name": "string"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "\"\"",
+                "computed": false
+              }
             },
             "size": {
               "type": {
                 "name": "number"
               },
               "required": false,
-              "description": ""
+              "description": "",
+              "defaultValue": {
+                "value": "44",
+                "computed": false
+              }
             },
             "source": {
               "type": {
@@ -896,6 +952,13 @@
               },
               "required": false,
               "description": ""
+            },
+            "bg": {
+              "defaultValue": {
+                "value": "\"primary\"",
+                "computed": false
+              },
+              "required": false
             }
           }
         }
@@ -1077,6 +1140,59 @@
       ]
     },
     {
+      "key": "src/ButtonGroup/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Group",
+          "methods": [],
+          "actualName": "Group",
+          "props": {
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": true,
+              "description": ""
+            },
+            "gap": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "0",
+                "computed": false
+              }
+            },
+            "buttonStyle": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
+            },
+            "vertical": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "key": "src/Chart/index.js",
       "value": [
         {
@@ -1166,6 +1282,16 @@
       ]
     },
     {
+      "key": "src/Elements/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "A",
+          "methods": []
+        }
+      ]
+    },
+    {
       "key": "src/Form/index.js",
       "value": [
         {
@@ -1207,13 +1333,13 @@
       ]
     },
     {
-      "key": "src/Headline/index.js",
+      "key": "src/Grid/index.js",
       "value": [
         {
           "description": "",
-          "displayName": "Headline",
+          "displayName": "Grid",
           "methods": [],
-          "actualName": "Headline",
+          "actualName": "Grid",
           "props": {
             "children": {
               "type": {
@@ -1222,9 +1348,88 @@
               "required": false,
               "description": ""
             },
-            "as": {
+            "min": {
               "type": {
-                "name": "string"
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "250",
+                "computed": false
+              }
+            },
+            "maxCols": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "50",
+                "computed": false
+              }
+            },
+            "gap": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "5",
+                "computed": false
+              }
+            },
+            "outerGap": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "itemStyle": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "src/Headline/index.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Headline",
+          "methods": [],
+          "actualName": "Headline",
+          "props": {
+            "level": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "1",
+                "computed": false
+              }
+            },
+            "children": {
+              "type": {
+                "name": "node"
               },
               "required": false,
               "description": ""
@@ -1236,33 +1441,33 @@
               "required": false,
               "description": ""
             },
-            "from": {
+            "animate": {
               "type": {
-                "name": "object"
+                "name": "bool"
               },
               "required": false,
               "description": ""
-            },
-            "to": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "level": {
-              "defaultValue": {
-                "value": "1",
-                "computed": false
-              },
-              "required": false
             },
             "animateType": {
+              "type": {
+                "name": "enum",
+                "value": [
+                  {
+                    "value": "\"char\"",
+                    "computed": false
+                  },
+                  {
+                    "value": "\"word\"",
+                    "computed": false
+                  }
+                ]
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
                 "value": "\"char\"",
                 "computed": false
-              },
-              "required": false
+              }
             },
             "stayVisible": {
               "defaultValue": {
@@ -1454,7 +1659,7 @@
                 "name": "bool"
               },
               "required": false,
-              "description": "",
+              "description": "Show a faded stroke if animate",
               "defaultValue": {
                 "value": "true",
                 "computed": false
@@ -1810,7 +2015,7 @@
             },
             "handleProps": {
               "defaultValue": {
-                "value": "{}",
+                "value": "{ borderWidth: 0 }",
                 "computed": false
               },
               "required": false
@@ -2040,16 +2245,81 @@
               "required": false,
               "description": ""
             },
-            "indentLabel": {
+            "value": {
+              "type": {
+                "name": "any"
+              },
+              "required": false,
+              "description": ""
+            },
+            "label": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "placeholder": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "labelColor": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"text\"",
+                "computed": false
+              }
+            },
+            "onChange": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "required": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
                 "value": "false",
                 "computed": false
-              },
-              "required": false
+              }
             },
-            "labelColor": {
+            "clean": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
-                "value": "\"text\"",
+                "value": "false",
+                "computed": false
+              }
+            },
+            "floating": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "false",
+                "computed": false
+              }
+            },
+            "indentLabel": {
+              "defaultValue": {
+                "value": "false",
                 "computed": false
               },
               "required": false
@@ -2081,27 +2351,6 @@
                 "computed": false
               },
               "required": false
-            },
-            "required": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "clean": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "floating": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
             }
           }
         }
@@ -2116,72 +2365,129 @@
           "methods": [],
           "actualName": "Overlay",
           "props": {
+            "position": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "\"center\"",
+                "computed": false
+              }
+            },
             "visible": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
                 "value": "false",
                 "computed": false
-              },
-              "required": false
+              }
             },
             "scrollable": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
                 "value": "false",
                 "computed": false
-              },
-              "required": false
+              }
             },
             "backdrop": {
+              "type": {
+                "name": "bool"
+              },
+              "required": false,
+              "description": "",
               "defaultValue": {
                 "value": "true",
                 "computed": false
+              }
+            },
+            "usePortal": {
+              "type": {
+                "name": "bool"
               },
-              "required": false
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "true",
+                "computed": false
+              }
+            },
+            "scrollComp": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            },
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onClose": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "modalSpring": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
+                "computed": false
+              }
+            },
+            "contentSpring": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
+                "computed": false
+              }
+            },
+            "modalProps": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
+            },
+            "contentProps": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": "",
+              "defaultValue": {
+                "value": "{}",
+                "computed": false
+              }
             },
             "zIndex": {
               "defaultValue": {
                 "value": "900",
-                "computed": false
-              },
-              "required": false
-            },
-            "position": {
-              "defaultValue": {
-                "value": "\"center\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "usePortal": {
-              "defaultValue": {
-                "value": "true",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0 },\n  enter: { opacity: 1 },\n  leave: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 0 });\n  }\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentSpring": {
-              "defaultValue": {
-                "value": "{\n  from: { opacity: 0, top: 100 },\n  enter: item => async (next, cancel) => {\n    await new Promise(resolve => setTimeout(resolve, 250));\n    await next({ opacity: 1, top: 0 });\n  },\n  leave: { opacity: 0, top: 100 },\n  unique: true\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "modalProps": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "contentProps": {
-              "defaultValue": {
-                "value": "{}",
                 "computed": false
               },
               "required": false
@@ -2229,12 +2535,10 @@
               "params": [
                 {
                   "name": "evt",
-                  "optional": false,
                   "type": null
                 },
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2247,12 +2551,10 @@
               "params": [
                 {
                   "name": "evt",
-                  "optional": false,
                   "type": null
                 },
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2265,12 +2567,10 @@
               "params": [
                 {
                   "name": "event",
-                  "optional": false,
                   "type": null
                 },
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2283,12 +2583,10 @@
               "params": [
                 {
                   "name": "evt",
-                  "optional": false,
                   "type": null
                 },
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2301,7 +2599,6 @@
               "params": [
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2314,12 +2611,10 @@
               "params": [
                 {
                   "name": "evt",
-                  "optional": false,
                   "type": null
                 },
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2332,7 +2627,6 @@
               "params": [
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2345,7 +2639,6 @@
               "params": [
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2358,7 +2651,6 @@
               "params": [
                 {
                   "name": "gestureState",
-                  "optional": false,
                   "type": null
                 }
               ],
@@ -2664,7 +2956,58 @@
           "description": "",
           "displayName": "Text",
           "methods": [],
-          "actualName": "Text"
+          "actualName": "Text",
+          "props": {
+            "level": {
+              "type": {
+                "name": "number"
+              },
+              "required": false,
+              "description": ""
+            },
+            "children": {
+              "type": {
+                "name": "node"
+              },
+              "required": false,
+              "description": ""
+            },
+            "font": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "href": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "target": {
+              "type": {
+                "name": "string"
+              },
+              "required": false,
+              "description": ""
+            },
+            "onPress": {
+              "type": {
+                "name": "func"
+              },
+              "required": false,
+              "description": ""
+            },
+            "style": {
+              "type": {
+                "name": "object"
+              },
+              "required": false,
+              "description": ""
+            }
+          }
         }
       ]
     },
@@ -2698,468 +3041,6 @@
             }
           ],
           "actualName": "Visible"
-        }
-      ]
-    },
-    {
-      "key": "dist/index.es.js",
-      "value": [
-        {
-          "description": "",
-          "displayName": "Header",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "Nav",
-          "methods": []
-        },
-        {
-          "description": "",
-          "displayName": "ThemeProvider$1",
-          "methods": [],
-          "actualName": "ThemeProvider$1"
-        },
-        {
-          "description": "",
-          "displayName": "Image$1",
-          "methods": [],
-          "actualName": "Image$1"
-        },
-        {
-          "description": "",
-          "displayName": "Text$2",
-          "methods": [],
-          "actualName": "Text$2"
-        },
-        {
-          "description": "",
-          "displayName": "Comp$1",
-          "methods": [],
-          "actualName": "Comp$1"
-        },
-        {
-          "description": "",
-          "displayName": "Progress",
-          "methods": [],
-          "actualName": "Progress",
-          "props": {
-            "value": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "trackWidth": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "circleWidth": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "rotate": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "angle": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "trackColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "lineCap": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "circleColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "loading": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": ""
-            },
-            "style": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
-        },
-        {
-          "description": "",
-          "displayName": "index$1",
-          "methods": [],
-          "actualName": "index$1"
-        },
-        {
-          "description": "",
-          "displayName": "Comp$3",
-          "methods": [],
-          "actualName": "Comp$3"
-        },
-        {
-          "description": "",
-          "displayName": "Comp$2",
-          "methods": [],
-          "actualName": "Comp$2",
-          "props": {
-            "index": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "0",
-                "computed": false
-              }
-            },
-            "swipeIndex": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "0",
-                "computed": false
-              }
-            },
-            "threshold": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "5",
-                "computed": false
-              }
-            },
-            "hysteresis": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": "",
-              "defaultValue": {
-                "value": "0.6",
-                "computed": false
-              }
-            },
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": true,
-              "description": ""
-            },
-            "onSwipe": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "onSwipeEnd": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "scale": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": ""
-            },
-            "flex": {
-              "defaultValue": {
-                "value": "undefined",
-                "computed": true
-              },
-              "required": false
-            },
-            "gap": {
-              "defaultValue": {
-                "value": "0",
-                "computed": false
-              },
-              "required": false
-            },
-            "dotsPosition": {
-              "defaultValue": {
-                "value": "\"bottom\"",
-                "computed": false
-              },
-              "required": false
-            },
-            "dotsOffset": {
-              "defaultValue": {
-                "value": "20",
-                "computed": false
-              },
-              "required": false
-            },
-            "dots": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "autoplay": {
-              "defaultValue": {
-                "value": "false",
-                "computed": false
-              },
-              "required": false
-            },
-            "duration": {
-              "defaultValue": {
-                "value": "3000",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        },
-        {
-          "description": "",
-          "displayName": "Comp$4",
-          "methods": [],
-          "actualName": "Comp$4",
-          "props": {
-            "value": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": ""
-            },
-            "style": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "borderSize": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "onChange": {
-              "type": {
-                "name": "func"
-              },
-              "required": false,
-              "description": ""
-            },
-            "labelProps": {
-              "defaultValue": {
-                "value": "{\n  style: {\n    color: \"text\"\n  }\n}",
-                "computed": false
-              },
-              "required": false
-            },
-            "barLabelStyle": {
-              "defaultValue": {
-                "value": "{}",
-                "computed": false
-              },
-              "required": false
-            },
-            "barProps": {
-              "defaultValue": {
-                "value": "{ style: {} }",
-                "computed": false
-              },
-              "required": false
-            }
-          }
-        },
-        {
-          "description": "",
-          "displayName": "Overlay",
-          "methods": [],
-          "actualName": "Overlay"
-        },
-        {
-          "description": "",
-          "displayName": "Headline",
-          "methods": [],
-          "actualName": "Headline",
-          "props": {
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": false,
-              "description": ""
-            },
-            "as": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "style": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "from": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "to": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
-        },
-        {
-          "description": "",
-          "displayName": "Dropdown",
-          "methods": [],
-          "actualName": "Dropdown"
-        },
-        {
-          "description": "",
-          "displayName": "Form",
-          "methods": [],
-          "actualName": "Form"
-        },
-        {
-          "description": "",
-          "displayName": "Button",
-          "methods": [],
-          "actualName": "Button",
-          "props": {
-            "children": {
-              "type": {
-                "name": "node"
-              },
-              "required": true,
-              "description": ""
-            },
-            "rippleColor": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "size": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "overflow": {
-              "type": {
-                "name": "bool"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
-        },
-        {
-          "description": "",
-          "displayName": "Alert",
-          "methods": [],
-          "actualName": "Alert",
-          "props": {
-            "alert": {
-              "type": {
-                "name": "object"
-              },
-              "required": false,
-              "description": ""
-            },
-            "timeout": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "from": {
-              "type": {
-                "name": "string"
-              },
-              "required": false,
-              "description": ""
-            },
-            "gap": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            },
-            "maxWidth": {
-              "type": {
-                "name": "number"
-              },
-              "required": false,
-              "description": ""
-            }
-          }
         }
       ]
     }

@@ -4,7 +4,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
       alias: {
         "react-native$": "react-native-web"
       },
-      extensions: [".web.js", ".js", ".native.js"]
+      extensions: [".js"]
     }
   });
 };

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Platform } from "react-native";
 import { useSpring, animated } from "react-spring/native";
-import color from "color";
 
 import Pan from "../Pan";
 import styled from "../styled";
@@ -69,15 +68,9 @@ const Handle = styled(Box)(({ theme, accent, handleSize, handleColor }) => ({
   height: handleSize,
   borderRadius: handleSize / 2,
   backgroundColor: handleColor,
-  borderWidth: 2,
-  borderColor: color(theme.colors[accent] || accent)
-    .alpha(0.07)
-    .toString(),
-  ...(Platform.OS === "web"
-    ? {
-        cursor: "pointer"
-      }
-    : {})
+  web: {
+    cursor: "pointer"
+  }
 }));
 
 const Ticks = styled.View(({ vertical, trackHeight, handleSize, size }) => ({
@@ -138,7 +131,7 @@ const Comp = ({
   showTicks = true,
   vertical = false,
   sliderHeight,
-  handleProps = {},
+  handleProps = { borderWidth: 0 },
   ...rest
 }) => {
   const [position, setPosition] = useState(0);

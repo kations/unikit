@@ -104,6 +104,7 @@ Comp.propTypes = {
   name: t.string,
   color: t.string,
   animate: t.bool,
+  /** Show a faded stroke if animate */
   withBg: t.bool,
   animateOpacity: t.bool,
   springConfig: t.object,

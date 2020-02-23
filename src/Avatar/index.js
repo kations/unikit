@@ -41,17 +41,16 @@ const Label = styled(Text)(({ theme, type, textColor, size }) => ({
   fontWeight: "bold"
 }));
 
-export function Avatar(props) {
-  const {
-    bg = "primary",
-    children,
-    size = 44,
-    char = "",
-    textColor,
-    onPress,
-    source,
-    ...rest
-  } = props;
+export function Avatar({
+  bg = "primary",
+  children,
+  size = 44,
+  char = "",
+  textColor,
+  onPress,
+  source,
+  ...rest
+}) {
   return (
     <Wrap
       bg={bg}

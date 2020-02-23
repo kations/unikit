@@ -1,9 +1,11 @@
 import React, { Children, useState, useEffect } from "react";
 import { Platform } from "react-native";
+import PropTypes from "prop-types";
+
 import styled, { useTheme, withThemeProps } from "../styled";
 import { useLayout } from "../hooks";
 
-const GridWrap = styled.View(({ gap, min, max }) => ({
+const GridWrap = styled.View(({ gap, min }) => ({
   native: {
     position: "relative",
     flexDirection: "row",
@@ -12,7 +14,7 @@ const GridWrap = styled.View(({ gap, min, max }) => ({
   web: {
     position: "relative",
     display: "grid",
-    gridTemplateColumns: `repeat(auto-fill, minmax(min(${min}px, 100%), ${max}))`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(min(${min}px, 100%), 1fr))`,
     gridColumnGap: gap,
     gridRowGap: gap
   }
@@ -29,10 +31,9 @@ const GridItem = styled.View(({ rowWidth }) => ({
   }
 }));
 
-function Grid({
+export function Grid({
   children,
   min = 250,
-  max = "1fr",
   maxCols = 50,
   gap = 5,
   outerGap = false,
@@ -59,7 +60,7 @@ function Grid({
           mr: outerGap ? 0 : -gap / 2,
           p: outerGap ? gap / 2 : 0
         }
-      : { gap, min, max, p: outerGap ? gap : 0 };
+      : { gap, min, p: outerGap ? gap : 0 };
 
   const itemProps =
     Platform.OS !== "web"
@@ -83,5 +84,14 @@ function Grid({
     </GridWrap>
   );
 }
+
+Grid.propTypes = {
+  children: PropTypes.node,
+  min: PropTypes.number,
+  maxCols: PropTypes.number,
+  gap: PropTypes.number,
+  outerGap: PropTypes.bool,
+  itemStyle: PropTypes.object
+};
 
 export default withThemeProps(Grid, "Grid");

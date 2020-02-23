@@ -285,7 +285,15 @@ Input.propTypes = {
     "multiselect",
     "switch",
     "tags"
-  ])
+  ]),
+  value: PropTypes.any,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  labelColor: PropTypes.string,
+  onChange: PropTypes.func,
+  required: PropTypes.bool,
+  clean: PropTypes.bool,
+  floating: PropTypes.bool
 };
 
 const InputWithTheme = withThemeProps(Input, "Input");

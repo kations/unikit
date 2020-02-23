@@ -1,16 +1,7 @@
 import React, { useContext, forwardRef } from "react";
 import scStyled, { ThemeContext, withTheme } from "styled-components/native";
-import * as reactNative from "react-native";
-//import Box from "./Box";
-import { getStyle } from "./util";
-
-const colorStyles = [
-  "color",
-  "backgroundColor",
-  "borderColor",
-  "borderBottomColor",
-  "borderTopColor"
-];
+import * as RN from "react-native";
+import parseStyle from "./parseStyle";
 
 export { withTheme };
 
@@ -21,35 +12,12 @@ export const useThemeProps = (props, name) => {
   return Object.assign({}, theme.globals[name], props);
 };
 
-// export const withThemeProps = forwardRef((props, ref) => Comp => () => {
-//   const theme = useTheme();
-//   const themeProps = Object.assign({}, theme[name], props);
-//   return <Comp {...themeProps} ref={ref} />;
-// });
-
 export const withThemeProps = (Comp, name) =>
   forwardRef((props, ref) => {
     const theme = useTheme();
     const themeProps = Object.assign({}, theme[name], props);
     return <Comp {...themeProps} ref={ref} />;
   });
-
-// export const withThemeProps = (WrappedComponent, name) => {
-//   class WithSubscription extends React.Component {
-//     render() {
-//       const themeProps = Object.assign({}, this.props.theme[name], this.props);
-//       return <WrappedComponent {...themeProps} />;
-//     }
-//   }
-//   WithSubscription.displayName = `withThemeProps(${getDisplayName(
-//     WrappedComponent
-//   )})`;
-//   return withTheme(WithSubscription);
-// };
-
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || "Component";
-}
 
 function isFunction(functionToCheck) {
   return (
@@ -69,38 +37,30 @@ export default function styled(component, alias) {
         console.log({ isString: true, split: style[0].split(":") });
       }
       // console.log({ getStyle: getStyle(props) });
-      Object.keys(style).map(key => {
-        if (colorStyles.indexOf(key) > -1) {
-          //console.log({ found: key });
-          style[key] = theme.colors[style[key]] || style[key];
-        }
 
-        if (key === reactNative.Platform.OS || key === "native") {
-          style = Object.assign({}, style, style[key]);
+      const platforms = ["web", "ios", "android", "native"];
+      platforms.map(platform => {
+        if (
+          (style[platform] && RN.Platform.OS === platform) ||
+          (style.native && ["ios", "android"].indexOf(RN.Platform.OS) > -1)
+        ) {
+          style = { ...style, ...style[platform] };
         }
       });
+
       if (alias === "Text" && !style["fontFamily"]) {
         style["fontFamily"] = theme.globals.fontFamily;
       }
 
-      if (style.font && props.theme.fonts[style.font]) {
-        style = { ...style, ...theme.fonts[style.font] };
-        delete style["font"];
-      }
+      const parsedStyle = { ...style, ...parseStyle({ theme, ...style }) };
+      delete parsedStyle["absoluteFill"];
+      delete parsedStyle["web"];
+      delete parsedStyle["native"];
+      delete parsedStyle["android"];
+      delete parsedStyle["ios"];
+      delete parsedStyle["font"];
 
-      if (style.absoluteFill) {
-        style = {
-          ...style,
-          ...{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }
-        };
-        delete style["absoluteFill"];
-      }
-
-      delete style["web"];
-      delete style["native"];
-      delete style["android"];
-      delete style["ios"];
-      return Object.assign({}, style, getStyle(props));
+      return { ...parsedStyle, ...parseStyle(props) };
     });
     return StyledComp;
   };
@@ -118,7 +78,7 @@ Object.keys(scStyled).forEach(alias => {
     enumerable: true,
     configurable: false,
     get() {
-      return styled(reactNative[alias], alias);
+      return styled(RN[alias], alias);
     }
   });
 });

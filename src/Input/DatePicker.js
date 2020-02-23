@@ -71,13 +71,17 @@ var isMobile = {
     if (Platform.OS !== "web") {
       return false;
     } else {
-      return (
-        isMobile.Android() ||
-        isMobile.BlackBerry() ||
-        isMobile.iOS() ||
-        isMobile.Opera() ||
-        isMobile.Windows()
-      );
+      if (typeof navigator !== "undefined") {
+        return (
+          isMobile.Android() ||
+          isMobile.BlackBerry() ||
+          isMobile.iOS() ||
+          isMobile.Opera() ||
+          isMobile.Windows()
+        );
+      } else {
+        return false;
+      }
     }
   }
 };

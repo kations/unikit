@@ -42,7 +42,7 @@ const getBorderRadius = (index, length, vertical) => {
   }
 };
 
-function Group({
+export function Group({
   children,
   gap = 0,
   buttonStyle = {},
@@ -73,7 +73,8 @@ function Group({
 Group.propTypes = {
   children: PropTypes.node.isRequired,
   gap: PropTypes.number,
-  buttonStyle: PropTypes.object
+  buttonStyle: PropTypes.object,
+  vertical: PropTypes.bool
 };
 
 export default withThemeProps(Group, "Group");

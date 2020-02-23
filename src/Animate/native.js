@@ -5,38 +5,33 @@ import {
   config as springConfig
 } from "react-spring/native";
 import { View } from "react-native";
+import PropTypes from "prop-types";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Visible from "../Visible";
 
 const Box = animated(styled.View());
 
-export default function Animate(props) {
-  const {
-    from = { opacity: 0, y: 100, x: 0 },
-    to = { opacity: 1, y: 0, x: 0 },
-    children,
-    stayVisible = true,
-    onVisible,
-    isVisible,
-    delay,
-    reset,
-    reverse,
-    config,
-    style,
-    as,
-    ...rest
-  } = props;
-
+export function Animate({
+  from = { opacity: 0, y: 100, x: 0 },
+  to = { opacity: 1, y: 0, x: 0 },
+  children,
+  stayVisible = true,
+  onVisible,
+  isVisible,
+  delay,
+  config,
+  style,
+  as,
+  ...rest
+}) {
   const [visible, setVisible] = useState(isVisible);
 
   const { opacity, x, y, z } = useSpring({
     from,
     to: (!visible && onVisible) || isVisible === false ? from : to,
     config: springConfig[config] || config || springConfig.default,
-    delay: delay || 0,
-    reset: reset || false,
-    reverse: reverse || false
+    delay: delay || 0
   });
 
   const AnimatedComp = (
@@ -74,3 +69,18 @@ export default function Animate(props) {
 
   return AnimatedComp;
 }
+
+Animate.propTypes = {
+  children: PropTypes.node,
+  from: PropTypes.object,
+  to: PropTypes.object,
+  stayVisible: PropTypes.bool,
+  onVisible: PropTypes.bool,
+  isVisible: PropTypes.bool,
+  delay: PropTypes.number,
+  duration: PropTypes.number,
+  config: PropTypes.object,
+  style: PropTypes.object
+};
+
+export default withThemeProps(Animate, "Animate");

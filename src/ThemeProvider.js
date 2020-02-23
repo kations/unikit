@@ -7,15 +7,10 @@ const merge = require("deepmerge");
 import Alert from "./Alert";
 import { PortalProvider, PortalExit } from "./Portal";
 import { useDimensions } from "./hooks";
+import { rem } from "./util";
 
 function capitalizeFLetter(string) {
   return string[0].toUpperCase() + string.slice(1);
-}
-
-function isFunction(functionToCheck) {
-  return (
-    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
-  );
 }
 
 const primary = "#673fb4";
@@ -41,28 +36,28 @@ const DefaultTheme = {
   },
   fonts: {
     h1: {
-      fontSize: 30
+      fontSize: rem(2)
     },
     h2: {
-      fontSize: 25
+      fontSize: rem(1.75)
     },
     h3: {
-      fontSize: 20
+      fontSize: rem(1.5)
     },
     h4: {
-      fontSize: 18
+      fontSize: rem(1.25)
     },
     h5: {
-      fontSize: 16
+      fontSize: rem(1)
     },
     p: {
-      fontSize: 16
+      fontSize: rem(1)
     },
     label: {
-      fontSize: 14
+      fontSize: rem(0.75)
     },
     caption: {
-      fontSize: 10
+      fontSize: rem(0.5)
     }
   },
   breaks: {

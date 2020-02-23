@@ -13,25 +13,7 @@ import {
   useInterval
 } from "./hooks";
 
-export const Header = forwardRef((props, ref) => {
-  return (
-    <Box
-      accessibilityRole={Platform.OS === "web" ? "banner" : "header"}
-      {...props}
-      ref={ref}
-    />
-  );
-});
-
-export const Nav = forwardRef((props, ref) => {
-  return (
-    <Box
-      accessibilityRole={Platform.OS === "web" ? "navigation" : "menubar"}
-      {...props}
-      ref={ref}
-    />
-  );
-});
+export * from "./Elements";
 
 export {
   Box,

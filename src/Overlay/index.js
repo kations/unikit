@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { Platform, ScrollView, View } from "react-native";
-import PropTypes from "prop-types";
 import { useTransition, animated } from "react-spring";
+import PropTypes from "prop-types";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import { PortalEnter } from "../Portal";
 
 const Modal = animated(
@@ -61,7 +61,7 @@ const getId = () => {
   );
 };
 
-const Overlay = ({
+export function Overlay({
   visible = false,
   scrollable = false,
   scrollComp,
@@ -90,7 +90,7 @@ const Overlay = ({
   },
   modalProps = {},
   contentProps = {}
-}) => {
+}) {
   const [id] = useState(() => getId());
   const mTransition = useTransition(visible, null, modalSpring);
   const cTransition = useTransition(visible, null, contentSpring);
@@ -146,6 +146,21 @@ const Overlay = ({
       )}
     </PortalComp>
   );
+}
+
+Overlay.propTypes = {
+  position: PropTypes.string,
+  visible: PropTypes.bool,
+  scrollable: PropTypes.bool,
+  backdrop: PropTypes.bool,
+  usePortal: PropTypes.bool,
+  scrollComp: PropTypes.node,
+  children: PropTypes.node,
+  onClose: PropTypes.func,
+  modalSpring: PropTypes.object,
+  contentSpring: PropTypes.object,
+  modalProps: PropTypes.object,
+  contentProps: PropTypes.object
 };
 
-export default Overlay;
+export default withThemeProps(Overlay, "Overlay");

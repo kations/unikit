@@ -1,28 +1,31 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
+import { withThemeProps } from "../styled";
 import Visible from "../Visible";
 import Box from "../Box";
 
-export default function Animate(props) {
-  const {
-    from = { opacity: 0, y: 100, x: 0 },
-    to = { opacity: 1, y: 0, x: 0 },
-    children,
-    stayVisible = true,
-    onVisible,
-    isVisible,
-    delay = 0,
-    duration = 500,
-    reset,
-    reverse,
-    config,
-    style,
-    ...rest
-  } = props;
-
+export function Animate({
+  from = { opacity: 0, y: 100, x: 0 },
+  to = { opacity: 1, y: 0, x: 0 },
+  children,
+  stayVisible = true,
+  onVisible = false,
+  isVisible = true,
+  delay = 0,
+  duration = 500,
+  config,
+  style,
+  ...rest
+}) {
   const [visible, setVisible] = useState(
-    !onVisible && !isVisible ? true : false
+    onVisible === false && isVisible === true ? true : false
   );
+
+  useEffect(() => {
+    console.log({ isVisible });
+    setVisible(isVisible);
+  }, [isVisible]);
 
   const cleanKeys = keys => {
     if (keys.x !== undefined || keys.y !== undefined) {
@@ -38,16 +41,12 @@ export default function Animate(props) {
     "100%": cleanKeys(to)
   };
 
-  console.log({ demo });
-
   const aniStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
     animationFillMode: `forwards`,
     animationKeyframes: demo
   };
-
-  console.log(demo["0%"]);
 
   const AnimatedComp = (
     <Box
@@ -67,8 +66,9 @@ export default function Animate(props) {
       <Fragment>
         <Visible
           disabled={visible && stayVisible}
-          onChange={isVisible => {
-            setVisible(isVisible);
+          onChange={vis => {
+            console.log({ vis });
+            setVisible(vis);
           }}
           offset={100}
         >
@@ -83,3 +83,18 @@ export default function Animate(props) {
 
   return AnimatedComp;
 }
+
+Animate.propTypes = {
+  children: PropTypes.node,
+  from: PropTypes.object,
+  to: PropTypes.object,
+  stayVisible: PropTypes.bool,
+  onVisible: PropTypes.bool,
+  isVisible: PropTypes.bool,
+  delay: PropTypes.number,
+  duration: PropTypes.number,
+  config: PropTypes.object,
+  style: PropTypes.object
+};
+
+export default withThemeProps(Animate, "Animate");

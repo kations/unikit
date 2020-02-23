@@ -1,35 +1,30 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import styled from "../styled";
+import { withThemeProps } from "../styled";
 import Headline from "../Headline";
 import Text from "../Text";
 import Button from "../Button";
 import Overlay from "../Overlay";
 import ButtonGroup from "../ButtonGroup";
 
-const Comp = props => {
-  const {
-    overrides,
-    style,
-    actions = [],
-    buttonSize = 50,
-    onActionPress,
-    onClose,
-    cancelText = "Cancel",
-    cancelColor = "error",
-    contentProps = {
-      maxWidth: 600,
-      bg: "transparent",
-      w: "90%",
-      shadow: 0
-    },
-    title,
-    desc,
-    ...rest
-  } = props;
-
-  //console.log("==>>>>", buttonProps);
-
+export function ActionSheet({
+  actions = [],
+  buttonSize = 50,
+  onActionPress,
+  onClose,
+  cancelText = "Cancel",
+  cancelColor = "error",
+  contentProps = {
+    maxWidth: 600,
+    bg: "transparent",
+    w: "90%",
+    shadow: 0
+  },
+  title,
+  desc,
+  ...rest
+}) {
   return (
     <Overlay
       position="bottom"
@@ -80,6 +75,16 @@ const Comp = props => {
       </ButtonGroup>
     </Overlay>
   );
+}
+
+ActionSheet.propTypes = {
+  actions: PropTypes.array,
+  buttonSize: PropTypes.number,
+  onActionPress: PropTypes.func,
+  cancelText: PropTypes.string,
+  cancelColor: PropTypes.string,
+  title: PropTypes.string,
+  desc: PropTypes.string
 };
 
-export default Comp;
+export default withThemeProps(ActionSheet, "ActionSheet");
