@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { withThemeProps } from "../styled";
+import { withThemePropsTest } from "../styled";
 import Headline from "../Headline";
 import Text from "../Text";
 import Button from "../Button";
@@ -87,4 +87,4 @@ ActionSheet.propTypes = {
   desc: PropTypes.string
 };
 
-export default withThemeProps(ActionSheet, "ActionSheet");
+export default withThemePropsTest("ActionSheet")(ActionSheet);
