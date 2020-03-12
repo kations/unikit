@@ -1,13 +1,17 @@
 import React, { Fragment, useState, useRef, useEffect } from "react";
 import { ScrollView, SafeAreaView, Platform } from "react-native";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 
-const Page = styled.View({
-  flex: 1
+const PageWrap = styled.View({
+  flex: 1,
+  web: {
+    transitionProperty: "all",
+    transitionDuration: "250ms"
+  }
 });
 
-export default ({
+export function Page({
   bg = "background",
   children,
   hasSafeArea,
@@ -20,7 +24,7 @@ export default ({
   scrollTop,
   scrollAnimated = true,
   ...rest
-}) => {
+}) {
   const [top, setTop] = useState(0);
   const scrollRef = useRef(null);
 
@@ -46,22 +50,25 @@ export default ({
     ...{
       onScroll: onScrollPage,
       scrollEventThrottle: 100,
-      showsVerticalScrollIndicator: false
+      showsVerticalScrollIndicator: false,
+      ref: scrollRef
     },
     ...scrollViewProps
   };
   return (
-    <Page
+    <PageWrap
       bg={bg}
       as={hasSafeArea ? SafeAreaView : undefined}
       accessibilityRole={Platform.OS === "web" ? "main" : "none"}
       {...rest}
     >
       {renderHeader ? renderHeader(top) : null}
-      <Scroller ref={scrollRef} {...(scrollable ? ScrollerProps : {})}>
-        {children}
+      <Scroller {...(scrollable ? ScrollerProps : {})}>
+        {children instanceof Function ? children(ScrollerProps) : children}
       </Scroller>
       {renderFooter ? renderFooter(top) : null}
-    </Page>
+    </PageWrap>
   );
-};
+}
+
+export default withThemeProps(Page, "Page");

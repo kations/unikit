@@ -1,5 +1,5 @@
-import Color from "color";
 import { Platform } from "react-native";
+import tc from "tinycolor2";
 
 import { styles } from "./styles";
 
@@ -11,14 +11,7 @@ const getValueByBreak = (value, breakIndex = 0) => {
 };
 
 const isColor = col => {
-  try {
-    Color(col)
-      .lighten(0.9)
-      .toString();
-    return true;
-  } catch (err) {
-    return false;
-  }
+  return tc(col).isValid();
 };
 
 function interpolateShadow(i, a, b, a2, b2) {
@@ -30,9 +23,10 @@ export default function parseStyle({
   font,
   shadow,
   shadowColor,
+  overwriteStyles = true,
   ...rest
 }) {
-  let style = {};
+  let style = overwriteStyles === false ? rest : {};
 
   Object.keys(rest).map(key => {
     if (styles[key]) {
@@ -50,29 +44,31 @@ export default function parseStyle({
         if (styl) {
           style = {
             ...style,
-            ...{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }
+            ...styl
           };
+          delete style[key];
         }
         if (color) {
           value = theme.colors[value] || value;
-          if (key === "bg" && rest.lighten && isColor(value) === true) {
-            value = Color(value)
-              .lighten(rest.lighten)
-              .toString();
-          }
-          if (key === "bg" && rest.darken && isColor(value) === true) {
-            value = Color(value)
-              .darken(rest.darken)
-              .toString();
-          }
-          if (key === "bg" && rest.alpha && isColor(value) === true) {
-            value = Color(value)
-              .alpha(rest.alpha)
-              .toString();
+          if (isColor(value)) {
+            if (rest[`${key}Darken`] !== undefined) {
+              value = tc(value)
+                .darken(rest[`${key}Darken`])
+                .toString();
+            } else if (rest[`${key}Lighten`] !== undefined) {
+              value = tc(value)
+                .lighten(rest[`${key}Lighten`])
+                .toString();
+            } else if (rest[`${key}Alpha`] !== undefined) {
+              value = tc(value)
+                .setAlpha(rest[`${key}Alpha`])
+                .toRgbString();
+            }
           }
         }
         if (stylKey && rest[key] !== false) {
           style[stylKey] = value;
+          delete style[key];
         } else {
           style[key] = value;
         }
@@ -95,12 +91,13 @@ export default function parseStyle({
     if (Platform.OS === "android") style["shadowOpacity"] = o;
   }
   delete style["absoluteFill"];
+  delete style["flexCenter"];
   delete style["web"];
   delete style["native"];
   delete style["android"];
   delete style["ios"];
   delete style["font"];
-  // console.log({ style });
+  delete style["row"];
 
   return style;
 }

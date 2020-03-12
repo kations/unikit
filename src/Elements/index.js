@@ -76,6 +76,10 @@ export const B = createText({ fontWeight: "bold" });
 export const I = createText({ fontStyle: "italic" });
 export const BlockQuote = createText({ marginVertical: em(1) });
 export const BR = createText({ width: "100%", height: em(1) });
+export const Code = createText({
+  fontFamily: Platform.OS !== "web" ? "System" : "Courier",
+  fontWeight: "500"
+});
 
 export const A = forwardRef(({ href, target, ...props }, ref) => {
   return (

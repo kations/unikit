@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
-import color from "color";
+import tc from "tinycolor2";
+import { Platform } from "react-native";
 import { isDark, setObjValue, getObjValue } from "./util";
 import styled, { useTheme, withTheme } from "./styled";
 import Box from "./Box";
@@ -15,13 +16,18 @@ import {
 
 export * from "./Elements";
 
+const isWeb = Platform.OS === "web";
+const Touchable = styled.TouchableOpacity();
+
 export {
+  Touchable,
   Box,
   isDark,
   styled,
   useTheme,
   withTheme,
-  color,
+  tc as color,
+  tc as tinycolor,
   setObjValue,
   getObjValue,
   useDimensions,
@@ -29,7 +35,8 @@ export {
   useScaledSize,
   useGesture,
   useDebounce,
-  useInterval
+  useInterval,
+  isWeb
 };
 
 export { default as ThemeProvider } from "./ThemeProvider";
@@ -44,8 +51,8 @@ export { default as Text } from "./Text";
 export { default as ActionSheet } from "./ActionSheet";
 export { default as Animate } from "./Animate";
 export { default as Button } from "./Button";
-export { default as ButtonGroup } from "./ButtonGroup";
-export { default as Group } from "./ButtonGroup";
+export { default as ButtonGroup } from "./Group";
+export { default as Group } from "./Group";
 export { default as Avatar } from "./Avatar";
 export { default as Progress } from "./Progress";
 export { default as Grid } from "./Grid";
@@ -57,6 +64,8 @@ export { default as Chart } from "./Chart";
 export { default as Overlay } from "./Overlay";
 export { default as Headline } from "./Headline";
 export { default as Dropdown } from "./Dropdown";
+export { default as Collapsible } from "./Collapsible";
+export { default as Picker } from "./Picker";
 
 //Inputs
 export { default as Input } from "./Input";

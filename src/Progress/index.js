@@ -4,7 +4,12 @@ import { useSpring, animated } from "react-spring/native";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
+import { getProgress, getValueByProgress } from "../util";
+
+const Wrap = styled.View();
+const ValueWrap = styled.View({});
+const Label = styled.Text({});
 
 const AnimatedView = animated(View);
 
@@ -43,8 +48,8 @@ class PathComp extends React.PureComponent {
     const {
       progress,
       trackWidth,
-      circleWidth,
-      circleColor = "primary",
+      progressWidth,
+      progressColor = "primary",
       lineCap,
       size,
       angle,
@@ -55,15 +60,16 @@ class PathComp extends React.PureComponent {
         d={circlePath(
           size / 2,
           size / 2,
-          size / 2 - (circleWidth >= trackWidth ? circleWidth : trackWidth) / 2,
+          size / 2 -
+            (progressWidth >= trackWidth ? progressWidth : trackWidth) / 2,
           0,
           (angle * clampFill(progress)) / 100
         )}
-        strokeWidth={circleWidth}
+        strokeWidth={progressWidth}
         strokeLinecap={lineCap}
         fill={"transparent"}
         style={{
-          stroke: theme.colors[circleColor] || circleColor
+          stroke: theme.colors[progressColor] || progressColor
         }}
       />
     );
@@ -72,118 +78,137 @@ class PathComp extends React.PureComponent {
 
 const AnimatedPath = animated(PathComp);
 
-export default function Progress(props) {
-  const {
+const Progress = withThemeProps(
+  ({
     value = 0,
     size = 44,
     trackWidth = 8,
     trackColor = "background",
-    circleWidth = 6,
-    circleColor = "primary",
+    progressWidth = 6,
+    progressColor = "primary",
     loading = false,
     lineCap = "round",
     angle = 360,
+    min = 0,
+    max = 100,
+    showValue,
+    formatValue,
     style,
     rotate = 0,
+    theme,
+    textColor = "text",
     ...rest
-  } = props;
-
-  const theme = useTheme();
-
-  const [running, setRunning] = useState(1); // 0 reset, 1 run
-  useEffect(() => {
-    if (running === 0) {
-      setRunning(1);
-    }
-  }, [running === 0]);
-
-  const { bla } = useSpring({
-    from: { bla: 0 },
-    to: { bla: value || 0 },
-    config: { duration: 300 }
-  });
-
-  const { loadingRotate } = useSpring({
-    from: { loadingRotate: 0 },
-    to: { loadingRotate: 360 },
-    reset: running === 0,
-    onRest: () => (loading ? setRunning(0) : null),
-    config: { duration: 1000 }
-  });
-
-  const backgroundPath = circlePath(
-    size / 2,
-    size / 2,
-    size / 2 - (circleWidth >= trackWidth ? circleWidth : trackWidth) / 2,
-    0,
-    angle
-  );
-
-  return (
-    <AnimatedView
-      style={
-        loading
-          ? {
-              width: size,
-              height: size,
-              transform: loadingRotate.interpolate(l => [
-                { rotate: `${l + 150}deg` }
-              ])
-            }
-          : {
-              width: size,
-              height: size,
-              transform: [
-                {
-                  rotate: `${rotate}deg`
-                }
-              ]
-            }
+  }) => {
+    const [running, setRunning] = useState(1); // 0 reset, 1 run
+    useEffect(() => {
+      if (running === 0) {
+        setRunning(1);
       }
-      inline
-      {...rest}
-    >
-      <Svg
-        width={size}
-        height={size}
-        style={{ backgroundColor: "transparent" }}
-      >
-        <G rotate={rotate} originX={size / 2} originY={size / 2}>
-          <Path
-            d={backgroundPath}
-            strokeWidth={trackWidth}
-            strokeLinecap={lineCap}
-            fill="transparent"
-            strokeDashoffset={50}
-            style={{ stroke: theme.colors[trackColor] || trackColor }}
-            {...rest}
-          />
-          <AnimatedPath
-            {...props}
-            theme={theme}
-            trackWidth={trackWidth}
-            circleWidth={circleWidth}
-            lineCap={lineCap}
-            size={size}
-            angle={angle}
-            progress={loading ? 30 : bla}
-          />
-        </G>
-      </Svg>
-    </AnimatedView>
-  );
-}
+    }, [running === 0]);
+
+    const { progress } = useSpring({
+      from: { progress: 0 },
+      to: { progress: value ? getProgress(0, max, value) * 100 : 0 },
+      config: { duration: 300 }
+    });
+
+    const { loadingRotate } = useSpring({
+      from: { loadingRotate: 0 },
+      to: { loadingRotate: 360 },
+      reset: running === 0,
+      onRest: () => (loading ? setRunning(0) : null),
+      config: { duration: 1000 }
+    });
+
+    const backgroundPath = circlePath(
+      size / 2,
+      size / 2,
+      size / 2 - (progressWidth >= trackWidth ? progressWidth : trackWidth) / 2,
+      0,
+      angle
+    );
+
+    return (
+      <Wrap relative>
+        {showValue && !loading ? (
+          <ValueWrap absoluteFill flexCenter>
+            <Label color={textColor} fontSize={size / 5}>
+              {formatValue ? formatValue(value) : value}
+            </Label>
+          </ValueWrap>
+        ) : null}
+        <AnimatedView
+          style={
+            loading
+              ? {
+                  width: size,
+                  height: size,
+                  transform: loadingRotate.interpolate(l => [
+                    { rotate: `${l + 150}deg` }
+                  ])
+                }
+              : {
+                  width: size,
+                  height: size,
+                  transform: [
+                    {
+                      rotate: `${-angle / 2}deg`
+                    }
+                  ]
+                }
+          }
+          inline
+          {...rest}
+        >
+          <Svg
+            width={size}
+            height={size}
+            style={{ backgroundColor: "transparent" }}
+          >
+            <G rotate={rotate} originX={size / 2} originY={size / 2}>
+              <Path
+                d={backgroundPath}
+                strokeWidth={trackWidth}
+                strokeLinecap={lineCap}
+                fill="transparent"
+                strokeDashoffset={50}
+                style={{ stroke: theme.colors[trackColor] || trackColor }}
+                {...rest}
+              />
+              <AnimatedPath
+                theme={theme}
+                trackWidth={trackWidth}
+                progressWidth={progressWidth}
+                progressColor={progressColor}
+                lineCap={lineCap}
+                size={size}
+                angle={angle}
+                progress={loading ? 30 : progress}
+              />
+            </G>
+          </Svg>
+        </AnimatedView>
+      </Wrap>
+    );
+  },
+  "Progress"
+);
 
 Progress.propTypes = {
   value: PropTypes.number,
   trackWidth: PropTypes.number,
-  circleWidth: PropTypes.number,
+  progressWidth: PropTypes.number,
   rotate: PropTypes.number,
   angle: PropTypes.number,
   size: PropTypes.number,
   trackColor: PropTypes.string,
   lineCap: PropTypes.string,
-  circleColor: PropTypes.string,
+  progressColor: PropTypes.string,
   loading: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
+  showValue: PropTypes.bool,
+  formatValue: PropTypes.func,
+  textColor: PropTypes.string
 };
+
+export default Progress;

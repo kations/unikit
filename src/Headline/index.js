@@ -51,63 +51,66 @@ const AnimatedText = ({ strings = [], level = 1, animateType, ...rest }) => {
   ));
 };
 
-export function Headline({
-  level = 1,
-  children,
-  style,
-  animate,
-  animateType = "char",
-  onVisible,
-  stayVisible = true,
-  delay = 100,
-  from,
-  to,
-  config,
-  ...rest
-}) {
-  const [visible, setVisible] = useState(false);
-  if (animate) {
-    var splittedString = children.split(animateType === "word" ? " " : "");
-    return (
-      <Text
-        {...(Platform.OS !== "web" ? { as: Box } : {})}
-        style={
-          Platform.OS !== "web"
-            ? { ...style, ...{ flexDirection: "row" } }
-            : style
-        }
-        level={level}
-        {...rest}
-      >
-        {onVisible ? (
-          <Visible
-            disabled={visible && stayVisible}
-            onChange={isVisible => {
-              setVisible(isVisible);
-            }}
-            offset={100}
-          >
-            {({ isVisible }) => {
-              return <Text />;
-            }}
-          </Visible>
-        ) : null}
-
-        <AnimatedText
-          strings={(onVisible && visible) || !onVisible ? splittedString : []}
-          animateType={animateType}
+const Headline = withThemeProps(
+  ({
+    level = 1,
+    children,
+    style,
+    animate,
+    animateType = "char",
+    onVisible,
+    stayVisible = true,
+    delay = 100,
+    from,
+    to,
+    config,
+    ...rest
+  }) => {
+    const [visible, setVisible] = useState(false);
+    if (animate) {
+      var splittedString = children.split(animateType === "word" ? " " : "");
+      return (
+        <Text
+          {...(Platform.OS !== "web" ? { as: Box } : {})}
+          style={
+            Platform.OS !== "web"
+              ? { ...style, ...{ flexDirection: "row" } }
+              : style
+          }
+          level={level}
           {...rest}
-        />
+        >
+          {onVisible ? (
+            <Visible
+              disabled={visible && stayVisible}
+              onChange={isVisible => {
+                setVisible(isVisible);
+              }}
+              offset={100}
+            >
+              {({ isVisible }) => {
+                return <Text />;
+              }}
+            </Visible>
+          ) : null}
+
+          <AnimatedText
+            strings={(onVisible && visible) || !onVisible ? splittedString : []}
+            animateType={animateType}
+            {...rest}
+          />
+        </Text>
+      );
+    }
+
+    return (
+      <Text level={level} style={style} {...rest}>
+        {children}
       </Text>
     );
-  }
-
-  return (
-    <Text level={level} style={style} {...rest}>
-      {children}
-    </Text>
-  );
-}
+  },
+  "Headline"
+);
 
 Headline.propTypes = {
   level: PropTypes.number,
@@ -117,4 +120,11 @@ Headline.propTypes = {
   animateType: PropTypes.oneOf(["char", "word"])
 };
 
-export default withThemeProps(Headline, "Headline");
+Headline.defaultProps = {
+  level: 1,
+  animateType: "char",
+  stayVisible: true,
+  delay: 100
+};
+
+export default Headline;

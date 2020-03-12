@@ -25,6 +25,7 @@ const ModalContent = animated(
     position: "relative",
     width: "100%",
     height: "auto",
+    p: theme.globals.gap,
     backgroundColor: theme.colors.background
   }))
 );

@@ -1,307 +1,321 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Platform } from "react-native";
 import { useSpring, animated } from "react-spring/native";
+import * as PropTypes from "prop-types";
 
-import Pan from "../Pan";
-import styled from "../styled";
-import Box from "../Box";
+import { useLayout, useGesture, useUpdateEffect } from "../hooks";
+import styled, { withThemeProps, useTheme } from "../styled";
+import { getProgress, getValueByProgress } from "../util";
+import Button from "../Button";
 
-const invlerp = (a, b, v) => {
-  return (v - a) / (b - a);
-};
-
-const lerp = (start, end, t) => {
-  return start * (1 - t) + end * t;
-};
-
-const SliderWrapper = styled.View(({ theme }) => ({
-  paddingHorizontal: theme.globals.inputGap,
-  paddingTop: theme.globals.inputGap / 2,
-  width: "100%",
-  borderRadius: theme.globals.roundness
-}));
-
-const Slider = styled(Box)(
-  ({ showValue, showTicks, vertical, sliderHeight, handleSize }) => ({
-    padding: handleSize / 2,
-    paddingTop: vertical ? 15 : showValue ? 45 : handleSize / 2,
-    paddingBottom: vertical ? 15 : showTicks ? 38 : handleSize / 2,
-    paddingRight: vertical ? (showValue ? 45 : 30) : handleSize / 2,
-    width: vertical ? "auto" : "100%",
-    height: vertical ? sliderHeight : "auto",
-    flexDirection: vertical ? "row" : "column"
+const Wrap = styled.View();
+const TrackWrap = styled.View();
+const TicksWrap = styled.View({ web: { userSelect: "none" } });
+const TickWrap = styled.View();
+const Tick = styled.Text();
+const Track = styled.View();
+const TrackProgress = animated(styled.View());
+const Value = styled.View();
+const Handle = styled.View();
+const HandleWrap = animated(
+  styled.View({
+    web: {
+      cursor: "grab"
+    }
   })
 );
 
-const Track = styled(Box)(({ vertical, trackHeight }) => ({
-  position: "relative",
-  width: vertical ? trackHeight : "100%",
-  height: vertical ? "100%" : trackHeight,
-  borderRadius: 10
-}));
-
-const Progress = animated(
-  styled(Box)({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    height: 10,
-    borderRadius: 10
-  })
-);
-
-const HandleBox = animated(
-  styled.View(({ vertical, trackHeight, handleSize }) => ({
-    position: "absolute",
-    top: vertical ? -handleSize : trackHeight / 2 + -(handleSize * 2) / 2,
-    left: vertical ? trackHeight / 2 + -(handleSize * 2) / 2 : -handleSize,
-    width: handleSize * 2,
-    height: handleSize * 2,
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center"
-  }))
-);
-
-const Handle = styled(Box)(({ theme, accent, handleSize, handleColor }) => ({
-  width: handleSize,
-  height: handleSize,
-  borderRadius: handleSize / 2,
-  backgroundColor: handleColor,
-  web: {
-    cursor: "pointer"
+const getTicks = ({ min, max, ticks, size, handleSize }) => {
+  const arr = [min];
+  if ((max / ticks) * handleSize > size) ticks = ticks * 2;
+  let last = min + ticks;
+  while (last < max) {
+    arr.push(last);
+    last = last + ticks;
   }
-}));
+  arr.push(max);
+  return arr;
+};
 
-const Ticks = styled.View(({ vertical, trackHeight, handleSize, size }) => ({
-  width: vertical ? 20 : size + handleSize,
-  height: vertical ? size + handleSize : 20,
-  flexDirection: vertical ? "column" : "row",
-  justifyContent: "space-between",
-  position: "absolute",
-  bottom: vertical ? -handleSize / 2 : -trackHeight - 20,
-  right: vertical ? -trackHeight - 20 : -handleSize / 2,
-  zIndex: 0,
-  web: {
-    userSelect: "none"
-  }
-}));
+const Slider = withThemeProps(
+  ({
+    value = 0,
+    onChange,
+    onSwipe,
+    progressColor = "primary",
+    trackColor = "background",
+    trackHeight = 10,
+    valueSize = 28,
+    valueGap = 5,
+    showHandle = true,
+    handleSize = 30,
+    handleFactor = 2,
+    handleFocusOpacity = 0.2,
+    handleColor = "#FFF",
+    min = 0,
+    max = 100,
+    steps = 1,
+    showValue = false,
+    valueSuffix,
+    showTicks = true,
+    ticks,
+    tickGap = 5,
+    vertical = false,
+    minDistance = 5,
+    handleProps = {},
+    springConfig = {},
+    renderTrack,
+    ...rest
+  }) => {
+    const theme = useTheme();
+    const [down, setDown] = useState(false);
+    const [progress, setProgress] = useState(() =>
+      getProgress(min, max, value)
+    );
+    const { onLayout, width, height } = useLayout();
+    const size = vertical ? height : width;
 
-const Tick = styled.View(({ vertical, handleSize }) => ({
-  alignItems: "center",
-  justifyContent: "center",
-  overflow: "visible",
-  width: vertical ? "auto" : handleSize,
-  height: vertical ? handleSize : "auto"
-}));
+    const { dist } = useSpring({
+      to: { dist: progress * size },
+      immediate: down,
+      ...springConfig
+    });
 
-const Value = animated(
-  styled(Box)(({ vertical }) => ({
-    position: "absolute",
-    bottom: vertical ? "auto" : 23,
-    top: vertical ? -10 : "auto",
-    left: vertical ? 25 : -20,
-    width: 40,
-    height: 20,
-    paddingVertical: 4,
-    borderRadius: 25,
-    borderColor: "rgba(0,0,0,0.1)",
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 500
-  }))
-);
+    useUpdateEffect(() => {
+      if (!down) {
+        console.log({ value });
+        setProgress(getProgress(min, max, value));
+      }
+    }, [value]);
 
-const Comp = ({
-  value = 0,
-  onChange,
-  onSwipe,
-  progressColor = "primary",
-  trackColor = "background",
-  trackHeight = 10,
-  handleSize = 30,
-  handleColor = "#FFF",
-  min = 0,
-  max = 100,
-  steps = 1,
-  ticks = 10,
-  showValue = false,
-  valueSuffix,
-  showTicks = true,
-  vertical = false,
-  sliderHeight,
-  handleProps = { borderWidth: 0 },
-  ...rest
-}) => {
-  const [position, setPosition] = useState(0);
-  const [distance, setDistance] = useState(0);
-  const [size, setSize] = useState(0);
-  const [swipe, setSwipe] = useState(false);
-  const [val, setValue] = useState(value);
+    useUpdateEffect(() => {
+      if (down === false) {
+        let newValue = getValueByProgress(min, max, progress);
+        if ((newValue / steps) % 1 != 0) {
+          newValue = Math.round(newValue / steps) * steps;
+        }
+        setProgress(getProgress(min, max, newValue));
+        if (onChange) onChange(newValue);
+      }
+    }, [down]);
 
-  const getTicks = () => {
-    const stepArray = [];
-    var minStep = min;
-    var tickCount = max / ticks;
+    const bindGesture = useGesture(
+      {
+        onMoveShouldSetPanResponderCapture: (e, { dy, dx }) => {
+          const allow = Math.abs(vertical ? dy : dx) > minDistance;
+          return allow;
+        },
+        onPanResponderTerminationRequest: () => false,
+        onPanResponderGrant: (e, { dy, dx }) => {
+          setDown(true);
+        },
+        onPanResponderMove: (e, { dy, dx }) => {
+          const dist = vertical ? dy : dx;
+          const currentPosition = progress * size + dist;
+          let newProgress = getProgress(0, size, currentPosition);
+          if (newProgress < min) {
+            newProgress = min;
+          } else if (newProgress > 1) {
+            newProgress = 1;
+          }
+          let newValue = getValueByProgress(min, max, newProgress);
+          setProgress(newProgress);
+          setTimeout(() => {
+            if (onSwipe) onSwipe(newProgress, newValue);
+          }, 10);
+        },
+        onPanResponderRelease: (e, { vx, vy }) => {
+          setDown(false);
+        }
+      },
+      [size, down]
+    );
 
-    if (tickCount * handleSize > size) {
-      ticks = ticks * Math.ceil((tickCount * handleSize) / size);
-    }
+    const leftAlign = -(
+      (handleSize * handleFactor - (vertical ? handleSize : 0)) /
+      2
+    );
+    const topAlign = -(
+      (handleSize * handleFactor - (vertical ? 0 : handleSize)) /
+      2
+    );
 
-    for (var i = 0; minStep <= max; i++) {
-      stepArray.push(minStep);
-      minStep = minStep + ticks;
-    }
+    const handlePadding = showHandle ? handleSize / 2 : 0;
 
-    return stepArray;
-  };
-
-  useEffect(() => {
-    const progress = invlerp(min, max, value);
-    const newPosition = lerp(0, size, progress);
-    setValue(value || min);
-    setPosition(newPosition);
-    setDistance(0);
-  }, [value, size]);
-
-  const { slidePosition } = useSpring({
-    to: { slidePosition: position + distance },
-    immediate: swipe,
-    config: { duration: 300 }
-  });
-
-  return (
-    <SliderWrapper {...rest}>
-      <Slider
-        showValue={showValue}
-        showTicks={showTicks}
-        vertical={vertical}
-        sliderHeight={sliderHeight}
-        handleSize={handleSize}
+    return (
+      <Wrap
+        w={vertical ? "auto" : "100%"}
+        h={vertical ? "100%" : "auto"}
+        pl={!vertical ? handlePadding : 0}
+        pr={!vertical ? handlePadding : 0}
+        pt={!vertical && showValue ? handlePadding : 0}
+        pb={!vertical && showTicks ? handlePadding : 0}
+        relative
+        row={vertical}
+        {...rest}
       >
-        <Track
-          bg={trackColor}
-          trackHeight={trackHeight}
-          vertical={vertical}
-          onLayout={({ nativeEvent }) => {
-            setSize(
-              vertical ? nativeEvent.layout.height : nativeEvent.layout.width
-            );
-          }}
+        <TrackWrap
+          relative
+          flexCenter
+          w={vertical ? handleSize : "100%"}
+          h={vertical ? "100%" : handleSize}
+          onLayout={onLayout}
         >
-          <Progress
-            bg={progressColor}
-            style={{
-              width: vertical ? "100%" : slidePosition,
-              height: vertical ? slidePosition : "100%"
-            }}
-          />
-          <Pan
-            as={HandleBox}
-            onSwipe={(direction, gestureState) => {
-              let { dx, dy } = gestureState;
-              let dist = vertical ? dy : dx;
-              let newPosition = position + dist;
-              let newProgress = invlerp(0, size, newPosition);
-              let newValue = Math.round(lerp(min, max, newProgress));
-              if (newPosition > size) {
-                dist = size - position;
-                newValue = max;
-              } else if (newPosition < 0) {
-                dist = -position;
-                newValue = min;
-              }
-              setValue(newValue);
-              setDistance(dist);
-              setSwipe(true);
-              if (onSwipe) onSwipe(newValue);
-            }}
-            onSwipeEnd={(direction, gestureState) => {
-              let newPosition = position + distance;
-              let newProgress = invlerp(0, size, newPosition);
-              let newValue = Math.round(lerp(min, max, newProgress));
-              if ((newValue / steps) % 1 != 0) {
-                newValue = Math.round(newValue / steps) * steps;
-                newProgress = invlerp(min, max, newValue);
-                newPosition = lerp(0, size, newProgress);
-              }
-              setPosition(newPosition);
-              setValue(newValue);
-              setDistance(0);
-              setSwipe(false);
-              if (onChange) onChange(newValue);
-            }}
-            vertical={vertical}
-            trackHeight={trackHeight}
-            handleSize={handleSize}
+          <Track
+            w={vertical ? trackHeight : "100%"}
+            h={vertical ? "100%" : trackHeight}
+            bg={trackColor}
+            borderRadius={theme.globals.roundness}
+            overflow="hidden"
+          >
+            {renderTrack ? (
+              renderTrack(progress)
+            ) : (
+              <TrackProgress
+                w={vertical ? trackHeight : "0%"}
+                h={vertical ? "0%" : trackHeight}
+                bg={progressColor}
+                borderRadius={theme.globals.roundness}
+                style={{
+                  width: vertical ? "100%" : dist,
+                  height: !vertical ? "100%" : dist
+                }}
+              />
+            )}
+          </Track>
+          <HandleWrap
+            l={leftAlign}
+            t={topAlign}
+            bg="primary"
+            bgAlpha={down ? handleFocusOpacity : 0}
+            absolute
+            w={handleSize * handleFactor}
+            h={handleSize * handleFactor}
+            borderRadius={(handleSize * handleFactor) / 2}
             style={{
               transform: vertical
-                ? [{ translateY: slidePosition }]
-                : [{ translateX: slidePosition }]
+                ? [{ translateY: dist }]
+                : [{ translateX: dist }]
             }}
+            {...bindGesture}
+            flexCenter
           >
             <Handle
-              vertical={vertical}
-              trackHeight={trackHeight}
-              handleSize={handleSize}
-              handleColor={handleColor}
+              w={handleSize}
+              h={handleSize}
+              bg={handleColor}
+              borderRadius={handleSize / 2}
               shadow={5}
-              accent={trackColor}
+              borderWidth={1}
+              borderColor="text"
+              borderColorAlpha={0.05}
+              flexCenter
               {...handleProps}
-            />
-          </Pan>
-          {showValue ? (
-            <Value
-              bg={"primary"}
-              vertical={vertical}
-              style={{
-                transform: vertical
-                  ? [{ translateY: slidePosition }]
-                  : [{ translateX: slidePosition }]
-              }}
-              pointerEvents="none"
             >
-              <Text style={{ color: "#FFF", fontSize: 10 }}>
-                {val}
-                {valueSuffix ? valueSuffix : ""}
-              </Text>
-            </Value>
-          ) : null}
+              {showValue === true || (showValue === "onDown" && down) ? (
+                <Value
+                  b={handleSize + valueGap}
+                  pointerEvents="none"
+                  flexCenter
+                  absolute
+                  minWidth={100}
+                >
+                  <Button bg={progressColor} size={valueSize} rounded>
+                    {`${Math.round(getValueByProgress(min, max, progress))}${
+                      valueSuffix ? valueSuffix : ""
+                    }`}
+                  </Button>
+                </Value>
+              ) : null}
+            </Handle>
+          </HandleWrap>
           {showTicks ? (
-            <Ticks
-              vertical={vertical}
-              trackHeight={trackHeight}
-              handleSize={handleSize}
-              size={size}
+            <TicksWrap
+              absolute
+              l={vertical ? handleSize + tickGap : -(handleSize / 2)}
+              t={vertical ? -(handleSize / 2) : handleSize + tickGap}
+              r={vertical ? "auto" : -(handleSize / 2)}
+              b={!vertical ? "auto" : -(handleSize / 2)}
+              justify="space-between"
+              row={!vertical}
               pointerEvents="none"
             >
-              {getTicks().map((step, index) => {
+              {getTicks({
+                min,
+                max,
+                ticks: ticks ? ticks : steps < 10 ? 10 : steps,
+                size,
+                handleSize
+              }).map((tick, index) => {
                 return (
-                  <Tick
-                    key={`step-${index}`}
-                    vertical={vertical}
-                    handleSize={handleSize}
+                  <TickWrap
+                    w={!vertical ? handleSize : "auto"}
+                    h={!vertical ? "auto" : handleSize}
+                    flexCenter
                   >
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 9
-                        }}
-                        numberOfLines={1}
-                      >
-                        {step}
-                      </Text>
-                    </View>
-                  </Tick>
+                    <Tick color="text" font="caption">
+                      {tick}
+                    </Tick>
+                  </TickWrap>
                 );
               })}
-            </Ticks>
+            </TicksWrap>
           ) : null}
-        </Track>
-      </Slider>
-    </SliderWrapper>
-  );
+        </TrackWrap>
+      </Wrap>
+    );
+  },
+  "Slider"
+);
+
+Slider.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func,
+  onSwipe: PropTypes.func,
+  progressColor: PropTypes.string,
+  trackColor: PropTypes.string,
+  trackHeight: PropTypes.number,
+  valueSize: PropTypes.number,
+  valueGap: PropTypes.number,
+  handleSize: PropTypes.number,
+  handleFactor: PropTypes.number,
+  handleFocusOpacity: PropTypes.number,
+  handleColor: PropTypes.string,
+  min: PropTypes.number,
+  max: PropTypes.number,
+  steps: PropTypes.number,
+  showValue: PropTypes.oneOf([PropTypes.bool, "onDown"]),
+  valueSuffix: PropTypes.string,
+  showTicks: PropTypes.bool,
+  ticks: PropTypes.number,
+  tickGap: PropTypes.number,
+  vertical: PropTypes.bool,
+  minDistance: PropTypes.number,
+  handleProps: PropTypes.object,
+  springConfig: PropTypes.object,
+  renderTrack: PropTypes.func
 };
 
-export default Comp;
+Slider.defaultProps = {
+  value: 0,
+  progressColor: "primary",
+  trackColor: "background",
+  trackHeight: 10,
+  valueSize: 28,
+  valueGap: 5,
+  handleSize: 30,
+  handleFactor: 2,
+  handleFocusOpacity: 0.2,
+  handleColor: "#FFF",
+  min: 0,
+  max: 100,
+  steps: 1,
+  showValue: false,
+  showTicks: true,
+  tickGap: 5,
+  vertical: false,
+  minDistance: 5,
+  handleProps: {},
+  springConfig: {}
+};
+
+export default Slider;

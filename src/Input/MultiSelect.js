@@ -21,6 +21,7 @@ const Select = styled.TouchableOpacity(({ theme, last }) => ({
 }));
 
 const Label = styled.Text({
+  color: "text",
   font: "p",
   marginLeft: 15
 });

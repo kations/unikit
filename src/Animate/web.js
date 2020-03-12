@@ -1,88 +1,112 @@
 import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { View } from "react-native";
 
 import { withThemeProps } from "../styled";
 import Visible from "../Visible";
 import Box from "../Box";
 
-export function Animate({
-  from = { opacity: 0, y: 100, x: 0 },
-  to = { opacity: 1, y: 0, x: 0 },
-  children,
-  stayVisible = true,
-  onVisible = false,
-  isVisible = true,
-  delay = 0,
-  duration = 500,
-  config,
-  style,
-  ...rest
-}) {
-  const [visible, setVisible] = useState(
-    onVisible === false && isVisible === true ? true : false
-  );
-
-  useEffect(() => {
-    console.log({ isVisible });
-    setVisible(isVisible);
-  }, [isVisible]);
-
-  const cleanKeys = keys => {
-    if (keys.x !== undefined || keys.y !== undefined) {
-      keys["transform"] = `translate3d(${keys.x || 0}px, ${keys.y || 0}px, 0)`;
-      delete keys["x"];
-      delete keys["y"];
-    }
-    return keys;
-  };
-
-  const demo = {
-    "0%": cleanKeys(from),
-    "100%": cleanKeys(to)
-  };
-
-  const aniStyle = {
-    animationDelay: `${delay}ms`,
-    animationDuration: `${duration}ms`,
-    animationFillMode: `forwards`,
-    animationKeyframes: demo
-  };
-
-  const AnimatedComp = (
-    <Box
-      style={{
-        ...style,
-        ...demo["0%"],
-        ...(visible ? aniStyle : {})
-      }}
-      {...rest}
-    >
-      {children}
-    </Box>
-  );
-
-  if (onVisible) {
-    return (
-      <Fragment>
-        <Visible
-          disabled={visible && stayVisible}
-          onChange={vis => {
-            console.log({ vis });
-            setVisible(vis);
-          }}
-          offset={100}
-        >
-          {({ isVisible }) => {
-            return <Box />;
-          }}
-        </Visible>
-        {AnimatedComp}
-      </Fragment>
-    );
+const cleanKeys = keys => {
+  if (keys.x !== undefined || keys.y !== undefined) {
+    keys["transform"] = `translate3d(${keys.x || 0}px, ${keys.y || 0}px, 0)`;
+    delete keys["x"];
+    delete keys["y"];
   }
+  return keys;
+};
 
-  return AnimatedComp;
-}
+const Animate = withThemeProps(
+  ({
+    from = { opacity: 0, y: 100, x: 0 },
+    to = { opacity: 1, y: 0, x: 0 },
+    children,
+    stayVisible = true,
+    onVisible,
+    isVisible = true,
+    delay = 0,
+    duration = 500,
+    offset = 0,
+    config,
+    style,
+    ...rest
+  }) => {
+    const [reverse, setReverse] = useState(false);
+    const [visible, setVisible] = useState(onVisible ? false : isVisible);
+
+    useEffect(() => {
+      if (reverse === true) {
+        setVisible(isVisible);
+      }
+    }, [isVisible]);
+
+    useEffect(() => {
+      if (visible === true && reverse === false) {
+        setTimeout(() => {
+          setReverse(true);
+        }, duration);
+      }
+    }, [visible]);
+
+    const demo = {
+      "0%": cleanKeys(from),
+      "100%": cleanKeys(to)
+    };
+
+    const demoRev = {
+      "0%": cleanKeys(to),
+      "100%": cleanKeys(from)
+    };
+
+    const aniStyle = {
+      animationDelay: `${delay}ms`,
+      animationDuration: `${duration}ms`,
+      animationKeyframes: demo
+    };
+
+    const aniStyleRev = {
+      animationDelay: `0ms`,
+      animationDuration: `${duration}ms`,
+      animationKeyframes: demoRev
+    };
+
+    const AnimatedComp = (
+      <Box
+        style={{
+          ...style,
+          ...demo["0%"],
+          animationFillMode: `forwards`,
+          ...((!visible && onVisible) || isVisible === false ? {} : aniStyle),
+          ...(reverse && !visible ? aniStyleRev : {})
+        }}
+        {...rest}
+      >
+        {children}
+      </Box>
+    );
+
+    if (onVisible) {
+      return (
+        <Fragment>
+          <Visible
+            stayVisible={stayVisible}
+            onChange={vis => {
+              setVisible(vis);
+            }}
+            offset={offset}
+          >
+            {({ isVisible }) => {
+              return <View />;
+            }}
+          </Visible>
+          {AnimatedComp}
+        </Fragment>
+      );
+    }
+
+    return AnimatedComp;
+  },
+  "Animate"
+);
 
 Animate.propTypes = {
   children: PropTypes.node,
@@ -97,4 +121,11 @@ Animate.propTypes = {
   style: PropTypes.object
 };
 
-export default withThemeProps(Animate, "Animate");
+Animate.defaultProps = {
+  from: { opacity: 0, y: 100, x: 0 },
+  to: { opacity: 1, y: 0, x: 0 },
+  stayVisible: true,
+  isVisible: true
+};
+
+export default Animate;

@@ -1,6 +1,41 @@
 import { Dimensions, PanResponder } from "react-native";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 
+export const useIsMounted = function useIsMounted() {
+  const isMounted = useRef(false);
+
+  useEffect(function setIsMounted() {
+    isMounted.current = true;
+
+    return function cleanupSetIsMounted() {
+      isMounted.current = false;
+    };
+  }, []);
+
+  return isMounted;
+};
+
+export const useUpdateEffect = function useUpdateEffect(effect, dependencies) {
+  const isMounted = useIsMounted();
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    let effectCleanupFunc = function noop() {};
+
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      effectCleanupFunc = effect() || effectCleanupFunc;
+    }
+    return () => {
+      effectCleanupFunc();
+      if (!isMounted.current) {
+        isInitialMount.current = true;
+      }
+    };
+  }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
+};
+
 export const useInterval = (callback, delay, ...args) => {
   const savedCallback = useRef();
 

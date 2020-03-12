@@ -72,6 +72,7 @@ const Comp = ({
           {value.map((string, index) => (
             <Animate
               as={Pill}
+              from={{ opacity: 0, x: 20, y: 0 }}
               key={`pill-${index}`}
               activeOpacity={0.8}
               onPress={() => revert(index)}

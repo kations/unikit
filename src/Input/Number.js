@@ -6,6 +6,8 @@ import styled, { useTheme } from "../styled";
 import Box from "../Box";
 import Flex from "../Flex";
 import Icon from "../Icon";
+import Button from "../Button";
+import Group from "../Group";
 
 import TextInput from "./Text";
 
@@ -13,15 +15,35 @@ function isFloat(n) {
   return Number(n) === n && n % 1 !== 0;
 }
 
-const Comp = props => {
+const Comp = ({ style, onChange, value, step = 1, ...rest }) => {
   const theme = useTheme();
   const [stringValue, setValue] = useState(
-    (props.value && !isNaN(props.value) ? props.value : "").toString()
+    (value && !isNaN(value) ? value : "").toString()
   );
-  const { style, onChange, value, step = 1, ...rest } = props;
+
+  const changeValue = type => {
+    if (onChange) {
+      const def = type === "add" ? 1 : 0;
+      step = type === "add" ? -step : step;
+      let newValue =
+        isNaN(value) === false && value !== null && value !== undefined
+          ? isFloat(value)
+            ? parseFloat(value) - step
+            : parseInt(value) - step
+          : def;
+      onChange(newValue);
+      setValue(newValue.toString());
+    }
+  };
 
   return (
-    <Box relative w="100%" style={style}>
+    <Box
+      relative
+      w="100%"
+      style={style}
+      borderRadius={theme.globals.roundness}
+      {...rest}
+    >
       <TextInput
         keyboardType="decimal-pad"
         autoCapitalize="words"
@@ -42,70 +64,31 @@ const Comp = props => {
           if (number === NaN) return;
           onChange(number);
         }}
-        {...rest}
       />
-      <Flex p={theme.globals.inputGap / 2} h="100%" t={0} r={0} absolute>
-        <Flex
-          bg="background"
-          row
-          h="100%"
-          style={{
-            borderRadius: theme.globals.roundness,
-            zIndex: 50
-          }}
-        >
-          <Flex
-            as={TouchableOpacity}
-            onPress={() => {
-              if (onChange) {
-                let newValue =
-                  isNaN(value) === false &&
-                  value !== null &&
-                  value !== undefined
-                    ? isFloat(value)
-                      ? parseFloat(value) - step
-                      : parseInt(value) - step
-                    : 0;
-                onChange(newValue);
-                setValue(newValue.toString());
-              }
-            }}
-            w={38}
+      <Box w={100} h="100%" p={theme.globals.inputGap / 2} absolute t={0} r={0}>
+        <Group w="100%" h="100%" gap={2}>
+          <Button
+            light
+            p={0}
             h="100%"
-            align="center"
-            content="center"
-            style={{
-              borderRightWidth: 2,
-              borderRightColor: theme.colors.surface
+            onPress={() => {
+              changeValue("remove");
             }}
           >
             <Icon size={22} name="minus" />
-          </Flex>
-          <Flex
-            as={TouchableOpacity}
-            onPress={() => {
-              if (onChange) {
-                let newValue =
-                  isNaN(value) === false &&
-                  value !== null &&
-                  value !== undefined
-                    ? isFloat(value)
-                      ? parseFloat(value) + step
-                      : parseInt(value) + step
-                    : 1;
-                onChange(newValue);
-                setValue(newValue.toString());
-              }
-            }}
-            w={38}
+          </Button>
+          <Button
+            light
+            p={0}
             h="100%"
-            align="center"
-            content="center"
+            onPress={() => {
+              changeValue("add");
+            }}
           >
             <Icon size={22} name="plus" />
-          </Flex>
-        </Flex>
-      </Flex>
+          </Button>
+        </Group>
+      </Box>
     </Box>
   );
 };

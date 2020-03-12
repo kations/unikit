@@ -18,83 +18,84 @@ const Icon = styled(Box)(({ size }) => ({
 
 const AnimatedPath = animated(Path);
 
-export function Comp({
-  size = 44,
-  strokeWidth = 1.5,
-  lineCap = "round",
-  fill = false,
-  name = "x",
-  color = "primary",
-  animate = false,
-  withBg = true,
-  springConfig = { config: { duration: 750 } },
-  onPress,
-  ...rest
-}) {
-  const [icon, setIcon] = useState(icons[name] || icons["x"]);
-  const strokeDasharray = new svgPathProperties(icon).getTotalLength();
+const Comp = withThemeProps(
+  ({
+    size = 44,
+    strokeWidth = 1.5,
+    lineCap = "round",
+    fill = false,
+    name = "x",
+    color = "primary",
+    animate = false,
+    withBg = true,
+    springConfig = { config: { duration: 750 } },
+    onPress,
+    ...rest
+  }) => {
+    const [icon, setIcon] = useState(icons[name] || icons["x"]);
+    const strokeDasharray = new svgPathProperties(icon).getTotalLength();
 
-  const prev = usePrevious(icon);
-  const theme = useTheme();
-  const springProps = animate
-    ? useSpring({
-        from: { t: strokeDasharray, opacity: 0 },
-        to: { t: 0, opacity: 1 },
-        reset: prev !== icon,
-        ...springConfig
-      })
-    : null;
+    const prev = usePrevious(icon);
+    const theme = useTheme();
+    const springProps = useSpring({
+      from: { t: strokeDasharray, opacity: 0 },
+      to: { t: 0, opacity: 1 },
+      reset: prev !== icon,
+      ...springConfig
+    });
 
-  useEffect(() => {
-    setIcon(icons[name]);
-  }, [name]);
+    useEffect(() => {
+      setIcon(icons[name]);
+    }, [name]);
 
-  const iconProps = animate
-    ? { strokeDasharray: strokeDasharray, strokeDashoffset: springProps.t }
-    : {};
+    const iconProps = animate
+      ? { strokeDasharray: strokeDasharray, strokeDashoffset: springProps.t }
+      : {};
 
-  return (
-    <Icon
-      as={onPress ? TouchableOpacity : undefined}
-      onPress={onPress || null}
-      activeOpacity={onPress ? 0.8 : undefined}
-      size={size}
-      {...rest}
-    >
-      <Svg
-        width={size}
-        height={size}
-        style={{ backgroundColor: "transparent" }}
+    return (
+      <Icon
+        as={onPress ? TouchableOpacity : undefined}
+        onPress={onPress || null}
+        activeOpacity={onPress ? 0.8 : undefined}
+        size={size}
+        {...rest}
       >
-        {animate && withBg ? (
-          <Path
+        <Svg
+          width={size}
+          height={size}
+          style={{ backgroundColor: "transparent" }}
+        >
+          {animate && withBg ? (
+            <Path
+              d={icon}
+              scale={size / 24}
+              strokeWidth={strokeWidth}
+              strokeLinecap={lineCap}
+              style={{
+                stroke: theme.colors[color] || color,
+                fill: "transparent",
+                opacity: 0.2
+              }}
+            />
+          ) : null}
+          <AnimatedPath
             d={icon}
             scale={size / 24}
             strokeWidth={strokeWidth}
             strokeLinecap={lineCap}
+            {...iconProps}
+            fill="transparent"
             style={{
-              stroke: theme.colors[color] || color,
-              fill: "transparent",
-              opacity: 0.2
+              fill: fill ? theme.colors[color] || color : "transparent",
+              stroke: theme.colors[color] || color
             }}
           />
-        ) : null}
-        <AnimatedPath
-          d={icon}
-          scale={size / 24}
-          strokeWidth={strokeWidth}
-          strokeLinecap={lineCap}
-          {...iconProps}
-          fill="transparent"
-          style={{
-            fill: fill ? theme.colors[color] || color : "transparent",
-            stroke: theme.colors[color] || color
-          }}
-        />
-      </Svg>
-    </Icon>
-  );
-}
+        </Svg>
+      </Icon>
+    );
+  },
+  "Icon"
+);
 
 Comp.propTypes = {
   size: t.number,
@@ -111,4 +112,16 @@ Comp.propTypes = {
   onPress: t.func
 };
 
-export default withThemeProps(Comp, "Icon");
+Comp.defaultProps = {
+  size: 44,
+  strokeWidth: 1.5,
+  lineCap: "round",
+  fill: false,
+  name: "x",
+  color: "primary",
+  animate: false,
+  withBg: true,
+  springConfig: { config: { duration: 750 } }
+};
+
+export default Comp;

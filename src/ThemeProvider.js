@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components/native";
-import color from "color";
-
-const merge = require("deepmerge");
+import tc from "tinycolor2";
 
 import Alert from "./Alert";
 import { PortalProvider, PortalExit } from "./Portal";
 import { useDimensions } from "./hooks";
 import { rem } from "./util";
+
+const merge = require("deepmerge");
 
 function capitalizeFLetter(string) {
   return string[0].toUpperCase() + string.slice(1);
@@ -18,39 +18,44 @@ const primary = "#673fb4";
 const DefaultTheme = {
   colors: {
     primary: primary,
-    background: color(primary)
-      .alpha(0.1)
-      .toString(),
+    background: tc(primary)
+      .setAlpha(0.1)
+      .toRgbString(),
     accent: "",
-    text: color(primary)
-      .darken(0.6)
+    text: tc(primary)
+      .darken(30)
       .toString(),
     surface: "#FFF",
-    placeholder: "",
+    input: "#FFF",
+    placeholder: "rgba(0,0,0,0.3)",
     success: "#8bc34a",
     warning: "#ffbb33",
     error: "#f44336",
-    shadow: color(primary)
-      .alpha(0.1)
-      .toString()
+    shadow: tc(primary)
+      .setAlpha(0.1)
+      .toRgbString()
   },
   fonts: {
     h1: {
-      fontSize: rem(2)
+      fontSize: rem(3)
     },
     h2: {
-      fontSize: rem(1.75)
+      fontSize: rem(2.5)
     },
     h3: {
-      fontSize: rem(1.5)
+      fontSize: rem(2)
     },
     h4: {
-      fontSize: rem(1.25)
+      fontSize: rem(1.5)
     },
     h5: {
       fontSize: rem(1)
     },
     p: {
+      fontSize: rem(1),
+      lineHeight: rem(1.5)
+    },
+    default: {
       fontSize: rem(1)
     },
     label: {
@@ -67,7 +72,8 @@ const DefaultTheme = {
   },
   globals: {
     fontFamily: "System",
-    roundness: 3,
+    roundness: 5,
+    gap: 15,
     inputGap: 15
   }
 };
@@ -81,18 +87,6 @@ export default ({
 }) => {
   const [alert, setAlert] = useState(null);
   const dimensions = useDimensions();
-
-  const getColors = (colors, mode) => {
-    const newColors =
-      mode !== "default"
-        ? {
-            ...colors,
-            ...(colors.modes && colors.modes[mode] ? colors.modes[mode] : {})
-          }
-        : colors;
-    return newColors;
-  };
-
   const [defaultTheme, setTheme] = useState(() =>
     merge(
       {
@@ -108,6 +102,17 @@ export default ({
       theme
     )
   );
+
+  const getColors = (colors, mode) => {
+    const newColors =
+      mode !== "default"
+        ? {
+            ...colors,
+            ...(colors.modes && colors.modes[mode] ? colors.modes[mode] : {})
+          }
+        : colors;
+    return newColors;
+  };
 
   const getDimensions = (width, height) => {
     const is = {};

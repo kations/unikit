@@ -1,84 +1,57 @@
-import React, { Component } from "react";
-import { View, Dimensions } from "react-native";
+import React, { useRef, useState } from "react";
+import { View } from "react-native";
+import { useDimensions, useInterval } from "../hooks";
 
-export default class Visible extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { rectTop: 0, rectBottom: 0, isVisible: false };
-  }
+function Visible({
+  children,
+  offset = 0,
+  delay = 100,
+  stayVisible = true,
+  disabled,
+  onChange,
+  ...rest
+}) {
+  const [rect, setRect] = useState({ top: 0, bottom: 0 });
+  const [visible, setVisible] = useState(false);
+  const dimensions = useDimensions();
+  const compRef = useRef(null);
 
-  componentDidMount() {
-    if (!this.props.disabled) {
-      this.startWatching();
-    }
-  }
+  // const isInViewPort = () => {
+  //   const isVisible =
+  //     rect.bottom !== 0 && rect.top >= 0 && rect.bottom <= dimensions.height;
+  //   if (visible !== isVisible) {
+  //     setVisible(isVisible);
+  //     if (onChange) onChange(isVisible);
+  //   }
+  // };
 
-  componentWillUnmount() {
-    this.stopWatching();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.disabled) {
-      this.stopWatching();
-    } else {
-      this.lastValue = null;
-      this.startWatching();
-    }
-  }
-
-  startWatching = () => {
-    const { offset } = this.props;
-    if (this.interval) {
-      return;
-    }
-    this.interval = setInterval(() => {
-      if (!this.myview) {
-        return;
-      }
-      this.myview.measure((x, y, width, height, pageX, pageY) => {
-        this.setState({
-          rectTop: pageY + offset,
-          rectBottom: pageY + height + offset,
-          rectWidth: pageX + width
+  useInterval(
+    () => {
+      if (compRef && compRef.current) {
+        compRef.current.measure((x, y, width, height, pageX, pageY) => {
+          const t = pageY + offset;
+          const b = pageY + height + offset;
+          const w = pageX + width;
+          const isVisible = b !== 0 && t >= 0 && b <= dimensions.height;
+          if (visible !== isVisible) {
+            setVisible(isVisible);
+            if (onChange) onChange(isVisible);
+          }
         });
-      });
-      this.isInViewPort();
-    }, this.props.delay || 100);
-  };
+      }
+    },
+    disabled || (visible && stayVisible) ? null : delay
+  );
 
-  stopWatching() {
-    this.interval = clearInterval(this.interval);
-  }
-
-  isInViewPort() {
-    const window = Dimensions.get("window");
-    const isVisible =
-      this.state.rectBottom != 0 &&
-      this.state.rectTop >= 0 &&
-      this.state.rectBottom <= window.height;
-    if (this.lastValue !== isVisible) {
-      this.lastValue = isVisible;
-      this.setState({ isVisible: isVisible });
-      if (isVisible && this.props.stayVisible) this.stopWatching();
-      if (this.props.onChange) this.props.onChange(isVisible);
-    }
-  }
-
-  render() {
-    return (
-      <View
-        collapsable={false}
-        ref={component => {
-          this.myview = component;
-        }}
-        {...this.props}
-      >
-        {this.props.children instanceof Function
-          ? this.props.children({
-              isVisible: this.state.isVisible
-            })
-          : this.props.children}
-      </View>
-    );
-  }
+  return (
+    <View collapsable={false} ref={compRef} {...rest}>
+      {children instanceof Function
+        ? children({
+            isVisible: visible
+          })
+        : children}
+    </View>
+  );
 }
+
+export default Visible;

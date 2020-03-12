@@ -1,209 +1,194 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from "react";
 import PropTypes from "prop-types";
-import { ScrollView, FlatList } from "react-native";
+import { animated, useSpring } from "react-spring/native";
 
-// import Tabs from "./Tabs";
-import styled, { useTheme } from "../styled";
-import Box from "../Box";
+import styled, { withThemeProps } from "../styled";
+import { useLayout, useGesture, useInterval } from "../hooks";
+import { getProgress, getValueByProgress } from "../util";
+import Dots from "./dots";
 
-const Content = styled(Box)(({ vertical, gap, itemSize }) => ({
-  width: vertical ? "100%" : itemSize,
-  height: !vertical ? "100%" : itemSize,
-  padding: gap / 2
-}));
+const Wrapper = styled.View();
+const Item = animated(styled.View());
+const Track = animated(
+  styled.View(({ gesture }) => ({
+    web: {
+      cursor: gesture ? "grab" : "auto"
+    }
+  }))
+);
 
-const Comp = props => {
-  const {
-    useScrollView = false,
+export function Swiper(
+  {
+    activeIndex = 0,
+    children,
+    vertical = false,
+    autoplay = false,
+    gesture = true,
+    dots = false,
+    dotsProps = {},
+    itemProps = {},
+    autoplayTimeout = 3000,
+    minDistance = 5,
+    triggerDistance = 0.2,
+    springConfig = { config: {} },
     onSwipe,
     onSwipeEnd,
-    onChangeIndex,
-    index,
-    swipeIndex,
-    style,
-    itemSize,
-    children,
-    gap,
-    scale,
-    flex,
-    dots,
-    dotsPosition,
-    dotsOffset,
-    autoplay,
-    duration,
-    vertical = false,
-    updateSwipe = true,
     ...rest
-  } = props;
+  },
+  ref
+) {
+  const [index, setIndex] = useState(activeIndex);
+  const [direction, setDirection] = useState(activeIndex);
+  const [down, setDown] = useState(false);
+  const items = React.Children.toArray(children);
+  const { onLayout, width, height } = useLayout();
 
-  const scrollRef = useRef(null);
-  const theme = useTheme();
+  const { dist } = useSpring({
+    to: { dist: vertical ? -(index * height) : -(index * width) },
+    immediate: down,
+    ...springConfig
+  });
 
-  const [selectedIndex, setIndex] = useState(index);
-  const [width, setWidth] = useState(itemSize || theme.width || 0);
+  useInterval(
+    () => {
+      setIndex((index + 1) % items.length);
+    },
+    autoplay && !down ? autoplayTimeout : null
+  );
 
-  const scrollTo = () => {
-    if (useScrollView) {
-      scrollRef.current.scrollTo({
-        x: vertical ? 0 : index * width,
-        y: vertical ? index * width : 0,
-        animated: true
-      });
-    } else {
-      scrollRef.current.scrollToOffset({ offset: index * width });
+  const setNewIndex = newIndex => {
+    if (newIndex > items.length - 1) {
+      newIndex = items.length - 1;
+    } else if (newIndex < 0) {
+      newIndex = 0;
     }
+    if (onSwipeEnd) onSwipeEnd(newIndex);
+    setIndex(newIndex);
   };
 
   useEffect(() => {
-    if (!(index % 1 != 0) && index !== selectedIndex) {
-      console.log({ index });
-      setIndex(index);
-      scrollTo();
+    if (down === false) {
+      const prev =
+        direction === "forward" ? Math.floor(index) : Math.ceil(index);
+      let trigger = index - prev;
+      let newIndex =
+        Math.abs(trigger) > triggerDistance
+          ? trigger < 0
+            ? Math.floor(index)
+            : Math.ceil(index)
+          : prev;
+      setNewIndex(newIndex);
     }
-  }, [index]);
+  }, [down]);
 
-  useEffect(() => {
-    if (!(selectedIndex % 1 != 0)) {
-      if (onSwipeEnd) onSwipeEnd(selectedIndex);
-    }
-  }, [selectedIndex]);
-
-  const defaultProps = {
-    ref: scrollRef,
-    pagingEnabled: true,
-    snapToInterval: width,
-    horizontal: !vertical,
-    automaticallyAdjustContentInsets: false,
-    scrollsToTop: false,
-    bounces: true,
-    scrollEventThrottle: 16,
-    showsHorizontalScrollIndicator: false,
-    showsVerticalScrollIndicator: false,
-    directionalLockEnabled: true,
-    disableScrollViewPanResponder: true,
-    callbackOffsetMargin: 5,
-    enableMomentum: false,
-    decelerationRate: "fast",
-    snapToAlignment: "left",
-    alwaysBounceVertical: false,
-    keyboardDismissMode: "on-drag",
-    style: {
-      flex: 1,
-      width: "100%",
-      height: vertical ? width : "auto",
-      position: "relative",
-      padding: gap / 2,
-      flexDirection: vertical ? "column" : "row",
-      ...style
-    },
-    onLayout: ({ nativeEvent }) => {
-      const { width, height } = nativeEvent.layout;
-      if (vertical) {
-        setWidth(itemSize || height);
-      } else {
-        setWidth(itemSize || width);
-      }
-    },
-    onScroll: ({ nativeEvent }) => {
-      const { x, y } = nativeEvent.contentOffset;
-      if (!vertical) {
-        var swipeIndex = x / width;
-      } else {
-        var swipeIndex = y / width;
-      }
-      setIndex(swipeIndex);
-      if (onSwipe && updateSwipe) onSwipe(swipeIndex);
-    },
-    onMomentumScrollBegin: ({ nativeEvent }) => {
-      console.log("onMomentumScrollBegin");
-    },
-    onMomentumScrollEnd: ({ nativeEvent }) => {
-      const { x, y } = nativeEvent.contentOffset;
-      if (!vertical) {
-        var indexNew = Math.round(x / width);
-      } else {
-        var indexNew = Math.round(y / width);
-      }
-      console.log("onMomentumScrollEnd");
-      if (onSwipeEnd) onSwipeEnd(indexNew);
-      setIndex(indexNew);
-    }
-  };
-
-  if (useScrollView) {
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          width: vertical ? "100%" : "auto"
-        }}
-        {...defaultProps}
-        {...rest}
-      >
-        {React.Children.map(children, (child, i) => {
-          if (child) {
-            return (
-              <Content itemSize={width} gap={gap} vertical={vertical} key={i}>
-                {child}
-              </Content>
-            );
+  const bindGesture = useGesture(
+    {
+      onMoveShouldSetPanResponderCapture: (e, { dy, dx }) => {
+        if (!gesture) {
+          return false;
+        }
+        const allow = Math.abs(vertical ? dy : dx) > minDistance;
+        return allow;
+      },
+      onPanResponderTerminationRequest: () => false,
+      onPanResponderGrant: (e, { dy, dx }) => {
+        setDown(true);
+      },
+      onPanResponderMove: (e, { dy, dx }) => {
+        const dist = vertical ? dy : dx;
+        const size = vertical ? height : width;
+        const currentPosition = index * size - dist;
+        const progress = getProgress(0, items.length * size, currentPosition);
+        const newIndex = getValueByProgress(0, items.length, progress);
+        setDirection(dist < 0 ? "forward" : "backwards");
+        if (onSwipe) onSwipe(newIndex);
+        setIndex(newIndex);
+      },
+      onPanResponderRelease: (e, { vx, vy }) => {
+        const velocity = vertical ? vy : vx;
+        if (Math.abs(velocity) * 10 > 5) {
+          if (velocity < 0) {
+            setIndex(index + 1);
+          } else {
+            setIndex(index - 1);
           }
-        })}
-      </ScrollView>
-    );
-  }
+        }
+        setDown(false);
+      }
+    },
+    [width, height, down]
+  );
+
+  useImperativeHandle(ref, () => ({
+    swipeNext: () => {
+      setNewIndex(index + 1);
+    },
+    swipePrev: () => {
+      setNewIndex(index - 1);
+    },
+    swipeTo: newIndex => {
+      setNewIndex(newIndex);
+    }
+  }));
 
   return (
-    <FlatList
-      data={children}
-      renderItem={({ item, index }) => {
-        if (item) {
-          return (
-            <Content itemSize={width} gap={gap} vertical={vertical}>
-              {item}
-            </Content>
-          );
-        }
-      }}
-      keyExtractor={(item, index) => index.toString()}
-      getItemLayout={(data, index) => ({
-        length: width,
-        offset: width * index,
-        index
-      })}
-      contentContainerStyle={{
-        width: vertical ? "100%" : "auto",
-        flexGrow: 1
-      }}
-      initialScrollIndex={index}
-      {...defaultProps}
-      {...rest}
-    />
+    <Wrapper onLayout={onLayout} w="100%" overflow="hidden" relative {...rest}>
+      <Track
+        {...bindGesture}
+        gesture={gesture}
+        h="100%"
+        row={!vertical}
+        {...itemProps}
+        style={{
+          ...(itemProps.style || {}),
+          width: vertical ? "100%" : items.length * width,
+          height: vertical ? items.length * height : "100%",
+          transform: vertical ? [{ translateY: dist }] : [{ translateX: dist }]
+        }}
+      >
+        {items.map((child, i) => (
+          <Item
+            style={{
+              width: vertical ? "100%" : width,
+              height: !vertical ? "100%" : height
+            }}
+            key={i}
+          >
+            {child}
+          </Item>
+        ))}
+      </Track>
+      {dots ? (
+        <Dots
+          items={items}
+          vertical={vertical}
+          index={index}
+          onPress={index => setNewIndex(index)}
+          springConfig={springConfig}
+          {...{ position: vertical ? "right" : "bottom", ...dotsProps }}
+        />
+      ) : null}
+    </Wrapper>
   );
-};
+}
 
-Comp.propTypes = {
-  index: PropTypes.number,
-  swipeIndex: PropTypes.number,
-  threshold: PropTypes.number,
-  hysteresis: PropTypes.number,
+Swiper.propTypes = {
+  activeIndex: PropTypes.number,
   children: PropTypes.node.isRequired,
   onSwipe: PropTypes.func,
   onSwipeEnd: PropTypes.func,
-  scale: PropTypes.bool
+  triggerDistance: PropTypes.number,
+  minDistance: PropTypes.number, //Initiate animation after swipe this distance. It fix gesture collisions inside ScrollView
+  springConfig: PropTypes.object,
+  gesture: PropTypes.bool,
+  dots: PropTypes.bool,
+  dotsProps: PropTypes.object,
+  itemProps: PropTypes.object
 };
 
-Comp.defaultProps = {
-  flex: undefined,
-  index: 0,
-  gap: 0,
-  swipeIndex: 0,
-  threshold: 5,
-  hysteresis: 0.6,
-  dotsPosition: "bottom",
-  dotsOffset: 20,
-  dots: false,
-  autoplay: false,
-  duration: 3000
-};
-
-export default Comp;
+export default withThemeProps(forwardRef(Swiper), "Swiper");

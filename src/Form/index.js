@@ -4,9 +4,11 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from "react";
+import * as PropTypes from "prop-types";
+
 import { Platform } from "react-native";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Button from "../Button";
 import Flex from "../Flex";
 import { getObjValue, setObjValue } from "../util";
@@ -69,70 +71,87 @@ const renderChildren = (children, doc, setDoc) => {
   });
 };
 
-function Form(
-  {
-    children,
-    schema,
-    onSubmit,
-    onChange,
-    onValidate,
-    button = true,
-    buttonLabel = "Submit",
-    buttonProps = {},
-    defaultDoc = {},
-    leftAction,
-    rightAction,
-    ...rest
-  },
-  ref
-) {
-  const [doc, setDoc] = useState(() => {
-    return getDefaultState(children, defaultDoc);
-  });
+const Form = withThemeProps(
+  forwardRef(
+    (
+      {
+        children,
+        onSubmit,
+        onChange,
+        onValidate,
+        button = true,
+        buttonLabel = "Submit",
+        buttonProps = {},
+        defaultDoc = {},
+        leftAction,
+        rightAction,
+        ...rest
+      },
+      ref
+    ) => {
+      const [doc, setDoc] = useState(() => {
+        return getDefaultState(children, defaultDoc);
+      });
 
-  useEffect(() => {
-    if (onChange) onChange(doc);
-  }, [doc]);
+      useEffect(() => {
+        if (onChange) onChange(doc);
+      }, [doc]);
 
-  const reset = () => {
-    setDoc(getDefaultState(children, defaultDoc));
-  };
+      const reset = () => {
+        setDoc(getDefaultState(children, defaultDoc));
+      };
 
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      if (onSubmit) onSubmit(doc, reset);
-    }
-  }));
+      useImperativeHandle(ref, () => ({
+        submit: () => {
+          if (onSubmit) onSubmit(doc, reset);
+        }
+      }));
 
-  return (
-    <FormWrap
-      {...rest}
-      accessibilityRole={Platform.OS === "web" ? "form" : "none"}
-    >
-      {renderChildren(children, doc, setDoc)}
-      <Flex row jc="space-between">
-        {leftAction}
-        {button ? (
-          <Button
-            onPress={() => {
-              if (onValidate) {
-                const valid = onValidate(doc);
-                if (valid && onSubmit) {
-                  onSubmit(doc);
-                }
-              } else if (onSubmit) {
-                onSubmit(doc, reset);
-              }
-            }}
-            {...buttonProps}
-          >
-            {buttonLabel}
-          </Button>
-        ) : null}
-        {rightAction}
-      </Flex>
-    </FormWrap>
-  );
-}
+      return (
+        <FormWrap
+          {...rest}
+          accessibilityRole={Platform.OS === "web" ? "form" : "none"}
+        >
+          {renderChildren(children, doc, setDoc)}
+          <Flex row jc="space-between">
+            {leftAction}
+            {button ? (
+              <Button
+                onPress={() => {
+                  if (onValidate) {
+                    const valid = onValidate(doc);
+                    if (valid && onSubmit) {
+                      onSubmit(doc);
+                    }
+                  } else if (onSubmit) {
+                    onSubmit(doc, reset);
+                  }
+                }}
+                {...buttonProps}
+              >
+                {buttonLabel}
+              </Button>
+            ) : null}
+            {rightAction}
+          </Flex>
+        </FormWrap>
+      );
+    },
+    "Form"
+  )
+);
 
-export default forwardRef(Form);
+Form.propTypes = {
+  children: PropTypes.node,
+  onSubmit: PropTypes.func,
+  onChange: PropTypes.func,
+  onValidate: PropTypes.func,
+  button: PropTypes.bool,
+  buttonLabel: PropTypes.string,
+  buttonProps: PropTypes.object,
+  defaultDoc: PropTypes.object,
+  leftAction: PropTypes.node,
+  rightAction: PropTypes.node
+};
+
+export default Form;

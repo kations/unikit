@@ -41,36 +41,39 @@ const Label = styled(Text)(({ theme, type, textColor, size }) => ({
   fontWeight: "bold"
 }));
 
-export function Avatar({
-  bg = "primary",
-  children,
-  size = 44,
-  char = "",
-  textColor,
-  onPress,
-  source,
-  ...rest
-}) {
-  return (
-    <Wrap
-      bg={bg}
-      as={onPress ? Button : undefined}
-      onPress={onPress || null}
-      activeOpacity={onPress ? 0.8 : undefined}
-      size={size}
-      {...rest}
-    >
-      {source ? <BackgroundImage size={size} source={source} /> : null}
-      {children ? (
-        children
-      ) : (
-        <Label size={size} textColor={textColor}>
-          {char}
-        </Label>
-      )}
-    </Wrap>
-  );
-}
+const Avatar = withThemeProps(
+  ({
+    bg = "primary",
+    children,
+    size = 44,
+    char = "",
+    textColor,
+    onPress,
+    source,
+    ...rest
+  }) => {
+    return (
+      <Wrap
+        bg={bg}
+        as={onPress ? Button : undefined}
+        onPress={onPress || null}
+        activeOpacity={onPress ? 0.8 : undefined}
+        size={size}
+        {...rest}
+      >
+        {source ? <BackgroundImage size={size} source={source} /> : null}
+        {children ? (
+          children
+        ) : (
+          <Label size={size} textColor={textColor}>
+            {char}
+          </Label>
+        )}
+      </Wrap>
+    );
+  },
+  "Avatar"
+);
 
 Avatar.propTypes = {
   type: PropTypes.string,
@@ -83,4 +86,10 @@ Avatar.propTypes = {
   children: PropTypes.node
 };
 
-export default withThemeProps(Avatar, "Avatar");
+Avatar.defaultProps = {
+  bg: "primary",
+  size: 44,
+  char: ""
+};
+
+export default Avatar;

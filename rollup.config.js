@@ -31,7 +31,7 @@ export default {
     url(),
     svgr(),
     babel({
-      exclude: "node_modules/**",
+      exclude: ["node_modules/**", "unikit-docs/**"],
       plugins: [
         "external-helpers",
         "transform-object-rest-spread",

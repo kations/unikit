@@ -2,6 +2,7 @@ import React, { useContext, forwardRef } from "react";
 import scStyled, { ThemeContext, withTheme } from "styled-components/native";
 import * as RN from "react-native";
 import parseStyle from "./parseStyle";
+import hoistStatics from "hoist-non-react-statics";
 
 export { withTheme };
 
@@ -9,16 +10,30 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const useThemeProps = (props, name) => {
   const theme = useTheme();
-  return Object.assign({}, theme.globals[name], props);
+  return Object.assign({}, theme.globals[name] || {}, props);
 };
 
-export const withThemeProps = (Comp, name) =>
-  forwardRef((props, ref) => {
-    Comp.displayName = name;
-    const theme = useTheme();
+export const withThemeProps = (Component, name) => {
+  const WithTheme = React.forwardRef((props, ref) => {
+    const theme = useContext(ThemeContext);
     const themeProps = Object.assign({}, theme[name], props);
-    return <Comp {...themeProps} ref={ref} />;
+
+    if (process.env.NODE_ENV !== "production" && !theme) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[withTheme] You are not using a ThemeProvider nor passing a theme prop or a theme in defaultProps in component class "${name}"`
+      );
+    }
+
+    return <Component {...props} theme={theme} {...themeProps} ref={ref} />;
   });
+
+  hoistStatics(WithTheme, Component);
+
+  WithTheme.displayName = `WithTheme(${name})`;
+
+  return WithTheme;
+};
 
 function isFunction(functionToCheck) {
   return (
@@ -43,7 +58,9 @@ export default function styled(component, alias) {
       platforms.map(platform => {
         if (
           (style[platform] && RN.Platform.OS === platform) ||
-          (style.native && ["ios", "android"].indexOf(RN.Platform.OS) > -1)
+          (style[platform] &&
+            platform === "native" &&
+            ["ios", "android"].indexOf(RN.Platform.OS) > -1)
         ) {
           style = { ...style, ...style[platform] };
         }
@@ -53,7 +70,11 @@ export default function styled(component, alias) {
         style["fontFamily"] = theme.globals.fontFamily;
       }
 
-      const parsedStyle = { ...style, ...parseStyle({ theme, ...style }) };
+      const parsedStyle = parseStyle({
+        theme,
+        ...style,
+        overwriteStyles: false
+      });
       delete parsedStyle["absoluteFill"];
       delete parsedStyle["web"];
       delete parsedStyle["native"];

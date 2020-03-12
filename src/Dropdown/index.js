@@ -1,7 +1,8 @@
-import React, { Fragment, Children, useState, useRef } from "react";
+import React, { Children, useState } from "react";
+import * as PropTypes from "prop-types";
 import { TouchableOpacity } from "react-native";
 
-import styled from "../styled";
+import styled, { withThemeProps } from "../styled";
 import Box from "../Box";
 import Animate from "../Animate";
 
@@ -19,33 +20,39 @@ const Down = styled(Box)(({ theme }) => ({
   backgroundColor: "surface"
 }));
 
-export default function Dropdown({
-  children,
-  downProps = {},
-  content = null,
-  ...rest
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <Drop>
-      {Children.only(
-        React.cloneElement(children, {
-          as: TouchableOpacity,
-          onPress: () => {
-            setOpen(!open);
-          },
-          ...rest
-        })
-      )}
-      <Animate
-        as={Down}
-        from={{ opacity: 0, y: 20, x: 0 }}
-        isVisible={open}
-        shadow={20}
-        {...downProps}
-      >
-        {content}
-      </Animate>
-    </Drop>
-  );
-}
+const Dropdown = withThemeProps(
+  ({ children, animateProps = {}, content = null, ...rest }) => {
+    const [open, setOpen] = useState(false);
+    return (
+      <Drop>
+        {Children.only(
+          React.cloneElement(children, {
+            as: TouchableOpacity,
+            onPress: () => {
+              setOpen(!open);
+            },
+            ...rest
+          })
+        )}
+        <Animate
+          as={Down}
+          from={{ opacity: 0, y: 20, x: 0 }}
+          isVisible={open}
+          shadow={20}
+          {...animateProps}
+        >
+          {content}
+        </Animate>
+      </Drop>
+    );
+  },
+  "Dropdown"
+);
+
+Dropdown.propTypes = {
+  children: PropTypes.node,
+  content: PropTypes.node,
+  animateProps: PropTypes.object
+};
+
+export default Dropdown;

@@ -1,16 +1,15 @@
 import React from "react";
-import color from "color";
 
-import styled, { useTheme } from "../styled";
+import styled, { useTheme, withThemeProps } from "../styled";
+import { rem } from "../util";
 
 const TextInput = styled.TextInput(({ theme, textColor }) => ({
-  font: "p",
   backgroundColor: "transparent",
   width: "100%",
   paddingVertical: theme.globals.inputGap,
   paddingHorizontal: theme.globals.inputGap,
   borderRadius: theme.globals.roundness,
-  fontSize: 15,
+  fontSize: rem(1),
   margin: 0,
   borderWidth: 0,
   color: textColor || "text",
@@ -26,70 +25,65 @@ const getLinesByString = string => {
   return array.length;
 };
 
-const Comp = props => {
-  const {
+const Text = withThemeProps(
+  ({
     as,
     value,
     onChange,
     setFocus,
     onFocus,
     onBlur,
-    placeholderColor,
+    placeholderColor = "placeholder",
     textColor,
     multiline,
     numberOfLines,
     ...rest
-  } = props;
-  const theme = useTheme();
+  }) => {
+    const theme = useTheme();
 
-  const placeholderTextColor =
-    theme.colors[placeholderColor] ||
-    placeholderColor ||
-    theme.colors[textColor] ||
-    textColor;
+    const placeholderTextColor =
+      theme.colors[placeholderColor] || placeholderColor;
 
-  const getLines = () => {
-    const LinesByValue = getLinesByString(value || "");
-    return numberOfLines >= LinesByValue ? numberOfLines : LinesByValue;
-  };
+    const getLines = () => {
+      const LinesByValue = getLinesByString(value || "");
+      return numberOfLines >= LinesByValue ? numberOfLines : LinesByValue;
+    };
 
-  return (
-    <TextInput
-      value={value !== undefined && value !== null ? value.toString() : ""}
-      as={as || undefined}
-      onChangeText={text => (onChange ? onChange(text) : null)}
-      placeholderTextColor={
-        placeholderColor
-          ? placeholderColor
-          : color(placeholderTextColor).alpha(0.35)
-      }
-      textColor={textColor}
-      underlineColorAndroid="transparent"
-      onFocus={() => {
-        if (setFocus) {
-          setFocus(true);
-        }
-        if (onFocus) {
-          onFocus();
-        }
-      }}
-      onBlur={() => {
-        if (setFocus) {
-          setFocus(false);
-        }
-        if (onBlur) {
-          onBlur();
-        }
-      }}
-      multiline={multiline}
-      numberOfLines={multiline ? getLines() : undefined}
-      {...rest}
-    />
-  );
+    return (
+      <TextInput
+        value={value !== undefined && value !== null ? value.toString() : ""}
+        as={as || undefined}
+        onChangeText={text => (onChange ? onChange(text) : null)}
+        placeholderTextColor={placeholderTextColor}
+        textColor={textColor}
+        underlineColorAndroid="transparent"
+        onFocus={() => {
+          if (setFocus) {
+            setFocus(true);
+          }
+          if (onFocus) {
+            onFocus();
+          }
+        }}
+        onBlur={() => {
+          if (setFocus) {
+            setFocus(false);
+          }
+          if (onBlur) {
+            onBlur();
+          }
+        }}
+        multiline={multiline}
+        numberOfLines={multiline ? getLines() : undefined}
+        {...rest}
+      />
+    );
+  },
+  "TextInput"
+);
+
+Text.defaultProps = {
+  placeholderColor: "placeholder"
 };
 
-Comp.defaultProps = {
-  placeholderColor: "text"
-};
-
-export default Comp;
+export default Text;

@@ -13,18 +13,14 @@ const Box = styled.View(({ theme }) => ({
   position: "relative"
 }));
 
-const Headline = styled.Text({
-  font: "h3",
-  color: "text"
-});
-
 const Comp = props => {
   const {
     value,
     onChange,
-    options,
+    options = [],
     style,
     placeholder = "Please select...",
+    doneText = "Done",
     overlayProps = {},
     inputProps = {},
     pickerProps = {},
@@ -98,7 +94,7 @@ const Comp = props => {
     <Box
       width="100%"
       br={theme.globals.roundness}
-      position="relative"
+      relative
       style={style}
       {...rest}
     >
@@ -124,10 +120,10 @@ const Comp = props => {
         absolute
         t={0}
         r={theme.globals.inputGap}
-        align="center"
-        content="center"
+        alignItems="center"
+        justifyContent="center"
         h="100%"
-        zi={10}
+        zIndex={10}
         w="auto"
         pointerEvents="none"
       >
@@ -144,11 +140,9 @@ const Comp = props => {
           {...overlayProps}
         >
           <Box width="100%">
-            {placeholder && <Headline>{placeholder}</Headline>}
             {renderPicker()}
-
             <Button m={0} onPress={() => setShow(false)}>
-              Fertig
+              {doneText}
             </Button>
           </Box>
         </Overlay>

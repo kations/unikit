@@ -6,51 +6,54 @@ import { withThemeProps } from "../styled";
 import UniText from "../Text";
 import Animate from "../Animate";
 
-export function Headline({
-  level = 1,
-  children,
-  animate,
-  animateType = "char",
-  onVisible,
-  stayVisible = true,
-  delay = 100,
-  duration,
-  from,
-  to,
-  config,
-  ...rest
-}) {
-  if (animate) {
-    var splittedString = children.split(animateType === "word" ? " " : "");
+const Headline = withThemeProps(
+  ({
+    level = 1,
+    children,
+    animate,
+    animateType = "char",
+    onVisible,
+    stayVisible = true,
+    delay = 100,
+    duration,
+    from,
+    to,
+    config,
+    ...rest
+  }) => {
+    if (animate) {
+      var splittedString = children.split(animateType === "word" ? " " : "");
+      return (
+        <UniText level={level} style={{ wordWrap: "break-word" }} {...rest}>
+          {splittedString.map((string, index) => {
+            return (
+              <Animate
+                key={`${string}-${index}`}
+                as={Text}
+                style={{ display: "inline-block" }}
+                onVisible={onVisible}
+                delay={
+                  delay +
+                  index * (duration ? duration / splittedString.length : 20)
+                }
+              >
+                {string}
+                {animateType === "word" ? " " : null}
+              </Animate>
+            );
+          })}
+        </UniText>
+      );
+    }
+
     return (
-      <UniText level={level} style={{ wordWrap: "break-word" }} {...rest}>
-        {splittedString.map((string, index) => {
-          return (
-            <Animate
-              key={`${string}-${index}`}
-              as={Text}
-              style={{ display: "inline-block" }}
-              onVisible={onVisible}
-              delay={
-                delay +
-                index * (duration ? duration / splittedString.length : 20)
-              }
-            >
-              {string}
-              {animateType === "word" ? " " : null}
-            </Animate>
-          );
-        })}
+      <UniText level={level} {...rest}>
+        {children}
       </UniText>
     );
-  }
-
-  return (
-    <UniText level={level} {...rest}>
-      {children}
-    </UniText>
-  );
-}
+  },
+  "Headline"
+);
 
 Headline.propTypes = {
   level: PropTypes.number,
@@ -60,4 +63,11 @@ Headline.propTypes = {
   animateType: PropTypes.oneOf(["char", "word"])
 };
 
-export default withThemeProps(Headline, "Headline");
+Headline.defaultProps = {
+  level: 1,
+  animateType: "char",
+  stayVisible: true,
+  delay: 100
+};
+
+export default Headline;

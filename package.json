@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.2.26",
+  "version": "1.2.34",
   "description": "universal component library for react and react-native",
   "author": "kations",
   "license": "MIT",
@@ -18,10 +18,9 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "prepare": "yarn run build",
+    "buildtest": "rm -rf dist",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build",
-    "docz:dev": "docz dev",
-    "docz:build": "docz build"
+    "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
@@ -88,6 +87,7 @@
     "get-value": "^3.0.1",
     "prop-types": "^15.7.2",
     "set-value": "^3.0.1",
-    "svg-path-properties": "^1.0.2"
+    "svg-path-properties": "^1.0.2",
+    "tinycolor2": "^1.4.1"
   }
 }
