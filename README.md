@@ -7,11 +7,11 @@
 ### Install
 
 ```bash
-yarn add unikit react-spring swgs styled-components@beta
+yarn add unikit react-spring swgs styled-components
 ```
 
 ```bash
-npm install --save unikit react-spring swgs styled-components@beta
+npm install --save unikit react-spring swgs styled-components
 ```
 
 ### Usage

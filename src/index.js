@@ -1,4 +1,3 @@
-import React, { forwardRef } from "react";
 import tc from "tinycolor2";
 import { Platform } from "react-native";
 import { isDark, setObjValue, getObjValue } from "./util";
