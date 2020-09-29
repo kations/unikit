@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Dimensions } from 'react-native';
 import { ThemeProvider as TP } from 'styled-components/native';
 
 const merge = require('deepmerge');

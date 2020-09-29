@@ -173,7 +173,7 @@ const Handle = ({
           to={{ s: 1 }}
           borderRadius={handleWrapSize / 2}
           absoluteFill
-          bg={`primary:setAlpha:${handleFocusOpacity}`}
+          bg={`${progressColor}:setAlpha:${handleFocusOpacity}`}
         />
         <Flex
           bg={showHandle ? handleColor : 'transparent'}
