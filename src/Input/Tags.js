@@ -5,6 +5,7 @@ import styled from "../styled";
 import TextInput from "./Text";
 import Icon from "../Icon";
 import Animate from "../Animate";
+import { AnimatedTouchable } from "../Spring";
 
 const TagInput = styled.View(({ theme }) => ({
   width: "100%",
@@ -21,7 +22,7 @@ const Pills = styled.View(({ theme }) => ({
   flexWrap: "wrap"
 }));
 
-const Pill = styled.TouchableOpacity({
+const Pill = styled(AnimatedTouchable)({
   paddingVertical: 8,
   paddingHorizontal: 18,
   backgroundColor: "primary",

@@ -1,4 +1,3 @@
-import { ViewPropTypes } from "react-native";
 import styled from "../styled";
 import PropTypes from "prop-types";
 
@@ -7,7 +6,7 @@ import { styles } from "../styles";
 const Box = styled.View();
 
 const StyleProps = {};
-Object.keys(styles).map(key => {
+Object.keys(styles).map((key) => {
   const { type } = styles[key];
   if (type) {
     StyleProps[key] = type;
@@ -25,9 +24,8 @@ Box.propTypes = {
   relative: PropTypes.bool,
   sticky: PropTypes.bool,
   ...StyleProps,
-  style: ViewPropTypes.style,
+  style: PropTypes.object,
   children: PropTypes.node,
-  ...ViewPropTypes
 };
 
 export default Box;

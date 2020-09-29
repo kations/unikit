@@ -1,61 +1,42 @@
-import React, { Fragment, useState } from "react";
-import { Platform, ScrollView, View } from "react-native";
-import { useTransition, animated } from "react-spring";
-import PropTypes from "prop-types";
+import React, { Fragment, useState } from 'react';
+import { Platform, ScrollView, View } from 'react-native';
+import PropTypes from 'prop-types';
 
-import styled, { withThemeProps } from "../styled";
-import { PortalEnter } from "../Portal";
+import styled, { withThemeProps } from '../styled';
+import { PortalEnter } from '../Portal';
+import Animate from '../Animate';
 
-const Modal = animated(
-  styled.View(({ zIndex, backdrop }) => ({
-    position: Platform.OS === "web" ? "fixed" : "absolute",
-    left: 0,
-    bottom: 0,
-    top: 0,
-    right: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: backdrop ? "rgba(0,0,0,0.2)" : "transparent",
-    zIndex: zIndex
-  }))
-);
+import { createAnimatedComponent } from '../Spring';
+import { useUpdateEffect } from '../hooks';
 
-const ModalContent = animated(
-  styled.View(({ zIndex, theme }) => ({
-    position: "relative",
-    width: "100%",
-    height: "auto",
-    p: theme.globals.gap,
-    backgroundColor: theme.colors.background
-  }))
-);
+const AnimatedScrollView = createAnimatedComponent(ScrollView);
 
 const customStyle = {
   center: {
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bottom: {
-    justifyContent: "flex-end",
-    alignItems: "center"
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   top: {
-    justifyContent: "flex-start",
-    alignItems: "center"
-  }
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
 };
 
 const BackdropPress = styled.TouchableOpacity(({ zIndex, theme }) => ({
-  position: Platform.OS === "web" ? "fixed" : "absolute",
+  position: Platform.OS === 'web' ? 'fixed' : 'absolute',
   left: 0,
   bottom: 0,
   top: 0,
-  right: 0
+  right: 0,
 }));
 
 const getId = () => {
   return (
-    "_" +
+    '_' +
     Math.random()
       .toString(36)
       .substr(2, 9)
@@ -63,88 +44,94 @@ const getId = () => {
 };
 
 export function Overlay({
+  theme,
   visible = false,
   scrollable = false,
   scrollComp,
   onClose,
   backdrop = true,
   zIndex = 900,
-  position = "center",
+  position = 'center',
   children,
   usePortal = true,
   modalSpring = {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: item => async (next, cancel) => {
-      await new Promise(resolve => setTimeout(resolve, 250));
-      await next({ opacity: 0 });
-    }
+    from: { o: 0 },
+    to: { o: 1 },
   },
   contentSpring = {
-    from: { opacity: 0, top: 100 },
-    enter: item => async (next, cancel) => {
-      await new Promise(resolve => setTimeout(resolve, 250));
-      await next({ opacity: 1, top: 0 });
-    },
-    leave: { opacity: 0, top: 100 },
-    unique: true
+    from: { o: 0, y: 100 },
+    to: { o: 1, y: 0 },
   },
   modalProps = {},
-  contentProps = {}
+  contentProps = {},
 }) {
+  const [render, setRender] = useState(visible);
   const [id] = useState(() => getId());
-  const mTransition = useTransition(visible, null, modalSpring);
-  const cTransition = useTransition(visible, null, contentSpring);
 
-  const PortalComp = usePortal ? PortalEnter : Fragment;
-  const modalComp = scrollable ? scrollComp || ScrollView : undefined;
+  useUpdateEffect(() => {
+    if (visible) {
+      setRender(true);
+    } else {
+      setTimeout(() => {
+        setRender(false);
+      }, 500);
+    }
+  }, [visible]);
+
+  const AnimatedScrollComp = scrollComp
+    ? createAnimatedComponent(scrollComp)
+    : undefined;
+
+  const PortalComp = usePortal ? Fragment : Fragment;
+  const modalComp = scrollable
+    ? AnimatedScrollComp || AnimatedScrollView
+    : undefined;
   const modalStyle = customStyle[position] || {};
   const scrollableProps = scrollable
     ? {
         showsVerticalScrollIndicator: false,
         showsVerticalScrollIndicator: false,
-        contentContainerStyle: { flexGrow: 1, ...modalStyle }
+        contentContainerStyle: { flexGrow: 1, ...modalStyle },
       }
-    : {};
+    : { ...modalStyle };
+
+  if (!render) return null;
 
   return (
     <PortalComp name={id}>
-      {mTransition.map(({ item, key, props }) =>
-        item ? (
-          <Modal
-            as={modalComp}
-            key={key}
-            zIndex={zIndex}
-            backdrop={backdrop}
-            {...modalProps}
-            style={{
-              ...props,
-              ...(modalProps.style ? modalProps.style : {}),
-              ...(!scrollable ? modalStyle : {})
-            }}
-            pointerEvents={visible ? "auto" : "none"}
-            {...scrollableProps}
-          >
-            {onClose ? (
-              <BackdropPress onPress={onClose} activeOpacity={1} />
-            ) : null}
-            {cTransition.map(({ item, key, props }) =>
-              item ? (
-                <ModalContent
-                  key={key}
-                  {...contentProps}
-                  style={{
-                    ...props,
-                    ...(contentProps.style ? contentProps.style : {})
-                  }}
-                >
-                  {children}
-                </ModalContent>
-              ) : null
-            )}
-          </Modal>
-        ) : null
-      )}
+      <Animate
+        as={modalComp}
+        absoluteFill
+        fixed={Platform.OS === 'web'}
+        isVisible={visible}
+        bg={backdrop ? 'rgba(0,0,0,0.3)' : 'transparent'}
+        zIndex={zIndex}
+        pointerEvents={visible ? 'auto' : 'none'}
+        useTransition
+        delay={50}
+        {...modalProps}
+        {...scrollableProps}
+        {...modalSpring}
+      >
+        {onClose ? <BackdropPress onPress={onClose} activeOpacity={1} /> : null}
+
+        <Animate
+          isVisible={visible}
+          relative
+          p={theme.globals.gap}
+          w="90%"
+          bg="background"
+          useTransition
+          delay={50}
+          {...contentProps}
+          style={{
+            ...(contentProps.style ? contentProps.style : {}),
+          }}
+          {...contentSpring}
+        >
+          {children}
+        </Animate>
+      </Animate>
     </PortalComp>
   );
 }
@@ -161,7 +148,7 @@ Overlay.propTypes = {
   modalSpring: PropTypes.object,
   contentSpring: PropTypes.object,
   modalProps: PropTypes.object,
-  contentProps: PropTypes.object
+  contentProps: PropTypes.object,
 };
 
-export default withThemeProps(Overlay, "Overlay");
+export default withThemeProps(Overlay, 'Overlay');

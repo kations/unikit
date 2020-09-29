@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Text } from "react-native";
 
@@ -63,7 +63,7 @@ Headline.propTypes = {
   animateType: PropTypes.oneOf(["char", "word"])
 };
 
-Headline.defaultProps = {
+Headline.defaultPropTypes = {
   level: 1,
   animateType: "char",
   stayVisible: true,

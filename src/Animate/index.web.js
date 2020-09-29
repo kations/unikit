@@ -1,24 +1,30 @@
 import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { View } from "react-native";
 
 import { withThemeProps } from "../styled";
 import Visible from "../Visible";
 import Box from "../Box";
+import { useUpdateEffect } from "../hooks";
 
 const cleanKeys = keys => {
-  if (keys.x !== undefined || keys.y !== undefined) {
-    keys["transform"] = `translate3d(${keys.x || 0}px, ${keys.y || 0}px, 0)`;
-    delete keys["x"];
-    delete keys["y"];
+  const transformKeys = {};
+  transformKeys["transform"] = [];
+  if (keys.y !== undefined) {
+    transformKeys["transform"].push({ translateY: keys.y });
   }
-  return keys;
+  if (keys.x !== undefined) {
+    transformKeys["transform"].push({ translateX: keys.x });
+  }
+  if (keys.o !== undefined) {
+    transformKeys["opacity"] = keys.o;
+  }
+  return transformKeys;
 };
 
 const Animate = withThemeProps(
   ({
-    from = { opacity: 0, y: 100, x: 0 },
-    to = { opacity: 1, y: 0, x: 0 },
+    from = { o: 0, y: 100, x: 0 },
+    to = { o: 1, y: 0, x: 0 },
     children,
     stayVisible = true,
     onVisible,
@@ -28,15 +34,29 @@ const Animate = withThemeProps(
     offset = 0,
     config,
     style,
+    useTransition = false,
     ...rest
   }) => {
     const [reverse, setReverse] = useState(false);
-    const [visible, setVisible] = useState(onVisible ? false : isVisible);
+    const [visible, setVisible] = useState(
+      onVisible || delay !== 0 ? false : isVisible
+    );
+
+    config = {
+      easing: "easeInOutBack",
+      ...config
+    };
 
     useEffect(() => {
-      if (reverse === true) {
-        setVisible(isVisible);
+      if (isVisible && delay) {
+        setTimeout(() => {
+          setVisible(true);
+        }, delay);
       }
+    }, []);
+
+    useUpdateEffect(() => {
+      setVisible(isVisible);
     }, [isVisible]);
 
     useEffect(() => {
@@ -47,14 +67,17 @@ const Animate = withThemeProps(
       }
     }, [visible]);
 
+    const fromKeys = cleanKeys(from);
+    const toKeys = cleanKeys(to);
+
     const demo = {
-      "0%": cleanKeys(from),
-      "100%": cleanKeys(to)
+      "0%": fromKeys,
+      "100%": toKeys
     };
 
     const demoRev = {
-      "0%": cleanKeys(to),
-      "100%": cleanKeys(from)
+      "0%": toKeys,
+      "100%": fromKeys
     };
 
     const aniStyle = {
@@ -69,17 +92,24 @@ const Animate = withThemeProps(
       animationKeyframes: demoRev
     };
 
-    const AnimatedComp = (
-      <Box
-        style={{
+    const styling = useTransition
+      ? {
+          transitionDuration: `${duration}ms`,
+          transitionTimingFunction: config.easing,
+          transitionProperty: ["opacity", "transform"],
+          ...(visible ? toKeys : fromKeys)
+        }
+      : {
           ...style,
           ...demo["0%"],
-          animationFillMode: `forwards`,
+          animationFillMode: `both`,
+          animationTimingFunction: config.easing,
           ...((!visible && onVisible) || isVisible === false ? {} : aniStyle),
           ...(reverse && !visible ? aniStyleRev : {})
-        }}
-        {...rest}
-      >
+        };
+
+    const AnimatedComp = (
+      <Box style={styling} {...rest}>
         {children}
       </Box>
     );
@@ -95,7 +125,7 @@ const Animate = withThemeProps(
             offset={offset}
           >
             {({ isVisible }) => {
-              return <View />;
+              return <div />;
             }}
           </Visible>
           {AnimatedComp}
@@ -121,9 +151,9 @@ Animate.propTypes = {
   style: PropTypes.object
 };
 
-Animate.defaultProps = {
-  from: { opacity: 0, y: 100, x: 0 },
-  to: { opacity: 1, y: 0, x: 0 },
+Animate.defaultPropTypes = {
+  from: { o: 0, y: 100, x: 0 },
+  to: { o: 1, y: 0, x: 0 },
   stayVisible: true,
   isVisible: true
 };

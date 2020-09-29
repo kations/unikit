@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSpring, animated } from "react-spring/native";
+import { Platform } from "react-native";
 import PropTypes from "prop-types";
 
-import styled from "../styled";
+import styled, { useTheme } from "../styled";
+import { AnimatedView, useSpring } from "../Spring";
 
 const Checkbox = styled.TouchableOpacity(({ size, borderSize }) => ({
   width: size,
@@ -11,17 +12,19 @@ const Checkbox = styled.TouchableOpacity(({ size, borderSize }) => ({
   borderColor: "primary",
   justifyContent: "center",
   alignItems: "center",
-  borderRadius: size / 2
+  borderRadius: size / 2,
 }));
 
-const Circle = styled.View(({ size, borderSize }) => ({
+const Circle = styled(AnimatedView)(({ size, borderSize }) => ({
   width: size - borderSize * 4,
   height: size - borderSize * 4,
   backgroundColor: "primary",
-  borderRadius: size / 2
+  borderRadius: size / 2,
+  web: {
+    transitionProperty: "all",
+    transitionDuration: "250ms",
+  },
 }));
-
-const AnimatedCircle = animated(Circle);
 
 const Comp = ({
   type = "primary",
@@ -30,20 +33,33 @@ const Comp = ({
   size = 26,
   style,
   borderSize = 2,
+  disabled,
   ...rest
 }) => {
+  const theme = useTheme();
   const [active, setActive] = useState(value || false);
 
-  const { scale, opacity } = useSpring({
-    to: {
-      opacity: active ? 1 : 0,
-      scale: active ? 1 : 0
-    }
+  const o = useSpring({
+    to: active ? 1 : 0.5,
+  });
+
+  const scale = useSpring({
+    to: active ? 1 : 0.0001,
   });
 
   useEffect(() => {
-    setActive(value);
+    console.log({ value, active });
+    if (value !== active) setActive(value);
   }, [value]);
+
+  const onPressSwitch = (newActive) => {
+    if (disabled) return false;
+    setActive(newActive);
+    setTimeout(() => {
+      if (onChange) onChange(newActive);
+    }, 10);
+    if (theme.onFeedback) theme.onFeedback("success");
+  };
 
   return (
     <Checkbox
@@ -53,21 +69,26 @@ const Comp = ({
       size={size}
       borderSize={borderSize}
       onPress={() => {
-        const newValue = !active;
-        setActive(newValue);
-        setTimeout(() => {
-          if (onChange) {
-            onChange(newValue);
-          }
-        }, 299);
+        onPressSwitch(!active);
       }}
       {...rest}
     >
-      <AnimatedCircle
-        size={size}
-        borderSize={borderSize}
-        style={{ opacity, transform: [{ scale: scale }] }}
-      />
+      {Platform.OS === "web" ? (
+        <Circle
+          size={size}
+          borderSize={borderSize}
+          style={{
+            opacity: active ? 1 : 0,
+            transform: [{ scale: active ? 1 : 0 }],
+          }}
+        />
+      ) : (
+        <Circle
+          size={size}
+          borderSize={borderSize}
+          style={{ opacity: o, transform: [{ scale: scale }] }}
+        />
+      )}
     </Checkbox>
   );
 };
@@ -77,7 +98,7 @@ Comp.propTypes = {
   style: PropTypes.object,
   size: PropTypes.number,
   borderSize: PropTypes.number,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
 export default Comp;

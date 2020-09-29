@@ -1,32 +1,34 @@
 import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Image as Img, Platform } from "react-native";
-import { useSpring, animated } from "react-spring/native";
 
 import styled from "../styled";
 import Box from "../Box";
 import Visible from "../Visible";
+import { useSpring, AnimatedView } from "../Spring";
 
 const ImageWrap = styled(Box)({
   backgroundColor: "surface",
-  maxWidth: "100%"
+  maxWidth: "100%",
 });
 
-const Animate = animated(
-  styled.View({ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 })
-);
+const Animate = styled(AnimatedView)({
+  position: "absolute",
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+});
 
 const LazyImage = ({ style, source, thumbSource, blurRadius }) => {
   const [imgLoading, setImgLoading] = useState(true);
   const [thumbLoading, setThumbLoading] = useState(true);
 
-  const imgProps = useSpring({
-    opacity: imgLoading ? 0 : 1,
-    config: { duration: 250 }
+  const imgO = useSpring({
+    to: imgLoading ? 0 : 1,
   });
-  const thumbProps = useSpring({
-    opacity: thumbLoading ? 0 : 1,
-    config: { duration: 250 }
+  const thumbO = useSpring({
+    to: thumbLoading ? 0 : 1,
   });
 
   return (
@@ -34,7 +36,7 @@ const LazyImage = ({ style, source, thumbSource, blurRadius }) => {
       {({ isVisible }) =>
         isVisible ? (
           <Fragment>
-            <Animate style={{ opacity: thumbProps.opacity }}>
+            <Animate style={{ opacity: thumbO }}>
               <Img
                 source={thumbSource || source}
                 onLoad={() => setThumbLoading(false)}
@@ -44,7 +46,7 @@ const LazyImage = ({ style, source, thumbSource, blurRadius }) => {
             </Animate>
             <Animate
               onLoad={() => setImgLoading(false)}
-              style={{ opacity: imgProps.opacity }}
+              style={{ opacity: imgO }}
             >
               <Img
                 source={source}
@@ -98,7 +100,7 @@ export default function Image({
 
   return lazy ? (
     <ImageWrap
-      onLayout={e => {
+      onLayout={(e) => {
         if (width) {
           setWidth(e.nativeEvent.layout.width);
         } else if (height) {
@@ -108,7 +110,7 @@ export default function Image({
       style={{
         width: width || imgWidth,
         height: height || imgHeight || 100,
-        ...style
+        ...style,
       }}
       {...rest}
     >
@@ -117,14 +119,14 @@ export default function Image({
         blurRadius={blurRadius}
         style={{
           width: width || imgWidth,
-          height: height || imgHeight || 100
+          height: height || imgHeight || 100,
         }}
         {...rest}
       />
     </ImageWrap>
   ) : (
     <Img
-      onLayout={e => {
+      onLayout={(e) => {
         if (width) {
           setWidth(e.nativeEvent.layout.width);
         } else if (height) {
@@ -134,7 +136,7 @@ export default function Image({
       source={source}
       style={{
         width: width || imgWidth,
-        height: height || imgHeight || 100
+        height: height || imgHeight || 100,
       }}
     />
   );

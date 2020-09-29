@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
 
-import styled, { useTheme } from "../styled";
-
+import { useTheme } from "../styled";
 import Box from "../Box";
 import Flex from "../Flex";
 import Icon from "../Icon";
@@ -11,17 +9,27 @@ import Group from "../Group";
 
 import TextInput from "./Text";
 
+import { isNumber } from "../util";
+
 function isFloat(n) {
   return Number(n) === n && n % 1 !== 0;
 }
 
-const Comp = ({ style, onChange, value, step = 1, ...rest }) => {
+const Comp = ({ style, onChange, value, defaultValue, step = 1, ...rest }) => {
   const theme = useTheme();
+
   const [stringValue, setValue] = useState(
-    (value && !isNaN(value) ? value : "").toString()
+    () =>
+      `${
+        value !== undefined && isNumber(value)
+          ? value === 0
+            ? "0"
+            : value
+          : ""
+      }`
   );
 
-  const changeValue = type => {
+  const changeValue = (type) => {
     if (onChange) {
       const def = type === "add" ? 1 : 0;
       step = type === "add" ? -step : step;
@@ -48,7 +56,7 @@ const Comp = ({ style, onChange, value, step = 1, ...rest }) => {
         keyboardType="decimal-pad"
         autoCapitalize="words"
         value={stringValue}
-        onChange={text => {
+        onChange={(text) => {
           var number;
           text = text.replace(",", ".");
           if (!isNaN(text) && text.toString().indexOf(".") !== -1) {
@@ -75,7 +83,7 @@ const Comp = ({ style, onChange, value, step = 1, ...rest }) => {
               changeValue("remove");
             }}
           >
-            <Icon size={22} name="minus" />
+            <Icon size={20} name="minus" />
           </Button>
           <Button
             light
@@ -85,7 +93,7 @@ const Comp = ({ style, onChange, value, step = 1, ...rest }) => {
               changeValue("add");
             }}
           >
-            <Icon size={22} name="plus" />
+            <Icon size={20} name="plus" />
           </Button>
         </Group>
       </Box>

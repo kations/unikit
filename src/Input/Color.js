@@ -192,7 +192,7 @@ const Color = withThemeProps(
               )}
               value={color.l}
               max={1}
-              steps={0.1}
+              steps={0.01}
               onChange={l => setColor({ ...color, l })}
               onSwipe={(p, l) => setColor({ ...color, l })}
               showTicks={false}
@@ -205,7 +205,7 @@ const Color = withThemeProps(
               )}
               value={color.s}
               max={1}
-              steps={0.1}
+              steps={0.01}
               onChange={s => setColor({ ...color, s })}
               onSwipe={(p, s) => setColor({ ...color, s })}
               showTicks={false}

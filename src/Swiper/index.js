@@ -2,25 +2,25 @@ import React, {
   useState,
   useEffect,
   forwardRef,
-  useImperativeHandle
+  useImperativeHandle,
 } from "react";
 import PropTypes from "prop-types";
-import { animated, useSpring } from "react-spring/native";
+import { View } from "react-native";
 
 import styled, { withThemeProps } from "../styled";
-import { useLayout, useGesture, useInterval } from "../hooks";
+import { useLayout, useGesture, useInterval, usePrevious } from "../hooks";
 import { getProgress, getValueByProgress } from "../util";
 import Dots from "./dots";
+import { AnimatedView, useSpring } from "../Spring";
+import Icon from "../Icon";
 
 const Wrapper = styled.View();
-const Item = animated(styled.View());
-const Track = animated(
-  styled.View(({ gesture }) => ({
-    web: {
-      cursor: gesture ? "grab" : "auto"
-    }
-  }))
-);
+const Arrow = styled.TouchableOpacity();
+const Track = styled(AnimatedView)(({ gesture }) => ({
+  web: {
+    cursor: gesture ? "grab" : "auto",
+  },
+}));
 
 export function Swiper(
   {
@@ -29,15 +29,23 @@ export function Swiper(
     vertical = false,
     autoplay = false,
     gesture = true,
+    arrows = false,
+    arrowProps = { color: "#FFF", strokeWidth: 0.5 },
+    arrowWrapperProps = {},
+    arrowDisabledAlpha = 0.3,
     dots = false,
     dotsProps = {},
     itemProps = {},
     autoplayTimeout = 3000,
     minDistance = 5,
     triggerDistance = 0.2,
-    springConfig = { config: {} },
+    springConfig = {},
     onSwipe,
     onSwipeEnd,
+    renderOnActive = false,
+    gestureProps = {},
+    gap = 0,
+    itemDimension,
     ...rest
   },
   ref
@@ -48,10 +56,18 @@ export function Swiper(
   const items = React.Children.toArray(children);
   const { onLayout, width, height } = useLayout();
 
-  const { dist } = useSpring({
-    to: { dist: vertical ? -(index * height) : -(index * width) },
+  if (typeof itemDimension === "string") {
+    itemDimension =
+      (parseFloat(itemDimension.replace("%", "")) / 100) * width +
+      gap / items.length;
+  }
+
+  const dist = useSpring({
+    to: vertical
+      ? -(index * (itemDimension || height))
+      : -(index * (itemDimension || width)),
     immediate: down,
-    ...springConfig
+    config: springConfig,
   });
 
   useInterval(
@@ -61,7 +77,7 @@ export function Swiper(
     autoplay && !down ? autoplayTimeout : null
   );
 
-  const setNewIndex = newIndex => {
+  const setNewIndex = (newIndex) => {
     if (newIndex > items.length - 1) {
       newIndex = items.length - 1;
     } else if (newIndex < 0) {
@@ -119,7 +135,8 @@ export function Swiper(
           }
         }
         setDown(false);
-      }
+      },
+      ...gestureProps,
     },
     [width, height, down]
   );
@@ -131,13 +148,20 @@ export function Swiper(
     swipePrev: () => {
       setNewIndex(index - 1);
     },
-    swipeTo: newIndex => {
+    swipeTo: (newIndex) => {
       setNewIndex(newIndex);
-    }
+    },
   }));
 
   return (
-    <Wrapper onLayout={onLayout} w="100%" overflow="hidden" relative {...rest}>
+    <Wrapper
+      onLayout={onLayout}
+      w="100%"
+      overflow="hidden"
+      opacity={width < 1 ? 0 : 1}
+      relative
+      {...rest}
+    >
       <Track
         {...bindGesture}
         gesture={gesture}
@@ -148,30 +172,66 @@ export function Swiper(
           ...(itemProps.style || {}),
           width: vertical ? "100%" : items.length * width,
           height: vertical ? items.length * height : "100%",
-          transform: vertical ? [{ translateY: dist }] : [{ translateX: dist }]
+          transform: vertical ? [{ translateY: dist }] : [{ translateX: dist }],
         }}
       >
-        {items.map((child, i) => (
-          <Item
-            style={{
-              width: vertical ? "100%" : width,
-              height: !vertical ? "100%" : height
-            }}
-            key={i}
-          >
-            {child}
-          </Item>
-        ))}
+        {items.map((child, i) => {
+          const isActive = activeIndex === i;
+          return (
+            <View
+              style={{
+                width: vertical ? "100%" : itemDimension || width,
+                height: !vertical ? "100%" : itemDimension || height,
+                paddingRight: !vertical ? gap : 0,
+                paddingBottom: vertical ? gap : 0,
+              }}
+              key={`swiper-${i}`}
+            >
+              {!isActive && renderOnActive ? null : child}
+            </View>
+          );
+        })}
       </Track>
       {dots ? (
         <Dots
           items={items}
           vertical={vertical}
           index={index}
-          onPress={index => setNewIndex(index)}
+          onPress={(index) => setNewIndex(index)}
           springConfig={springConfig}
           {...{ position: vertical ? "right" : "bottom", ...dotsProps }}
         />
+      ) : null}
+      {arrows ? (
+        <Wrapper
+          absoluteFill
+          row={!vertical}
+          alignItems="center"
+          justifyContent="space-between"
+          pointerEvents="box-none"
+          {...arrowWrapperProps}
+        >
+          <Arrow
+            opacity={index > 0 ? 1 : arrowDisabledAlpha}
+            key={`arrow-left-${index}`}
+          >
+            <Icon
+              onPress={() => setNewIndex(index - 1)}
+              name={vertical ? "chevronUp" : "chevronLeft"}
+              {...arrowProps}
+            />
+          </Arrow>
+          <Arrow
+            opacity={index < items.length - 1 ? 1 : arrowDisabledAlpha}
+            key={`arrow-right-${index}`}
+          >
+            <Icon
+              onPress={() => setNewIndex(index + 1)}
+              name={vertical ? "chevronDown" : "chevronRight"}
+              {...arrowProps}
+            />
+          </Arrow>
+        </Wrapper>
       ) : null}
     </Wrapper>
   );
@@ -188,7 +248,7 @@ Swiper.propTypes = {
   gesture: PropTypes.bool,
   dots: PropTypes.bool,
   dotsProps: PropTypes.object,
-  itemProps: PropTypes.object
+  itemProps: PropTypes.object,
 };
 
 export default withThemeProps(forwardRef(Swiper), "Swiper");

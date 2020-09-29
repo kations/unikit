@@ -6,7 +6,7 @@ import Checkbox from "./Checkbox";
 const Wrap = styled.View(({ theme }) => ({
   width: "100%",
   position: "relative",
-  borderRadius: theme.globals.roundness
+  borderRadius: theme.globals.roundness,
 }));
 
 const Select = styled.TouchableOpacity(({ theme, last }) => ({
@@ -17,40 +17,45 @@ const Select = styled.TouchableOpacity(({ theme, last }) => ({
   paddingVertical: theme.globals.inputGap / 1.3,
   paddingHorizontal: theme.globals.inputGap,
   borderBottomWidth: last ? 0 : 1,
-  borderBottomColor: "background"
+  borderBottomColor: "background",
 }));
 
 const Label = styled.Text({
   color: "text",
   font: "p",
-  marginLeft: 15
+  marginLeft: 15,
 });
 
 const Comp = ({ onChange, value, options, ...rest }) => {
   const selectValue = value || [];
+
+  const setValue = (changedValue) => {
+    let newValue = selectValue;
+    var found = newValue.filter((id) => id === changedValue);
+    if (found.length > 0) {
+      newValue = newValue.filter((id) => id !== changedValue);
+    } else {
+      newValue.push(changedValue);
+    }
+    onChange(newValue);
+  };
+
   return (
     <Wrap {...rest}>
       {options.map((option, index) => {
-        var value = option.value ? option.value : option;
+        const changedValue = option.value ? option.value : option;
         return (
           <Select
             onPress={() => {
-              let newValue = selectValue;
-              var found = newValue.filter(id => id === value);
-              if (found.length > 0) {
-                newValue = newValue.filter(id => id !== value);
-              } else {
-                newValue.push(value);
-              }
-              console.log({ newValue });
-              onChange(newValue);
+              setValue(changedValue);
             }}
             key={`multiselect-${index}`}
             activeOpacity={0.8}
             last={index === options.length - 1}
           >
             <Checkbox
-              value={selectValue.filter(id => id === value).length > 0}
+              value={selectValue.filter((id) => id === changedValue).length > 0}
+              onChange={(v) => setValue(changedValue)}
             />
             <Label>{option.label ? option.label : option}</Label>
           </Select>

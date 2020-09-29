@@ -4,8 +4,12 @@ import { Dimensions, Platform, PixelRatio } from "react-native";
 const get = require("get-value");
 const set = require("set-value");
 
+export function isNumber(value) {
+  if (value === 0) return true;
+  return isFinite(value);
+}
+
 export function rem(value) {
-  if (Platform.OS === "web") return `${value}rem`;
   return PixelRatio.getFontScale() * 16 * value;
 }
 
@@ -22,8 +26,8 @@ export const getObjValue = (obj, path) => {
   return get(obj, path);
 };
 
-export const isDark = colorString => {
-  return tc(colorString).isValid() && tc(colorString).getBrightness() < 155;
+export const isDark = (colorString) => {
+  return tc(colorString).isValid() && tc(colorString).getBrightness() < 195;
 };
 
 export const canUseDOM = !!(

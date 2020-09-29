@@ -90,7 +90,8 @@ ActionSheet.propTypes = {
   desc: PropTypes.string
 };
 
-ActionSheet.defaultProps = {
+//Just for docs
+ActionSheet.defaultPropTypes = {
   actions: [],
   buttonSize: 50,
   cancelText: "Cancel",

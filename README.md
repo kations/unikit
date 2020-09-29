@@ -2,7 +2,7 @@
 
 > universal component library for react and react-native
 
-[![NPM](https://img.shields.io/npm/v/unikit.svg)](https://www.npmjs.com/package/unikit) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) ![Supports Android, iOS and web](https://img.shields.io/badge/platforms-android%20%7C%20ios%20%7C%20web-lightgrey.svg)
 
 ### Install
 

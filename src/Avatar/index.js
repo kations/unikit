@@ -29,17 +29,23 @@ const BackgroundImage = styled.ImageBackground(({ size }) => ({
   borderRadius: size / 2
 }));
 
-const Label = styled(Text)(({ theme, type, textColor, size }) => ({
-  color: textColor
-    ? textColor
-    : isDark(theme.colors[type] || type)
-    ? "#FFF"
-    : "#000",
+const Label = styled(Text)(({ size }) => ({
   position: "relative",
   zIndex: 10,
   fontSize: size / 2.77,
   fontWeight: "bold"
 }));
+
+const getShort = char => {
+  let short = "";
+  const split = char.split(" ");
+  split.map((s, i) => {
+    if (i < 2) {
+      short = short + s.charAt(0).toUpperCase();
+    }
+  });
+  return short;
+};
 
 const Avatar = withThemeProps(
   ({
@@ -47,6 +53,7 @@ const Avatar = withThemeProps(
     children,
     size = 44,
     char = "",
+    formatChar = false,
     textColor,
     onPress,
     source,
@@ -65,8 +72,8 @@ const Avatar = withThemeProps(
         {children ? (
           children
         ) : (
-          <Label size={size} textColor={textColor}>
-            {char}
+          <Label bgAware={bg} size={size} textColor={textColor}>
+            {formatChar ? getShort(char) : char}
           </Label>
         )}
       </Wrap>
@@ -86,7 +93,7 @@ Avatar.propTypes = {
   children: PropTypes.node
 };
 
-Avatar.defaultProps = {
+Avatar.defaultPropTypes = {
   bg: "primary",
   size: 44,
   char: ""

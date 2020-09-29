@@ -36,6 +36,19 @@ export const useUpdateEffect = function useUpdateEffect(effect, dependencies) {
   }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
+export const useDelay = (delay) => {
+  const [waiting, setWaiting] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      alert(delay);
+      setWaiting(false);
+    }, delay);
+  }, []);
+
+  return { waiting };
+};
+
 export const useInterval = (callback, delay, ...args) => {
   const savedCallback = useRef();
 
@@ -54,7 +67,7 @@ export const useInterval = (callback, delay, ...args) => {
   }, [delay]);
 };
 
-export const usePrevious = value => {
+export const usePrevious = (value) => {
   // The ref object is a generic container whose current property is mutable ...
   // ... and can hold any value, similar to an instance property on a class
   const ref = useRef();
@@ -70,7 +83,7 @@ export const usePrevious = value => {
 
 export const useScaledSize = ({ multiple = 1 }) => {
   const {
-    window: { width }
+    window: { width },
   } = useDimensions();
   let size = 16;
 
@@ -87,21 +100,21 @@ export const useLayout = () => {
     x: 0,
     y: 0,
     width: 0,
-    height: 0
+    height: 0,
   });
 
-  const onLayout = useCallback(e => setLayout(e.nativeEvent.layout), []);
+  const onLayout = useCallback((e) => setLayout(e.nativeEvent.layout), []);
 
   return {
     onLayout,
-    ...layout
+    ...layout,
   };
 };
 
 export const useDimensions = () => {
   const [screenData, setScreenData] = useState(Dimensions.get("window"));
   useEffect(() => {
-    const onChange = result => setScreenData(result.window);
+    const onChange = (result) => setScreenData(result.window);
 
     Dimensions.addEventListener("change", onChange);
     return () => Dimensions.removeEventListener("change", onChange);
@@ -109,7 +122,7 @@ export const useDimensions = () => {
   return {
     ...screenData,
     isLandscape: screenData.width > screenData.height,
-    isLargeScreen: screenData.width > 1000
+    isLargeScreen: screenData.width > 1000,
   };
 };
 
@@ -120,7 +133,7 @@ export const useGesture = (config, state = []) => {
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
         onPanResponderTerminationRequest: (evt, gestureState) => true,
-        ...config
+        ...config,
       }),
     state
   );

@@ -74,7 +74,7 @@ Group.propTypes = {
   vertical: PropTypes.bool
 };
 
-Group.defaultProps = {
+Group.defaultPropTypes = {
   gap: 0,
   buttonStyle: {},
   vertical: false

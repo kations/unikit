@@ -1,21 +1,23 @@
-import React, { Fragment, useState } from "react";
-import {
-  useSpring,
-  animated,
-  config as springConfig
-} from "react-spring/native";
+import React, { Fragment, useState, useEffect } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 
 import styled, { withThemeProps } from "../styled";
 import Visible from "../Visible";
 
-const Box = animated(styled.View());
+import { Animated, useSpring } from "../Spring";
+import { useUpdateEffect } from "../hooks";
+
+const Box = styled(Animated.View)();
+
+const getValue = (obj, key, defaultValue) => {
+  return obj[key] !== undefined ? obj[key] : defaultValue;
+};
 
 const Animate = withThemeProps(
   ({
-    from = { opacity: 0, y: 100, x: 0 },
-    to = { opacity: 1, y: 0, x: 0 },
+    from = { o: 0, y: 100, x: 0 },
+    to = { o: 1, y: 0, x: 0 },
     children,
     stayVisible = true,
     onVisible,
@@ -26,22 +28,64 @@ const Animate = withThemeProps(
     style,
     ...rest
   }) => {
-    const [visible, setVisible] = useState(onVisible ? false : isVisible);
+    const [visible, setVisible] = useState(false);
 
-    const { opacity, x, y, z } = useSpring({
-      from,
-      to: (!visible && onVisible) || isVisible === false ? from : to,
-      config: springConfig[config] || config || springConfig.default,
-      delay: delay || 0
+    const x = useSpring({
+      to: visible ? getValue(to, "x", 0) : getValue(from, "x", 0),
+      config,
     });
+    const y = useSpring({
+      to: visible ? getValue(to, "y", 0) : getValue(from, "y", 0),
+      config,
+    });
+
+    const s = useSpring({
+      to: visible ? getValue(to, "s", 1) : getValue(from, "s", 1),
+      config,
+    });
+
+    const o = useSpring({
+      to: visible ? getValue(to, "o", 0) : getValue(from, "o", 0),
+      config,
+    });
+
+    useEffect(() => {
+      if (isVisible && !onVisible) {
+        if (delay) {
+          setTimeout(() => {
+            setVisible(true);
+          }, delay);
+        } else {
+          setVisible(true);
+        }
+      }
+    }, []);
+
+    useUpdateEffect(() => {
+      setVisible(isVisible);
+    }, [isVisible]);
+
+    const opacity = getValue(from, "o") !== undefined ? o : 1;
+    const transform = [];
+
+    if (getValue(from, "y") !== undefined) {
+      transform.push({ translateY: y });
+    }
+    if (getValue(from, "x") !== undefined) {
+      transform.push({ translateX: x });
+    }
+    if (getValue(from, "s") !== undefined) {
+      transform.push({ translateX: s });
+    }
 
     const AnimatedComp = (
       <Box
         style={{
           ...style,
-          opacity: opacity,
-          transform: [{ translateY: y || 0 }, { translateX: x || 0 }]
+          opacity,
+          transform,
         }}
+        pointerEvents={visible ? "auto" : "none"}
         {...rest}
       >
         {children}
@@ -53,7 +97,7 @@ const Animate = withThemeProps(
         <Fragment>
           <Visible
             stayVisible={stayVisible}
-            onChange={isVisible => {
+            onChange={(isVisible) => {
               setVisible(isVisible);
             }}
             offset={100}
@@ -82,14 +126,14 @@ Animate.propTypes = {
   delay: PropTypes.number,
   duration: PropTypes.number,
   config: PropTypes.object,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
-Animate.defaultProps = {
-  from: { opacity: 0, y: 100, x: 0 },
-  to: { opacity: 1, y: 0, x: 0 },
+Animate.defaultPropTypes = {
+  from: { o: 0, y: 100, x: 0 },
+  to: { o: 1, y: 0, x: 0 },
   stayVisible: true,
-  isVisible: true
+  isVisible: true,
 };
 
 export default Animate;

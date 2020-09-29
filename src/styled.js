@@ -1,22 +1,27 @@
-import React, { useContext, forwardRef } from "react";
-import scStyled, { ThemeContext, withTheme } from "styled-components/native";
+import * as React from "react";
+import { useContext, forwardRef } from "react";
+import scStyled, {
+  ThemeProvider,
+  ThemeContext,
+  withTheme,
+} from "styled-components/native";
 import * as RN from "react-native";
 import parseStyle from "./parseStyle";
 import hoistStatics from "hoist-non-react-statics";
 
-export { withTheme };
+export { withTheme, ThemeProvider };
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const useThemeProps = (props, name) => {
   const theme = useTheme();
-  return Object.assign({}, theme.globals[name] || {}, props);
+  return Object.assign({ theme }, theme[name] || {}, props);
 };
 
 export const withThemeProps = (Component, name) => {
   const WithTheme = React.forwardRef((props, ref) => {
     const theme = useContext(ThemeContext);
-    const themeProps = Object.assign({}, theme[name], props);
+    const themeProps = Object.assign({}, theme[name] || {}, props);
 
     if (process.env.NODE_ENV !== "production" && !theme) {
       // eslint-disable-next-line no-console
@@ -42,8 +47,8 @@ function isFunction(functionToCheck) {
 }
 // @ts-ignore
 export default function styled(component, alias) {
-  return arg => {
-    const StyledComp = scStyled(component)(props => {
+  return (arg) => {
+    const StyledComp = scStyled(component)((props) => {
       const { theme } = props;
       let style = arg || {};
       if (isFunction(style)) {
@@ -55,7 +60,7 @@ export default function styled(component, alias) {
       // console.log({ getStyle: getStyle(props) });
 
       const platforms = ["web", "ios", "android", "native"];
-      platforms.map(platform => {
+      platforms.map((platform) => {
         if (
           (style[platform] && RN.Platform.OS === platform) ||
           (style[platform] &&
@@ -73,7 +78,7 @@ export default function styled(component, alias) {
       const parsedStyle = parseStyle({
         theme,
         ...style,
-        overwriteStyles: false
+        overwriteStyles: false,
       });
       delete parsedStyle["absoluteFill"];
       delete parsedStyle["web"];
@@ -95,12 +100,12 @@ export default function styled(component, alias) {
 //   });
 // }
 
-Object.keys(scStyled).forEach(alias => {
+Object.keys(scStyled).forEach((alias) => {
   Object.defineProperty(styled, alias, {
     enumerable: true,
     configurable: false,
     get() {
       return styled(RN[alias], alias);
-    }
+    },
   });
 });

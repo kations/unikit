@@ -2,7 +2,7 @@ import React, {
   useState,
   useEffect,
   forwardRef,
-  useImperativeHandle
+  useImperativeHandle,
 } from "react";
 import * as PropTypes from "prop-types";
 
@@ -14,7 +14,7 @@ import Flex from "../Flex";
 import { getObjValue, setObjValue } from "../util";
 
 const FormWrap = styled.View({
-  width: "100%"
+  width: "100%",
 });
 
 const getDefaultValue = ({ child: { props } }) => {
@@ -29,7 +29,8 @@ const getDefaultValue = ({ child: { props } }) => {
   return value;
 };
 
-const getDefaultState = (children, state) => {
+const getDefaultState = (children, defaultDoc) => {
+  var state = { ...defaultDoc };
   React.Children.toArray(children).map((child, i) => {
     const key =
       child.props && child.props.field ? child.props.field : undefined;
@@ -37,7 +38,7 @@ const getDefaultState = (children, state) => {
       key &&
       typeof key === "string" &&
       key.length > 0 &&
-      !getObjValue(state, key)
+      getObjValue(state, key) === undefined
     ) {
       state = setObjValue(state, key, getDefaultValue({ child }));
     }
@@ -54,7 +55,7 @@ const renderChildren = (children, doc, setDoc) => {
     return React.cloneElement(child, {
       key: key || `child-${index}`,
       value: key ? getObjValue(doc, key) : undefined,
-      onChange: value => {
+      onChange: (value) => {
         if (key) {
           const newDoc = Object.assign({}, doc);
           setDoc(setObjValue(newDoc || {}, key, value));
@@ -66,7 +67,7 @@ const renderChildren = (children, doc, setDoc) => {
         child.props.children &&
         typeof child.props.children !== "string"
           ? renderChildren(child.props.children, doc, setDoc)
-          : child.props.children
+          : child.props.children,
     });
   });
 };
@@ -104,7 +105,7 @@ const Form = withThemeProps(
       useImperativeHandle(ref, () => ({
         submit: () => {
           if (onSubmit) onSubmit(doc, reset);
-        }
+        },
       }));
 
       return (
@@ -151,7 +152,7 @@ Form.propTypes = {
   buttonProps: PropTypes.object,
   defaultDoc: PropTypes.object,
   leftAction: PropTypes.node,
-  rightAction: PropTypes.node
+  rightAction: PropTypes.node,
 };
 
 export default Form;

@@ -6,7 +6,6 @@ import { rem } from "../util";
 const TextInput = styled.TextInput(({ theme, textColor }) => ({
   backgroundColor: "transparent",
   width: "100%",
-  paddingVertical: theme.globals.inputGap,
   paddingHorizontal: theme.globals.inputGap,
   borderRadius: theme.globals.roundness,
   fontSize: rem(1),
@@ -16,11 +15,11 @@ const TextInput = styled.TextInput(({ theme, textColor }) => ({
   fontFamily: theme.globals.fontFamily,
   web: {
     outlineStyle: "none",
-    borderColor: "transparent"
-  }
+    borderColor: "transparent",
+  },
 }));
 
-const getLinesByString = string => {
+const getLinesByString = (string) => {
   let array = string.split(/\r*\n/);
   return array.length;
 };
@@ -37,6 +36,7 @@ const Text = withThemeProps(
     textColor,
     multiline,
     numberOfLines,
+    size = 50,
     ...rest
   }) => {
     const theme = useTheme();
@@ -51,9 +51,11 @@ const Text = withThemeProps(
 
     return (
       <TextInput
+        h={multiline ? "auto" : size}
+        minHeight={size}
         value={value !== undefined && value !== null ? value.toString() : ""}
         as={as || undefined}
-        onChangeText={text => (onChange ? onChange(text) : null)}
+        onChangeText={(text) => (onChange ? onChange(text) : null)}
         placeholderTextColor={placeholderTextColor}
         textColor={textColor}
         underlineColorAndroid="transparent"
@@ -82,8 +84,8 @@ const Text = withThemeProps(
   "TextInput"
 );
 
-Text.defaultProps = {
-  placeholderColor: "placeholder"
+Text.defaultPropTypes = {
+  placeholderColor: "placeholder",
 };
 
 export default Text;

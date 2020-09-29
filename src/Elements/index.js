@@ -27,39 +27,39 @@ function createText(style = {}) {
 //Basics
 export const Header = create({
   web: {
-    accessibilityRole: "banner"
+    accessibilityRole: "banner",
   },
   default: {
-    accessibilityRole: "header"
-  }
+    accessibilityRole: "header",
+  },
 });
 
 export const Footer = create({
   web: {
-    accessibilityRole: "contentinfo"
-  }
+    accessibilityRole: "contentinfo",
+  },
 });
 
 export const Nav = create({
   web: {
-    accessibilityRole: "navigation"
-  }
+    accessibilityRole: "navigation",
+  },
 });
 
 export const Main = create({
   web: {
-    accessibilityRole: "main"
-  }
+    accessibilityRole: "main",
+  },
 });
 
 export const Article = create({
   web: {
-    accessibilityRole: "article"
-  }
+    accessibilityRole: "article",
+  },
 });
 
 export const Section = create({
-  default: { accessibilityRole: "summary" }
+  default: { accessibilityRole: "summary" },
 });
 
 //Headings
@@ -75,10 +75,16 @@ export const P = createText();
 export const B = createText({ fontWeight: "bold" });
 export const I = createText({ fontStyle: "italic" });
 export const BlockQuote = createText({ marginVertical: em(1) });
-export const BR = createText({ width: "100%", height: em(1) });
+export const BR = createText({
+  width: "100%",
+  height: em(1),
+  ...Platform.select({
+    web: { display: "block" },
+  }),
+});
 export const Code = createText({
   fontFamily: Platform.OS !== "web" ? "System" : "Courier",
-  fontWeight: "500"
+  fontWeight: "500",
 });
 
 export const A = forwardRef(({ href, target, ...props }, ref) => {
@@ -87,16 +93,16 @@ export const A = forwardRef(({ href, target, ...props }, ref) => {
       {...Platform.select({
         web: {
           href,
-          target
+          target,
         },
         default: {
-          onPress: event => {
+          onPress: (event) => {
             props.onPress && props.onPress(event);
             if (Platform.OS !== "web" && href !== undefined) {
               Linking.openURL(href);
             }
-          }
-        }
+          },
+        },
       })}
       {...props}
       ref={ref}

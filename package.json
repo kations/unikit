@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.2.36",
+  "version": "1.2.95",
   "description": "universal component library for react and react-native",
   "repository": "https://github.com/kations/unikit",
   "author": "kations <schoeller@kations.de> (https://github.com/kations)",
@@ -45,6 +45,8 @@
     "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/react-native": "0.61.10",
+    "babel-plugin-react-native-web": "^0.13.8",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "commitlint": "^8.3.4",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
@@ -60,9 +62,9 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-spring": "*",
-    "styled-components": "*",
-    "swgs": "*"
+    "react-native-reanimated": "^1.7.1",
+    "react-native-svg": "^12.0.3",
+    "styled-components": "*"
   },
   "jest": {
     "preset": "react-native",
@@ -70,12 +72,6 @@
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn lint && yarn typescript"
-    }
   },
   "eslintConfig": {
     "extends": [
@@ -133,12 +129,16 @@
     ]
   },
   "dependencies": {
+    "d3-scale": "^3.2.1",
+    "d3-shape": "^1.3.7",
     "dayjs": "^1.8.22",
     "deepmerge": "^4.2.2",
     "get-value": "^3.0.1",
     "prop-types": "^15.7.2",
     "set-value": "^3.0.1",
+    "setimmediate": "^1.0.5",
     "svg-path-properties": "^1.0.2",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "use-memo-one": "^1.1.1"
   }
 }

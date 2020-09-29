@@ -10,10 +10,10 @@ import TextInput from "./Text";
 
 const Box = styled.View(({ theme }) => ({
   width: "100%",
-  position: "relative"
+  position: "relative",
 }));
 
-const Comp = props => {
+const Comp = (props) => {
   const {
     value,
     onChange,
@@ -43,7 +43,7 @@ const Comp = props => {
       if (typeof options[0] === "string") {
         return value;
       } else {
-        const option = options.find(e => e.value === value);
+        const option = options.find((e) => e.value === value);
         return option ? option.label : undefined;
       }
     }
@@ -75,11 +75,11 @@ const Comp = props => {
                 outlineWidth: 0,
                 outlineColor: "unset",
                 borderColor: "transparent",
-                appearance: "none"
-              }
-            })
+                appearance: "none",
+              },
+            }),
           },
-          pickerProps.style
+          pickerProps.style,
         ]}
       >
         <Picker.Item label={placeholder} value={null} />
@@ -127,7 +127,7 @@ const Comp = props => {
         w="auto"
         pointerEvents="none"
       >
-        <Icon name="arrowDown" size={23} color="primary" />
+        <Icon name="chevronDown" size={23} color="primary" />
       </Box>
 
       {Platform.OS === "ios" ? (

@@ -4,17 +4,29 @@ import PropTypes from "prop-types";
 
 import styled, { withThemeProps } from "../styled";
 import Box from "../Box";
+import { isDark } from "../util";
 
 const Txt = styled.Text(({ theme }) => ({
-  fontFamily: theme.globals.fontFamily,
-  color: "text"
+  fontFamily: theme.globals.fontFamily
 }));
 
 const Touchable = styled.TouchableOpacity();
 
-export function Text({ children, level, font, ...rest }) {
+export function Text({
+  theme,
+  children,
+  level,
+  font,
+  bgAware,
+  color = "text",
+  ...rest
+}) {
   if (!level && !font) {
     font = "p";
+  }
+
+  if (bgAware) {
+    color = isDark(theme.colors[bgAware] || bgAware) ? "#FFF" : "#000";
   }
 
   return (
@@ -23,6 +35,7 @@ export function Text({ children, level, font, ...rest }) {
       aria-level={level}
       level={level}
       font={level && !font ? `h${level}` : font}
+      color={color}
       {...Platform.select({
         web: {
           ...(level ? { "aria-level": `${level}` } : {}),

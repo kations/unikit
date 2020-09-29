@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
-import { animated, useSpring } from "react-spring/native";
 
 import styled, { withThemeProps } from "../styled";
+import { AnimatedView, useSpring } from "../Spring";
 
 const dotsPositionStyle = {
   top: {
@@ -33,7 +33,7 @@ const Dot = styled.TouchableOpacity({
   web: { cursor: "pointer" }
 });
 
-const Indicator = animated(styled.View());
+const Indicator = styled(AnimatedView)();
 
 export function Dots({
   items = [],
@@ -48,12 +48,12 @@ export function Dots({
   itemSize = 20,
   indicatorColor,
   trackColor,
-  springConfig = { config: {} },
+  springConfig = {},
   ...rest
 }) {
-  const { dist } = useSpring({
-    to: { dist: index * itemSize },
-    ...springConfig
+  const dist = useSpring({
+    to: index * itemSize,
+    config: springConfig
   });
 
   return (
