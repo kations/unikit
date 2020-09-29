@@ -21,14 +21,14 @@ const TYPES = {
   color: {
     component: TextInput,
     props: () => ({
-      children: <Color height="65%" minHeight={35} />,
+      renderRight: <Color height="65%" minHeight={35} />,
     }),
     focus: true,
   },
   date: {
     component: TextInput,
     props: () => ({
-      children: <DatePicker light size={35} />,
+      renderRight: <DatePicker light size={35} />,
       mask: 'date',
     }),
     focus: true,
@@ -36,7 +36,7 @@ const TYPES = {
   datetime: {
     component: TextInput,
     props: () => ({
-      children: <DatePicker light size={35} time />,
+      renderRight: <DatePicker light size={35} time />,
       mask: 'datetime',
     }),
     focus: true,
@@ -65,7 +65,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       mask: 'number',
-      children: <Number />,
+      renderRight: <Number />,
     }),
     focus: true,
   },

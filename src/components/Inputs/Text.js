@@ -214,7 +214,8 @@ const TextInput = ({
   numberOfLines,
   size = 50,
   roundness,
-  children,
+  renderLeft = null,
+  renderRight = null,
   mask,
   secureTextEntry,
   ...rest
@@ -316,14 +317,12 @@ const TextInput = ({
         }}
       />
 
-      {children && (
+      {renderRight && (
         <Flex height={size} pr={theme.globals.gap} justifyContent="center">
-          {React.Children.only(
-            React.cloneElement(children, {
-              value,
-              onChange,
-            })
-          )}
+          {React.cloneElement(renderRight, {
+            value,
+            onChange,
+          })}
         </Flex>
       )}
       {secureTextEntry && (

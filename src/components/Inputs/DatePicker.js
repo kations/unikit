@@ -250,12 +250,13 @@ const DatePicker = ({
                         {week.map((day) => {
                           const activeDay = dayjs(date).isSame(day, 'day');
                           const activeMonth = dayjs(date).isSame(day, 'month');
+
                           return (
                             <Button
                               key={`week-${i}`}
-                              onPress={() =>
-                                setDate(dayjs(date).day(day.day()).toDate())
-                              }
+                              onPress={() => {
+                                setDate(dayjs(date).date(day.date()).toDate());
+                              }}
                               key={dayjs(day).format('D')}
                               clean={!activeDay}
                               color={activeDay ? undefined : dayColor}
