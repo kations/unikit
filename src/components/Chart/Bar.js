@@ -41,6 +41,7 @@ const Bar = ({ v, height, springConfig = {}, delay = 0, onPress, ...rest }) => {
 export default ({
   pan,
   progress,
+  dataKey,
   data,
   scaleY,
   scaleX,
@@ -48,23 +49,32 @@ export default ({
   height,
   animated = true,
   color = 'primary',
-  onChange,
-  showValue = true,
+  valueOffset = 0,
   valueColor = 'text',
+  activeValueColor = '#FFF',
+  onChange,
+  showValue = false,
+  showActiveValue = false,
   activeIndex,
   activeColor = 'primary',
   barSize,
+  formatValue,
   ...rest
 }) => {
   const theme = useTheme();
   const [active, setActive] = React.useState(activeIndex || null);
 
   React.useEffect(() => {
-    if (pan === false) setActive(null);
+    if (pan === false && !isNumber(activeIndex)) setActive(null);
     const newActive = Math.floor(getValueByProgress(0, data.length, progress));
-    if (newActive !== active) {
+    if (isNumber(newActive) && newActive !== active && data[newActive]) {
       setActive(newActive);
-      if (onChange) onChange({ value: data[newActive], index: newActive });
+      if (onChange)
+        onChange({
+          value: data[newActive].dataKey,
+          item: data[newActive],
+          index: newActive,
+        });
     }
   }, [progress, pan]);
 
@@ -75,7 +85,7 @@ export default ({
     >
       {data.map((v, index) => {
         const isActive = active === index;
-        const value = isNumber(v) ? v : null;
+        const value = isNumber(v[dataKey]) ? v[dataKey] : v || null;
         if (value === null) return null;
 
         const defaultW = scaleX.bandwidth
@@ -93,10 +103,17 @@ export default ({
           themeKey: 'colors',
         });
 
+        const textFill = transformColor({
+          value: isActive ? activeValueColor : valueColor,
+          theme,
+          themeKey: 'colors',
+        });
+
         return (
           <G
             onPress={() => {
               if (onChange) onChange({ value, index });
+              setActive(index);
             }}
             key={`bar-${index}`}
           >
@@ -112,18 +129,18 @@ export default ({
                 stroke="transparent"
               />
             </Delay>
-            {showValue && isActive && (
+            {showValue || (isActive && showActiveValue) ? (
               <Text
                 x={x + w / 2}
-                y={y - h + 15}
+                y={y - h + 15 + valueOffset}
                 fontSize={theme.fonts.caption.fontSize}
                 textAnchor="middle"
                 fontFamily={theme.globals.fontFamily}
-                fill={isDark(fill) ? '#FFF' : '#000'}
+                fill={textFill}
               >
-                {value}
+                {formatValue ? formatValue(value, data[index], index) : value}
               </Text>
-            )}
+            ) : null}
           </G>
         );
       })}

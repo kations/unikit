@@ -74,6 +74,7 @@ export default function LiveView({ code, scope, title, from, ...rest }) {
           Icon: unikit.Icon,
           Button: unikit.Button,
           Form: unikit.Form,
+          Input: unikit.Input,
           Touchable: unikit.Touchable,
           useInterval: unikit.useInterval,
           icons,

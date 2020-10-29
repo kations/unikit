@@ -1,16 +1,16 @@
-import * as React from "react";
-import { svgPathProperties } from "svg-path-properties";
-import * as shape from "d3-shape";
+import * as React from 'react';
+import { svgPathProperties } from 'svg-path-properties';
+import * as shape from 'd3-shape';
 
-import Flex from "../Flex";
-import Button from "../Button";
-import { useTheme, createBox } from "../../restyle";
-import { AnimatedView, useSpring } from "../../spring";
-import { useGesture } from "../../hooks";
-import { isNumber, getProgress, getValueByProgress } from "../../utils";
+import Flex from '../Flex';
+import Button from '../Button';
+import { useTheme, styled } from '../../restyle';
+import { AnimatedView, useSpring } from '../../spring';
+import { useGesture } from '../../hooks';
+import { isNumber, getProgress, getValueByProgress } from '../../utils';
 
-const ValueWrap = createBox(AnimatedView);
-const ValuePoint = createBox(AnimatedView);
+const ValueWrap = styled(AnimatedView)();
+const ValuePoint = styled(AnimatedView)();
 
 function getPathCoordinates({
   width,
@@ -88,18 +88,18 @@ const ValueDot = ({
       bg="surface"
       borderColor={theme.colors[color] || color}
       style={{ transform: [{ translateY: y }] }}
-      alignItems={"flex-start"}
+      alignItems={'flex-start'}
       justifyContent="center"
     >
       {showValue && (
         <Flex
           w={500}
           ml={switchLabel ? -505 : 12}
-          alignItems={switchLabel ? "flex-end" : "flex-start"}
+          alignItems={switchLabel ? 'flex-end' : 'flex-start'}
         >
-          <Button bg={color || "surface"} rounded size={22}>
-            {`${label ? `${label} ` : ""}${xLabel ? `${xLabel} ` : ""}${
-              value !== undefined ? `${value}` : ""
+          <Button bg={color || 'surface'} rounded size={22}>
+            {`${label ? `${label} ` : ''}${xLabel ? `${xLabel} ` : ''}${
+              value !== undefined ? `${value}` : ''
             }`}
           </Button>
         </Flex>
@@ -185,7 +185,7 @@ export default ({
     if (Math.round(newIndex) !== index) {
       setIndex(Math.round(newIndex));
       if (onChange) onChange({ progress, index: Math.round(newIndex) });
-      if (theme.onFeedback) theme.onFeedback("selection");
+      if (theme.onFeedback) theme.onFeedback('selection');
     }
   }, [progress]);
 
@@ -227,10 +227,10 @@ export default ({
     >
       <ValueWrap
         style={{
-          height: "100%",
+          height: '100%',
           width: 1,
-          backgroundColor: indicator ? theme.colors.border : "transparent",
-          overflow: "visible",
+          backgroundColor: indicator ? theme.colors.border : 'transparent',
+          overflow: 'visible',
           opacity: !show && hideValueOnBlur ? 0 : 1,
           transform: [{ translateX: dist }],
         }}
@@ -238,9 +238,9 @@ export default ({
         <Flex h="100%" pointerEvents="none" relative>
           {keys.map((key) => {
             const props = keyProps[key] || {};
-            if (props.dots === false || props.type === "bar") return null;
+            if (props.dots === false || props.type === 'bar') return null;
             const v = data[key] || 0;
-            const value = isNumber(v) ? v : "-";
+            const value = isNumber(v) ? v : '-';
             return (
               <ValueDot
                 color={color}
@@ -277,11 +277,11 @@ export default ({
             h="100%"
             w={1000}
             mx={1}
-            alignItems={progress > 0.5 ? "flex-end" : "flex-start"}
-            justifyContent={valuePosition === "top" ? "flex-start" : "flex-end"}
+            alignItems={progress > 0.5 ? 'flex-end' : 'flex-start'}
+            justifyContent={valuePosition === 'top' ? 'flex-start' : 'flex-end'}
             py={valueOffset}
-            r={progress < 0.5 ? "auto" : 0}
-            l={progress > 0.5 ? "auto" : 0}
+            r={progress < 0.5 ? 'auto' : 0}
+            l={progress > 0.5 ? 'auto' : 0}
             t={0}
             absolute
           ></Flex>

@@ -28,6 +28,7 @@ const Grid = ({
 
   return (
     <Flex
+      {...gridProps}
       style={{
         width: '100%',
         position: 'relative',
@@ -37,8 +38,8 @@ const Grid = ({
         }))`,
         gridColumnGap: gap,
         gridRowGap: gap,
+        ...(gridProps.style || {}),
       }}
-      {...gridProps}
       {...rest}
     >
       {React.Children.toArray(children).map((child, i) => {

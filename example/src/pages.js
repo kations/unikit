@@ -73,7 +73,10 @@ const pages = [
       r: 0,
       t: 50
     }}
-    content={<><Button width={300} onPress={() => theme.alert({type: "primary",message: "Hi!"})}>Content</Button><Button  width={300} onPress={() => theme.alert({ type: "primary", message: "Hi!"})}>Content</Button></>}>
+    content={<>
+      <Button width={300} onPress={() => theme.alert({type: "primary",message: "Hi!"})}>Content</Button>
+      <Button  width={300} onPress={() => theme.alert({ type: "primary", message: "Hi!"})}>Content</Button>
+      </>}>
     <Button><Icon name="chevronDown" color="#FFF" size={20} /></Button>
     </Dropdown></Flex>`,
   },
@@ -104,8 +107,8 @@ const pages = [
     title: 'Picker',
     from: 'Picker',
     group: 'UI',
-    smallCode: `<Flex w="80%"><Picker /></Flex>`,
-    code: `<Flex><Picker onChange={(value) => console.log({value})} /></Flex>`,
+    smallCode: `<Flex w="80%"><Picker useScrollView /></Flex>`,
+    code: `<Flex><Picker onChange={(value) => console.log({value})} useScrollView /></Flex>`,
   },
   {
     slug: 'collapsible',
@@ -172,33 +175,33 @@ const pages = [
   </Flex>;
   `,
   },
-  // //   {
-  // //     path: "/group",
-  // //     title: "Group",
-  // //     from: "Group",
-  // //     group: "UI",
-  // //     smallCode: `<Group maxWidth="70%"><Button size={40} rounded>Button</Button><Button size={40} rounded>Button</Button></Group>`,
-  // //     code: `<Fragment><Flex p={30}>
-  // //     <Group gap={1}>
-  // //         <Button>Label</Button>
-  // //         <Button>Label</Button>
-  // //         <Button>Label</Button>
-  // //     </Group>
-  // // </Flex>
-  // // <Flex bg="primary" bgAlpha={0.1} p={30}  align="center">
-  // //     <Headline>Welcome back</Headline>
-  // //     <Text o={0.5}>Login with your credentials</Text>
-  // //     <Form maxWidth={600} buttonProps={{mt: 15}} onSubmit={(doc, reset) => {
-  // //         alert(JSON.stringify(doc))
-  // //         reset()
-  // //     }}>
-  // //     <Group mt={30} vertical >
-  // //         <Input type="text" placeholder="E-Mail" field="mail" />
-  // //         <Input type="text" placeholder="Password" field="pw" />
-  // //     </Group>
-  // //     </Form>
-  // // </Flex><Fragment>`
-  // //   },
+  {
+    slug: 'group',
+    title: 'Group',
+    from: 'Group',
+    group: 'UI',
+    smallCode: `<Group><Button size={40} rounded>Button</Button><Button size={40} rounded>Button</Button></Group>`,
+    code: `<><Flex p={30}>
+      <Group gap={1}>
+          <Button>Label</Button>
+          <Button>Label</Button>
+          <Button>Label</Button>
+      </Group>
+  </Flex>
+  <Flex bg="primary:setAlpha:0.1"  p={30} flexCenter>
+      <Text level={2}>Welcome back</Text>
+      <Text o={0.5}>Login with your credentials</Text>
+      <Form maxWidth={600} buttonProps={{mt: 15}} onSubmit={(doc, reset) => {
+          alert(JSON.stringify(doc))
+          reset()
+      }}>
+      <Group mt={30} vertical >
+          <Input type="text" placeholder="E-Mail" field="mail" />
+          <Input type="password" placeholder="Password" field="pw" />
+      </Group>
+      </Form>
+  </Flex></>`,
+  },
   {
     slug: 'avatar',
     title: 'Avatar',
@@ -286,7 +289,7 @@ const pages = [
       >
         <Chart.Grid />
         <Chart.Indicator color="primary:setAlpha:0.5" />
-        <Chart.Line />
+        <Chart.Line onChange={({value, index}) => console.log(value)} />
         
       </Chart>
     </Flex>
@@ -350,6 +353,7 @@ const pages = [
           activeColor="primary:setAlpha:0.85"
           activeIndex={8}
           dataKey="test2"
+          showValue
           onChange={({ value, index }) => console.log(value)}
         />
       
@@ -371,11 +375,12 @@ const pages = [
         }}
       >
       <Chart.Indicator />
+      <Chart.GridLine value={2} color="primary" gridDasharray={5} />
         <Chart.Bar
           color="primary:setAlpha:0.1"
           activeColor="primary:setAlpha:0.85"
-          activeIndex={4}
           barSize={25}
+          showActiveValue
           onChange={({ value, index }) => console.log(value)}
         />
       
@@ -465,85 +470,6 @@ const pages = [
     </Flex>
   </Flex>;`,
   },
-  // {
-  //   path: "/form",
-  //   title: "Form",
-  //   from: "Form",
-  //   group: "Inputs",
-  //   smallCode: `<Button>Submit</Button>`,
-  //   code: `function form() {
-  //     const formRef = useRef(null);
-  //     const theme = useTheme();
-  //     return (
-  //       <Fragment>
-  //         <Form
-  //           ref={formRef}
-  //           onSubmit={(doc, reset) => {
-  //             console.log(JSON.stringify(doc));
-  //             theme.alert({type: "success", message: "Yeah!"})
-  //             //reset()
-  //           }}
-  //           buttonProps={{ mt: 10 }}
-  //         >
-  //           <Grid gap={20} min={200}>
-  //             <Input
-  //               field="text.bla"
-  //               w="100%"
-  //               type="text"
-  //               label="Text"
-  //               clean={false}
-  //               placeholder="placeholder"
-  //               required
-  //             />
-  //             <Input
-  //               field="text.blub"
-  //               w="100%"
-  //               type="text"
-  //               label="Text"
-  //               clean={false}
-  //               placeholder="placeholder"
-  //               required
-  //             />
-  //           </Grid>
-  //           <Input field="range" type="range" label="Slider" />
-
-  //           <Input type="tabs" label="Tabs as select" options={[
-  //             { label: "Tab 1", value: 0 },
-  //             { label: "Tab 2", value: 1 }
-  //           ]} field="tabs" borderRadius={25} />
-
-  //           <Input field="tags" type="tags" label="Tags" value={["Tag"]} />
-  //           <Input field="switch" type="switch" label="Switch" />
-  //           <Input
-  //             field="select"
-  //             type="select"
-  //             label="Select"
-  //             options={["One", "Two"]}
-  //           />
-  //           <Input
-  //             field="multi"
-  //             type="multiselect"
-  //             label="MultiSelect"
-  //             options={["One", "Two"]}
-  //           />
-  //           <Input
-  //             field="multiswtich"
-  //             type="multiswitch"
-  //             label="MultiSitch"
-  //             options={["One", "Two"]}
-  //           />
-  //           <Input field="number" type="number" label="Number" />
-  //           <Input field="checkbox" type="checkbox" label="Checkbox" />
-  //           <Input field="date" type="date" label="DatePicker" />
-  //           <Input field="color" type="color" label="Color" />
-  //         </Form>
-  //         <Button mt={15} w={200} onPress={() => formRef.current.submit()}>
-  //           Custom trigger
-  //         </Button>
-  //       </Fragment>
-  //     );
-  //   }`,
-  // },
   {
     slug: 'input',
     title: 'Input',
@@ -552,6 +478,9 @@ const pages = [
     smallCode: `<Input type="text" label="Sunny" placeholder="text"  inline icon="sun"  />`,
     code: `<Flex w="100%" flexCenter>
       <Form   onSubmit={doc => alert(JSON.stringify(doc))} clean>
+      <Input label="Custom input" field="custom" clean>
+        <Flex width={100} height={100} bg="primary"></Flex>
+      </Input>
       <Input type="text" label="Text" placeholder="text"  field="text" clean needsDoc  />
       <Input type="password" label="Password" placeholder="password"  field="password" clean  />
       <Input type="date" label="Date"  defaultValue={new Date()}  field="date" clean  />
@@ -659,6 +588,18 @@ const pages = [
     group: 'Inputs',
     smallCode: `<DatePicker  />`,
     code: `<Form><DatePicker field="date"  /></Form>`,
+  },
+  {
+    slug: 'image',
+    title: 'Image',
+    from: 'Image',
+    group: 'Primitives',
+    smallCode: `<Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={100} lazy  />`,
+    code: `<Flex flexCenter py={100}>
+      <Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width={200} lazy  />
+      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1601451977966-85a9e242c7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width="75%" lazy  />
+      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={400} lazy  />
+    </Flex>`,
   },
 ];
 

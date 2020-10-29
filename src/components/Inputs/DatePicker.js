@@ -13,13 +13,13 @@ import Group from '../Group';
 import Collapsible from '../Collapsible';
 import Touchable from '../Touchable';
 import Picker from '../Picker';
-import Input from './Input';
+import TextInput from './Text';
 import { Label, P } from '../HTML';
 
-const YEARS = (yearsOffset, date) => {
+const YEARS = (min, max) => {
   const years = [];
-  const firstYear = dayjs(date).subtract(yearsOffset / 2, 'years');
-  Array.from(Array(yearsOffset + 10).keys()).map((index) => {
+  const firstYear = dayjs().year(min);
+  Array.from(Array(max - (min - 1)).keys()).map((index) => {
     years.push(dayjs(firstYear).add(index, 'year').format('YYYY'));
   });
   return years;
@@ -96,10 +96,11 @@ const DatePicker = ({
   theme,
   value,
   onChange,
-  yearsOffset = 100,
   overlayProps = {},
   dayColor = 'text',
   time = false,
+  minYear = 1900,
+  maxYear = 2100,
   ...rest
 }) => {
   const [year, setYear] = React.useState(false);
@@ -169,7 +170,9 @@ const DatePicker = ({
                 <Group width={100} ml={10} gap={1}>
                   <Button
                     size={38}
-                    onPress={() => setDate(dayjs(date).subtract(1, 'month'))}
+                    onPress={() =>
+                      setDate(dayjs(date).subtract(1, 'month').toDate())
+                    }
                     light
                     rounded
                     py={0}
@@ -178,7 +181,9 @@ const DatePicker = ({
                   </Button>
                   <Button
                     size={38}
-                    onPress={() => setDate(dayjs(date).add(1, 'month'))}
+                    onPress={() =>
+                      setDate(dayjs(date).add(1, 'month').toDate())
+                    }
                     light
                     rounded
                     py={0}
@@ -199,17 +204,17 @@ const DatePicker = ({
                   }
                   mr={5}
                   flex={1}
-                  useScrollView={isWeb}
+                  useScrollView
                 />
                 <Picker
                   value={currentYear}
-                  options={YEARS(yearsOffset, date)}
+                  options={YEARS(minYear, maxYear)}
                   onChange={(value) =>
                     setDate(dayjs(date).year(parseInt(value)).toDate())
                   }
                   ml={5}
                   flex={1}
-                  useScrollView={isWeb}
+                  useScrollView
                 />
               </Flex>
             )}
@@ -280,8 +285,8 @@ const DatePicker = ({
                   );
                 })}
                 {time && (
-                  <Input
-                    type="time"
+                  <TextInput
+                    mask={'time'}
                     label="Time"
                     inline
                     value={value}

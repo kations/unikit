@@ -57,8 +57,7 @@ const Alert = ({
         bottom={0}
         flexCenter
       >
-        <Group>
-          {timeout && (
+        {/* {timeout && (
             <Button
               bg={`${type || 'surface'}:darken:5`}
               size={30}
@@ -80,21 +79,20 @@ const Alert = ({
                 />
               )}
             </Button>
-          )}
-          {confirm || actionSheet ? null : (
-            <Button
-              onPress={(e) => {
-                e.stopPropagation();
-                close();
-              }}
-              bg={`${type || 'surface'}:darken:5`}
-              size={30}
-              roundness={theme.globals.roundness}
-            >
-              <Icon name="x" color={textColor} size={22} strokeWidth={2} />
-            </Button>
-          )}
-        </Group>
+          )} */}
+        {confirm || actionSheet ? null : (
+          <Button
+            onPress={(e) => {
+              e.stopPropagation();
+              close();
+            }}
+            bg={`${type || 'surface'}:darken:5`}
+            size={30}
+            roundness={theme.globals.roundness}
+          >
+            <Icon name="x" color={textColor} size={22} strokeWidth={2} />
+          </Button>
+        )}
       </Flex>
     </Flex>
   );

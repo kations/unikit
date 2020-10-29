@@ -1,0 +1,8 @@
+{
+  "description": "Example app for unikit",
+  "display": "standalone",
+  "lang": "en",
+  "name": "unikit-example",
+  "short_name": "unikit-example",
+  "start_url": "/?utm_source=web_app_manifest"
+}

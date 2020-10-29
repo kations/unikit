@@ -11,6 +11,7 @@ import { isNumber, getProgress, getValueByProgress } from '../../utils';
 import Line from './Line';
 import Bar from './Bar';
 import Grid from './Grid';
+import GridLine from './GridLine';
 import Indicator from './Indicator';
 
 const getValue = (d, key) => {
@@ -25,8 +26,8 @@ const getValue = (d, key) => {
 
 const getDomain = (domain) => [Math.min(...domain), Math.max(...domain)];
 
-const getDomainY = ({ data, keys }) => {
-  const domain = [0];
+const getDomainY = ({ data, keys, yZero }) => {
+  const domain = yZero ? [0] : [];
 
   data.map((d) => {
     keys.map((key) => {
@@ -52,6 +53,7 @@ const Chart = ({
   yAxis = false,
   yAxisPadding = 5,
   yTicks,
+  yZero = true,
   legend,
   formatX,
   formatY,
@@ -61,6 +63,8 @@ const Chart = ({
   domainX,
   domainXPadding = 0.1,
   valueOverlay = false,
+  gesture = true,
+  mouse = true,
   ...rest
 }) => {
   const { onLayout, width } = useLayout();
@@ -68,13 +72,13 @@ const Chart = ({
   const [pan, setPan] = React.useState(false);
 
   const keys = React.Children.toArray(children).map((c) => {
-    if (c.props.dataKey) return c.props.dataKey;
+    if (c && c.props && c.props.dataKey) return c.props.dataKey;
   });
 
   const scaleY = React.useMemo(
     () =>
       scaleLinear()
-        .domain(yDomain || getDomainY({ data, keys }))
+        .domain(yDomain || getDomainY({ data, keys, yZero }))
         .range([height - contentInset.bottom, contentInset.top]),
     [data, keys, width, minChartWidth]
   );
@@ -156,17 +160,29 @@ const Chart = ({
           height={height}
           position="relative"
           collapsable={false}
-          onMouseOver={(e) => {
-            setPan(true);
-          }}
-          onMouseMove={(e) => {
-            const { layerX } = e.nativeEvent;
-            setProgressValue({ dist: layerX });
-          }}
-          onMouseLeave={() => {
-            setPan(false);
-          }}
-          {...bindGesture}
+          onMouseOver={
+            mouse
+              ? (e) => {
+                  setPan(true);
+                }
+              : undefined
+          }
+          onMouseMove={
+            mouse
+              ? (e) => {
+                  const { layerX } = e.nativeEvent;
+                  setProgressValue({ dist: layerX });
+                }
+              : undefined
+          }
+          onMouseLeave={
+            mouse
+              ? () => {
+                  setPan(false);
+                }
+              : undefined
+          }
+          {...(gesture ? bindGesture : {})}
           {...wrapperProps}
         >
           {width > 0 && (
@@ -186,7 +202,7 @@ const Chart = ({
                 if (c) {
                   return React.cloneElement(c, {
                     ...c.props,
-                    data: data.map((d) => d[c.props.dataKey] || d),
+                    data,
                     width,
                     height,
                     scaleY,
@@ -197,6 +213,7 @@ const Chart = ({
                     progress,
                     pan,
                     offset,
+                    gesture,
                   });
                 }
               })}
@@ -212,9 +229,9 @@ const Chart = ({
             padding={xAxisPadding}
             ticks={xTicks || data.length}
             formatTick={(d) => {
-              if (!data[d]) return '';
+              if (typeof data[d] === 'undefined') return '';
               if (formatX) {
-                return formatX(data[d]);
+                return formatX(data[d], d);
               }
               return data[d].label || d;
             }}
@@ -231,5 +248,6 @@ ChartWithTheme.Line = Line;
 ChartWithTheme.Bar = Bar;
 ChartWithTheme.Grid = Grid;
 ChartWithTheme.Indicator = Indicator;
+ChartWithTheme.GridLine = GridLine;
 
 export default ChartWithTheme;

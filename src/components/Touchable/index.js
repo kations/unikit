@@ -11,6 +11,6 @@
 // export default withThemeProps(Touchable, 'Touchable');
 import { TouchableOpacity } from 'react-native';
 
-import { createBox } from '../../restyle';
+import { styled } from '../../restyle';
 
-export default createBox(TouchableOpacity);
+export default styled(TouchableOpacity)();

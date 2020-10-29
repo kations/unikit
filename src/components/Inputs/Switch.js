@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme, createBox } from '../../restyle';
+import { useTheme, styled } from '../../restyle';
 import { useGesture, useUpdateEffect } from '../../hooks';
 
 import { AnimatedTouchable, AnimatedView, useSpring } from '../../spring';
@@ -8,9 +8,9 @@ import Flex from '../Flex';
 import Touchable from '../Touchable';
 import { isNumber, getProgress } from '../../utils';
 
-const Switch = createBox(AnimatedTouchable);
-const Circle = createBox(AnimatedView);
-const Bg = createBox(AnimatedView);
+const Switch = styled(AnimatedTouchable)();
+const Circle = styled(AnimatedView)();
+const Bg = styled(AnimatedView)();
 
 const Comp = ({
   value,

@@ -11,3 +11,4 @@ export { default as useUpdateEffect } from './useUpdateEffect';
 export { default as useTimeout } from './useTimeout';
 export { default as useColorScheme } from './useColorScheme';
 export { default as useThrottle } from './useThrottle';
+export { default as useVisibilitySensor } from './useVisibilitySensor';

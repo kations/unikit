@@ -7,7 +7,7 @@ import {
   useUpdateEffect,
   useThrottle,
 } from '../../hooks';
-import { withThemeProps, createBox } from '../../restyle';
+import { withThemeProps, styled } from '../../restyle';
 import { getProgress, getValueByProgress, isNumber } from '../../utils';
 import { AnimatedView, useSpring } from '../../spring';
 
@@ -16,7 +16,7 @@ import Flex from '../Flex';
 import Animate from '../Animate';
 import Axis from '../Axis';
 
-const HandleWrap = createBox(AnimatedView);
+const HandleWrap = styled(AnimatedView)();
 
 const Handle = ({
   onChange,

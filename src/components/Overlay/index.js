@@ -138,7 +138,7 @@ const Overlay = ({
             textColor="text"
             buttons={[
               {
-                label: theme.translations.cancel,
+                label: theme.translations.close,
                 onPress: (close) => close('onConfirm missing'),
                 clean: true,
                 size: 55,

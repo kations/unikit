@@ -9,16 +9,14 @@ import { View } from 'react-native';
 import Flex from '../Flex';
 import Touchable from '../Touchable';
 
-import { withThemeProps, createBox } from '../../restyle';
+import { withThemeProps, styled } from '../../restyle';
 import { useLayout, useGesture, useInterval } from '../../hooks';
 import { getProgress, getValueByProgress } from '../../utils';
 import Dots from './dots';
 import { AnimatedView, useSpring } from '../../spring';
 import Icon from '../Icon';
 
-// const Wrapper = styled.View();
-// const Arrow = styled.TouchableOpacity();
-const Track = createBox(AnimatedView);
+const Track = styled(AnimatedView)();
 
 export function Swiper(
   {
@@ -188,7 +186,9 @@ export function Swiper(
               }}
               key={`swiper-${i}`}
             >
-              {!isActive && renderOnActive ? null : child}
+              {!isActive && renderOnActive
+                ? null
+                : React.cloneElement(child, { ...child.props, isActive })}
             </View>
           );
         })}

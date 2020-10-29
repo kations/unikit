@@ -53,9 +53,7 @@ const Button = ({
       h={size}
       px={size * 0.46}
       onPress={disabled ? undefined : onPress}
-      borderRadius={
-        roundness || rounded ? size : roundness || theme.globals.roundness
-      }
+      borderRadius={rounded ? size : roundness || theme.globals.roundness}
       justifyContent="center"
       alignItems="center"
       activeOpacity={0.9}

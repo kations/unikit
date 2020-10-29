@@ -1,11 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { View } from 'react-native';
 
-import { withThemeProps, createBox } from '../../restyle';
-import Visible from '../Visible';
-
+import { withThemeProps, styled } from '../../restyle';
 import { Animated, useSpring } from '../../spring';
-import { useUpdateEffect } from '../../hooks';
+import { useUpdateEffect, useVisibilitySensor } from '../../hooks';
 
 const { concat } = Animated;
 
@@ -22,7 +20,7 @@ interface Props {
   [key: string]: any;
 }
 
-const Box = createBox(Animated.View);
+const Box = styled(Animated.View)();
 
 const getValue = (obj, key, defaultValue) => {
   return obj[key] !== undefined ? obj[key] : defaultValue;
@@ -44,6 +42,12 @@ const Animate = ({
   ...rest
 }: Props) => {
   const [visible, setVisible] = useState(false);
+  const { bindVisibility } = useVisibilitySensor({
+    stayVisible,
+    onChange: (vis) => {
+      if (onVisible) setVisible(vis);
+    },
+  });
 
   const springProps = {
     loop,
@@ -110,7 +114,7 @@ const Animate = ({
     transform.push({ rotate: concat(r, 'deg') });
   }
 
-  const AnimatedComp = (
+  return (
     <Box
       style={{
         ...style,
@@ -120,30 +124,10 @@ const Animate = ({
       pointerEvents={visible ? 'auto' : 'none'}
       {...rest}
     >
+      {onVisible && <View {...bindVisibility} />}
       {children}
     </Box>
   );
-
-  if (onVisible) {
-    return (
-      <Fragment>
-        <Visible
-          stayVisible={stayVisible}
-          onChange={(isVisible) => {
-            setVisible(isVisible);
-          }}
-          offset={100}
-        >
-          {({ isVisible }) => {
-            return <View />;
-          }}
-        </Visible>
-        {AnimatedComp}
-      </Fragment>
-    );
-  }
-
-  return AnimatedComp;
 };
 
 Animate.defaultPropTypes = {

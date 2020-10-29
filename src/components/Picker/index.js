@@ -1,14 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { withThemeProps } from '../../restyle';
 import { useUpdateEffect } from '../../hooks';
-
-const VIEWABILITY_CONFIG = {
-  minimumViewTime: 3000,
-  viewAreaCoveragePercentThreshold: 100,
-  waitForInteraction: true,
-};
 
 import Flex from '../Flex';
 import Touchable from '../Touchable';
@@ -92,20 +86,13 @@ const Picker = ({
     }
   }, [value]);
 
-  const scrollTo = ({ index }) => {
+  const scrollTo = ({ index, animated = true }) => {
     if (scrollRef.current) {
-      if (useScrollView) {
-        scrollRef.current.scrollTo({
-          x: 0,
-          y: index * itemHeight,
-          animated: true,
-        });
-      } else {
-        scrollRef.current.scrollToIndex({
-          animated: true,
-          index: index,
-        });
-      }
+      scrollRef.current.scrollTo({
+        x: 0,
+        y: index * itemHeight,
+        animated,
+      });
     }
   };
 
@@ -137,7 +124,7 @@ const Picker = ({
     if (scrollRef.current) {
       const index = getIndexByValue(options, value);
       setTimeout(() => {
-        scrollTo({ index });
+        scrollTo({ index, animated: false });
       }, 10);
     }
   }, []);
@@ -148,10 +135,10 @@ const Picker = ({
     snapToAlignment: 'start',
     pagingEnabled: true,
     snapToInterval: itemHeight,
-    //decelerationRate: 'fast',
+    decelerationRate: 'fast',
     showsVerticalScrollIndicator: false,
     onScroll: onScroll,
-    bounces: false,
+    bounces: true,
   };
 
   const height = itemHeight * items;
@@ -178,40 +165,17 @@ const Picker = ({
         zIndex={0}
       />
 
-      {useScrollView ? (
-        <ScrollView
-          ref={scrollRef}
-          decelerationRate="fast"
-          disableScrollViewPanResponder
-          style={{
-            paddingTop: height / 2 - itemHeight / 2,
-            paddingBottom: height / 2 - itemHeight / 2,
-          }}
-          {...scrollerProps}
-        >
-          {options.map((item, index) => renderItem({ item, index }))}
-        </ScrollView>
-      ) : (
-        <FlatList
-          ref={scrollRef}
-          data={options}
-          initialScrollIndex={index}
-          keyExtractor={(item) => `item-${item.value ? item.value : item}`}
-          getItemLayout={(data, index) => ({
-            length: itemHeight,
-            offset: itemHeight * index,
-            index,
-          })}
-          contentContainerStyle={{
-            paddingTop: height / 2 - itemHeight / 2,
-            paddingBottom: height / 2 - itemHeight / 2,
-          }}
-          style={StyleSheet.absoluteFillObject}
-          renderItem={renderItem}
-          viewabilityConfig={VIEWABILITY_CONFIG}
-          {...scrollerProps}
-        />
-      )}
+      <ScrollView
+        ref={scrollRef}
+        style={{
+          height: height,
+        }}
+        {...scrollerProps}
+      >
+        <Flex height={height / 2 - itemHeight / 2} width="100%" />
+        {options.map((item, index) => renderItem({ item, index }))}
+        <Flex height={height / 2 - itemHeight / 2} width="100%" />
+      </ScrollView>
     </Flex>
   );
 };

@@ -1,13 +1,13 @@
-import React from "react";
-import { ImageBackground } from "react-native";
-import { withThemeProps } from "../../restyle";
+import React from 'react';
+import { ImageBackground } from 'react-native';
+import { withThemeProps } from '../../restyle';
 
-import Button from "../Button";
-import Text from "../Text";
+import Button from '../Button';
+import Text from '../Text';
 
 const getShort = (char) => {
-  let short = "";
-  const split = char.split(" ");
+  let short = '';
+  const split = char.split(' ');
   split.map((s, i) => {
     if (i < 2) {
       short = short + s.charAt(0).toUpperCase();
@@ -17,16 +17,17 @@ const getShort = (char) => {
 };
 
 const Avatar = ({
-  bg = "primary",
+  bg = 'primary',
   children,
   size = 44,
-  char = "",
+  char = '',
   formatChar = false,
-  color = "#FFF",
+  color = '#FFF',
   onPress,
   source,
   imageProps = {},
   labelProps = {},
+  roundness,
   ...rest
 }) => {
   return (
@@ -37,7 +38,8 @@ const Avatar = ({
       activeOpacity={onPress ? 0.8 : undefined}
       size={size}
       width={size}
-      rounded
+      rounded={!roundness}
+      roundness={roundness}
       px={0}
       {...rest}
     >
@@ -46,14 +48,14 @@ const Avatar = ({
           <ImageBackground
             source={source}
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: 0,
               right: 0,
               top: 0,
               bottom: 0,
-              borderRadius: size / 2,
+              borderRadius: roundness || size / 2,
               zIndex: 0,
-              overflow: "hidden",
+              overflow: 'hidden',
             }}
             {...imageProps}
           />
@@ -65,7 +67,7 @@ const Avatar = ({
             bgAware={bg}
             fontSize={size * 0.33}
             color={color}
-            style={{ position: "relative", zIndex: 100 }}
+            style={{ position: 'relative', zIndex: 100 }}
             bold
             {...labelProps}
           >
@@ -77,4 +79,4 @@ const Avatar = ({
   );
 };
 
-export default withThemeProps(Avatar, "Avatar");
+export default withThemeProps(Avatar, 'Avatar');

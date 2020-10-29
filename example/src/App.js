@@ -10,7 +10,7 @@ import Template from './screens/Template';
 const Stack = createStackNavigator();
 
 const screenOptions = {
-  headerShown: !isWeb,
+  headerShown: false,
   safeAreaInset: 'never',
 };
 
@@ -35,7 +35,7 @@ function AppLayout() {
       linking={linking}
       documentTitle={{
         formatter: (options, route) =>
-          `${options?.title ?? (route?.params?.slug || 'home')} - unikit`,
+          `${options?.title ?? (route?.params?.slug || 'Home')} - Unikit`,
       }}
     >
       <ThemeProvider mode={dark ? 'dark' : 'basic'} theme={{}}>

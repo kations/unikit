@@ -10,12 +10,18 @@ import Dot from './Dot';
 export default ({
   progress,
   pan,
+  gesture,
   data,
+  dataKey,
   scaleX,
   scaleY,
   width,
   height,
   showValue = false,
+  valueFont,
+  valueFontSize,
+  showDot = true,
+  showDots = false,
   animated = true,
   color = 'primary',
   fill,
@@ -25,11 +31,13 @@ export default ({
   shadow = 4,
   shadowOpacity = 0.2,
   strokeDasharray,
-  curve = shape.curveNatural,
+  curve = 'curveNatural',
   gradientOpacity = 1,
   gradientStartColor,
   gradientStopColor,
   offset,
+  onChange,
+  formatValue,
 }) => {
   const theme = useTheme();
   const stroke = transformColor({ value: color, theme, themeKey: 'colors' });
@@ -55,9 +63,9 @@ export default ({
           (p, i) => scaleX(i) + (scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0)
         )
         .y((p) => {
-          return scaleY(isNumber(p) ? p : 0);
+          return scaleY(isNumber(p[dataKey]) ? p[dataKey] : p || 0);
         })
-        .curve(curve)(data),
+        .curve(shape[curve])(data),
     [data]
   );
 
@@ -107,8 +115,10 @@ export default ({
         stroke={stroke}
         {...{ d, strokeWidth, strokeDasharray }}
       />
-      {pan && (
+      {pan && gesture && (
         <Dot
+          data={data}
+          dataKey={dataKey}
           d={d}
           width={width - offset}
           strokeWidth={strokeWidth}
@@ -116,8 +126,37 @@ export default ({
           color={stroke}
           scaleY={scaleY}
           showValue={showValue}
+          showDot={showDot}
+          onChange={onChange}
+          formatValue={formatValue}
+          valueFont={valueFont}
+          valueFontSize={valueFontSize}
         />
       )}
+
+      {showDots &&
+        data.map((item, i) => {
+          return (
+            <Dot
+              key={`dot-${i}`}
+              data={data}
+              dataKey={dataKey}
+              value={item[dataKey]}
+              d={d}
+              width={width - offset}
+              strokeWidth={strokeWidth}
+              progress={(1 / (data.length - 1)) * i}
+              color={stroke}
+              scaleY={scaleY}
+              showValue={showValue}
+              showDot
+              onChange={onChange}
+              formatValue={formatValue}
+              valueFont={valueFont}
+              valueFontSize={valueFontSize}
+            />
+          );
+        })}
     </G>
   );
 };

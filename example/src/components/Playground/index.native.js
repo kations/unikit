@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useRef } from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
 import { LiveProvider, withLive, LiveEditor } from 'react-live';
 import * as unikit from 'unikit';
 import { Flex, useTheme } from 'unikit';
@@ -49,9 +50,11 @@ export default function Table({ code, scope, title, ...rest }) {
         Icon: unikit.Icon,
         Button: unikit.Button,
         Form: unikit.Form,
+        Input: unikit.Input,
         useInterval: unikit.useInterval,
         icons,
         Touchable: unikit.Touchable,
+        TouchableWithoutFeedback,
         [title]: unikit[title],
         ...scope,
       }}

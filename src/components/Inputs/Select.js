@@ -13,6 +13,7 @@ import Switch from './Switch';
 import Overlay from '../Overlay';
 
 const Select = ({
+  size = 55,
   theme,
   value,
   onChange,
@@ -28,7 +29,9 @@ const Select = ({
   mode = 'list',
   multi = false,
   multiType = 'array',
+  bg = 'input',
   name,
+  labelSize,
   ...rest
 }) => {
   const [visible, setVisible] = React.useState(false);
@@ -50,6 +53,7 @@ const Select = ({
   const buttonProps =
     mode === 'list'
       ? {
+          size: size,
           width: '100%',
           clean: true,
           px: theme.globals.gap,
@@ -64,7 +68,7 @@ const Select = ({
           bg: 'input',
           color: 'text',
           rounded: true,
-          size: 50,
+          size: size,
           mt: theme.globals.gap / 2,
           mr: theme.globals.gap / 2,
         };
@@ -121,7 +125,7 @@ const Select = ({
                 <Checkbox
                   value={a}
                   mr={10}
-                  size={22}
+                  size={size / 2.5}
                   onChange={() => onChangeValue(v, a)}
                 />
               ) : undefined
@@ -130,16 +134,17 @@ const Select = ({
               picker === 'checkbox' ? undefined : (
                 <Switch
                   value={a}
-                  size={30}
+                  size={size / 1.75}
                   ml={10}
                   trackColor="input:darken:5"
+                  activeTrackColor={option.activeTrackColor || undefined}
                   onChange={() => onChangeValue(v, a)}
                 />
               )
             }
-            labelProps={{ fontSize: theme.fonts.p.fontSize }}
-            size={55}
+            labelProps={{ fontSize: labelSize || theme.fonts.p.fontSize }}
             {...buttonProps}
+            {...(i === 0 ? { borderTopWidth: 0 } : {})}
           >
             {option.label || option}
           </Button>
@@ -153,7 +158,7 @@ const Select = ({
       position="relative"
       width="100%"
       borderRadius={theme.globals.roundness}
-      bg={mode === 'pills' ? 'transparent' : 'input'}
+      bg={mode === 'pills' ? 'transparent' : bg}
       relative
       style={style}
       {...rest}
@@ -173,6 +178,7 @@ const Select = ({
               value={getValue()}
               placeholder={placeholder}
               pointerEvents={Platform.OS === 'web' ? 'all' : 'none'}
+              size={size}
             />
           </Touchable>
           <Flex

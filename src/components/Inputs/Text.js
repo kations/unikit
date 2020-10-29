@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 
-import { withThemeProps, createBox } from '../../restyle';
+import { withThemeProps, styled } from '../../restyle';
 import { isNumber } from '../../utils';
 import { useUpdateEffect } from '../../hooks';
 import { applyMask, removeMask } from './mask'; //@otw/mask
@@ -13,7 +13,7 @@ import Flex from '../Flex';
 import Touchable from '../Touchable';
 import Icon from '../Icon';
 
-const StyledTextInput = createBox(RNTextInput);
+const StyledTextInput = styled(RNTextInput)();
 
 const getLinesByString = (string) => {
   let array = string.split(/\r*\n/);
@@ -57,7 +57,7 @@ const PRE = {
       Y: /[0-9]/,
       H: /[0-2]/,
       h: /[0-9]/,
-      T: /[0-9]/,
+      T: /[0-6]/,
       t: /[0-9]/,
     },
   },
@@ -66,7 +66,7 @@ const PRE = {
     validators: {
       H: /[0-2]/,
       h: /[0-9]/,
-      T: /[0-9]/,
+      T: /[0-6]/,
       t: /[0-9]/,
     },
   },
@@ -112,6 +112,10 @@ const MASKS = {
     parseValue: (v, onChange) => {
       const { mask, validators } = PRE['phone'];
       if (onChange) onChange(removeMask({ mask, validators, value: v }));
+    },
+    props: {
+      keyboardType: 'phone-pad',
+      autoCapitalize: 'none',
     },
     placeholder: '+49 (123) 45678901',
   },
@@ -218,8 +222,11 @@ const TextInput = ({
   renderRight = null,
   mask,
   secureTextEntry,
+  defaultValue,
+  bg = 'input',
   ...rest
 }) => {
+  if (!value && defaultValue) value = defaultValue;
   const maskObj = MASKS[mask];
   const [secure, setSecure] = React.useState(secureTextEntry);
   const [text, setText] = React.useState(
@@ -246,15 +253,25 @@ const TextInput = ({
     );
   }, [value]);
 
+  console.log({ renderLeft });
+
   return (
     <Flex
       width="100%"
       alignItems="center"
-      bg="input"
+      bg={bg}
       py={multiline ? theme.globals.gap : undefined}
       borderRadius={isNumber(roundness) ? roundness : theme.globals.roundness}
       row
     >
+      {renderLeft && (
+        <Flex height={size} pr={theme.globals.gap} justifyContent="center">
+          {React.cloneElement(renderLeft, {
+            value,
+            onChange,
+          })}
+        </Flex>
+      )}
       <StyledTextInput
         flex={1}
         width="100%"

@@ -1,5 +1,5 @@
-import { createText } from '../../restyle';
+import { styled } from '../../restyle';
 
-const Text = createText();
+const Text = styled.Text();
 
 export default Text;

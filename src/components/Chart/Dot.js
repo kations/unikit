@@ -4,7 +4,7 @@ import { G, Circle, Text, Rect } from 'react-native-svg';
 import { Animated } from 'react-native';
 
 import { useTheme } from '../../restyle';
-import { isDark } from '../../utils';
+import { isDark, getValueByProgress } from '../../utils';
 
 const ValuePoint = Animated.createAnimatedComponent(Circle);
 
@@ -37,14 +37,21 @@ function getPathCoordinates({ d, width, progress }) {
 }
 
 const ValueDot = ({
+  data,
   d,
   scaleY,
+  showDot = true,
   showValue,
+  valueFontSize,
+  valueFont = 'caption',
   width,
   strokeWidth,
   dotSize = 5,
   progress,
   color,
+  onChange,
+  formatValue,
+  value,
 }) => {
   const opacity = React.useMemo(() => new Animated.Value(0), []);
 
@@ -66,39 +73,55 @@ const ValueDot = ({
     }).start();
   }, []);
 
-  const value = `${scaleY.invert(pos.y).toFixed(2)}`;
-  const valueWidth = value.length * 5 + 16;
+  const fontSize = valueFontSize || theme.fonts[valueFont].fontSize;
+  const val = value || `${scaleY.invert(pos.y).toFixed(2)}`;
+  const valueWidth = val.toString().length * 3 + fontSize * 3;
+
+  React.useEffect(() => {
+    if (onChange) {
+      const newActive = Math.floor(
+        getValueByProgress(0, data.length, progress)
+      );
+      onChange({
+        value: formatValue ? formatValue(val) : val,
+        item: data[newActive],
+        index: newActive,
+      });
+    }
+  }, [val]);
 
   return (
     <G x={pos.x} y={pos.y} style={{ opacity }}>
-      <ValuePoint
-        w={dotSize}
-        h={dotSize}
-        r={dotSize}
-        strokeWidth={strokeWidth}
-        stroke={color}
-        fill={theme.colors.surface}
-      />
+      {showDot && (
+        <ValuePoint
+          w={dotSize}
+          h={dotSize}
+          r={dotSize}
+          strokeWidth={strokeWidth}
+          stroke={color}
+          fill={theme.colors.surface}
+        />
+      )}
       {showValue && (
         <>
           <Rect
             width={valueWidth}
             x={-valueWidth / 2}
-            y={-28}
-            height={20}
+            y={-(fontSize * 3)}
+            height={fontSize * 2}
             fill={color}
             align="center"
-            rx={10}
-            ry={10}
+            rx={fontSize}
+            ry={fontSize}
           />
           <Text
-            fontSize={theme.fonts.caption.fontSize}
+            fontSize={fontSize}
             textAnchor="middle"
             fontFamily={theme.globals.fontFamily}
-            y={-15}
+            y={-((fontSize * 3) / 2) - 1}
             fill={isDark(color) ? '#FFF' : '#000'}
           >
-            {value}
+            {formatValue ? formatValue(val) : val}
           </Text>
         </>
       )}

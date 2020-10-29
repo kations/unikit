@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Animate from '../Animate';
-import { Text as Txt } from 'react-native';
 
 import Flex from '../Flex';
 import Text from './Text';
@@ -10,6 +9,7 @@ export default ({
   animateProps = {},
   delay = 0,
   animateType = 'char',
+  onVisible = false,
   ...rest
 }) => {
   var splittedString = children.split(animateType === 'word' ? ' ' : '');
@@ -24,6 +24,7 @@ export default ({
         <Animate
           key={`char-${index}`}
           delay={delay + index * 50}
+          onVisible={onVisible}
           {...animateProps}
         >
           <Text

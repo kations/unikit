@@ -22,12 +22,12 @@ export const isDark = (colorString) => {
 };
 
 export function rem(value: number) {
-  if (Platform.OS === 'web') return `${value}em`;
+  //if (Platform.OS === 'web') return `${value}em`;
   return PixelRatio.getFontScale() * 16 * value;
 }
 
 export function em(value) {
-  if (Platform.OS === 'web') return `${value}em`;
+  //if (Platform.OS === 'web') return `${value}em`;
   return rem(value);
 }
 

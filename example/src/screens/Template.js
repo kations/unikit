@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Flex, Page, isWeb, H1, P, Code, Animate } from 'unikit';
-import { Wrapper, Header } from '../components';
+import { Wrapper, Header, Navbar } from '../components';
 const Playground = React.lazy(() => import('../components/Playground'));
 import { pages } from '../pages';
 
-export default function App({ route = {} }) {
+export default function App({ route = {}, navigation: { goBack } }) {
   const { slug } = route.params || {};
   const item = pages.find((p) => p.slug === slug);
 
@@ -20,14 +20,21 @@ export default function App({ route = {} }) {
 
   return (
     <>
-      {isWeb && <Header />}
-      <Page scrollViewComponent={KeyboardAwareScrollView}>
-        <Wrapper mt={50} py={50} flexCenter>
-          <H1 bold animate>
-            {title}
-          </H1>
-        </Wrapper>
-        <Wrapper>
+      <Page
+        renderHeader={(top) => {
+          return (
+            <Navbar
+              top={top}
+              title={title}
+              goBack={goBack}
+              rightAction={isWeb ? true : false}
+            />
+          );
+        }}
+        scrollViewProps={{ scrollEventThrottle: 16 }}
+        scrollViewComponent={KeyboardAwareScrollView}
+      >
+        <Wrapper mt={150}>
           <Animate delay={250}>
             <Flex bg="primary:setAlpha:0.1" p={30}>
               <P>

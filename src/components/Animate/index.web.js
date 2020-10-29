@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { View } from 'react-native';
 
 import { withThemeProps } from '../../restyle';
-import Visible from '../Visible';
+import { useUpdateEffect, useVisibilitySensor } from '../../hooks';
 import Flex from '../Flex';
-import { useUpdateEffect } from '../../hooks';
 
 interface Props {
   children: React.ReactNode;
@@ -61,6 +61,12 @@ const Animate = ({
   const [visible, setVisible] = useState(
     onVisible || delay !== 0 ? false : isVisible
   );
+  const { bindVisibility } = useVisibilitySensor({
+    stayVisible,
+    onChange: (vis) => {
+      if (onVisible) setVisible(vis);
+    },
+  });
 
   config = {
     easing: 'easeInOutBack',
@@ -133,32 +139,12 @@ const Animate = ({
 
   const Comp = as ? as : Flex;
 
-  const AnimatedComp = (
+  return (
     <Comp style={styling} {...rest}>
+      {onVisible && <View {...bindVisibility} />}
       {children}
     </Comp>
   );
-
-  if (onVisible) {
-    return (
-      <Fragment>
-        <Visible
-          stayVisible={stayVisible}
-          onChange={(vis) => {
-            setVisible(vis);
-          }}
-          offset={offset}
-        >
-          {({ isVisible }) => {
-            return <div />;
-          }}
-        </Visible>
-        {AnimatedComp}
-      </Fragment>
-    );
-  }
-
-  return AnimatedComp;
 };
 
 Animate.defaultPropTypes = {

@@ -18,6 +18,8 @@ export { default as Dropdown } from './Dropdown';
 export { default as Portal } from './Portal';
 export { default as Overlay } from './Overlay';
 export { default as Picker } from './Picker';
+export { default as Group } from './Group';
+export { default as Image } from './Image';
 
 export * from './HTML';
 export * from './Inputs';

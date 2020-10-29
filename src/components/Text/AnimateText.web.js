@@ -7,6 +7,7 @@ export default ({
   animateProps = {},
   delay = 0,
   animateType = 'char',
+  onVisible = false,
   ...rest
 }) => {
   var splittedString = children.split(animateType === 'word' ? ' ' : '');
@@ -25,6 +26,8 @@ export default ({
           key={`char-${index}`}
           delay={delay + index * 50}
           style={{ display: 'inline-block' }}
+          onVisible={onVisible}
+          visibleNode={Text}
           {...animateProps}
         >
           {`${string}${animateType === 'word' ? ' ' : ''}`}

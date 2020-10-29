@@ -84,6 +84,10 @@ const spacingProperties = {
 };
 
 const spacingPropertiesShorthand = {
+  t: 'top',
+  r: 'right',
+  l: 'left',
+  b: 'bottom',
   w: 'width',
   h: 'height',
   m: 'margin',
@@ -283,7 +287,7 @@ const shadow = {
         shadowColor: color,
         shadowOffset: `0px ${h}px`,
         shadowRadius: `${r}px`,
-        shadowOpacity: isAndroid ? o : '1',
+        shadowOpacity: isAndroid ? `${o}` : '1',
         elevation: `${value - 1}`,
       };
     },
@@ -366,6 +370,9 @@ const boxFunctions = {
   ...borderColor,
   ...shadow,
   ...platformSpecific,
+  ...color,
+  ...textShadow,
+  ...typography,
 };
 
 const textFunctions = {
@@ -378,13 +385,15 @@ const textFunctions = {
   ...typography,
 };
 
-const matchProps = (props, functions) => {
+const matchProps = (props, functions, base) => {
   const styles = {};
-  Object.keys(props).map((key) => {
+  const merged = base ? Object.assign({}, base, props) : props;
+
+  Object.keys(merged).map((key) => {
     const style = functions[key];
-    if (style && typeof props[key] !== 'undefined') {
+    if (style && typeof merged[key] !== 'undefined') {
       const { transform, themeKey, property } = style;
-      const value = getResponsiveValue(props[key], {
+      const value = getResponsiveValue(merged[key], {
         theme: props.theme,
         dimensions: { width: props.theme.width, height: props.theme.height },
         themeKey,

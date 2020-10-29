@@ -55,7 +55,7 @@ const defaultTheme = {
     },
     p: {
       fontSize: rem(1),
-      lineHeight: rem(1.6),
+      lineHeight: `${rem(1.6)}px`,
     },
     default: {
       fontSize: rem(1),
@@ -69,6 +69,7 @@ const defaultTheme = {
   },
   translations: {
     done: 'done',
+    close: 'close',
     showToday: 'Show today',
     confirm: 'Confirm',
     cancel: 'Cancel',

@@ -57,7 +57,7 @@ const Dropdown = ({
           />
         </Animate>
       ) : null}
-      <Flex relative>
+      <Flex relative pointerEvents="box-none">
         {React.Children.only(
           React.cloneElement(children, {
             as: TouchableOpacity,
@@ -81,11 +81,7 @@ const Dropdown = ({
           alignItems={POSITIONS[position]}
           {...animateProps}
         >
-          <Flex
-            width={theme.width}
-            alignItems={POSITIONS[position]}
-            pointerEvents="box-none"
-          >
+          <Flex width={theme.width} alignItems={POSITIONS[position]}>
             <Flex
               w="auto"
               shadow={5}

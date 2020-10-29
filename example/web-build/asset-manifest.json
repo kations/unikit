@@ -1,0 +1,24 @@
+{
+  "files": {
+    "static/js/0.9b69c6eb.chunk.js": "/static/js/0.9b69c6eb.chunk.js",
+    "static/js/0.9b69c6eb.chunk.js.map": "/static/js/0.9b69c6eb.chunk.js.map",
+    "static/js/1.f1d74d71.chunk.js": "/static/js/1.f1d74d71.chunk.js",
+    "static/js/1.f1d74d71.chunk.js.map": "/static/js/1.f1d74d71.chunk.js.map",
+    "app.js": "/static/js/app.6285862d.chunk.js",
+    "app.js.map": "/static/js/app.6285862d.chunk.js.map",
+    "runtime~app.js": "/static/js/runtime~app.fba22d9b.js",
+    "runtime~app.js.map": "/static/js/runtime~app.fba22d9b.js.map",
+    "static/js/4.610cea52.chunk.js": "/static/js/4.610cea52.chunk.js",
+    "static/js/4.610cea52.chunk.js.map": "/static/js/4.610cea52.chunk.js.map",
+    "index.html": "/index.html",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "static/js/0.9b69c6eb.chunk.js.LICENSE.txt": "/static/js/0.9b69c6eb.chunk.js.LICENSE.txt",
+    "static/js/4.610cea52.chunk.js.LICENSE.txt": "/static/js/4.610cea52.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.fba22d9b.js",
+    "static/js/4.610cea52.chunk.js",
+    "static/js/app.6285862d.chunk.js"
+  ]
+}
