@@ -16,7 +16,6 @@ import {
 } from 'unikit';
 import { Wrapper, Link, Header, Navbar } from 'components';
 import { pages } from '../pages';
-import { Animated } from '../../../src/spring';
 const Playground = React.lazy(() => import('../components/Playground'));
 
 const getComponentsByGroup = (array, group) => {
@@ -24,9 +23,7 @@ const getComponentsByGroup = (array, group) => {
 };
 
 export default function App() {
-  const { getParam } = useNavigation();
   const groups = ['UI', 'Inputs', 'Primitives'];
-  const [count, setCount] = React.useState(0);
 
   return (
     <Page
