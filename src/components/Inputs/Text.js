@@ -2,10 +2,12 @@ import React from 'react';
 import { TextInput as RNTextInput } from 'react-native';
 import dayjs from 'dayjs';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
+require('dayjs/locale/de');
+dayjs.locale('de');
 dayjs.extend(customParseFormat);
 
 import { withThemeProps, styled } from '../../restyle';
-import { isNumber } from '../../utils';
+import { isNumber, isAndroid } from '../../utils';
 import { useUpdateEffect } from '../../hooks';
 import { applyMask, removeMask } from './mask'; //@otw/mask
 
@@ -20,6 +22,19 @@ const getLinesByString = (string) => {
   return array.length;
 };
 
+const dayjsLangs = {
+  de: {
+    d: (v) => `Tag${v !== 1 ? 'e' : ''}`,
+    m: (v) => `Monat${v !== 1 ? 'e' : ''}`,
+    y: (v) => `Jahr${v !== 1 ? 'e' : ''}`,
+  },
+  en: {
+    d: (v) => `day${v !== 1 ? 's' : ''}`,
+    m: (v) => `month${v !== 1 ? 's' : ''}`,
+    y: (v) => `year${v !== 1 ? 's' : ''}`,
+  },
+};
+
 const PRE = {
   number: {
     mask: 'a............................',
@@ -29,7 +44,7 @@ const PRE = {
     },
   },
   phone: {
-    mask: 'a.. (...) .......',
+    mask: 'a.. (...) ...............',
     validators: {
       'a': /[+]/,
       '.': /[0-9]/,
@@ -46,6 +61,7 @@ const PRE = {
       Y: /[0-9]/,
     },
   },
+
   datetime: {
     mask: 'Dd.Mm.yYYY Hh:Tt',
     validators: {
@@ -119,10 +135,33 @@ const MASKS = {
     },
     placeholder: '+49 (123) 45678901',
   },
-  date: {
+  timeago: {
     getValue: (v) => {
+      const d = dayjs().diff(dayjs(v), 'days');
+      const m = dayjs().diff(dayjs(v), 'month');
+      const y = dayjs().diff(dayjs(v), 'years');
+      const lang = dayjsLangs[dayjs.locale()] || dayjsLangs.en;
+
+      if (d <= 31) return `${d} ${lang.d(d)}`;
+      if (d > 31 && y < 1) return `${m} ${lang.m(m)}`;
+      return `${y} ${lang.y(y)}${
+        m - y * 12 > 0 ? `, ${m - y * 12} ${lang.m(m)}` : ''
+      }`;
+    },
+    parseValue: (v, onChange) => {},
+    props: {
+      keyboardType: 'number-pad',
+      autoCapitalize: 'none',
+    },
+    placeholder: '0 Tage, 0 Monate, 0 Jahre',
+  },
+  date: {
+    getValue: (v, init) => {
       const { mask, validators } = PRE['date'];
-      if (v instanceof Date) {
+      if (
+        v instanceof Date ||
+        (init === true && dayjs(v).toDate() instanceof Date)
+      ) {
         v = dayjs(v).format('DD.MM.YYYY');
       } else {
         v = `${v}`;
@@ -147,9 +186,12 @@ const MASKS = {
     placeholder: 'dd.mm.yyyy',
   },
   time: {
-    getValue: (v) => {
+    getValue: (v, init) => {
       const { mask, validators } = PRE['time'];
-      if (v instanceof Date) {
+      if (
+        v instanceof Date ||
+        (init === true && dayjs(v).toDate() instanceof Date)
+      ) {
         v = dayjs(v).format('HH:MM');
       } else {
         v = `${v}`;
@@ -174,9 +216,12 @@ const MASKS = {
     placeholder: 'hh:mm',
   },
   datetime: {
-    getValue: (v) => {
+    getValue: (v, init) => {
       const { mask, validators } = PRE['datetime'];
-      if (v instanceof Date) {
+      if (
+        v instanceof Date ||
+        (init === true && dayjs(v).toDate() instanceof Date)
+      ) {
         v = dayjs(v).format('DD.MM.YYYY HH:mm');
       } else {
         v = `${v}`;
@@ -224,6 +269,8 @@ const TextInput = ({
   secureTextEntry,
   defaultValue,
   bg = 'input',
+  shadow,
+  style,
   ...rest
 }) => {
   if (!value && defaultValue) value = defaultValue;
@@ -232,7 +279,9 @@ const TextInput = ({
   const [text, setText] = React.useState(
     value !== undefined && value !== null
       ? `${
-          maskObj && maskObj.getValue && value ? maskObj.getValue(value) : value
+          maskObj && maskObj.getValue && value
+            ? maskObj.getValue(value, true)
+            : value
         }`
       : ''
   );
@@ -253,15 +302,15 @@ const TextInput = ({
     );
   }, [value]);
 
-  console.log({ renderLeft });
-
   return (
     <Flex
       width="100%"
       alignItems="center"
       bg={bg}
-      py={multiline ? theme.globals.gap : undefined}
+      py={multiline ? (isAndroid && !value ? 0 : theme.globals.gap) : undefined}
       borderRadius={isNumber(roundness) ? roundness : theme.globals.roundness}
+      shadow={shadow}
+      style={style}
       row
     >
       {renderLeft && (
@@ -273,8 +322,8 @@ const TextInput = ({
         </Flex>
       )}
       <StyledTextInput
-        flex={1}
         width="100%"
+        flex={1}
         px={theme.globals.inputGap}
         height={multiline ? 'auto' : size}
         minHeight={size}

@@ -2,7 +2,6 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 
 import { withThemeProps } from '../../restyle';
-import { isWeb } from '../../utils';
 import { useUpdateEffect } from '../../hooks';
 
 import Icon from '../Icon';
@@ -14,6 +13,8 @@ import Collapsible from '../Collapsible';
 import Touchable from '../Touchable';
 import Picker from '../Picker';
 import TextInput from './Text';
+import Checkbox from './Checkbox';
+
 import { Label, P } from '../HTML';
 
 const YEARS = (min, max) => {
@@ -38,6 +39,41 @@ const MONTHS = (short) => {
   return months;
 };
 
+const HOURS = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+];
+
+const MINUTES = () => {
+  const minutes = [];
+  Array.from(Array(60).keys()).map((index) => {
+    minutes.push(index < 10 ? `0${index}` : `${index}`);
+  });
+  return minutes;
+};
+
 const getWeeks = (date) => {
   const weeks = [];
   let start = dayjs(dayjs(date).startOf('month')).startOf('week');
@@ -50,46 +86,6 @@ const getWeeks = (date) => {
   }
   return weeks;
 };
-
-// const List = React.memo(
-//     React.forwardRef(
-//       ({ color, showText, style, onScroll, onItemIndexChange }, ref) => {
-//         return (
-//           <Animated.FlatList
-//             ref={ref}
-//             data={data}
-//             style={style}
-//             keyExtractor={(item) => `${item.name}-${item.icon}`}
-//             bounces={false}
-//             scrollEnabled={!showText}
-//             scrollEventThrottle={16}
-//             onScroll={onScroll}
-//             decelerationRate='fast'
-//             snapToInterval={ITEM_HEIGHT}
-//             showsVerticalScrollIndicator={false}
-//             renderToHardwareTextureAndroid
-//             contentContainerStyle={{
-//               paddingTop: showText ? 0 : height / 2 - ITEM_HEIGHT / 2,
-//               paddingBottom: showText ? 0 : height / 2 - ITEM_HEIGHT / 2,
-//               paddingHorizontal: 20,
-//             }}
-//             renderItem={({ item }) => {
-//               return <Item {...item} color={color} showText={showText} />;
-//             }}
-//             onMomentumScrollEnd={(ev) => {
-//               const newIndex = Math.round(
-//                 ev.nativeEvent.contentOffset.y / ITEM_HEIGHT
-//               );
-
-//               if (onItemIndexChange) {
-//                 onItemIndexChange(newIndex);
-//               }
-//             }}
-//           />
-//         );
-//       }
-//     )
-//   );
 
 const DatePicker = ({
   size = 44,
@@ -107,6 +103,7 @@ const DatePicker = ({
   const [date, setDate] = React.useState(
     dayjs(value).isValid() ? value : new Date()
   );
+  const [timeVisible, setTime] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
 
   useUpdateEffect(() => {
@@ -119,10 +116,33 @@ const DatePicker = ({
     if (onChange && value !== date) onChange(date);
   }, [date]);
 
+  const onMonthChange = React.useCallback((value, index) => {
+    setDate((d) => dayjs(d).month(index).toDate());
+  }, []);
+
+  const onYearChange = React.useCallback((value, index) => {
+    setDate((d) => dayjs(d).year(parseInt(value)).toDate());
+  }, []);
+
+  const onHourChange = React.useCallback((value, index) => {
+    setDate((d) => dayjs(d).hour(parseInt(value)).toDate());
+  }, []);
+
+  const onMinuteChange = React.useCallback((value, index) => {
+    setDate((d) => dayjs(d).minute(parseInt(value)).toDate());
+  }, []);
+
   const weeks = React.useMemo(() => getWeeks(date), [date]);
+  const minutes = React.useMemo(() => MINUTES(), [date]);
+  const years = React.useMemo(() => YEARS(minYear, maxYear), [
+    minYear,
+    maxYear,
+  ]);
+  const months = React.useMemo(() => MONTHS(false), [minYear, maxYear]);
   const currentYear = dayjs(date).format('YYYY');
   const currentMonth = dayjs(date).format('MMMM');
-
+  const currentHour = dayjs(date).format('HH');
+  const currentMinute = dayjs(date).format('mm');
   return (
     <>
       <Button
@@ -144,7 +164,10 @@ const DatePicker = ({
         <Flex>
           <Collapsible
             collapsed={year === false}
-            onPress={() => setYear(!year)}
+            onPress={() => {
+              setYear(!year);
+              setTime(false);
+            }}
             iconColor="primary"
             renderTriger={({ open, setOpen, renderArrow }) => (
               <Flex
@@ -154,19 +177,50 @@ const DatePicker = ({
                 justifyContent="space-between"
                 p={theme.globals.gap}
               >
-                <Touchable
-                  onPress={() => {
-                    setOpen(!open);
-                    setYear(!year);
-                  }}
-                  row
-                  alignItems="center"
-                  height={38}
-                  flex={1}
-                >
-                  <P mr={5}>{dayjs(date).format('MMMM YYYY')}</P>
-                  {renderArrow}
-                </Touchable>
+                <Flex row>
+                  {timeVisible === true || year === true ? (
+                    <Button
+                      light
+                      rounded
+                      size={38}
+                      mr={year ? 5 : 0}
+                      py={0}
+                      onPress={() => {
+                        setYear(false);
+                        setTime(false);
+                      }}
+                    >
+                      <Icon name="chevronLeft" size={20} />
+                    </Button>
+                  ) : null}
+                  {!timeVisible ? (
+                    <Button
+                      light
+                      rounded
+                      size={38}
+                      onPress={() => {
+                        setYear(true);
+                        setTime(false);
+                      }}
+                    >
+                      {dayjs(date).format('MMM. YYYY')}
+                    </Button>
+                  ) : null}
+                  {time && !year ? (
+                    <Button
+                      light
+                      rounded
+                      ml={5}
+                      size={38}
+                      onPress={() => {
+                        setTime(true);
+                        setYear(false);
+                      }}
+                    >
+                      {dayjs(value).format('HH:mm')}
+                    </Button>
+                  ) : null}
+                </Flex>
                 <Group width={100} ml={10} gap={1}>
                   <Button
                     size={38}
@@ -178,6 +232,19 @@ const DatePicker = ({
                     py={0}
                   >
                     <Icon name="chevronLeft" size={20} />
+                  </Button>
+                  <Button
+                    size={38}
+                    onPress={() => setDate(dayjs().toDate())}
+                    light
+                    rounded
+                    py={0}
+                  >
+                    <Checkbox
+                      value={dayjs(date).isSame(dayjs(), 'day')}
+                      size={16}
+                      borderSize={1}
+                    />
                   </Button>
                   <Button
                     size={38}
@@ -198,20 +265,16 @@ const DatePicker = ({
               <Flex w="100%" row>
                 <Picker
                   value={currentMonth}
-                  options={MONTHS(false)}
-                  onChange={(value, index) =>
-                    setDate(dayjs(date).month(index).toDate())
-                  }
+                  options={months}
+                  onChange={onMonthChange}
                   mr={5}
                   flex={1}
                   useScrollView
                 />
                 <Picker
                   value={currentYear}
-                  options={YEARS(minYear, maxYear)}
-                  onChange={(value) =>
-                    setDate(dayjs(date).year(parseInt(value)).toDate())
-                  }
+                  options={years}
+                  onChange={onYearChange}
                   ml={5}
                   flex={1}
                   useScrollView
@@ -220,9 +283,32 @@ const DatePicker = ({
             )}
           </Collapsible>
 
+          <Collapsible collapsed={timeVisible === false} trigger={false}>
+            <Flex w="100%" row>
+              <Picker
+                value={currentHour}
+                options={HOURS}
+                onChange={onHourChange}
+                mr={5}
+                flex={1}
+                useScrollView
+              />
+              <Picker
+                value={currentMinute}
+                options={minutes}
+                onChange={onMinuteChange}
+                ml={5}
+                flex={1}
+                useScrollView
+              />
+            </Flex>
+          </Collapsible>
+
           <Collapsible
-            collapsed={year === true}
-            onPress={() => setYear(!year)}
+            collapsed={year === true || timeVisible === true}
+            onPress={() => {
+              setYear(!year);
+            }}
             trigger={false}
           >
             {!year && (
@@ -231,14 +317,12 @@ const DatePicker = ({
                   return (
                     <React.Fragment key={`col-${i}`}>
                       {i === 0 && (
-                        <Flex width="100%" row>
+                        <Flex width="100%" mb={3} row>
                           {week.map((day) => {
                             return (
                               <Flex
                                 key={dayjs(day).format('DD')}
                                 flex={1}
-                                borderWidth={1}
-                                borderColor="surface"
                                 flexCenter
                                 opacity={0.5}
                                 key={`head-${dayjs(day).format('ddd')}`}
@@ -266,8 +350,6 @@ const DatePicker = ({
                               clean={!activeDay}
                               color={activeDay ? undefined : dayColor}
                               flex={1}
-                              borderWidth={1}
-                              borderColor="surface"
                               height={45}
                               flexCenter
                               opacity={activeMonth ? 1 : 0.25}
@@ -284,15 +366,6 @@ const DatePicker = ({
                     </React.Fragment>
                   );
                 })}
-                {time && (
-                  <TextInput
-                    mask={'time'}
-                    label="Time"
-                    inline
-                    value={value}
-                    onChange={(v) => onChange(v)}
-                  />
-                )}
               </Flex>
             )}
           </Collapsible>

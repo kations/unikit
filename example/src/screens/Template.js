@@ -5,7 +5,7 @@ import { Wrapper, Header, Navbar } from '../components';
 const Playground = React.lazy(() => import('../components/Playground'));
 import { pages } from '../pages';
 
-export default function App({ route = {}, navigation: { goBack } }) {
+export default function App({ route = {}, navigation: { navigate } }) {
   const { slug } = route.params || {};
   const item = pages.find((p) => p.slug === slug);
 
@@ -26,7 +26,7 @@ export default function App({ route = {}, navigation: { goBack } }) {
             <Navbar
               top={top}
               title={title}
-              goBack={goBack}
+              goBack={() => navigate('Home')}
               rightAction={isWeb ? true : false}
             />
           );

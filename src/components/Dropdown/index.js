@@ -3,9 +3,11 @@ import { TouchableOpacity, Platform, Dimensions } from 'react-native';
 
 import { withThemeProps } from '../../restyle';
 import { useUpdateEffect } from '../../hooks';
+import { isAndroid } from '../../utils';
 import Flex from '../Flex';
 import Animate from '../AnimateNative';
 import Touchable from '../Touchable';
+import Overlay from '../Overlay';
 
 const POSITIONS = {
   left: 'flex-start',
@@ -30,6 +32,31 @@ const Dropdown = ({
   useUpdateEffect(() => {
     setOpen(isOpen);
   }, [isOpen]);
+
+  if (isAndroid) {
+    return (
+      <>
+        {React.Children.only(
+          React.cloneElement(children, {
+            as: TouchableOpacity,
+            onPress: () => {
+              setOpen(!open);
+            },
+            ...rest,
+          })
+        )}
+        <Overlay
+          visible={open}
+          onClose={() => setOpen(false)}
+          contentProps={contentProps}
+        >
+          {content instanceof Function
+            ? content({ close: () => setOpen(false) })
+            : content}
+        </Overlay>
+      </>
+    );
+  }
 
   return (
     <>

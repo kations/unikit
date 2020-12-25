@@ -32,6 +32,7 @@ const Select = ({
   bg = 'input',
   name,
   labelSize,
+  autoClose = true,
   ...rest
 }) => {
   const [visible, setVisible] = React.useState(false);
@@ -59,6 +60,7 @@ const Select = ({
           px: theme.globals.gap,
           color: 'text',
           roundness: 0,
+          borderRadius: 0,
           justifyContent:
             picker === 'checkbox' ? 'flex-start' : 'space-between',
           borderTopWidth: 1,
@@ -92,6 +94,11 @@ const Select = ({
         newValue[v] = true;
       }
       onChange(newValue);
+    }
+    if (autoClose && !multi) {
+      setTimeout(() => {
+        setVisible(false);
+      }, 250);
     }
   };
 
@@ -192,7 +199,15 @@ const Select = ({
           >
             <Icon name="chevronDown" size={18} />
           </Flex>
-          <Overlay p={0} visible={visible} onClose={() => setVisible(false)}>
+          <Overlay
+            maxWidth={450}
+            visible={visible}
+            onClose={() => setVisible(false)}
+            contentProps={{
+              bg: 'input',
+            }}
+            scrollable
+          >
             {pickerComp}
           </Overlay>
         </>

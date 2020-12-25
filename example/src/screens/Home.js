@@ -13,8 +13,9 @@ import {
   H5,
   P,
   Grid,
+  withTheme,
 } from 'unikit';
-import { Wrapper, Link, Header, Navbar } from 'components';
+import { Wrapper, Link, Navbar } from 'components';
 import { pages } from '../pages';
 const Playground = React.lazy(() => import('../components/Playground'));
 
@@ -22,7 +23,7 @@ const getComponentsByGroup = (array, group) => {
   return array.filter((item) => item.group === group);
 };
 
-export default function App() {
+export default withTheme(function App() {
   const groups = ['UI', 'Inputs', 'Primitives'];
 
   return (
@@ -83,7 +84,7 @@ export default function App() {
                   .map(({ title, slug, smallCode }) => {
                     return (
                       <Link to="Template" params={{ slug }} key={slug}>
-                        <Animate delay={500} onVisible={!isAndroid}>
+                        <Animate delay={500}>
                           <Flex
                             bg="primary:setAlpha:0.1"
                             w="100%"
@@ -113,4 +114,4 @@ export default function App() {
       </Wrapper>
     </Page>
   );
-}
+});

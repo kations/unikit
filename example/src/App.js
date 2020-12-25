@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ThemeProvider, isWeb, Alert } from 'unikit';
+import { ThemeProvider, showAlert, Alert } from 'unikit';
 import { AppContextProvider, useAppContext } from './AppContext';
 
 import Home from './screens/Home';
@@ -30,6 +30,31 @@ function AppLayout() {
     },
   };
 
+  React.useEffect(() => {
+    // showAlert({
+    //   key: 'test',
+    //   confirm: true,
+    //   message: 'test',
+    //   onConfirm: () => {
+    //     showAlert({
+    //       key: 'test',
+    //       loading: true,
+    //       message: 'loading',
+    //       confirm: false,
+    //     });
+    //     setTimeout(() => {
+    //       showAlert({
+    //         key: 'test',
+    //         type: 'success',
+    //         message: 'success',
+    //         loading: false,
+    //         timeout: 1000,
+    //       });
+    //     }, 2000);
+    //   },
+    // });
+  });
+
   return (
     <NavigationContainer
       linking={linking}
@@ -41,7 +66,7 @@ function AppLayout() {
       <ThemeProvider mode={dark ? 'dark' : 'basic'} theme={{}}>
         <Stack.Navigator>
           <Stack.Screen
-            name="Unikit"
+            name="Home"
             component={Home}
             options={{
               ...screenOptions,

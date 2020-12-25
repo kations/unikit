@@ -93,20 +93,24 @@ const Button = ({
           {renderRight}
         </>
       ) : children ? (
-        React.cloneElement(children, {
-          color: color ? color : light ? bg : clean ? 'primary' : '#FFF',
-          ...children.props,
-          pointerEvents: 'none',
-          style: {
-            ...(children.props && children.props.style
-              ? children.props.style
-              : {}),
-            opacity: loading ? 0 : 1,
-          },
-        })
+        <>
+          {renderLeft}
+          {React.cloneElement(children, {
+            color: color ? color : light ? bg : clean ? 'primary' : '#FFF',
+            ...children.props,
+            pointerEvents: 'none',
+            style: {
+              ...(children.props && children.props.style
+                ? children.props.style
+                : {}),
+              opacity: loading ? 0 : 1,
+            },
+          })}
+          {renderRight}
+        </>
       ) : null}
     </TouchComp>
   );
 };
 
-export default withThemeProps(Button, 'button');
+export default withThemeProps(Button, 'Button');

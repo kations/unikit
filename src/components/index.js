@@ -3,6 +3,7 @@ export { default as Text } from './Text';
 export { default as Touchable } from './Touchable';
 export { default as Page } from './Page';
 export { default as Animate } from './Animate';
+export { default as AnimateNative } from './AnimateNative';
 export { default as Grid } from './Grid';
 export { default as Button } from './Button';
 export { default as Progress } from './Progress';
@@ -19,9 +20,9 @@ export { default as Portal } from './Portal';
 export { default as Overlay } from './Overlay';
 export { default as Picker } from './Picker';
 export { default as Group } from './Group';
-export { default as Image } from './Image';
 
 export * from './HTML';
 export * from './Inputs';
+export * from './Image';
 
 //export { default as Grid } from './Grid';

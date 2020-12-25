@@ -52,6 +52,8 @@ const Icon = ({
       <Svg
         width={size}
         height={size}
+        strokeLinecap="round"
+        strokeLinejoin="round"
         style={{ backgroundColor: 'transparent' }}
       >
         {(animate && withBg) || !animate ? (

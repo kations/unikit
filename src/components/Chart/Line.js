@@ -31,7 +31,7 @@ export default ({
   shadow = 4,
   shadowOpacity = 0.2,
   strokeDasharray,
-  curve = 'curveNatural',
+  curve = 'curveNatural', // "curveLinear"
   gradientOpacity = 1,
   gradientStartColor,
   gradientStopColor,

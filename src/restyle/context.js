@@ -16,6 +16,18 @@ export const ThemeContext = React.createContext({
   globals: {},
 });
 
+export function showAlert(obj) {
+  if (alertRef.current) {
+    return alertRef.current.show(obj);
+  }
+}
+
+export function hideAlert(obj) {
+  if (alertRef.current) {
+    return alertRef.current.show({ ...obj, timeout: 0 });
+  }
+}
+
 export const ThemeProvider = ({
   theme,
   mode,
@@ -45,6 +57,8 @@ export const ThemeProvider = ({
       theme={{
         ...mergedTheme,
         alert: (a: object) => alertRef.current.show(a),
+        showAlert: (a: object) => alertRef.current.show(a),
+        hideAlert: (a: object) => alertRef.current.show({ ...a, timeout: 0 }),
         onFeedback,
         width: window.width,
         height: window.height,

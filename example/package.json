@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "start": "expo start",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "netlify deploy --dir=web-build"
   },
   "dependencies": {
     "@miksu/prettier": "^1.18.5",

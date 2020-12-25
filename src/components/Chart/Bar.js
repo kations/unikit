@@ -59,6 +59,7 @@ export default ({
   activeColor = 'primary',
   barSize,
   formatValue,
+  valueFont,
   ...rest
 }) => {
   const theme = useTheme();
@@ -133,7 +134,13 @@ export default ({
               <Text
                 x={x + w / 2}
                 y={y - h + 15 + valueOffset}
-                fontSize={theme.fonts.caption.fontSize}
+                fontSize={
+                  valueFont
+                    ? theme.fonts[valueFont]
+                      ? theme.fonts[valueFont].fontSize
+                      : valueFont
+                    : theme.fonts.caption.fontSize
+                }
                 textAnchor="middle"
                 fontFamily={theme.globals.fontFamily}
                 fill={textFill}

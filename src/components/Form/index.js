@@ -5,6 +5,7 @@ import { withThemeProps } from '../../restyle';
 import Button from '../Button';
 import Flex from '../Flex';
 import { getObjValue, setObjValue } from '../../utils';
+import { useDebounce } from '../../hooks';
 
 const getDefaultValue = ({ child: { props } }) => {
   let value = undefined;
@@ -77,13 +78,20 @@ const Form = React.forwardRef(
     },
     ref
   ) => {
+    const [valid, setValid] = React.useState(onValidate ? false : true);
     const [doc, setDoc] = React.useState(() => {
       return getDefaultState(children, defaultDoc);
     });
 
+    const debouncedDoc = useDebounce(doc, 500);
+
     React.useEffect(() => {
       if (onChange) onChange(doc);
     }, [doc]);
+
+    React.useEffect(() => {
+      if (onChange) onChange(doc);
+    }, [debouncedDoc]);
 
     const reset = () => {
       setDoc(getDefaultState(children, defaultDoc));
@@ -93,6 +101,8 @@ const Form = React.forwardRef(
       submit: () => {
         if (onSubmit) onSubmit(doc, reset);
       },
+      getDoc: () => doc,
+      getKey: (key) => getObjValue(doc, key),
     }));
 
     const setDocState = (key, value) => {

@@ -57,8 +57,14 @@ const pages = [
       <Button bg="error"  onPress={() => theme.alert({type: "error", backdrop: true, message: "Hi", timeout: false})}>Error</Button>
       <Button bg="success" onPress={() => theme.alert({type: "success", position: "center", message: "Hi"})}>Success</Button>
       <Button light onPress={() => theme.alert({loading: true, message: "Loading"})}>Loading</Button>
-      <Button light onPress={() => theme.alert({ type: "primary", position: "center",confirm: true, backdrop: true, title: "unikit", message: "Do you like unikit?" })}>Confirm</Button>
-      <Button light onPress={() => theme.alert({  position: "bottom",actionSheet: true, backdrop: true, actions: [{icon: "zap", label: "Zap"},{icon: "edit", label: "Edit"},{icon: "mapPin", label: "Pin"}] })}>ActionSheet</Button>
+      <Button light onPress={() => {
+       theme.alert({ type: "primary", position: "center",confirm: true, onClose: () => alert("onClose"), onConfirm: ({key}) => {
+
+          theme.alert({ key, type: "success", confirm: false, loading: true, message:"Loading", timeout: 2000 });
+        }, backdrop: true, title: "unikit", message: "Do you like unikit?" });
+
+      }}>Confirm</Button>
+      <Button light onPress={() => theme.alert({  type: "surface:setAlpha:0.8", color: "primary",position: "bottom",actionSheet: true, backdrop: true, actions: [{icon: "zap", label: "Zap"},{icon: "edit", label: "Edit"},{icon: "mapPin", label: "Pin"}] })}>ActionSheet</Button>
     </Grid>`,
   },
   {
@@ -88,7 +94,7 @@ const pages = [
     smallCode: `<Flex width="100%" flexCenter><Button rounded>Overlay</Button></Flex>`,
     code: `function RenderIcon() {
       const [visible, setVisible] = useState(false);
-    
+
       return (
         <Flex width="100%" flexCenter py={100}>
         <Button  onPress={() => setVisible(true)} rounded>Show</Button>
@@ -237,7 +243,14 @@ const pages = [
     group: 'UI',
     smallCode: `<Icon name="zap" size={50} />`,
     code: `function RenderIcon() {
-      const names = Object.keys(icons);
+      const names = Object.keys(icons).sort((a,b) => {
+        if (a > b) {
+          return 1;
+      } else if (b > a) {
+          return -1;
+      }
+      return 0;
+      });
       const [index, setIndex] = useState(0);
       useInterval(() => {
         setIndex((index + 1) % names.length);
@@ -248,9 +261,7 @@ const pages = [
             <Icon size={150} strokeWidth={0.5} name={names[index]} animate />
           </Flex>
           <Grid min={150} w="100%">
-            {names
-              .sort((a, b) => a > b)
-              .map(name => (
+            {names.map(name => (
                 <Flex key={name} flexCenter my={20} w="100%">
                   <Icon name={name} />
                   <Text mt={10}>{name}</Text>
@@ -290,14 +301,14 @@ const pages = [
         <Chart.Grid />
         <Chart.Indicator color="primary:setAlpha:0.5" />
         <Chart.Line onChange={({value, index}) => console.log(value)} />
-        
+
       </Chart>
     </Flex>
     <Flex mt={50}>
       <Chart
       useScaleBand
       xAxis
-      
+
         data={[
           {
             test: 10,
@@ -347,7 +358,6 @@ const pages = [
         }}
       >
 
-        
         <Chart.Bar
           color="primary:setAlpha:0.1"
           activeColor="primary:setAlpha:0.85"
@@ -356,7 +366,7 @@ const pages = [
           showValue
           onChange={({ value, index }) => console.log(value)}
         />
-      
+
         <Chart.Line dataKey="test" showValue gradient={false}  />
         <Chart.Indicator />
       </Chart>
@@ -383,7 +393,7 @@ const pages = [
           showActiveValue
           onChange={({ value, index }) => console.log(value)}
         />
-      
+
       </Chart>
     </Flex>
     </Flex>`,
@@ -412,7 +422,7 @@ const pages = [
     group: 'UI',
     smallCode: `<Progress size={70} value={66} />`,
     code: `<Flex w="100%" row wrap justifyContent="space-around" alignItems="center">
-  
+
     <Progress
       value={80}
       size={70}
@@ -477,30 +487,55 @@ const pages = [
     group: 'Inputs',
     smallCode: `<Input type="text" label="Sunny" placeholder="text"  inline icon="sun"  />`,
     code: `<Flex w="100%" flexCenter>
-      <Form   onSubmit={doc => alert(JSON.stringify(doc))} clean>
+      <Form defaultDoc={{date: "2020-11-25T06:00:00.000Z", datetime: "2020-11-25T06:00:00.000Z"}}  onSubmit={doc => alert(JSON.stringify(doc))} clean>
       <Input label="Custom input" field="custom" clean>
         <Flex width={100} height={100} bg="primary"></Flex>
       </Input>
       <Input type="text" label="Text" placeholder="text"  field="text" clean needsDoc  />
       <Input type="password" label="Password" placeholder="password"  field="password" clean  />
       <Input type="date" label="Date"  defaultValue={new Date()}  field="date" clean  />
+      <Input type="timeago" label="Timeago"  defaultValue={new Date()}  field="timeago" clean  />
       <Input type="time" label="Time"  defaultValue={new Date()}  field="time" clean  />
       <Input type="datetime" label="Datetime"  defaultValue={new Date()}  field="datetime" clean  />
-      <Input type="phone" label="Phone"  field="phone" clean  />
+      <Input type="phone" error label="Phone"  field="phone" clean  />
       <Input type="textarea" label="Textarea" placeholder="text"  field="textarea" clean  />
       <Input type="number" label="Number" placeholder="number" defaultValue={0.9}  field="number" clean  />
       <Input type="tabs" label="Tabs" options={["unikit", "is awesome"]}  field="tabs" clean  />
       <Input type="text" label="Inline" placeholder="text" mt={10} field="inline" inline clean  />
-      <Input type="switch" mt={10} label="Sunny" placeholder="text" icon="sun" field="switch" clean inline  />
+      <Input type="switch" mt={10} label="Sunny" placeholder="text" icon="sun" field="switch" clean   />
       <Input type="range" mt={10} label="Sunny"  field="range" clean  />
+      <Input type="tags" mt={10} label="Tags"  field="tags" clean  />
       <Input type="color" mt={10} label="Color"  field="color" clean  />
       <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="select" clean  />
       <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="selectinline" inline  clean />
-      <Input type="select" options={["unikit", "is awesome"]} mt={10} label="MultiSelect with array value"  field="selectpicker" inline picker="switch"  multi clean   />
+      <Input type="select" options={[{label: <Flex flexCenter row><Flex w={34} h={34} bg="primary" borderRadius={22} /><Text ml={5}>Unikit</Text></Flex>, value: "unikit"}, {label: "is awesome", value: "is awesome"}]} mt={10} label="MultiSelect with array value"  field="selectpicker" inline picker="switch"  multi clean   />
       <Input type="select" options={[{label:"unikit", value: "unikit"}, {label:"is awesome", value: "awesome"}]} mt={10} label="MultiSelect with object value"  field="selectobject" inline  mode="pills" multi multiType="object" clean   />
       <Input type="text" mt={10} label="Label" placeholder="text" field="normal" clean />
+      <Input type="file" mt={10} label="File" defaultValue={"https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"} field="file" clean />
+      <Input type="file" mt={10} label="File" defaultValue={["https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60", "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"]} field="file2" multi clean />
       </Form>
     </Flex>`,
+  },
+  {
+    slug: 'codefield',
+    title: 'CodeField',
+    from: 'CodeField',
+    group: 'Inputs',
+    smallCode: `<CodeField  width="80%" cells={4}  />`,
+    code: `<Form>
+      <Input label="Code Field" mt={10} clean>
+      <CodeField field="code" autoFocus />
+      </Input>
+      <Input label="Secure Text" mt={10} clean>
+      <CodeField field="code2" cells={4} maxWidth={300} secureTextEntry />
+      </Input>
+      <Input label="Clean" mt={10} clean>
+      <CodeField  field="code3" cells={4} gap={0} maxWidth={300} clean secureTextEntry />
+      </Input>
+      <Input label="Custom" mt={10} clean>
+      <CodeField  field="code4" cells={3} customCursor={<Icon name="zap" size={22} />}  />
+      </Input>
+    </Form>`,
   },
   {
     slug: 'textinput',
@@ -522,7 +557,7 @@ const pages = [
       <Slider hideValue={false} my={30}  steps={20} defaultValue={20} field="s1" />
       <Slider
         my={30}
-   
+
         defaultValue={20}
         handleFocusOpacity={0.1}
         showTicks={false}
@@ -579,7 +614,10 @@ const pages = [
     from: 'Select',
     group: 'Inputs',
     smallCode: `<Select options={["unikit", "is awesome"]} />`,
-    code: `<Form button={false}><Select options={["unikit", "is awesome"]} field="select" /></Form>`,
+    code: `<Form button={false}>
+      <Select options={["unikit", "is awesome"]} field="select" />
+      <Select options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="select" scrollable />
+    </Form>`,
   },
   {
     slug: 'datepicker',
@@ -587,7 +625,7 @@ const pages = [
     from: 'DatePicker',
     group: 'Inputs',
     smallCode: `<DatePicker  />`,
-    code: `<Form><DatePicker field="date"  /></Form>`,
+    code: `<Form><DatePicker field="date"  /><DatePicker time mt={10}  /></Form>`,
   },
   {
     slug: 'image',

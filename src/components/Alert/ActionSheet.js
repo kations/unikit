@@ -18,13 +18,7 @@ const ActionSheet = ({
 }) => {
   if (actionSheet && actions) {
     return (
-      <Flex
-        bg={type}
-        w="100%"
-        justifyContent="flex-end"
-        borderTopWidth={1}
-        borderTopColor={`${textColor}:setAlpha:0.1`}
-      >
+      <Flex bg={type} p={theme.globals.gap} w="100%" justifyContent="flex-end">
         {actions.map(({ label, icon, onPress, ...rest }, i) => {
           return (
             <Button
@@ -32,7 +26,7 @@ const ActionSheet = ({
                 close();
                 if (onPress) onPress();
               }}
-              clean
+              bg={type}
               width="100%"
               key={`button-${i}`}
               renderLeft={
@@ -48,8 +42,7 @@ const ActionSheet = ({
               color={textColor}
               size={buttonSize}
               labelProps={{ fontSize: theme.fonts.p.fontSize }}
-              borderTopWidth={1}
-              borderTopColor={`${textColor}:setAlpha:0.1`}
+              mb={i === 2 ? 0 : theme.globals.gap / 2}
               {...rest}
             >
               {label}

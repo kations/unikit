@@ -8,6 +8,7 @@ import Flex from '../Flex';
 const Buttons = ({
   theme,
   close,
+  onClose,
   textColor,
   itemKey,
   type,
@@ -22,9 +23,12 @@ const Buttons = ({
       buttons = [
         {
           label: theme.translations.cancel,
-          onPress: () => close(),
+          onPress: () => {
+            close();
+            if (onClose) onClose();
+          },
+          bg: `${type}:darken:2`,
           color: 'error',
-          clean: true,
         },
         ...(confirm
           ? [
@@ -45,8 +49,8 @@ const Buttons = ({
         bg={type}
         w="100%"
         justifyContent="flex-end"
-        borderTopWidth={1}
-        borderTopColor={`${textColor}:setAlpha:0.1`}
+        px={theme.globals.gap / 2}
+        pb={theme.globals.gap / 2}
         row
       >
         {buttons.map(({ label, onPress, ...rest }, i) => {
@@ -56,6 +60,8 @@ const Buttons = ({
               onPress={() => {
                 if (onPress) onPress(close);
               }}
+              mx={theme.globals.gap / 2}
+              mb={theme.globals.gap / 2}
               key={`button-${i}`}
               size={buttonSize}
               labelProps={{ fontSize: theme.fonts.p.fontSize }}

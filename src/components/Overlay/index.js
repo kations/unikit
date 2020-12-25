@@ -39,7 +39,6 @@ const customStyle = {
 const Overlay = ({
   theme,
   visible = false,
-  scrollable = false,
   scrollComp,
   onClose,
   backdrop = true,
@@ -58,6 +57,7 @@ const Overlay = ({
     to: { o: 1, y: 0 },
   },
   modalProps = {},
+  scrollerProps = {},
   contentProps = {},
   ...rest
 }) => {
@@ -75,25 +75,29 @@ const Overlay = ({
 
   const AnimatedScrollComp = scrollComp
     ? createAnimatedComponent(scrollComp)
-    : undefined;
+    : AnimatedScrollView;
 
   const PortalComp = usePortal ? Portal : Fragment;
-  const modalComp = scrollable
-    ? AnimatedScrollComp || AnimatedScrollView
-    : undefined;
   const modalStyle = customStyle[position] || {};
-  const scrollableProps = scrollable
-    ? {
-        showsVerticalScrollIndicator: false,
-        showsVerticalScrollIndicator: false,
-        contentContainerStyle: { flexGrow: 1, ...modalStyle },
-      }
-    : { ...modalStyle };
-
+  const scrollableProps = {
+    ...scrollerProps,
+    bounces: false,
+    style: {
+      flex: 1,
+      ...(scrollerProps.style || {}),
+    },
+    showsVerticalScrollIndicator: false,
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: {
+      flexGrow: 1,
+      paddingVertical: 100,
+      ...(scrollerProps.contentContainerStyle || {}),
+      ...modalStyle,
+    },
+  };
   return (
     <PortalComp>
       <Animate
-        as={modalComp}
         position={Platform.OS === 'web' ? 'fixed' : 'absolute'}
         left={0}
         top={0}
@@ -108,44 +112,45 @@ const Overlay = ({
           backdropFilter: 'blur(1px)',
         }}
         {...modalProps}
-        {...scrollableProps}
         {...modalSpring}
       >
-        {onClose ? (
-          <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
-        ) : null}
+        <AnimatedScrollComp {...scrollableProps}>
+          {onClose ? (
+            <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
+          ) : null}
 
-        <Animate
-          isVisible={visible === true}
-          relative
-          w="90%"
-          bg="background"
-          useTransition
-          delay={50}
-          borderRadius={roundness || theme.globals.roundness}
-          maxWidth={maxWidth}
-          {...contentProps}
-          style={{
-            ...(contentProps.style ? contentProps.style : {}),
-          }}
-          {...contentSpring}
-        >
-          <Flex w="100%" p={theme.globals.gap} {...rest}>
-            {render && children}
-          </Flex>
-          <Buttons
-            close={onClose}
-            textColor="text"
-            buttons={[
-              {
-                label: theme.translations.close,
-                onPress: (close) => close('onConfirm missing'),
-                clean: true,
-                size: 55,
-              },
-            ]}
-          />
-        </Animate>
+          <Animate
+            isVisible={visible === true}
+            relative
+            w="90%"
+            bg="background"
+            useTransition
+            delay={50}
+            borderRadius={roundness || theme.globals.roundness}
+            maxWidth={maxWidth}
+            {...contentProps}
+            style={{
+              ...(contentProps.style ? contentProps.style : {}),
+            }}
+            {...contentSpring}
+          >
+            <Flex w="100%" p={theme.globals.gap} {...rest}>
+              {render && children}
+            </Flex>
+            <Buttons
+              close={onClose}
+              textColor="text"
+              buttons={[
+                {
+                  label: theme.translations.close,
+                  onPress: (close) => close('onConfirm missing'),
+                  clean: true,
+                  size: 55,
+                },
+              ]}
+            />
+          </Animate>
+        </AnimatedScrollComp>
       </Animate>
     </PortalComp>
   );

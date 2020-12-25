@@ -4,6 +4,8 @@ import { useLayout } from '../../hooks';
 import { isNumber } from '../../utils';
 
 import Flex from '../Flex';
+import Touchable from '../Touchable';
+
 import Text from '../Text';
 import Animate from '../Animate';
 import Icon from '../Icon';
@@ -16,8 +18,15 @@ import Select from './Select';
 import Number from './Number';
 import Tabs from './Tabs';
 import DatePicker from './DatePicker';
+import File from './File';
+import Tags from './Tags';
 
 const TYPES = {
+  tags: {
+    component: Tags,
+    props: () => ({}),
+    focus: true,
+  },
   color: {
     component: TextInput,
     props: () => ({
@@ -30,6 +39,15 @@ const TYPES = {
     props: () => ({
       renderRight: <DatePicker light size={35} />,
       mask: 'date',
+    }),
+    focus: true,
+  },
+  timeago: {
+    component: TextInput,
+    props: () => ({
+      renderRight: <DatePicker light size={35} />,
+      mask: 'timeago',
+      editable: false,
     }),
     focus: true,
   },
@@ -88,8 +106,9 @@ const TYPES = {
   },
   switch: {
     component: Switch,
+    wrapperPressable: true,
     props: ({ clean }) => ({
-      trackColor: clean ? 'input' : 'input:darken:5',
+      trackColor: 'input:darken:5',
     }),
   },
   range: {
@@ -101,6 +120,10 @@ const TYPES = {
   },
   select: {
     component: Select,
+    inline: false,
+  },
+  file: {
+    component: File,
     inline: false,
   },
 };
@@ -118,13 +141,24 @@ interface Props {
   animationProps?: object;
 }
 
+const needsBg = {
+  text: true,
+  select: true,
+  tabs: true,
+};
+
 const Input = React.memo(
   ({
+    value,
     size = 55,
+    error = false,
     theme,
     children,
     type = 'text',
     variant = 'underline',
+    indicatorFocusColor = 'primary',
+    indicatorBlurColor,
+    indicatorSize = 2,
     label,
     roundness,
     animationProps = {}, //{ from: { o: 0 }, to: { o: 1 } },
@@ -137,16 +171,19 @@ const Input = React.memo(
     field,
     labelProps = {},
     bg = 'input',
+    style,
     ...rest
   }: Props) => {
     const { onLayout, width, height } = useLayout();
     const [focused, setFocus] = React.useState(false);
     const TYPE = TYPES[type];
     const Comp = TYPE ? TYPE.component : null;
+    const WrapperComp = TYPE.wrapperPressable ? Touchable : Flex;
 
     const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
 
     const inputProps = {
+      value,
       onChange,
       field,
       ...(TYPE && TYPE.props ? TYPE.props({ clean, inline }) : {}),
@@ -161,7 +198,7 @@ const Input = React.memo(
       roundness: type === 'switch' ? undefined : radius,
       mr: type === 'switch' ? theme.globals.inputGap : undefined,
       size: type === 'switch' ? undefined : size,
-      bg: type === 'text' || type === 'select' ? bg : undefined,
+      bg: needsBg[type] ? bg : undefined,
       style: {
         textAlign: inline ? 'right' : 'left',
       },
@@ -170,24 +207,38 @@ const Input = React.memo(
     if (TYPE.inline === false && TYPE.inline !== inline) {
       inline = TYPE.inline;
     }
+    if (type === 'switch') {
+      inline = true;
+      clean = false;
+    }
 
     return (
       <Flex
         borderRadius={radius}
         position="relative"
-        width="100%"
-        height="auto"
+        w="100%"
+        h="auto"
         onLayout={onLayout}
+        style={style}
         {...rest}
       >
-        <Flex
+        <WrapperComp
           bg={clean ? 'transparent' : bg}
           shadow={clean ? undefined : shadow}
           borderRadius={radius}
           alignItems={inline ? 'flex-end' : undefined}
           justifyContent={inline ? 'center' : undefined}
           minHeight={size}
-          height="auto"
+          h="auto"
+          w="100%"
+          {...(TYPE.wrapperPressable === true
+            ? {
+                activeOpacity: 0.9,
+                onPress: () => {
+                  if (onChange) onChange(value === true ? false : true);
+                },
+              }
+            : {})}
         >
           {label && (
             <Flex
@@ -215,13 +266,17 @@ const Input = React.memo(
                   size={iconSize || size * 0.37}
                 />
               )}
-              <Text font="label" {...labelProps}>
-                {label}
+              <Text
+                font="label"
+                color={error ? 'error' : 'text'}
+                {...labelProps}
+              >
+                {`${label} ${typeof error === 'string' ? `(${error})` : ''}`}
               </Text>
             </Flex>
           )}
           {children ? children : <Comp {...inputProps} />}
-        </Flex>
+        </WrapperComp>
         {width > 0 && TYPE.focus && !children && (
           <Flex
             absoluteFill
@@ -231,8 +286,8 @@ const Input = React.memo(
             justifyContent="flex-end"
           >
             <Flex
-              bg={`${bg}:darken:10`}
-              height={2}
+              bg={indicatorBlurColor || `${bg}:darken:5`}
+              height={indicatorSize}
               overflow="hidden"
               flexCenter
             >
@@ -242,7 +297,7 @@ const Input = React.memo(
                 height={height}
                 from={{ s: 0, o: 0 }}
                 to={{ s: 1, o: 1 }}
-                bg="primary"
+                bg={indicatorFocusColor}
                 {...animationProps}
               />
             </Flex>

@@ -24,7 +24,6 @@ const Alert = ({
   confirm,
   actionSheet,
 }) => {
-  if (!title && !message) return null;
   return (
     <Flex width="100%" alignItems="center" p={theme.globals.gap} row>
       {loading || icon ? (
@@ -40,16 +39,16 @@ const Alert = ({
           {icon && <Icon name={icon} color={textColor} size={23} animate />}
         </Flex>
       ) : null}
-      <Flex flex={1}>
-        {title && (
+      <Flex flex={1} maxWidth="85%">
+        {title ? (
           <Text font="h4" color={textColor}>
             {title}
           </Text>
-        )}
+        ) : null}
 
-        {message && <Text color={textColor}>{message}</Text>}
-        {component || null}
+        {message ? <Text color={textColor}>{message}</Text> : null}
       </Flex>
+      {component || null}
       <Flex
         position="absolute"
         top={0}

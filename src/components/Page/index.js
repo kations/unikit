@@ -1,8 +1,8 @@
-import * as React from "react";
-import { ScrollView, SafeAreaView, Platform } from "react-native";
+import * as React from 'react';
+import { ScrollView, SafeAreaView, Platform } from 'react-native';
 
-import Flex from "../Flex";
-import { withThemeProps } from "../../restyle";
+import Flex from '../Flex';
+import { withThemeProps } from '../../restyle';
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Page = ({
-  bg = "background",
+  bg = 'background',
   children,
   hasSafeArea,
   scrollable = true,
@@ -29,44 +29,31 @@ const Page = ({
   ...rest
 }: Props) => {
   const [top, setTop] = React.useState(0);
-  const scrollRef = React.useRef(null);
-
-  const onScrollPage = (e) => {
+  const onScrollPage = React.useCallback((e) => {
     const scrollSensitivity = 4 / 3;
     const offset = e.nativeEvent.contentOffset.y / scrollSensitivity;
     if (onScroll) onScroll(e.nativeEvent.contentOffset);
     setTop(offset);
-  };
-
-  React.useEffect(() => {
-    if (scrollRef && scrollRef.current && scrollRef.current.scrollTo) {
-      scrollRef.current.scrollTo({
-        x: scrollTop,
-        y: 0,
-        animated: scrollAnimated,
-      });
-    }
-  }, [scrollTop]);
+  }, []);
 
   const Scroller = scrollable
     ? scrollViewComponent || ScrollView
     : React.Fragment;
-  const ScrollerProps = {
-    ...{
+  const ScrollerProps = React.useMemo(() => {
+    return {
       onScroll: onScrollPage,
       scrollEventThrottle: 100,
       showsVerticalScrollIndicator: false,
-      ref: scrollRef,
-    },
-    ...scrollViewProps,
-  };
+      ...scrollViewProps,
+    };
+  }, []);
   return (
     <Flex
       flex={1}
       bg={bg}
       as={hasSafeArea ? SafeAreaView : undefined}
-      accessibilityRole={Platform.OS === "web" ? "main" : "none"}
-      webStyle={{ transitionDuration: "0.5s", transitionProperty: "all" }}
+      accessibilityRole={Platform.OS === 'web' ? 'main' : 'none'}
+      webStyle={{ transitionDuration: '0.5s', transitionProperty: 'all' }}
       {...rest}
     >
       {renderHeader ? renderHeader(top) : null}
@@ -78,4 +65,4 @@ const Page = ({
   );
 };
 
-export default withThemeProps(Page, "Page");
+export default withThemeProps(Page, 'Page');

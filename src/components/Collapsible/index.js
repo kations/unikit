@@ -37,7 +37,7 @@ const Collapsible = ({
   triggerProps = {},
   contentProps = {},
   icon = 'chevronDown',
-  iconColor = '#FFF',
+  iconColor = 'primary',
   iconSize = 20,
   children,
   ...rest

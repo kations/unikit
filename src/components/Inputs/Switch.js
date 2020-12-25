@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme, styled } from '../../restyle';
-import { useGesture, useUpdateEffect } from '../../hooks';
 
+import { useGesture, useUpdateEffect } from '../../hooks';
 import { AnimatedTouchable, AnimatedView, useSpring } from '../../spring';
+import { styled, withThemeProps } from '../../restyle';
 
 import Flex from '../Flex';
 import Touchable from '../Touchable';
@@ -13,6 +13,7 @@ const Circle = styled(AnimatedView)();
 const Bg = styled(AnimatedView)();
 
 const Comp = ({
+  theme,
   value,
   onChange,
   size = 35,
@@ -22,11 +23,10 @@ const Comp = ({
   trackColor = 'input',
   activeTrackColor = 'primary',
   handleShow = 5,
+  renderHandleContent,
   disabled,
   ...rest
 }) => {
-  const theme = useTheme();
-
   const TRACK_WIDTH = size * 2 - gap;
   const LEFT = size - gap;
 
@@ -99,7 +99,6 @@ const Comp = ({
         ...style,
         width: TRACK_WIDTH,
       }}
-      bg={trackColor}
       position="relative"
       activeOpacity={0.8}
       height={size}
@@ -112,6 +111,7 @@ const Comp = ({
         cursor: 'pointer',
       }}
       {...rest}
+      bg={trackColor}
     >
       <Bg
         bg={activeTrackColor}
@@ -146,11 +146,13 @@ const Comp = ({
             webStyle={{
               cursor: 'grab',
             }}
-          />
+          >
+            {renderHandleContent ? renderHandleContent({ value }) : null}
+          </Touchable>
         </Circle>
       </Flex>
     </Switch>
   );
 };
 
-export default Comp;
+export default withThemeProps(Comp, 'Switch');

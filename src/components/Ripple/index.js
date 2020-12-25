@@ -1,12 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Animate from "../AnimateNative";
-import Touchable from "../Touchable";
+import Animate from '../AnimateNative';
+import Touchable from '../Touchable';
 
 const Ripple = React.forwardRef(
   ({ timeout, remove, itemKey, size, ...rest }, ref) => {
-    const [visible, setVisible] = React.useState(true);
-
     React.useEffect(() => {
       setTimeout(() => {
         remove(itemKey);
@@ -21,7 +19,7 @@ const Ripple = React.forwardRef(
         borderRadius={size / 2}
         from={{ s: 0.5, o: 1 }}
         to={{ s: 2, o: 0 }}
-        isVisible={visible}
+        isVisible={true}
         duration={500}
         absolute
         {...rest}
@@ -34,7 +32,7 @@ export default function Button({
   children,
   onPress,
   size = 50,
-  color = "text",
+  color = 'text',
   overflow = false,
   disabled = false,
   ...rest
@@ -50,16 +48,20 @@ export default function Button({
     <Touchable
       onPress={(e) => {
         if (disabled !== true) {
-          let { locationX, locationY } = e.nativeEvent;
+          let { locationX, layerX, locationY, layerY } = e.nativeEvent;
           if (onPress) onPress();
           setItems((state) => [
             ...state,
-            { key: new Date().getTime(), locationX, locationY },
+            {
+              key: new Date().getTime(),
+              x: locationX || layerX,
+              y: locationY || layerY,
+            },
           ]);
         }
       }}
       {...rest}
-      overflow={!overflow ? "hidden" : undefined}
+      overflow={!overflow ? 'hidden' : undefined}
       activeOpacity={1}
       pointerEvents="box-only"
       relative
@@ -75,8 +77,8 @@ export default function Button({
           bg={`${color}:setAlpha:0.2`}
           remove={remove}
           style={{
-            left: item ? item.locationX - size / 2 : 0,
-            top: item ? item.locationY - size / 2 : 0,
+            left: item ? item.x - size / 2 : 0,
+            top: item ? item.y - size / 2 : 0,
           }}
           pointerEvents="none"
         />

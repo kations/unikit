@@ -73,12 +73,13 @@ const defaultTheme = {
     showToday: 'Show today',
     confirm: 'Confirm',
     cancel: 'Cancel',
+    back: 'Back',
   },
-
   globals: {
     fontFamily: 'System',
     fontScale: 1,
     roundness: 5,
+    shadow: 5,
     gap: 15,
     inputGap: 15,
   },

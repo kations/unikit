@@ -1,26 +1,24 @@
 # unikit
 
-universal component library for react and react-native
+universal component library for react and react-native https://unikit.netlify.app
 
 ## Installation
 
 ```sh
-npm install unikit
+yarn add unikit styled-components
+```
+
+```sh
+expo install react-native-svg react-native-reanimated
 ```
 
 ## Usage
 
 ```js
-import Unikit from "unikit";
+import { Flex } from 'unikit';
 
-// ...
-
-const result = await Unikit.multiply(3, 7);
+return <Flex bg="primary" row />;
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 

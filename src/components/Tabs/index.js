@@ -7,7 +7,7 @@ import Flex from '../Flex';
 
 import { withThemeProps } from '../../restyle';
 import { useLayout, useUpdateEffect } from '../../hooks';
-import { isFunction } from '../../utils';
+import { isFunction, isNumber } from '../../utils';
 
 const getIndexByValue = (options, value) => {
   if (value === undefined) return 0;
@@ -54,7 +54,11 @@ export function Tabs(
   }, [value]);
 
   return (
-    <Flex bg={bg} {...rest} borderRadius={roundness || theme.globals.roundness}>
+    <Flex
+      bg={bg}
+      {...rest}
+      borderRadius={isNumber(roundness) ? roundness : theme.globals.roundness}
+    >
       {totalSize > 0 && (
         <Animate
           bg={indicatorColor}

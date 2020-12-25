@@ -1,6 +1,6 @@
 {
   "name": "unikit",
-  "version": "1.3.19",
+  "version": "1.3.41",
   "description": "universal component library for react and react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

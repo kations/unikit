@@ -1,8 +1,9 @@
 import tc from 'tinycolor2';
 import { isAndroid, isWeb } from '../utils';
 import { getResponsiveValue } from './responsiveHelpers';
+
 export const transformColor = ({ value, theme, themeKey }) => {
-  if (!value) return;
+  if (!value) return '#FFF';
   if (theme[themeKey][value]) {
     return theme[themeKey][value];
   }

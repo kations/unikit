@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
-import color from 'tinycolor2';
+import { SafeAreaView } from 'react-native';
 
 import { withThemeProps, useTheme } from '../../restyle';
 
 import Touchable from '../Touchable';
-import Animate from '../AnimateNative';
+import Animate from '../Animate';
 import Flex from '../Flex';
 
 import { isNumber, isDark, isWeb, isFunction } from '../../utils';
@@ -67,9 +66,11 @@ const Message = React.forwardRef(
       setCounter(timeout);
     }, [timeout]);
 
-    const textColor = isDark(theme.colors[item.type || 'surface'])
+    const textColor = item.color
+      ? theme.colors[item.color]
+      : isDark(theme.colors[item.type || 'surface'])
       ? '#FFF'
-      : color(theme.colors[item.type || 'primary']).toString();
+      : '#000';
 
     const positionProps = POSITIONS[position];
 
@@ -77,7 +78,7 @@ const Message = React.forwardRef(
       close,
       itemKey,
       textColor,
-      buttonSize: 55,
+      buttonSize: 50,
       ...item,
     };
 
@@ -141,7 +142,7 @@ const AlertWrap = ({
 
   React.useEffect(() => {
     if (items.length === 0 && backdrop) setBackdrop(false);
-  }, [items]);
+  }, [items, backdrop]);
 
   const edit = (key) => {
     setItems((state) => state.filter((a) => a.key !== key));
@@ -151,37 +152,52 @@ const AlertWrap = ({
     setItems((state) => state.filter((a) => a.key !== key));
   };
 
-  const show = (alert) => {
+  const show = (alertObj) => {
     const newAlertId = new Date().getTime();
 
     setItems((state) => {
-      if (alert.key) {
+      if (alertObj.key) {
         const newState = state.map((a) => {
-          if (a.key === alert.key) return { ...a, ...alert };
+          if (a.key?.toString() === alertObj.key?.toString()) {
+            return { ...a, ...alertObj };
+          }
           return { ...a };
         });
+        if (
+          !newState.find((a) => a.key?.toString() === alertObj.key?.toString())
+        ) {
+          newState.push({ position: from, ...alertObj });
+        }
         return newState;
       } else {
-        if (alert.backdrop !== undefined && alert.backdrop !== backdrop) {
-          setBackdrop(alert.backdrop);
+        if (alertObj.backdrop !== undefined && alertObj.backdrop !== backdrop) {
+          setBackdrop(alertObj.backdrop);
         } else if (backdrop === true) {
           setBackdrop(false);
         }
         const alertTimeout =
-          alert.timeout === false || alert.confirm || alert.actionSheet
+          alertObj.timeout === false || alertObj.confirm || alertObj.actionSheet
             ? undefined
             : isNumber(alert.timeout)
             ? alert.timeout
             : timeout;
-        alert.timeout = alertTimeout;
-        if (alert.position === 'bottom' || alert.position === 'center') {
+        alertObj.timeout = alertTimeout;
+        if (alertObj.position === 'bottom' || alertObj.position === 'center') {
           return [
             ...state,
-            { key: newAlertId, position: alert.position || 'top', ...alert },
+            {
+              key: newAlertId.toString(),
+              position: alertObj.position || 'top',
+              ...alertObj,
+            },
           ];
         } else {
           return [
-            { key: newAlertId, position: alert.position || 'top', ...alert },
+            {
+              key: newAlertId.toString(),
+              position: alertObj.position || 'top',
+              ...alertObj,
+            },
             ...state,
           ];
         }
@@ -191,11 +207,14 @@ const AlertWrap = ({
     if (onAlert) onAlert(alert);
     if (onFeedback) onFeedback(alert.type);
 
-    return newAlertId;
+    return alertObj.key || newAlertId.toString();
   };
 
   React.useImperativeHandle(alertRef, () => ({
-    show,
+    show: (obj) => {
+      const key = show(obj);
+      return key;
+    },
     remove,
     edit,
   }));
@@ -247,7 +266,7 @@ const AlertWrap = ({
         absoluteFill
         bg="rgba(0,0,0,0.25)"
         isVisible={backdrop && items.length > 0}
-        pointerEvents={backdrop && items.length > 0 ? 'all' : 'none'}
+        pointerEvents={backdrop && items.length > 0 ? 'auto' : 'none'}
         webStyle={{
           backfaceVisibility: 'hidden',
           backdropFilter: 'blur(1px)',

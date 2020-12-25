@@ -58,4 +58,4 @@ const Checkbox = ({
   );
 };
 
-export default withThemeProps(Checkbox, '');
+export default withThemeProps(Checkbox, 'Checkbox');
