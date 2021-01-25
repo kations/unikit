@@ -15,12 +15,18 @@ import prettier from '@miksu/prettier/lib/standalone';
 import parsers from '@miksu/prettier/lib/language-js/parser-babylon';
 
 const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
+  const theme = useTheme();
   const [string, setString] = useState(() =>
     prettier.format(code, {
       parser: 'babel',
       plugins: [parsers],
     })
   );
+  React.useEffect(() => {
+    if (error) {
+      theme.alert({ type: 'error', message: error });
+    }
+  }, [error]);
   const Comp = element || null;
   if (clean)
     return (

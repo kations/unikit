@@ -10,6 +10,7 @@ import { isNumber, getProgress, getValueByProgress } from '../../utils';
 
 import Line from './Line';
 import Bar from './Bar';
+import Pie from './Pie';
 import Grid from './Grid';
 import GridLine from './GridLine';
 import Indicator from './Indicator';

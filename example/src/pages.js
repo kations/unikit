@@ -273,6 +273,18 @@ const pages = [
     }`,
   },
   {
+    slug: 'piechart',
+    title: 'PieChart',
+    from: 'PieChart',
+    group: 'UI',
+    smallCode: `<PieChart data={[{value:15},{value: 25},{value:50}]} size={100} />`,
+    code: `<Flex w="100%" row justifyContent="space-around" p={10}>
+      <PieChart showValue valueAsPercent title="Title" data={[{value:15, label: "A", fill: "success", arc: { outerRadius: '90%'}},{value: 25, label: "B", image:"https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"},{value:50, label: "C", image:"https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}]} size={200} legend />
+      <PieChart data={[{value:15, onPress: (d) => alert(d)},{value: 25},{value:50}]} size={100} startAngle={Math.PI * 1.5} endAngle={Math.PI * 2.5} />
+      <PieChart data={[{value:15},{value: 25},{value:35}]} color="error" size={200} innerRadius="90%" cornerRadius={20} />
+    </Flex>`,
+  },
+  {
     slug: 'chart',
     title: 'Chart',
     from: 'Chart',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ThemeProvider as TP } from 'styled-components/native';
 
-const merge = require('deepmerge');
+const deepmerge = require('deepmerge');
 
 import defaultTheme from './defaultTheme';
 import alertRef from '../components/Alert/ref';
@@ -41,14 +41,14 @@ export const ThemeProvider = ({
 }) => {
   const { window, screen } = useDimensions();
   const mergedTheme = React.useMemo(() => {
-    const merged = merge(
+    const merged = deepmerge(
       {
         ...defaultTheme,
       },
       theme
     );
     if (mode && merged.colors.modes[mode]) {
-      merged.colors = merge(merged.colors, merged.colors.modes[mode]);
+      merged.colors = deepmerge(merged.colors, merged.colors.modes[mode]);
     }
     return merged;
   }, [theme, mode]);

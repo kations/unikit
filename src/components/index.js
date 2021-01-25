@@ -20,6 +20,7 @@ export { default as Portal } from './Portal';
 export { default as Overlay } from './Overlay';
 export { default as Picker } from './Picker';
 export { default as Group } from './Group';
+export { default as PieChart } from './Chart/Pie';
 
 export * from './HTML';
 export * from './Inputs';
