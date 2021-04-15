@@ -65,6 +65,7 @@ const Select = ({
             picker === 'checkbox' ? 'flex-start' : 'space-between',
           borderTopWidth: 1,
           borderTopColor: `text:setAlpha:0.1`,
+          ...pickerProps,
         }
       : {
           bg: 'input',
@@ -73,6 +74,7 @@ const Select = ({
           size: size,
           mt: theme.globals.gap / 2,
           mr: theme.globals.gap / 2,
+          ...pickerProps,
         };
 
   const onChangeValue = (v, a) => {
