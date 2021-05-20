@@ -1,0 +1,22 @@
+{
+  "name": "unikit-example",
+  "displayName": "Unikit Example",
+  "expo": {
+    "name": "unikit-example",
+    "slug": "unikit-example",
+    "description": "Example app for unikit",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
