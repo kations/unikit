@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Platform, ScrollView } from 'react-native';
+import { Platform, ScrollView, Modal } from 'react-native';
 
 import { withThemeProps } from '../../restyle';
 import Portal from '../Portal';
@@ -41,6 +41,7 @@ const Overlay = ({
   visible = false,
   scrollComp,
   onClose,
+  closeButton = true,
   backdrop = true,
   zIndex = 900,
   maxWidth = 600,
@@ -97,61 +98,70 @@ const Overlay = ({
   };
   return (
     <PortalComp>
-      <Animate
-        position={Platform.OS === 'web' ? 'fixed' : 'absolute'}
-        left={0}
-        top={0}
-        right={0}
-        bottom={0}
-        isVisible={visible === true}
-        bg={backdrop ? 'rgba(0,0,0,0.25)' : 'transparent'}
-        zIndex={zIndex}
-        pointerEvents={visible ? 'auto' : 'none'}
-        webStyle={{
-          backfaceVisibility: 'hidden',
-          backdropFilter: 'blur(1px)',
-        }}
-        {...modalProps}
-        {...modalSpring}
+      <Modal
+        visible={visible}
+        animationType="none"
+        onRequestClose={onClose}
+        transparent
       >
-        <AnimatedScrollComp {...scrollableProps}>
-          {onClose ? (
-            <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
-          ) : null}
+        <Animate
+          position={Platform.OS === 'web' ? 'fixed' : 'absolute'}
+          left={0}
+          top={0}
+          right={0}
+          bottom={0}
+          isVisible={visible === true}
+          bg={backdrop ? 'rgba(0,0,0,0.25)' : 'transparent'}
+          zIndex={zIndex}
+          pointerEvents={visible ? 'auto' : 'none'}
+          webStyle={{
+            backfaceVisibility: 'hidden',
+            backdropFilter: 'blur(1px)',
+          }}
+          {...modalProps}
+          {...modalSpring}
+        >
+          <AnimatedScrollComp {...scrollableProps}>
+            {onClose ? (
+              <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
+            ) : null}
 
-          <Animate
-            isVisible={visible === true}
-            relative
-            w="90%"
-            bg="background"
-            useTransition
-            delay={50}
-            borderRadius={roundness || theme.globals.roundness}
-            maxWidth={maxWidth}
-            {...contentProps}
-            style={{
-              ...(contentProps.style ? contentProps.style : {}),
-            }}
-            {...contentSpring}
-          >
-            <Flex w="100%" p={theme.globals.gap} {...rest}>
-              {render && children}
-            </Flex>
-            <Buttons
-              close={onClose}
-              textColor="text"
-              buttons={[
-                {
-                  label: theme.translations.close,
-                  onPress: (close) => close('onConfirm missing'),
-                  clean: true,
-                  size: 55,
-                },
-              ]}
-            />
-          </Animate>
-        </AnimatedScrollComp>
-      </Animate>
+            <Animate
+              isVisible={visible === true}
+              relative
+              w="90%"
+              bg="background"
+              useTransition
+              delay={50}
+              borderRadius={roundness || theme.globals.roundness}
+              maxWidth={maxWidth}
+              {...contentProps}
+              style={{
+                ...(contentProps.style ? contentProps.style : {}),
+              }}
+              {...contentSpring}
+            >
+              <Flex w="100%" p={theme.globals.gap} {...rest}>
+                {render && children}
+              </Flex>
+              {closeButton ? (
+                <Buttons
+                  close={onClose}
+                  textColor="text"
+                  buttons={[
+                    {
+                      label: theme.translations.close,
+                      onPress: (close) => close('onConfirm missing'),
+                      clean: true,
+                      size: 55,
+                    },
+                  ]}
+                />
+              ) : null}
+            </Animate>
+          </AnimatedScrollComp>
+        </Animate>
+      </Modal>
     </PortalComp>
   );
 };
