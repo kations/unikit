@@ -1,5 +1,4 @@
-export default {
-  multiply(a: number, b: number) {
-    return Promise.resolve(a * b);
-  },
-};
+//export * from './hooks';
+export * from './style';
+export * from './components';
+export * from './util';

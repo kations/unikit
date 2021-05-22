@@ -69,7 +69,9 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-reanimated": "^2.1.0",
+    "react-native-svg": "^12.1.1"
   },
   "jest": {
     "preset": "react-native",
@@ -77,12 +79,6 @@
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn lint && yarn typescript"
-    }
   },
   "commitlint": {
     "extends": [
@@ -149,5 +145,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "tinycolor2": "^1.4.2"
   }
 }
