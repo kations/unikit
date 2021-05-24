@@ -19,7 +19,7 @@ const parseColors = (colors, theme) => {
   return { parsedColors, id };
 };
 
-const Gradient = ({ colors, theme, ...rest }) => {
+export const Gradient = ({ colors, theme, ...rest }) => {
   if (!colors) colors = theme.colors.gradient;
   const { parsedColors, id } = parseColors(colors, theme);
   return (

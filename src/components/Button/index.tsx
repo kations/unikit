@@ -23,7 +23,7 @@ export interface Props {
   [key: string]: any;
 }
 
-const Button = ({
+export const Button = ({
   theme,
   bg = 'primary',
   gradient,

@@ -35,8 +35,8 @@ const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
       </Flex>
     );
   return (
-    <Grid gap={2}>
-      <Flex flex={1} bg="#1C182C" p={10}>
+    <Grid min={300} gap={10}>
+      <Flex flex={1} bg="#1C182C" p={10} borderRadius={10}>
         <Editor
           value={string}
           onValueChange={(text) => {
@@ -53,7 +53,13 @@ const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
           }}
         />
       </Flex>
-      <Flex flex={1} bg="primary:setAlpha:0.1" px={20} py={30}>
+      <Flex
+        flex={1}
+        bg="primary:setAlpha:0.1"
+        px={20}
+        py={30}
+        borderRadius={10}
+      >
         {error ? null : <Comp />}
       </Flex>
     </Grid>

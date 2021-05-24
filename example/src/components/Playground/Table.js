@@ -1,5 +1,12 @@
 import React from 'react';
 import { Flex, Text } from 'unikit';
+const docgen = require('react-docgen-typescript');
+
+const options = {
+  savePropValueAsString: true,
+};
+
+// Parse a file for docgen info
 
 const getDefaultValue = (value) => {
   if (typeof value === 'object') {
@@ -9,6 +16,7 @@ const getDefaultValue = (value) => {
 };
 
 export default function Table({ component, ...rest }) {
+  console.log(component);
   return null;
   // const types = parsePropTypes(component);
   // console.log({ component });
