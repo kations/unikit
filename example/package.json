@@ -37,6 +37,8 @@
     "@babel/runtime": "^7.9.6",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-expo": "8.3.0",
-    "expo-cli": "^4.0.13"
+    "expo-cli": "^4.0.13",
+    "react-docgen-typescript": "^1.22.0",
+    "react-docgen-typescript-loader": "^3.7.2"
   }
 }
