@@ -9,13 +9,20 @@ import { useDimensions } from '../hooks';
 
 const ThemeProvider = ({
   theme,
+  mode,
   children,
 }: {
   theme: BaseTheme;
   children: React.ReactNode;
 }) => {
   const { window } = useDimensions();
-  const mergedTheme = deepmerge(DefaultTheme, theme);
+  const mergedTheme = React.useMemo(() => {
+    const merged = deepmerge(DefaultTheme, theme);
+    if (mode && merged.colors.modes[mode]) {
+      merged.colors = deepmerge(merged.colors, merged.colors.modes[mode]);
+    }
+    return merged;
+  }, [theme, mode]);
 
   return (
     <ThemeContext.Provider

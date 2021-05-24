@@ -1,4 +1,7 @@
+import { Platform } from 'react-native';
 import tc from 'tinycolor2';
+
+import { rem } from '../util';
 
 const primary = '#7D4CDB';
 
@@ -18,7 +21,7 @@ const defaultTheme = {
   colors: {
     primary: primary,
     background: '#FFF',
-    accent: '',
+    accent: '#B642D8',
     text: tc(primary).darken(30).saturate(-30).toString(),
     surface: '#FFF',
     input: '#FFF',
@@ -27,6 +30,7 @@ const defaultTheme = {
     warning: '#ffbb33',
     error: '#f44336',
     shadow: '#000000',
+    gradient: ['primary', 'accent'],
     modes: {
       dark: {
         background: '#121212',
@@ -42,29 +46,34 @@ const defaultTheme = {
       fontSize: 40,
     },
     h2: {
-      fontSize: '2.5rem',
+      fontSize: rem(2.5),
     },
     h3: {
-      fontSize: '2rem',
+      fontSize: rem(2),
     },
     h4: {
-      fontSize: '1.5rem',
+      fontSize: rem(1.5),
     },
     h5: {
-      fontSize: '1.2rem',
+      fontSize: rem(1.2),
     },
     p: {
-      fontSize: '1rem',
-      lineHeight: '1.4rem',
+      fontSize: rem(1.1),
+      lineHeight: rem(1.61),
     },
     default: {
       fontSize: 16,
     },
     label: {
-      fontSize: '0.7rem',
+      fontSize: rem(0.7),
     },
     caption: {
-      fontSize: '0.5rem',
+      fontSize: rem(0.5),
+    },
+    code: {
+      fontFamily: Platform.select({ default: 'Courier', android: 'monospace' }),
+      fontWeight: '500',
+      fontSize: rem(1),
     },
   },
   translations: {

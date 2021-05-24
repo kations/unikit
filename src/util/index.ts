@@ -14,9 +14,14 @@ export function isNumber(value: number) {
   return isFinite(value);
 }
 
-export function rem(value: number) {
-  //if (Platform.OS === 'web') return `${value}em`;
+export function rem(value: number): number | string {
+  if (Platform.OS === 'web') return `${value}rem`;
   return PixelRatio.getFontScale() * 16 * value;
+}
+
+export function em(value: number): number | string {
+  if (Platform.OS === 'web') return `${value}em`;
+  return rem(value);
 }
 
 export const isWeb = Platform.OS === 'web';

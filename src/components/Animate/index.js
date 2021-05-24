@@ -13,8 +13,8 @@ export const clamp = (value, lowerBound, upperBound) => {
 
 const Animate = ({
   children,
-  from = { y: 200 },
-  to = { y: 0 },
+  from = { y: 100, opacity: 0 },
+  to = { y: 0, opacity: 1 },
   duration,
   delay,
   onDidAnimate = () => {},

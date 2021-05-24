@@ -49,6 +49,15 @@ const color = {
     themeKey: 'colors',
     transform: transformColor,
   },
+  colorAware: {
+    property: false,
+    transform: ({ value, theme }) => {
+      const themeC = theme.colors[value] || value;
+      const brightness = tc(themeC).getBrightness();
+      const c = brightness > 160 ? '#000' : '#FFF';
+      return { color: c };
+    },
+  },
 };
 
 const background = {
@@ -153,6 +162,14 @@ const layout = {
   wrap: {
     property: 'flexWrap',
     transform: ({ value }) => (value === true ? 'wrap' : undefined),
+  },
+  center: {
+    property: false,
+    transform: ({ value }) => {
+      return value === true
+        ? { alignItems: 'center', justifyContent: 'center' }
+        : undefined;
+    },
   },
   flexCenter: {
     property: false,
@@ -281,7 +298,7 @@ const shadow = {
       const b = Math.floor(value * 1.33);
       const h = value === 1 ? 1 : Math.floor(value * 0.25);
       const r = interpolateShadow(b, 1, 38, 1, 16);
-      const o = interpolateShadow(value, 1, 24, 0.2, 0.6);
+      const o = interpolateShadow(value, 1, 50, 0.3, 0.1);
 
       return {
         shadowColor: theme.colors.shadow,
@@ -352,11 +369,13 @@ const typography = {
     property: false,
     transform: ({ value = { min: 0, max: 100, factor: 8 }, theme }) => {
       const scale = PixelRatio.getFontScale();
+      const fontSize = Math.max(
+        value.min || 0,
+        Math.min((theme.width * scale) / (value.factor || 8), value.max || 100)
+      );
       return {
-        fontSize: Math.min(
-          (theme.width * scale) / (value.factor || 8),
-          value.max || 100
-        ),
+        fontSize,
+        lineHeight: fontSize > 30 ? fontSize * 1.2 : fontSize * 1.618,
       };
     },
   },
