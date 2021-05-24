@@ -9,8 +9,29 @@ import {
   Easing,
   runOnJS,
 } from 'react-native-reanimated';
+import type { ColorValue, OpaqueColorValue } from 'react-native';
 
-export const clamp = (value, lowerBound, upperBound) => {
+interface SpringProps {
+  to: any;
+  from: any;
+  duration?: number;
+  defaultDuration?: number;
+  delay?: number;
+  repeat?: number;
+  onDidAnimate?: () => void;
+}
+
+interface AnimationValue extends SpringProps {
+  value: number | Exclude<ColorValue, OpaqueColorValue>;
+  animationType: 'spring' | 'timing';
+  config: any;
+}
+
+export const clamp = (
+  value: number,
+  lowerBound: number,
+  upperBound: number
+) => {
   'worklet';
   return Math.min(Math.max(lowerBound, value), upperBound);
 };
@@ -57,33 +78,38 @@ const getAnimatedValue = ({
   config = {},
   delay = 0,
   repeat = 1,
-  onDidAnimate = () => {},
+  onDidAnimate,
   ...rest
-}) => {
+}: AnimationValue) => {
   'worklet';
   const animation = animationType === 'timing' ? withTiming : withSpring;
   const aniFunc = withRepeat(
-    animation(value, { ...config, ...rest }, () => runOnJS(onDidAnimate)()),
+    animation(
+      value,
+      { ...config, ...rest },
+      () => onDidAnimate && runOnJS(onDidAnimate)()
+    ),
     repeat,
     true
   );
-  if (delay > 0) {
+
+  if (delay) {
     return withDelay(delay, aniFunc);
   }
   return aniFunc;
 };
 
-const useSpring = ({
+const useSpring = <Props extends SpringProps>({
   to,
   from = false,
   duration,
   defaultDuration = 750,
   delay,
   repeat = 1,
-  onDidAnimate = () => {},
-  //exit,
-}) => {
-  const isMounted = useSharedValue(false, false);
+  onDidAnimate,
+}: //exit,
+Props) => {
+  const isMounted = useSharedValue(false);
 
   const style = useAnimatedStyle(() => {
     const final = {
