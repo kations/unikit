@@ -9,22 +9,19 @@ import {
   Easing,
   runOnJS,
 } from 'react-native-reanimated';
-import type { ColorValue, OpaqueColorValue } from 'react-native';
+
+import { getProgress } from '../util';
 
 interface SpringProps {
   to: any;
   from: any;
+  exit: any;
   duration?: number;
   defaultDuration?: number;
   delay?: number;
   repeat?: number;
+  isPresent?: boolean;
   onDidAnimate?: () => void;
-}
-
-interface AnimationValue extends SpringProps {
-  value: number | Exclude<ColorValue, OpaqueColorValue>;
-  animationType: 'spring' | 'timing';
-  config: any;
 }
 
 export const clamp = (
@@ -36,94 +33,100 @@ export const clamp = (
   return Math.min(Math.max(lowerBound, value), upperBound);
 };
 
-const isColor = (styleKey: string) => {
-  'worklet';
-  return [
-    'backgroundColor',
-    'borderBottomColor',
-    'borderColor',
-    'borderEndColor',
-    'borderLeftColor',
-    'borderRightColor',
-    'borderStartColor',
-    'borderTopColor',
-    'color',
-  ].includes(styleKey);
-};
+const colors = [
+  'backgroundColor',
+  'borderBottomColor',
+  'borderColor',
+  'borderEndColor',
+  'borderLeftColor',
+  'borderRightColor',
+  'borderStartColor',
+  'borderTopColor',
+  'color',
+];
 
-const isTransform = (styleKey: string) => {
-  'worklet';
-  const transforms = [
-    'x',
-    'y',
-    'perspective',
-    'rotate',
-    'rotateX',
-    'rotateY',
-    'rotateZ',
-    'scale',
-    'scaleX',
-    'scaleY',
-    'translateX',
-    'translateY',
-    'skewX',
-    'skewY',
-  ];
-  return transforms.includes(styleKey);
-};
+const transforms = [
+  'x',
+  'y',
+  'perspective',
+  'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'scale',
+  'scaleX',
+  'scaleY',
+  'translateX',
+  'translateY',
+  'skewX',
+  'skewY',
+];
 
-const getAnimatedValue = ({
-  value,
-  animationType = 'spring',
-  config = {},
-  delay = 0,
-  repeat = 1,
-  onDidAnimate,
-  ...rest
-}: AnimationValue) => {
-  'worklet';
-  const animation = animationType === 'timing' ? withTiming : withSpring;
-  const aniFunc = withRepeat(
-    animation(
-      value,
-      { ...config, ...rest },
-      () => onDidAnimate && runOnJS(onDidAnimate)()
-    ),
-    repeat,
-    true
-  );
+const getStyleObj = ({
+  from = {},
+  to = {},
+  exit = {},
+  duration,
+  delay,
+  repeat,
+}) => {
+  const final = {};
+  Object.keys(to).forEach((key) => {
+    let animationType = duration ? 'timing' : 'spring';
+    if (colors.includes(key) || key === 'opacity') animationType = 'timing';
 
-  if (delay) {
-    return withDelay(delay, aniFunc);
-  }
-  return aniFunc;
+    const fromValue = from[key];
+    const toValue = to[key];
+    const exitValue = exit[key];
+
+    if (key === 'x') key = 'translateX';
+    if (key === 'y') key = 'translateY';
+    final[key] = {
+      fromValue,
+      toValue,
+      exitValue,
+      animationType,
+      trans: transforms.includes(key),
+    };
+  });
+  return final;
 };
 
 const useSpring = <Props extends SpringProps>({
   to,
-  from = false,
+  from,
+  exit,
+  isPresent = true,
   duration,
   defaultDuration = 750,
   delay,
   repeat = 1,
   onDidAnimate,
-}: //exit,
-Props) => {
+}: Props) => {
   const isMounted = useSharedValue(false);
+  const wasMounted = useSharedValue(false);
+  const progress = useSharedValue({ enter: 0, exit: 0 });
+
+  const styleObj = React.useMemo(
+    () => getStyleObj({ from, to, exit, duration, delay, repeat, isMounted }),
+    [
+      JSON.stringify(from),
+      JSON.stringify(to),
+      JSON.stringify(exit),
+      duration,
+      delay,
+      repeat,
+    ]
+  );
+
+  // console.log({ styleObj, length: Object.keys(styleObj).length });
 
   const style = useAnimatedStyle(() => {
-    const final = {
-      // initializing here fixes reanimated object.__defineProperty bug(?)
-      transform: [],
-    };
+    const final = { transform: [] };
 
-    const animateStyle = to || {};
-    const initialStyle = from || {};
-    //const exitStyle = exit || {};
-
-    Object.keys(animateStyle).forEach((key) => {
-      let animationType = duration ? 'timing' : 'spring';
-      if (isColor(key) || key === 'opacity') animationType = 'timing';
+    Object.keys(styleObj).forEach((key) => {
+      const { fromValue, toValue, exitValue, trans, animationType } =
+        styleObj[key];
 
       const config =
         duration || animationType === 'timing'
@@ -132,50 +135,52 @@ Props) => {
               easing: Easing.bezier(0.5, 0.01, 0, 1),
             }
           : { velocity: 2 };
-      const aniConfig = { animationType, delay, config, onDidAnimate, repeat };
 
-      const initialValue = initialStyle[key];
-      const value = getAnimatedValue({
-        value: animateStyle[key],
-        ...aniConfig,
-      });
+      const animation = animationType === 'timing' ? withTiming : withSpring;
+      const state =
+        wasMounted.value === true && isMounted.value === false
+          ? 'exit'
+          : 'enter';
 
-      if (key === 'x') key = 'translateX';
-      if (key === 'y') key = 'translateY';
-      if (initialValue !== null) {
-        // if we haven't mounted, or if there's no other value to use besides the initial one, use it.
-        if (isMounted.value === false) {
-          if (isTransform(key) && final.transform) {
-            // this syntax avoids reanimated .__defineObject error
-            const transform = {};
-            transform[key] = getAnimatedValue({
-              value: initialValue,
-              ...aniConfig,
-            });
+      const aniValue = withDelay(
+        delay || 0,
+        withRepeat(
+          animation(
+            wasMounted.value === true &&
+              exitValue !== undefined &&
+              isMounted.value === false
+              ? exitValue
+              : isMounted.value === false && fromValue !== undefined
+              ? fromValue
+              : toValue,
+            { ...config },
+            () =>
+              onDidAnimate &&
+              runOnJS(() => {
+                progress.value = {
+                  ...progress.value,
+                  [state]: progress.value[state] + 1,
+                };
+                const multi = state === 'enter' ? 2 : 1;
 
-            // final.transform.push({ [key]: initialValue }) does not work!
-            // @ts-ignore
-            final.transform.push({
-              [key]: getAnimatedValue({
-                value: initialValue,
-                ...aniConfig,
-              }),
-            });
-            // console.log({ final })
-          } else {
-            final[key] = getAnimatedValue({
-              value: initialValue,
-              ...aniConfig,
-            });
-          }
-          return;
-        }
-      }
+                onDidAnimate({
+                  key,
+                  state,
+                  progress:
+                    progress.value[state] /
+                    (Object.keys(styleObj).length + multi),
+                });
+              })()
+          ),
+          repeat,
+          true
+        )
+      );
 
-      if (isTransform(key)) {
-        final.transform.push({ [key]: value });
+      if (trans) {
+        final.transform.push({ [key]: aniValue });
       } else {
-        final[key] = value;
+        final[key] = aniValue;
       }
     });
 
@@ -186,8 +191,9 @@ Props) => {
   });
 
   React.useEffect(() => {
-    isMounted.value = true;
-  }, [isMounted]);
+    isMounted.value = isPresent;
+    wasMounted.value = true;
+  }, [isMounted, isPresent]);
 
   return {
     style,

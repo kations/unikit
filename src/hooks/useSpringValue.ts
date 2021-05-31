@@ -9,7 +9,7 @@ export default function useDynamicAnimation(initialState = fallback) {
   });
   if (activeStyle.current.value === null) {
     // use a .value to be certain it's never been set
-    activeStyle.current.value = initialState();
+    activeStyle.current.value = initialState;
   }
 
   const __state = useSharedValue(activeStyle.current.value);

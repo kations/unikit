@@ -5,3 +5,5 @@ export { default as Page } from './Page';
 export { default as Gradient } from './Gradient';
 export { default as Button } from './Button';
 export { default as Grid } from './Grid';
+export { default as Alert } from './Alert';
+export { default as Draggable } from './Draggable';

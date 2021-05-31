@@ -40,6 +40,16 @@ const pages = [
   </Grid>;`,
   },
   {
+    slug: 'draggable',
+    title: 'Draggable',
+    from: 'Draggable',
+    group: 'Layout',
+    smallCode: `<Flex flex={1} flexCenter>
+        <Draggable direction="x" minX={-100} maxX={100} snapFactor={100} initialSnap={{ x: -100 }} snapTo={[{ x: -100 }, { x: 100 }]}>{({dragging}) => (<Animate to={{scale:dragging? 1.2:1 }} bg="primary" w={50} h={50} borderRadius={25} center><Text>{dragging ? "drag": ""}</Text></Animate>)}</Draggable>
+      </Flex>`,
+    code: ``,
+  },
+  {
     slug: 'button',
     title: 'Button',
     from: 'Button',

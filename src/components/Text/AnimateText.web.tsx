@@ -12,6 +12,7 @@ export default ({
   ...rest
 }) => {
   var splittedString = children.split(animateType === 'word' ? ' ' : '');
+  const textProps = {};
   return (
     <Text {...rest}>
       {splittedString.map((string, index) => (
@@ -29,7 +30,7 @@ export default ({
           visibleNode={Text}
           {...animateProps}
         >
-          {`${string}${animateType === 'word' ? ' ' : ''}`}
+          <Text>{`${string}${animateType === 'word' ? ' ' : ''}`}</Text>
         </AnimateText>
       ))}
     </Text>

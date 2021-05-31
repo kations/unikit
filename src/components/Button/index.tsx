@@ -30,7 +30,7 @@ export const Button = ({
   color,
   children,
   size = 50,
-  rounded = true,
+  rounded = false,
   disabled = false,
   loading = false,
   progress,

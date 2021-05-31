@@ -9,6 +9,10 @@ export function isFunction(functionToCheck: () => {}) {
   );
 }
 
+export function randomId() {
+  return Math.random().toString(36).substr(2, 9);
+}
+
 export function isNumber(value: number) {
   if (value === 0) return true;
   return isFinite(value);
@@ -23,6 +27,14 @@ export function em(value: number): number | string {
   if (Platform.OS === 'web') return `${value}em`;
   return rem(value);
 }
+
+export const getProgress = (a, b, v) => {
+  return (v - a) / (b - a);
+};
+
+export const getValueByProgress = (start, end, t) => {
+  return start * (1 - t) + end * t;
+};
 
 export const isWeb = Platform.OS === 'web';
 export const isIOS = Platform.OS === 'ios';

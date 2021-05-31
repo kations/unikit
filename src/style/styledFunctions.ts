@@ -54,7 +54,7 @@ const color = {
     transform: ({ value, theme }) => {
       const themeC = theme.colors[value] || value;
       const brightness = tc(themeC).getBrightness();
-      const c = brightness > 160 ? '#000' : '#FFF';
+      const c = brightness > 170 ? '#000' : '#FFF';
       return { color: c };
     },
   },

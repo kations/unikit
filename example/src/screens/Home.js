@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { styled, Flex, Text, Animate, Page, Button } from 'unikit';
+import { styled, Flex, Text, Animate, Page, Button, useTheme } from 'unikit';
 
 import { Header } from '../components';
 import { useNavigation } from '../hooks';
@@ -23,6 +23,7 @@ const LinkBox = styled.View({
 
 export default function App() {
   const { navigate } = useNavigation();
+  const theme = useTheme();
   return (
     <Page renderHeader={(top) => <Header top={top} />}>
       <Flex w="100vw" h="95vh" flexCenter>
@@ -60,19 +61,31 @@ export default function App() {
             animateMode="scale"
             mx={10}
             gradient
+            rounded
           >
             Components
           </Button>
           <Button
-            onPress={() =>
-              window.open('https://snack.expo.io/@kations/unikit', '_blank')
-            }
+            onPress={() => {
+              // theme.alert({
+              //   component: 'ActionSheet',
+              //   position: 'bottom',
+              //   timeout: false,
+              //   backdrop: true,
+              // });
+              theme.alert({
+                type: 'success',
+                message: 'soon ✌️',
+              });
+              //window.open('https://snack.expo.io/@kations/unikit', '_blank')
+            }}
             bg="text"
             size={60}
             mt={30}
             shadow={10}
             animateMode="scale"
             mx={10}
+            rounded
             renderLeft={
               <Image mr={10} source={require('../../assets/expo.png')} />
             }

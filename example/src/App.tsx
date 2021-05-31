@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider } from 'unikit';
+import { ThemeProvider, Alert } from 'unikit';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -32,7 +32,7 @@ const linking = {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider mode="light">
+      <ThemeProvider mode="light" theme={{ Button: { rounded: true } }}>
         <NavigationContainer linking={linking}>
           <Stack.Navigator>
             <Stack.Screen
@@ -52,6 +52,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
+        <Alert />
       </ThemeProvider>
     </SafeAreaProvider>
   );

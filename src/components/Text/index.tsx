@@ -39,7 +39,6 @@ export default ({ children, level, font, animate = false, ...rest }: Props) => {
     }),
     ...rest,
   };
-  console.log({ textProps });
   if (animate) {
     return (
       <AnimateText color="text" {...textProps} {...rest}>

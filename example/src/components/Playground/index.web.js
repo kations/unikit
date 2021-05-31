@@ -85,6 +85,7 @@ export default function LiveView({ code, scope, title, from, ...rest }) {
           Grid: unikit.Grid,
           Icon: unikit.Icon,
           Button: unikit.Button,
+          Animate: unikit.Animate,
           icons,
           [title]: unikit[title],
           ...scope,

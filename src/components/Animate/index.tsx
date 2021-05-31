@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Animated from 'react-native-reanimated';
 
 import styled from '../../style/styled';
@@ -7,8 +7,10 @@ import useSpring from '../../hooks/useSpring';
 interface AnimateProps {
   from: any;
   to: any;
+  exit: any;
   duration?: number;
   delay?: number;
+  visible?: boolean;
   onDidAnimate?: () => void;
 }
 
@@ -27,20 +29,29 @@ export const clamp = (
 
 const Animate: React.FC<AnimateProps> = ({
   children,
+  visible = true,
   from = { y: 100, opacity: 0 },
   to = { y: 0, opacity: 1 },
+  onDidAnimate,
+  exit,
   duration,
   delay,
-  onDidAnimate,
   ...rest
 }) => {
+  const [isPresent, setIsPresent] = useState(visible);
   const animated = useSpring({
     from,
     to,
+    exit,
+    isPresent,
     duration,
     delay,
     onDidAnimate,
   });
+
+  React.useEffect(() => {
+    setIsPresent(visible);
+  }, [visible]);
 
   return (
     <Unimation {...rest} style={animated.style}>
@@ -55,6 +66,8 @@ export default React.memo(Animate, (p, n) => {
   } else if (p.duration !== n.duration) {
     return false;
   } else if (p.delay !== n.delay) {
+    return false;
+  } else if (p.visible !== n.visible) {
     return false;
   }
   return true;
