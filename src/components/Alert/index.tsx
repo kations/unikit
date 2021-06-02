@@ -110,7 +110,6 @@ const AlertWrap = ({
 
   const renderItem = (item) => {
     const { key, position = 'top', ...rest } = item;
-
     return (
       <Alert
         ref={(ref) => ref && refMap.set(item, ref)}
@@ -129,7 +128,6 @@ const AlertWrap = ({
       />
     );
   };
-
   return (
     <Flex
       py={gap / 2 + offset}
@@ -138,7 +136,7 @@ const AlertWrap = ({
       width="100%"
       p={theme.spacing.m}
       zIndex={9999}
-      position={'fixed'}
+      fixed
       top={0}
       left={0}
       right={0}

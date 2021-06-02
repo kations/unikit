@@ -6,15 +6,26 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import './Playground.css';
 import * as unikit from 'unikit';
-import { Flex, Text, Animate, useTheme, Grid } from 'unikit';
-
+import {
+  Flex,
+  Text,
+  Animate,
+  useTheme,
+  Grid,
+  useInterval,
+  Icons,
+} from 'unikit';
 import Table from './Table';
-import icons from './icons';
 
 import prettier from '@miksu/prettier/lib/standalone';
 import parsers from '@miksu/prettier/lib/language-js/parser-babylon';
 
-const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
+const LiveNative = ({
+  live: { error, code, element, onChange },
+  clean,
+  min = 300,
+  hideEditor = false,
+}) => {
   const theme = useTheme();
   const [string, setString] = useState(() =>
     prettier.format(code, {
@@ -35,24 +46,26 @@ const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
       </Flex>
     );
   return (
-    <Grid min={300} gap={10}>
-      <Flex flex={1} bg="#1C182C" p={10} borderRadius={10}>
-        <Editor
-          value={string}
-          onValueChange={(text) => {
-            setString(text);
-            onChange(text);
-          }}
-          highlight={(code) => highlight(code, languages.js)}
-          padding={10}
-          style={{
-            background: '#1C182C',
-            fontFamily: '"Fira code", "Fira Mono", monospace',
-            color: '#E2DCF2',
-            fontSize: '1rem',
-          }}
-        />
-      </Flex>
+    <Grid min={min} gap={10}>
+      {hideEditor ? null : (
+        <Flex flex={1} bg="#1C182C" p={10} borderRadius={10}>
+          <Editor
+            value={string}
+            onValueChange={(text) => {
+              setString(text);
+              onChange(text);
+            }}
+            highlight={(code) => highlight(code, languages.js)}
+            padding={10}
+            style={{
+              background: '#1C182C',
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              color: '#E2DCF2',
+              fontSize: '1rem',
+            }}
+          />
+        </Flex>
+      )}
       <Flex
         flex={1}
         bg="primary:setAlpha:0.1"
@@ -68,7 +81,14 @@ const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
 
 const WrappedEditor = withLive(LiveNative);
 
-export default function LiveView({ code, scope, title, from, ...rest }) {
+export default function LiveView({
+  code,
+  scope,
+  title,
+  from,
+  codeProps = {},
+  ...rest
+}) {
   const theme = useTheme();
   return (
     <>
@@ -80,18 +100,19 @@ export default function LiveView({ code, scope, title, from, ...rest }) {
           unikit,
           useState,
           useRef,
+          useInterval,
+          Icons,
           Flex: unikit.Flex,
           Text: unikit.Text,
           Grid: unikit.Grid,
           Icon: unikit.Icon,
           Button: unikit.Button,
           Animate: unikit.Animate,
-          icons,
           [title]: unikit[title],
           ...scope,
         }}
       >
-        <WrappedEditor {...rest} />
+        <WrappedEditor {...codeProps} {...rest} />
       </LiveProvider>
       {!rest.clean ? (
         <Flex py={15} mt={40} mb={150}>

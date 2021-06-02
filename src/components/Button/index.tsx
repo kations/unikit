@@ -6,6 +6,7 @@ import Text from '../Text';
 import Flex from '../Flex';
 import Animate from '../Animate';
 import { withThemeProps } from '../../style';
+import { isWeb } from '../../util';
 
 const Pressable = styled.Pressable();
 

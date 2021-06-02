@@ -31,6 +31,7 @@ export default function App() {
                   .map(({ title, slug, smallCode }) => {
                     return (
                       <Touchable
+                        key={slug}
                         onPress={() => navigate('Component', { slug })}
                       >
                         <Animate delay={500} duration={500}>

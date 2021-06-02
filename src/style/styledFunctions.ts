@@ -71,6 +71,14 @@ const background = {
     themeKey: 'colors',
     transform: transformColor,
   },
+  gradient: {
+    property: 'backgroundImage',
+    themeKey: 'colors',
+    transform: ({ value, theme }) => {
+      if (value === true) value = ['red', 'blue'];
+      return `linear-gradient(90deg, ${value.join(',')})`;
+    },
+  },
 };
 
 const spacingProperties = {

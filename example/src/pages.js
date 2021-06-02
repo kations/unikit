@@ -45,7 +45,7 @@ const pages = [
     from: 'Draggable',
     group: 'Layout',
     smallCode: `<Flex flex={1} flexCenter>
-        <Draggable direction="x" minX={-100} maxX={100} snapFactor={100} initialSnap={{ x: -100 }} snapTo={[{ x: -100 }, { x: 100 }]}>{({dragging}) => (<Animate to={{scale:dragging? 1.2:1 }} bg="primary" w={50} h={50} borderRadius={25} center><Text>{dragging ? "drag": ""}</Text></Animate>)}</Draggable>
+        <Draggable direction="x" minX={-100} maxX={100} snapFactor={50} snapToStart snapTo={[{ x: -100 }, { x: 100 }]}>{({dragging}) => (<Animate to={{scale:dragging? 1.2:1 }} bg="primary" w={50} h={50} borderRadius={25} center><Text>{dragging ? "drag": ""}</Text></Animate>)}</Draggable>
       </Flex>`,
     code: ``,
   },
@@ -69,6 +69,43 @@ const pages = [
       <Button light loading>Loading</Button>
       <Button  progress={50}>Progress</Button>
     </Grid>`,
+  },
+  {
+    slug: 'icon',
+    title: 'Icon',
+    desc: 'Feather Icons as paths. Add animate prop to start a path animation.',
+    from: 'Icon',
+    group: 'Interface',
+    smallCode: `<Icon size={100} strokeWidth={1} animate />`,
+    codeProps: { hideEditor: true },
+    code: `function RenderIcon() {
+      const names = Object.keys(Icons);
+      const [index, setIndex] = useState(0);
+      useInterval(() => {
+        setIndex((index + 1) % names.length);
+      }, 2500);
+      return (
+        <Flex alignItems="center" w="100%" p={30}>
+          <Flex alignItems="center" w="100%" py={50}>
+            <Animate from={{scale:0.5}} to={{scale:1}} duration={2000} key={names[index]}>
+            <Icon size={150} strokeWidth={0.5} name={names[index]} animate />
+            </Animate>
+            <Flex mt={10} bg="text" p={10} borderRadius={8}>
+              <Text font="Code" color="surface">{'<Icon name="..." size={150} strokeWidth={0.5} delay={250} animate />'}</Text>
+            </Flex>
+           
+          </Flex>
+          <Grid min={150} w="100%">
+            {names.map(name => (
+                <Flex key={name} flexCenter my={20} w="100%">
+                  <Icon name={name} />
+                  <Text mt={10}>{name}</Text>
+                </Flex>
+              ))}
+          </Grid>
+        </Flex>
+      );
+    }`,
   },
   // {
   //   slug: 'alert',

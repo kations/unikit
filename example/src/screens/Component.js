@@ -12,7 +12,7 @@ export default function App({ route = {} }) {
   const { navigate } = useNavigation();
   const { slug } = route.params || {};
   const item = pages.find((p) => p.slug === slug);
-  const { title, from, code, smallCode } = item;
+  const { title, desc, from, code, smallCode, codeProps } = item;
   return (
     <Page renderHeader={(top) => <Header title={slug} top={top} />}>
       <Flex w="100vw" h="40vh" mt={80} flexCenter>
@@ -28,11 +28,30 @@ export default function App({ route = {} }) {
         >
           {title}
         </Text>
+        {desc ? (
+          <Animate duration={500} delay={1000}>
+            <Text
+              font="p"
+              dynamicFontSize={{ min: 16, max: 22, factor: 35 }}
+              maxWidth={600}
+              mt={30}
+              px="10%"
+              textAlign="center"
+            >
+              {desc}
+            </Text>
+          </Animate>
+        ) : null}
       </Flex>
 
       <Flex w="100%" px="10vw" h={800}>
         <React.Suspense fallback={<Text>Loading...</Text>}>
-          <Playground code={code || smallCode} title={from} />
+          <Playground
+            key={title}
+            code={code || smallCode}
+            title={from}
+            codeProps={codeProps}
+          />
         </React.Suspense>
       </Flex>
     </Page>

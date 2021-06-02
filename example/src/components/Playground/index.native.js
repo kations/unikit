@@ -11,14 +11,12 @@ import { Flex, useTheme } from 'unikit';
 //   plugins: [parsers]
 // })
 
-import icons from './icons';
-
 const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
   const [string, setString] = useState(code);
   const Comp = element || null;
   if (clean)
     return (
-      <Flex w="100%" flexCenter p={25} flex={1}>
+      <Flex w="100%" flexCenter p={25}>
         <Comp />
       </Flex>
     );
@@ -47,10 +45,9 @@ export default function Table({ code, scope, title, ...rest }) {
         Flex: unikit.Flex,
         Text: unikit.Text,
         Grid: unikit.Grid,
+        Icon: unikit.Icon,
         Button: unikit.Button,
-        icons,
-        Touchable: unikit.Touchable,
-        TouchableWithoutFeedback,
+        Animate: unikit.Animate,
         [title]: unikit[title],
         ...scope,
       }}
