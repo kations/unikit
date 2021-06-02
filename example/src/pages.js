@@ -107,6 +107,46 @@ const pages = [
       );
     }`,
   },
+  {
+    slug: 'progress',
+    title: 'Progress',
+    from: 'Progress',
+    group: 'Interface',
+    smallCode: `<Progress size={70} value={66} />`,
+    code: `function RenderIcon() {
+      const [value, setValue] = useState(33);
+      useInterval(() => {
+        setValue(Math.floor(Math.random() * 99) + 1);
+      }, 2500);
+      return (
+         
+    <Flex flex={1} row wrap flexCenter>
+
+    <Progress
+      mx={25}
+      value={80}
+      size={70}
+      angle={180}
+      formatValue={v => v + "%"}
+      progressColor="success"
+      showValue
+    />
+    <Progress
+    mx={25}
+      value={value}
+      size={100}
+      trackWidth={9}
+      progressWidth={6}
+      formatValue={v => v + "%"}
+      showValue
+    />
+    <Progress mx={25} trackWidth={7}
+    progressWidth={6} loading />
+
+  </Flex>
+      );
+    }`,
+  },
   // {
   //   slug: 'alert',
   //   title: 'Alert',

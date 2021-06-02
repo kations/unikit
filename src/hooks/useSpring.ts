@@ -20,6 +20,7 @@ interface SpringProps {
   defaultDuration?: number;
   delay?: number;
   repeat?: number;
+  reverse?: boolean;
   isPresent?: boolean;
   onDidAnimate?: () => void;
 }
@@ -87,6 +88,8 @@ const getStyleObj = ({
       exitValue,
       animationType,
       trans: transforms.includes(key),
+      repeat,
+      delay,
     };
   });
   return final;
@@ -101,6 +104,7 @@ const useSpring = <Props extends SpringProps>({
   defaultDuration = 750,
   delay,
   repeat = 1,
+  reverse = false,
   onDidAnimate,
 }: Props) => {
   const isMounted = useSharedValue(false);
@@ -141,7 +145,6 @@ const useSpring = <Props extends SpringProps>({
         wasMounted.value === true && isMounted.value === false
           ? 'exit'
           : 'enter';
-
       const aniValue = withDelay(
         delay || 0,
         withRepeat(
@@ -173,7 +176,7 @@ const useSpring = <Props extends SpringProps>({
               })()
           ),
           repeat,
-          true
+          reverse
         )
       );
 

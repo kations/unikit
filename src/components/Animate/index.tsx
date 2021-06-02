@@ -11,6 +11,8 @@ interface AnimateProps {
   duration?: number;
   delay?: number;
   visible?: boolean;
+  repeat?: number;
+  reverse?: boolean;
   onDidAnimate?: () => void;
 }
 
@@ -36,6 +38,8 @@ const Animate: React.FC<AnimateProps> = ({
   exit,
   duration,
   delay,
+  repeat,
+  reverse,
   ...rest
 }) => {
   const [isPresent, setIsPresent] = useState(visible);
@@ -45,6 +49,7 @@ const Animate: React.FC<AnimateProps> = ({
     exit,
     isPresent,
     duration,
+    repeat,
     delay,
     onDidAnimate,
   });

@@ -9,3 +9,4 @@ export { default as Alert } from './Alert';
 export { default as Draggable } from './Draggable';
 export { default as Icon } from './Icon';
 export { default as Icons } from './Icon/icons';
+export { default as Progress } from './Progress';
