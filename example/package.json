@@ -20,6 +20,7 @@
     "expo": "^41.0.0",
     "expo-splash-screen": "~0.10.2",
     "feather-icons-paths": "^1.0.8",
+    "fs": "^0.0.1-security",
     "prismjs": "^1.23.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -40,6 +41,7 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-expo": "8.3.0",
     "expo-cli": "^4.0.13",
+    "react-docgen": "^5.4.0",
     "react-docgen-typescript": "^1.22.0",
     "react-docgen-typescript-loader": "^3.7.2"
   }

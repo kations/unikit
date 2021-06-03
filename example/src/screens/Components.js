@@ -25,7 +25,7 @@ export default function App() {
               <Text font="h3" mt={25} bold>
                 {group}
               </Text>
-              <Grid mt={10} mb={50} min={200} gap={20}>
+              <Grid mt={10} mb={50} min={250} gap={20}>
                 {getComponentsByGroup(pages, group)
                   .sort((a, b) => a.title > b.title)
                   .map(({ title, slug, smallCode }) => {

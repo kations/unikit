@@ -38,7 +38,7 @@ const circlePath = (x, y, radius, startAngle, endAngle) => {
   return d.join(' ');
 };
 
-interface Props {
+export interface Props {
   theme: object;
   value?: number;
   size?: number;

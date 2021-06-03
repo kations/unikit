@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-import { Grid, Flex, Text, Animate, Page, Touchable } from 'unikit';
-
+import { Flex, Text, Animate, Page } from 'unikit';
 import { Header } from '../components';
 import { pages } from '../pages';
 import { useNavigation } from '../hooks';
@@ -13,6 +11,7 @@ export default function App({ route = {} }) {
   const { slug } = route.params || {};
   const item = pages.find((p) => p.slug === slug);
   const { title, desc, from, code, smallCode, codeProps } = item;
+
   return (
     <Page renderHeader={(top) => <Header title={slug} top={top} />}>
       <Flex w="100vw" h="40vh" mt={80} flexCenter>

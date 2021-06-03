@@ -112,6 +112,27 @@ const pages = [
     title: 'Progress',
     from: 'Progress',
     group: 'Interface',
+    props: `interface Props {
+      theme: object;
+      value?: number;
+      size?: number;
+      trackWidth?: number;
+      trackColor?: string;
+      progressWidth?: number;
+      progressColor?: string;
+      loading?: boolean;
+      lineCap?: string;
+      angle?: number;
+      duration?: number;
+      showValue?: boolean;
+      formatValue?: () => void;
+      valueProps?: object;
+      labelProps?: object;
+      textColor?: string;
+      animate?: boolean;
+      animationType?: string;
+      [key: string]: any;
+    }`,
     smallCode: `<Progress size={70} value={66} />`,
     code: `function RenderIcon() {
       const [value, setValue] = useState(33);
@@ -146,6 +167,49 @@ const pages = [
   </Flex>
       );
     }`,
+  },
+  {
+    slug: 'avatar',
+    title: 'Avatar',
+    from: 'Avatar',
+    group: 'Interface',
+    smallCode: `<Avatar size={66} char="UK" shadow={10} shadowColor="rgba(0,0,0,0.2)" source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} />`,
+    code: `<Flex flex={1} row wrap center>
+    <Avatar gradient mx={10} bg="primary" char="UK" />
+    <Avatar gradient mx={10} bg="primary" char="UK"><Icon name="zap" size={24} color="#FFF" /></Avatar>
+    <Avatar
+    mx={10}
+      size={66}
+      shadow={10}
+      shadowColor="rgba(0,0,0,0.2)"
+      onPress={() => theme.alert({type: "success", message:"Hi"})}
+      source={{
+        uri:
+          "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
+      }}
+    />
+    <Avatar
+    mx={10}
+      size={66}
+      char="IK"
+      source={{
+        uri:
+          "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
+      }}
+    />
+    <Avatar  mx={10} bg="success" darken={0.5} char="IT" />
+  </Flex>;`,
+  },
+  {
+    slug: 'collapsible',
+    title: 'Collapsible',
+    from: 'Collapsible',
+    group: 'Interface',
+    smallCode: `<Collapsible triggerProps={{gradient:true}}><Flex bg="primary" w={20} h={20} /></Collapsible>`,
+    code: `<Flex>
+    <Collapsible  triggerProps={{gradient:true}} trigger="#1"><Flex bg="primary" w={100} h={100} /></Collapsible>
+    <Collapsible trigger="#2" mt={5}><Flex bg="primary" w={100} h={100} /></Collapsible>
+    </Flex>`,
   },
   // {
   //   slug: 'alert',

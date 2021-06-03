@@ -3,32 +3,69 @@ import { withThemeProps } from '../../style';
 
 import Flex from '../Flex';
 import Text from '../Text';
-import Button from '../Button';
+import Avatar from '../Avatar';
+import Icon from '../Icon';
 
-const Toast = ({ theme, type = 'surface', title, message, close, ...rest }) => {
+const iconTypes = {
+  success: 'check',
+  error: 'x',
+  warning: 'alert-triangle',
+};
+
+const Toast = ({
+  theme,
+  type = 'surface',
+  icon = true,
+  title,
+  message,
+  close,
+  ...rest
+}) => {
   return (
     <Flex
       w="100%"
       position="relative"
       borderRadius={theme.globals.roundness}
-      px={theme.spacing.m}
+      p={theme.spacing.s}
+      pl={theme.spacing.m}
       bg={type}
       shadow={5}
-      minHeight={50}
       row
       justifyContent="space-between"
       pointerEvents="box-none"
       alignItems="center"
     >
-      <Text colorAware={type}>{message}</Text>
-      <Button
-        bg={`${type}:darken:5`}
+      <Flex alignItems="center" row>
+        {(icon && iconTypes[type]) || (icon !== true && icon) ? (
+          <Avatar
+            bg="surface"
+            borderRadius={15}
+            onPress={close}
+            mr={theme.spacing.m}
+            size={30}
+          >
+            <Icon
+              color={type}
+              name={icon === true ? iconTypes[type] : icon}
+              size={20}
+              animate
+              delay={300}
+              duration={1200}
+            />
+          </Avatar>
+        ) : null}
+        <Text colorAware={type}>{message}</Text>
+      </Flex>
+
+      <Avatar
+        bg={type}
         borderRadius={theme.globals.roundness}
         onPress={close}
         size={34}
+        roundness={0}
       >
-        x
-      </Button>
+        <Icon name="x" size={20} />
+      </Avatar>
     </Flex>
   );
 };

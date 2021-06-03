@@ -5,13 +5,18 @@ import Gradient from '../Gradient';
 import Text from '../Text';
 import Flex from '../Flex';
 import Animate from '../Animate';
+import Progress from '../Progress';
+
 import { withThemeProps } from '../../style';
-import { isWeb } from '../../util';
+import { colorAware, isFunction } from '../../util';
 
 const Pressable = styled.Pressable();
+const ImageBackground = styled.ImageBackground();
 
 export interface Props {
   children: React.ReactNode;
+  image: string;
+  imageProps: object;
   onPress: void;
   theme: object;
   loading: boolean;
@@ -26,7 +31,10 @@ export interface Props {
 
 export const Button = ({
   theme,
+  onPress,
   bg = 'primary',
+  image,
+  imageProps = {},
   gradient,
   color,
   children,
@@ -45,6 +53,38 @@ export const Button = ({
   ...rest
 }: Props) => {
   const [hover, setHover] = React.useState(false);
+  const borderRadius = rounded ? size / 2 : theme.globals.roundness;
+
+  const C = onPress ? Pressable : Flex;
+  const cProps = onPress
+    ? {
+        onPress,
+        onHoverIn: () => setHover(true),
+        onPressIn: () => setHover(true),
+        onHoverOut: () => setHover(false),
+        onPressOut: () => setHover(false),
+        accessibilityRole: 'button',
+      }
+    : {};
+
+  const textColor = color
+    ? color
+    : colorAware(
+        gradient === true ? theme.colors.gradient[0] : gradient || bg,
+        theme
+      );
+
+  const renderChild = (child) =>
+    React.cloneElement(child, {
+      color: textColor,
+      ...child.props,
+      pointerEvents: 'none',
+      style: {
+        ...(child.props && child.props.style ? child.props.style : {}),
+        opacity: loading ? 0 : 1,
+        zIndex: 10,
+      },
+    });
 
   return (
     <Animate
@@ -54,25 +94,21 @@ export const Button = ({
         : { from: { scale: 1 }, to: { scale: hover ? 1.03 : 1 } })}
       {...animateProps}
     >
-      <Pressable
+      <C
         bg={gradient ? undefined : bg}
         h={size}
         px={size / 2}
-        borderRadius={rounded ? size / 2 : 0}
-        position="relative"
-        onHoverIn={() => setHover(true)}
-        onPressIn={() => setHover(true)}
-        onHoverOut={() => setHover(false)}
-        onPressOut={() => setHover(false)}
+        borderRadius={borderRadius}
         opacity={disabled ? 0.5 : 1}
-        accessibilityRole="button"
         flexCenter
         row
+        relative
+        {...cProps}
         {...rest}
       >
         {gradient ? (
           <Flex
-            borderRadius={rounded ? size / 2 : 0}
+            borderRadius={borderRadius}
             overflow="hidden"
             zIndex={0}
             absoluteFill
@@ -80,6 +116,30 @@ export const Button = ({
             <Gradient
               colors={gradient === true ? undefined : gradient}
               {...gradientProps}
+            />
+          </Flex>
+        ) : null}
+        {image ? (
+          <ImageBackground
+            source={image}
+            borderRadius={borderRadius}
+            overflow="hidden"
+            zIndex={0}
+            absoluteFill
+            {...imageProps}
+          />
+        ) : null}
+
+        {loading || progress ? (
+          <Flex flexCenter absoluteFill pointerEvents="none">
+            <Progress
+              trackColor="transparent"
+              progressColor={textColor}
+              size={size * 0.5}
+              progressWidth={1.5}
+              value={progress}
+              loading={loading}
+              {...loadingProps}
             />
           </Flex>
         ) : null}
@@ -105,20 +165,14 @@ export const Button = ({
             {children}
           </Text>
         ) : (
-          React.cloneElement(children, {
-            color: color ? color : light ? bg : clean ? 'primary' : '#FFF',
-            ...children.props,
-            pointerEvents: 'none',
-            style: {
-              ...(children.props && children.props.style
-                ? children.props.style
-                : {}),
-              opacity: loading ? 0 : 1,
-            },
-          })
+          renderChild(children)
         )}
-        {renderRight}
-      </Pressable>
+        {renderRight
+          ? isFunction(renderRight)
+            ? renderRight({ color: textColor })
+            : renderRight
+          : null}
+      </C>
     </Animate>
   );
 };

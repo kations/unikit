@@ -1,4 +1,5 @@
 import { PixelRatio, Platform } from 'react-native';
+import tc from 'tinycolor2';
 
 export { default as deepMerge } from './deepMerge';
 export { default as generateHash } from './generateHash';
@@ -34,6 +35,13 @@ export const getProgress = (a, b, v) => {
 
 export const getValueByProgress = (start, end, t) => {
   return start * (1 - t) + end * t;
+};
+
+export const colorAware = (value: string, theme: object) => {
+  const themeC = theme.colors[value] || value;
+  const brightness = tc(themeC).getBrightness();
+  const c = brightness > 170 ? '#000' : '#FFF';
+  return c;
 };
 
 export const isWeb = Platform.OS === 'web';

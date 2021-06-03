@@ -58,7 +58,6 @@ export default ({
     outputRange: [length, 0],
   });
 
-  console.log({ progress, length });
   return (
     <AnimatedPath
       data-foo="0"
