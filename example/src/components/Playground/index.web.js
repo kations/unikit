@@ -114,28 +114,6 @@ export default function LiveView({
       >
         <WrappedEditor {...codeProps} {...rest} />
       </LiveProvider>
-      {!rest.clean ? (
-        <Flex py={15} mt={40} mb={150}>
-          <Text
-            font="h3"
-            textAlign="center"
-            px="10%"
-            dynamicFontSize={{ max: 40, factor: 10 }}
-            bold
-            delay={500}
-            animate
-            animateType="word"
-          >
-            Props
-          </Text>
-          <Animate duration={500} delay={500}>
-            <Table
-              mt={15}
-              component={from === 'Input' ? unikit[from][title] : unikit[title]}
-            />
-          </Animate>
-        </Flex>
-      ) : null}
     </>
   );
 }

@@ -25,7 +25,6 @@ export default ({
   const ref = React.useRef(null);
   const [length, setLength] = React.useState(null);
   const animatedValue = useMemo(() => new Animated.Value(0), []);
-  console.log({ progress });
 
   const animateToProgress = (p: number) => {
     const Animation =
@@ -60,7 +59,6 @@ export default ({
 
   return (
     <AnimatedPath
-      data-foo="0"
       d={d}
       strokeDasharray={length}
       strokeDashoffset={t}

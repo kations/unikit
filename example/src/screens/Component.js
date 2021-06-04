@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { Flex, Text, Animate, Page } from 'unikit';
+import { Grid, Flex, Text, Animate, Page, Touchable } from 'unikit';
 import { Header } from '../components';
 import { pages } from '../pages';
 import { useNavigation } from '../hooks';
 
 const Playground = React.lazy(() => import('../components/Playground'));
+const PropTable = React.lazy(() => import('../components/PropTable'));
 
 export default function App({ route = {} }) {
   const { navigate } = useNavigation();
   const { slug } = route.params || {};
   const item = pages.find((p) => p.slug === slug);
-  const { title, desc, from, code, smallCode, codeProps } = item;
+  const { title, desc, from, code, props, smallCode, codeProps } = item;
 
   return (
     <Page renderHeader={(top) => <Header title={slug} top={top} />}>
@@ -43,9 +44,31 @@ export default function App({ route = {} }) {
         ) : null}
       </Flex>
 
-      <Flex w="100%" px="10vw" h={800}>
+      <Flex w="100%" px="10vw">
         <React.Suspense fallback={<Text>Loading...</Text>}>
           <Playground
+            key={title}
+            code={code || smallCode}
+            title={from}
+            codeProps={codeProps}
+          />
+        </React.Suspense>
+      </Flex>
+      <Flex w="100%" px="10vw" mt={30}>
+        <Text
+          font="h3"
+          textAlign="center"
+          px="10%"
+          dynamicFontSize={{ max: 40, factor: 10 }}
+          bold
+          delay={500}
+          animate
+          animateType="word"
+        >
+          Props
+        </Text>
+        <React.Suspense fallback={<Text>Loading...</Text>}>
+          <PropTable
             key={title}
             code={code || smallCode}
             title={from}

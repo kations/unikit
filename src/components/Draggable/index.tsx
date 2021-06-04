@@ -70,7 +70,6 @@ const Draggable = ({
       const yFactor = (point.y || 0) - snapFactor;
       const xPosition = isAbsolute && direction === 'x' ? absoluteX : stopX;
       const yPosition = isAbsolute && direction === 'y' ? absoluteY : stopY;
-      console.log({ point, isAbsolute, xPosition, yPosition });
       return (
         xFactor <= xPosition &&
         xPosition <= xFactor + snapFactor * 2 &&
