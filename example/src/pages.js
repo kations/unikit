@@ -57,18 +57,29 @@ const pages = [
     smallCode: `<Button gradient>Button</Button>`,
     code: `<Grid gap={30} min={120}>
       <Button onPress={() => theme.alert({type: "success", message: "Hi"})}>Primary</Button>
-      <Button animateMode="scale" gradient rounded>Rounded</Button>
-      <Button animateMode="scale" gradient={['red',"orange"]} rounded>Gradient</Button>
+      <Button animateMode="scale" gradient rounded ripple>Rounded</Button>
+      <Button animateMode="scale" gradient={['red',"orange"]} rounded ripple>Gradient</Button>
       <Button light>Light</Button>
       <Button clean>Clean</Button>
-      <Button ripple>Ripple</Button>
+      <Button bg="primary:lighten:15" onPress={() => {}} ripple>Ripple</Button>
       <Button bg="primary:darken:10">Darken</Button>
       <Button bg="primary:saturate:20">Saturate</Button>
       <Button bg="error">Error</Button>
       <Button bg="error" light>Light error</Button>
+      <Button bg="twitter" renderLeft={<Icon name="twitter" color="#FFF" strokeWidth={1.5} size={22} mr={7} />} ripple>Twitter</Button>
       <Button light loading>Loading</Button>
-      <Button  progress={50}>Progress</Button>
+      <Button progress={50}>Progress</Button>
     </Grid>`,
+  },
+  {
+    slug: 'ripple',
+    title: 'Ripple',
+    from: 'Ripple',
+    group: 'Interface',
+    smallCode: `<Flex flex={1}><Flex w={50} h={50} borderRadius={25} bg="primary:setAlpha:0.25" /></Flex>`,
+    code: `<Flex bg="primary" w={200} h={200}>
+      <Ripple color="primary:darken:5" flex={1} />
+    </Flex>`,
   },
   {
     slug: 'icon',
@@ -76,7 +87,7 @@ const pages = [
     desc: 'Feather Icons as paths. Add animate prop to start a path animation.',
     from: 'Icon',
     group: 'Interface',
-    smallCode: `<Icon size={100} strokeWidth={1} animate />`,
+    smallCode: `<Icon size={60} strokeWidth={1} animate />`,
     codeProps: { hideEditor: true },
     code: `function RenderIcon() {
       const names = Object.keys(Icons);
@@ -112,27 +123,6 @@ const pages = [
     title: 'Progress',
     from: 'Progress',
     group: 'Interface',
-    props: `interface Props {
-      theme: object;
-      value?: number;
-      size?: number;
-      trackWidth?: number;
-      trackColor?: string;
-      progressWidth?: number;
-      progressColor?: string;
-      loading?: boolean;
-      lineCap?: string;
-      angle?: number;
-      duration?: number;
-      showValue?: boolean;
-      formatValue?: () => void;
-      valueProps?: object;
-      labelProps?: object;
-      textColor?: string;
-      animate?: boolean;
-      animationType?: string;
-      [key: string]: any;
-    }`,
     smallCode: `<Progress size={70} value={66} />`,
     code: `function RenderIcon() {
       const [value, setValue] = useState(33);
@@ -210,6 +200,47 @@ const pages = [
     <Collapsible  triggerProps={{gradient:true}} trigger="#1"><Flex bg="primary" w={100} h={100} /></Collapsible>
     <Collapsible trigger="#2" mt={5}><Flex bg="primary" w={100} h={100} /></Collapsible>
     </Flex>`,
+  },
+  {
+    slug: 'overlay',
+    title: 'Overlay',
+    from: 'Overlay',
+    group: 'Interface',
+    smallCode: `<Flex width="100%" flexCenter><Button rounded>Overlay</Button></Flex>`,
+    code: `function RenderIcon() {
+      const [visible, setVisible] = useState(false);
+
+      return (
+        <Flex width="100%" flexCenter py={100}>
+        <Button  onPress={() => setVisible(true)} rounded>Show</Button>
+        <Overlay
+          visible={visible}
+          onClose={() => setVisible(false)}
+        >
+          <Button  onPress={() => setVisible(false)}>Close</Button>
+        </Overlay>
+        </Flex>
+      );
+    }`,
+  },
+  {
+    slug: 'dropdown',
+    title: 'Dropdown',
+    from: 'Dropdown',
+    group: 'Interface',
+    smallCode: `<Flex width="100%" flexCenter><Button rounded><Icon name="chevron-down" color="#FFF" size={20} /></Button></Flex>`,
+    code: `<Flex width="100%" flexCenter py={100}><Dropdown
+    wrapperProps={{
+      w: 250,
+      r: 0,
+      t: 50
+    }}
+    content={<>
+      <Button width={300} onPress={() => theme.alert({type: "primary",message: "Hi!"})}>Content</Button>
+      <Button  width={300} onPress={() => theme.alert({ type: "primary", message: "Hi!"})}>Content</Button>
+      </>}>
+    <Button><Icon name="chevron-down" color="#FFF" size={20} /></Button>
+    </Dropdown></Flex>`,
   },
   // {
   //   slug: 'alert',

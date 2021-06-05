@@ -2,9 +2,6 @@ import * as React from 'react';
 import { Flex, Text, Button } from 'unikit';
 var reactDocs = require('react-docgen');
 
-var path = require('path');
-var fs = require('fs');
-
 export default function App({ textFile = '' }) {
   var componentInfo = reactDocs.parse(`
   import * as React from 'react';
@@ -197,14 +194,14 @@ export default withThemeProps(Button, 'Button');
         const { required, defaultValue, flowType, description } =
           componentInfo.props[key];
         return (
-          <Flex key={key} mt={5} borderRadius={10}>
-            <Flex
-              p={15}
-              borderBottomWidth={1}
-              borderColor="text:setAlpha:0.1"
-              flex={1}
-              row
-            >
+          <Flex
+            key={key}
+            my={10}
+            borderTopWidth={1}
+            borderColor="text:setAlpha:0.1"
+            borderRadius={10}
+          >
+            <Flex p={15} flex={1} row>
               <Button
                 size={40}
                 pr={required ? 6 : undefined}
@@ -221,17 +218,17 @@ export default withThemeProps(Button, 'Button');
               </Button>
             </Flex>
             {defaultValue?.value ? (
-              <Flex px={15} mt={10} row>
+              <Flex px={20} mt={10} row>
                 <Text w={200}>Default</Text>
                 <Text bold>{defaultValue?.value || ''}</Text>
               </Flex>
             ) : null}
-            <Flex px={15} mt={10} row>
+            <Flex px={20} mt={10} row>
               <Text w={200}>Type</Text>
               <Text bold>{flowType?.name || ''}</Text>
             </Flex>
             {description ? (
-              <Flex px={15} mt={10} row>
+              <Flex px={20} mt={10} row>
                 <Text w={200}>Description</Text>
                 <Text>{description}</Text>
               </Flex>

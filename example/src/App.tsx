@@ -32,7 +32,13 @@ const linking = {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider mode="dark" theme={{ Button: { rounded: true } }}>
+      <ThemeProvider
+        mode="dark"
+        theme={{
+          colors: { backgroundDark: '#3F2D61' },
+          Button: { rounded: true },
+        }}
+      >
         <NavigationContainer linking={linking}>
           <Stack.Navigator>
             <Stack.Screen

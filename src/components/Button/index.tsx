@@ -6,6 +6,7 @@ import Text from '../Text';
 import Flex from '../Flex';
 import Animate from '../Animate';
 import Progress from '../Progress';
+import Ripple from '../Ripple';
 
 import { withThemeProps } from '../../style';
 import { colorAware, isFunction } from '../../util';
@@ -25,6 +26,7 @@ export interface Props {
   light?: boolean;
   outlined?: boolean;
   clean?: boolean;
+  ripple?: boolean;
   loadingProps?: object;
   [key: string]: any;
 }
@@ -42,6 +44,7 @@ export const Button = ({
   rounded = false,
   disabled = false,
   loading = false,
+  ripple = false,
   progress,
   animateMode = 'fade', //fade
   renderLeft,
@@ -55,7 +58,7 @@ export const Button = ({
   const [hover, setHover] = React.useState(false);
   const borderRadius = rounded ? size / 2 : theme.globals.roundness;
 
-  const C = onPress ? Pressable : Flex;
+  const C = ripple ? Ripple : onPress ? Pressable : Flex;
   const cProps = onPress
     ? {
         onPress,
@@ -67,12 +70,10 @@ export const Button = ({
       }
     : {};
 
-  const textColor = color
-    ? color
-    : colorAware(
-        gradient === true ? theme.colors.gradient[0] : gradient || bg,
-        theme
-      );
+  const bgColor = gradient
+    ? gradient[0] || theme.colors.gradient[0]
+    : gradient || bg;
+  const textColor = color ? color : colorAware(bgColor, theme);
 
   const renderChild = (child) =>
     React.cloneElement(child, {
@@ -96,6 +97,7 @@ export const Button = ({
     >
       <C
         bg={gradient ? undefined : bg}
+        rippleColor={`${bgColor}:darken:8`}
         h={size}
         px={size / 2}
         borderRadius={borderRadius}
@@ -143,8 +145,11 @@ export const Button = ({
             />
           </Flex>
         ) : null}
-
-        {renderLeft}
+        {renderLeft
+          ? isFunction(renderLeft)
+            ? renderLeft({ color: textColor })
+            : renderLeft
+          : null}
         {typeof children === 'string' ? (
           <Text
             fontSize={size * 0.33}

@@ -12,3 +12,6 @@ export { default as Icons } from './Icon/icons';
 export { default as Progress } from './Progress';
 export { default as Avatar } from './Avatar';
 export { default as Collapsible } from './Collapsible';
+export { default as Overlay } from './Overlay';
+export { default as Ripple } from './Ripple';
+export { default as Dropdown } from './Dropdown';

@@ -160,6 +160,7 @@ const layoutProperties = {
   flexWrap: true,
   zIndex: true,
   opacity: true,
+  transform: true,
 };
 
 const layout = {

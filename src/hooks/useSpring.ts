@@ -160,18 +160,9 @@ const useSpring = <Props extends SpringProps>({
             () =>
               onDidAnimate &&
               runOnJS(() => {
-                progress.value = {
-                  ...progress.value,
-                  [state]: progress.value[state] + 1,
-                };
-                const multi = state === 'enter' ? 2 : 1;
-
                 onDidAnimate({
                   key,
                   state,
-                  progress:
-                    progress.value[state] /
-                    (Object.keys(styleObj).length + multi),
                 });
               })()
           ),

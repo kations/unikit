@@ -1,0 +1,172 @@
+import * as React from 'react';
+import { Platform, ScrollView, Modal } from 'react-native';
+import Animated from 'react-native-reanimated';
+
+import { styled, withThemeProps } from '../../style';
+import Animate from '../Animate';
+import Flex from '../Flex';
+
+const Touchable = styled.Touchable();
+
+import { useUpdateEffect } from '../../hooks';
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const customStyle = {
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottom: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  top: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  left: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  right: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+};
+
+const Overlay = ({
+  theme,
+  visible = false,
+  scrollComp,
+  onClose,
+  closeButton = true,
+  backdrop = true,
+  backdropColor = 'rgba(0,0,0,0.25)',
+  zIndex = 900,
+  maxWidth = 600,
+  position = 'center',
+  paddingVertical = 100,
+  scroll = true,
+  x,
+  y,
+  children,
+  renderHeader = null,
+  usePortal = true,
+  roundness,
+  modalSpring = {
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+  },
+  contentSpring = {
+    from: { opacity: 0, y: 100 },
+    to: { opacity: 1, y: 0 },
+  },
+  modalProps = {},
+  scrollerProps = {},
+  contentProps = {},
+  ...rest
+}) => {
+  const [render, setRender] = React.useState(visible);
+
+  useUpdateEffect(() => {
+    if (visible === true) {
+      setRender(true);
+    }
+  }, [visible]);
+
+  const AnimatedScrollComp = scrollComp
+    ? createAnimatedComponent(scrollComp)
+    : AnimatedScrollView;
+
+  const modalStyle = customStyle[position] || {};
+  const scrollableProps = {
+    ...scrollerProps,
+    bounces: false,
+    style: {
+      flex: 1,
+      ...(scrollerProps.style || {}),
+    },
+    showsVerticalScrollIndicator: false,
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: {
+      flexGrow: 1,
+      paddingVertical,
+      ...(scrollerProps.contentContainerStyle || {}),
+      ...modalStyle,
+    },
+  };
+
+  const renderContent = (
+    <Animate
+      duration={750}
+      visible={visible}
+      relative
+      w="auto"
+      bg="background"
+      useTransition
+      delay={50}
+      borderRadius={roundness || theme.globals.roundness}
+      maxWidth={maxWidth}
+      {...contentProps}
+      style={{
+        ...(contentProps.style ? contentProps.style : {}),
+      }}
+      onDidAnimate={(ani) => {
+        if (ani.state === 'exit') {
+          setRender(false);
+        }
+      }}
+      {...contentSpring}
+    >
+      <Flex w="100%" p={theme.globals.gap} {...rest}>
+        {render && children}
+      </Flex>
+    </Animate>
+  );
+
+  return (
+    <Modal
+      visible={render}
+      animationType="none"
+      onRequestClose={() => setRender(false)}
+      transparent
+    >
+      {backdrop ? (
+        <Animate
+          visible={visible}
+          bg={backdropColor}
+          absoluteFill
+          {...modalSpring}
+        />
+      ) : null}
+      {onClose ? (
+        <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
+      ) : null}
+      {renderHeader}
+      <Flex
+        fixed
+        left={x || 0}
+        top={y || 0}
+        right={0}
+        bottom={0}
+        pointerEvents={visible ? 'auto' : 'box-none'}
+        {...modalProps}
+      >
+        {scroll ? (
+          <AnimatedScrollComp {...scrollableProps}>
+            {onClose ? (
+              <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
+            ) : null}
+
+            {renderContent}
+          </AnimatedScrollComp>
+        ) : (
+          renderContent
+        )}
+      </Flex>
+    </Modal>
+  );
+};
+
+export default withThemeProps(Overlay, 'Overlay');

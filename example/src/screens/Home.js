@@ -12,7 +12,7 @@ const LinkBox = styled.View({
   position: 'relative',
   justifyContent: 'space-between',
   alignItems: 'center',
-  bg: 'text',
+  bg: 'backgroundDark',
   px: 15,
   py: 10,
   mt: 25,
@@ -79,7 +79,7 @@ export default function App() {
               });
               //window.open('https://snack.expo.io/@kations/unikit', '_blank')
             }}
-            bg="text"
+            bg="backgroundDark"
             size={60}
             mt={30}
             shadow={10}

@@ -74,8 +74,7 @@ const Alert = React.forwardRef(
           onMouseOver={() => setWait(true)}
           onMouseLeave={() => setWait(false)}
           onDidAnimate={(ani) => {
-            console.log({ ani });
-            if (ani.state === 'exit' && ani.progress === 1) {
+            if (ani.state === 'exit') {
               removeItem(item.key);
             }
           }}

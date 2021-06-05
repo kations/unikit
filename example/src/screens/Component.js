@@ -54,7 +54,7 @@ export default function App({ route = {} }) {
           />
         </React.Suspense>
       </Flex>
-      <Flex w="100%" px="10vw" mt={30}>
+      <Flex w="100%" px="10vw" mt={50}>
         <Text
           font="h3"
           textAlign="center"

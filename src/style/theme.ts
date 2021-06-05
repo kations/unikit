@@ -31,6 +31,8 @@ const defaultTheme = {
     error: '#f44336',
     shadow: '#000000',
     gradient: ['primary', 'accent'],
+    twitter: '#1CA1F2',
+    facebook: '#385898',
     modes: {
       dark: {
         background: '#121212',

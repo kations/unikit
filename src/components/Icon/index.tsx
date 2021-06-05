@@ -4,6 +4,7 @@ import Svg, { Path } from 'react-native-svg';
 import icons from './icons';
 import { withThemeProps } from '../../style';
 import AnimatedPath from '../AnimatedPath';
+import Flex from '../Flex';
 
 interface Props {
   theme: object;
@@ -40,28 +41,29 @@ const Icon = ({
     [animate]
   );
   return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox={`0 0 24 24`}
-      strokeLinecap={strokeLinecap}
-      strokeLinejoin={strokeLinejoin}
-      fill={fill ? theme.colors[color] || color : 'transparent'}
-      stroke={theme.colors[color] || color}
-      strokeWidth={strokeWidth}
-      {...rest}
-    >
-      {paths.map((path, i) => {
-        return (
-          <PathComp
-            key={`${name}-${i}`}
-            d={path}
-            duration={duration}
-            delay={delay * i}
-          />
-        );
-      })}
-    </Svg>
+    <Flex {...rest}>
+      <Svg
+        width={size}
+        height={size}
+        viewBox={`0 0 24 24`}
+        strokeLinecap={strokeLinecap}
+        strokeLinejoin={strokeLinejoin}
+        fill={fill ? theme.colors[color] || color : 'transparent'}
+        stroke={theme.colors[color] || color}
+        strokeWidth={strokeWidth}
+      >
+        {paths.map((path, i) => {
+          return (
+            <PathComp
+              key={`${name}-${i}`}
+              d={path}
+              duration={duration}
+              delay={delay * i}
+            />
+          );
+        })}
+      </Svg>
+    </Flex>
   );
 };
 
