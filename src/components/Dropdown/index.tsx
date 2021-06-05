@@ -59,7 +59,6 @@ const Dropdown = ({
         x={measure?.px}
         y={measure?.py + measure?.h}
         onClose={() => setOpen(false)}
-        contentProps={contentProps}
         position="top"
         paddingVertical={10}
         scroll={false}
