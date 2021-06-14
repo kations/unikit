@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Animated from 'react-native-reanimated';
-
-import styled from '../../style/styled';
+import { StyleSheet } from 'react-native';
+import { styled, Pressable } from '../../style';
 import useSpring from '../../hooks/useSpring';
+import Ripple from '../Ripple';
 
 interface AnimateProps {
   from: any;
   to: any;
+  onPress?: void;
   exit: any;
   duration?: number;
   delay?: number;
@@ -19,6 +21,7 @@ interface AnimateProps {
 Animated.addWhitelistedNativeProps({ text: true });
 
 const Unimation = styled(Animated.View)();
+const UnimationPressable = Animated.createAnimatedComponent(Pressable);
 
 export const clamp = (
   value: number,
@@ -31,6 +34,8 @@ export const clamp = (
 
 const Animate: React.FC<AnimateProps> = ({
   children,
+  as,
+  onPress,
   visible = true,
   from = { y: 100, opacity: 0 },
   to = { y: 0, opacity: 1 },
@@ -40,6 +45,7 @@ const Animate: React.FC<AnimateProps> = ({
   delay,
   repeat,
   reverse,
+  ripple,
   ...rest
 }) => {
   const [isPresent, setIsPresent] = useState(visible);
@@ -52,28 +58,26 @@ const Animate: React.FC<AnimateProps> = ({
     repeat,
     delay,
     onDidAnimate,
+    extraStyle: rest?.style || {},
   });
 
   React.useEffect(() => {
     setIsPresent(visible);
   }, [visible]);
 
+  const C = React.useMemo(() => {
+    if (onPress) {
+      return UnimationPressable;
+    } else {
+      return Unimation;
+    }
+  }, [ripple, onPress]);
+
   return (
-    <Unimation {...rest} style={animated.style}>
+    <C {...rest} onPress={onPress} style={animated.style}>
       {children}
-    </Unimation>
+    </C>
   );
 };
 
-export default React.memo(Animate, (p, n) => {
-  if (JSON.stringify(p.to) !== JSON.stringify(n.to)) {
-    return false;
-  } else if (p.duration !== n.duration) {
-    return false;
-  } else if (p.delay !== n.delay) {
-    return false;
-  } else if (p.visible !== n.visible) {
-    return false;
-  }
-  return true;
-});
+export default Animate;

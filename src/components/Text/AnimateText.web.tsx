@@ -12,7 +12,6 @@ export default ({
   ...rest
 }) => {
   var splittedString = children.split(animateType === 'word' ? ' ' : '');
-  const textProps = {};
   return (
     <Text {...rest}>
       {splittedString.map((string, index) => (

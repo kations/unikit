@@ -33,7 +33,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider
-        mode="dark"
+        mode="darkk"
         theme={{
           colors: { backgroundDark: '#3F2D61' },
           Button: { rounded: true },

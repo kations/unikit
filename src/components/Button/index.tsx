@@ -6,12 +6,10 @@ import Text from '../Text';
 import Flex from '../Flex';
 import Animate from '../Animate';
 import Progress from '../Progress';
-import Ripple from '../Ripple';
 
 import { withThemeProps } from '../../style';
 import { colorAware, isFunction } from '../../util';
 
-const Pressable = styled.Pressable();
 const ImageBackground = styled.ImageBackground();
 
 export interface Props {
@@ -49,6 +47,7 @@ export const Button = ({
   animateMode = 'fade', //fade
   renderLeft,
   renderRight,
+  shadow,
   animateProps = {},
   loadingProps = {},
   labelProps = {},
@@ -58,7 +57,6 @@ export const Button = ({
   const [hover, setHover] = React.useState(false);
   const borderRadius = rounded ? size / 2 : theme.globals.roundness;
 
-  const C = ripple ? Ripple : onPress ? Pressable : Flex;
   const cProps = onPress
     ? {
         onPress,
@@ -89,95 +87,95 @@ export const Button = ({
 
   return (
     <Animate
+      bg={gradient ? undefined : bg}
+      rippleColor={`${bgColor}:darken:8`}
+      h={size}
+      ripple={ripple}
+      px={size / 2}
+      borderRadius={borderRadius}
+      opacity={disabled ? 0.5 : 1}
+      shadow={shadow}
+      flexCenter
+      row
+      relative
       duration={300}
       {...(animateMode === 'fade'
         ? { from: { opacity: 1 }, to: { opacity: hover ? 0.9 : 1 } }
         : { from: { scale: 1 }, to: { scale: hover ? 1.03 : 1 } })}
       {...animateProps}
+      {...rest}
+      {...cProps}
     >
-      <C
-        bg={gradient ? undefined : bg}
-        rippleColor={`${bgColor}:darken:8`}
-        h={size}
-        px={size / 2}
-        borderRadius={borderRadius}
-        opacity={disabled ? 0.5 : 1}
-        flexCenter
-        row
-        relative
-        {...cProps}
-        {...rest}
-      >
-        {gradient ? (
-          <Flex
-            borderRadius={borderRadius}
-            overflow="hidden"
-            zIndex={0}
-            absoluteFill
-          >
-            <Gradient
-              colors={gradient === true ? undefined : gradient}
-              {...gradientProps}
-            />
-          </Flex>
-        ) : null}
-        {image ? (
-          <ImageBackground
-            source={image}
-            borderRadius={borderRadius}
-            overflow="hidden"
-            zIndex={0}
-            absoluteFill
-            {...imageProps}
+      {gradient ? (
+        <Flex
+          borderRadius={borderRadius}
+          overflow="hidden"
+          zIndex={0}
+          absoluteFill
+        >
+          <Gradient
+            colors={gradient === true ? undefined : gradient}
+            {...gradientProps}
           />
-        ) : null}
+        </Flex>
+      ) : null}
+      {image ? (
+        <ImageBackground
+          source={image}
+          borderRadius={borderRadius}
+          overflow="hidden"
+          zIndex={0}
+          absoluteFill
+          {...imageProps}
+        />
+      ) : null}
 
-        {loading || progress ? (
-          <Flex flexCenter absoluteFill pointerEvents="none">
-            <Progress
-              trackColor="transparent"
-              progressColor={textColor}
-              size={size * 0.5}
-              progressWidth={1.5}
-              value={progress}
-              loading={loading}
-              {...loadingProps}
-            />
-          </Flex>
-        ) : null}
-        {renderLeft
-          ? isFunction(renderLeft)
-            ? renderLeft({ color: textColor })
-            : renderLeft
-          : null}
-        {typeof children === 'string' ? (
-          <Text
-            fontSize={size * 0.33}
-            color={color}
-            colorAware={
-              color
-                ? undefined
-                : gradient === true
-                ? theme.colors.gradient[0]
-                : gradient || bg
-            }
-            numberOfLines={1}
-            opacity={loading || progress ? 0 : 1}
-            pointerEvents="none"
-            zIndex={10}
-            {...labelProps}
-          >
-            {children}
-          </Text>
-        ) : (
-          renderChild(children)
-        )}
-        {renderRight
-          ? isFunction(renderRight)
-            ? renderRight({ color: textColor })
-            : renderRight
-          : null}
-      </C>
+      {loading || progress ? (
+        <Flex flexCenter absoluteFill pointerEvents="none">
+          <Progress
+            trackColor="transparent"
+            progressColor={textColor}
+            size={size * 0.5}
+            progressWidth={1.5}
+            value={progress}
+            loading={loading}
+            {...loadingProps}
+          />
+        </Flex>
+      ) : null}
+      {renderLeft
+        ? isFunction(renderLeft)
+          ? renderLeft({ color: textColor })
+          : renderLeft
+        : null}
+      {typeof children === 'string' ? (
+        <Text
+          fontSize={size * 0.33}
+          color={color}
+          colorAware={
+            color
+              ? undefined
+              : gradient === true
+              ? theme.colors.gradient[0]
+              : gradient || bg
+          }
+          numberOfLines={1}
+          opacity={loading || progress ? 0 : 1}
+          pointerEvents="none"
+          zIndex={10}
+          webStyle={{ userSelect: 'none' }}
+          {...labelProps}
+        >
+          {children}
+        </Text>
+      ) : (
+        renderChild(children)
+      )}
+      {renderRight
+        ? isFunction(renderRight)
+          ? renderRight({ color: textColor })
+          : renderRight
+        : null}
     </Animate>
   );
 };

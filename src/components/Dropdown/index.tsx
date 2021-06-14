@@ -48,6 +48,7 @@ const Dropdown = ({
         onPress={() => {
           ref.current.measure((a, b, w, h, px, py) => {
             setMeasure({ a, b, w, h, px, py });
+            console.log({ a, b, w, h, px, py });
             setTimeout(() => setOpen(!open), 10);
           });
         }}
@@ -63,6 +64,7 @@ const Dropdown = ({
         paddingVertical={10}
         scroll={false}
         backdrop={backdrop}
+        closeButton={false}
         renderHeader={
           backdrop ? (
             <Flex l={measure?.px} t={measure?.py} fixed>

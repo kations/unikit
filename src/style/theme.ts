@@ -29,7 +29,7 @@ const defaultTheme = {
     success: '#8bc34a',
     warning: '#ffbb33',
     error: '#f44336',
-    shadow: '#000000',
+    shadow: '#999999',
     gradient: ['primary', 'accent'],
     twitter: '#1CA1F2',
     facebook: '#385898',

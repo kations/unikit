@@ -15,3 +15,10 @@ export { default as Collapsible } from './Collapsible';
 export { default as Overlay } from './Overlay';
 export { default as Ripple } from './Ripple';
 export { default as Dropdown } from './Dropdown';
+export { default as Group } from './Group';
+export { default as Tabs } from './Tabs';
+export { default as Form } from './Form';
+export { default as Swiper } from './Swiper';
+
+export * from './Image';
+export * from './Inputs';

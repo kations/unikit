@@ -3,6 +3,8 @@ import tc from 'tinycolor2';
 
 export { default as deepMerge } from './deepMerge';
 export { default as generateHash } from './generateHash';
+export { default as getValue } from './getValue';
+export { default as setValue } from './setValue';
 
 export function isFunction(functionToCheck: () => {}) {
   return (

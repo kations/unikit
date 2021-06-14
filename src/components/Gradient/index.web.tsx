@@ -27,11 +27,11 @@ export const Gradient = ({
   ...rest
 }: Props) => {
   if (!colors) colors = theme.colors.gradient;
-  const parsedColors = parseColors(colors, theme);
-  console.log(
-    parsedColors,
-    `linear-gradient(${deg}deg, ${parsedColors.join(',')})`
+  const parsedColors = React.useMemo(
+    () => parseColors(colors, theme),
+    [colors]
   );
+
   return (
     <Flex
       height="100%"

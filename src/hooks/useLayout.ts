@@ -12,10 +12,10 @@ export default function useLayout(): Layout & { onLayout: OnLayout } {
     height: 0,
   });
 
-  const onLayout = React.useCallback(
-    (e) => setLayout(e.nativeEvent.layout),
-    []
-  );
+  const onLayout = React.useCallback((e) => {
+    const l = e.nativeEvent.layout || {};
+    setLayout((s) => ({ ...s, ...l }));
+  }, []);
 
   return {
     onLayout,

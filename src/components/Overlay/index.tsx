@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Platform, ScrollView, Modal } from 'react-native';
+import { ScrollView, Modal } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { styled, withThemeProps } from '../../style';
+import { styled, withThemeProps, Pressable } from '../../style';
 import Animate from '../Animate';
 import Flex from '../Flex';
+import Icon from '../Icon';
+import Button from '../Button';
 
 const Touchable = styled.Touchable();
 
@@ -40,7 +42,6 @@ const Overlay = ({
   visible = false,
   scrollComp,
   onClose,
-  closeButton = true,
   backdrop = true,
   backdropColor = 'rgba(0,0,0,0.25)',
   zIndex = 900,
@@ -65,6 +66,8 @@ const Overlay = ({
   modalProps = {},
   scrollerProps = {},
   contentProps = {},
+  closeButton = true,
+  closeButtonProps = {},
   ...rest
 }) => {
   const [render, setRender] = React.useState(visible);
@@ -122,6 +125,24 @@ const Overlay = ({
       <Flex w="100%" p={theme.globals.gap} {...rest}>
         {render && children}
       </Flex>
+      {closeButton ? (
+        <Button
+          bg={backdropColor}
+          size={44}
+          w={44}
+          px={0}
+          rounded
+          onPress={onClose}
+          t={-50}
+          r={0}
+          borderRadius={22}
+          absolute
+          center
+          {...closeButtonProps}
+        >
+          <Icon name="x" color="#FFF" size={24} />
+        </Button>
+      ) : null}
     </Animate>
   );
 

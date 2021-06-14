@@ -108,6 +108,8 @@ export default function LiveView({
           Icon: unikit.Icon,
           Button: unikit.Button,
           Animate: unikit.Animate,
+          Form: unikit.Form,
+          Input: unikit.Input,
           [title]: unikit[title],
           ...scope,
         }}

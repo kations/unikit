@@ -446,7 +446,8 @@ const matchProps = (props, functions, theme) => {
           isNative &&
           typeof value === 'string' &&
           value.length > 0 &&
-          (value.indexOf('vh') > -1 || value.indexOf('vw') > -1)
+          (value.indexOf('vh') > -1 || value.indexOf('vw') > -1) &&
+          theme.height > 0
         ) {
           if (value.indexOf('vh') > -1) {
             styles[property] =

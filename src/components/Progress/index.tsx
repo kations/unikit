@@ -84,21 +84,14 @@ const Progress = ({
   ...rest
 }: Props) => {
   const [progress, setProgress] = React.useState(
-    loading ? 0.3 : getProgress(0, max, value || 0)
+    loading ? 0.4 : getProgress(0, max, value || 0)
   );
 
   React.useEffect(() => {
-    if (value) {
-      setProgress(loading ? 0.3 : getProgress(0, max, value || 0));
+    if (value && !loading) {
+      setProgress(getProgress(0, max, value || 0));
     }
   }, [value]);
-
-  useInterval(
-    () => {
-      setProgress((p) => (p === 0.3 ? 0 : 0.3));
-    },
-    loading ? 1000 : null
-  );
 
   const backgroundPath = React.useMemo(
     () =>

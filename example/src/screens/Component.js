@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Flex, Text, Animate, Page, Touchable } from 'unikit';
+import { Grid, Flex, Text, Animate, Page, isWeb } from 'unikit';
 import { Header } from '../components';
 import { pages } from '../pages';
 import { useNavigation } from '../hooks';

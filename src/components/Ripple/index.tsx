@@ -5,27 +5,6 @@ import { styled, withThemeProps } from '../../style';
 
 const Touchable = styled.Touchable();
 
-const Rip = React.forwardRef(
-  ({ timeout, remove, itemKey, size, ...rest }, ref) => {
-    return (
-      <Animate
-        ref={ref}
-        w={size}
-        h={size}
-        borderRadius={size / 2}
-        from={{ scale: 0.5, opacity: 1 }}
-        to={{ scale: 2, opacity: 0 }}
-        onDidAnimate={() => {
-          remove(itemKey);
-        }}
-        duration={500}
-        absolute
-        {...rest}
-      />
-    );
-  }
-);
-
 interface Props {
   theme: object;
   children: React.ReactNode;

@@ -1,22 +1,13 @@
 import React, { Fragment, useState, useRef } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
 import { LiveProvider, withLive } from 'react-live';
 import * as unikit from 'unikit';
-import { Flex, useTheme } from 'unikit';
-
-// import prettier from "@miksu/prettier/lib/standalone";
-// import parsers from "@miksu/prettier/lib/language-js/parser-babylon";
-// prettier.format(string, {
-//   parser: "babel",
-//   plugins: [parsers]
-// })
+import { Flex, useTheme, useInterval, Icons } from 'unikit';
 
 const LiveNative = ({ live: { error, code, element, onChange }, clean }) => {
-  const [string, setString] = useState(code);
   const Comp = element || null;
   if (clean)
     return (
-      <Flex w="100%" flexCenter p={25}>
+      <Flex w="100%" flexCenter p={25} flex={1}>
         <Comp />
       </Flex>
     );
@@ -42,12 +33,15 @@ export default function Table({ code, scope, title, ...rest }) {
         unikit,
         useState,
         useRef,
+        useInterval,
+        Icons,
         Flex: unikit.Flex,
         Text: unikit.Text,
         Grid: unikit.Grid,
         Icon: unikit.Icon,
         Button: unikit.Button,
         Animate: unikit.Animate,
+        Form: unikit.Form,
         [title]: unikit[title],
         ...scope,
       }}

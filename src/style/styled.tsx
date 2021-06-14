@@ -63,7 +63,6 @@ const styled = (Component: React.ComponentType = View) => {
         }, [props, theme]);
 
         //if (props.as) Component = props.as;
-
         return (
           <Component
             ref={ref}

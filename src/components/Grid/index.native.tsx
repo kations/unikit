@@ -29,18 +29,28 @@ const Grid = ({
   const { onLayout, width } = useLayout();
   const childs = React.Children.toArray(children);
 
+  console.log({ width });
+
   numColumns = numColumns || Math.max(1, Math.floor(width / min));
   const maxWidth = width / numColumns;
 
   const gridProps = {
-    onLayout,
     p: outerGap ? gap / 2 : 0,
     opacity: width > 0 ? 1 : 0,
     height: width > 0 ? 'auto' : 0,
   };
 
   return (
-    <Flex wrap relative row {...gridProps} {...rest}>
+    <Flex
+      key={`${width}`}
+      wrap
+      w="100%"
+      relative
+      row
+      {...gridProps}
+      {...rest}
+      onLayout={onLayout}
+    >
       {childs.map((child, i) => {
         return (
           <Flex

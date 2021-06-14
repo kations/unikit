@@ -10,7 +10,7 @@ import {
   runOnJS,
 } from 'react-native-reanimated';
 
-import { getProgress } from '../util';
+import { isWeb } from '../util';
 
 interface SpringProps {
   to: any;
@@ -23,6 +23,7 @@ interface SpringProps {
   reverse?: boolean;
   isPresent?: boolean;
   onDidAnimate?: () => void;
+  extraStyle?: object;
 }
 
 export const clamp = (
@@ -106,10 +107,10 @@ const useSpring = <Props extends SpringProps>({
   repeat = 1,
   reverse = false,
   onDidAnimate,
+  extraStyle = {},
 }: Props) => {
   const isMounted = useSharedValue(false);
   const wasMounted = useSharedValue(false);
-  const progress = useSharedValue({ enter: 0, exit: 0 });
 
   const styleObj = React.useMemo(
     () => getStyleObj({ from, to, exit, duration, delay, repeat, isMounted }),
@@ -123,10 +124,14 @@ const useSpring = <Props extends SpringProps>({
     ]
   );
 
+  if (!isWeb) {
+    return {};
+  }
+
   // console.log({ styleObj, length: Object.keys(styleObj).length });
 
   const style = useAnimatedStyle(() => {
-    const final = { transform: [] };
+    const final = { transform: [], ...extraStyle };
 
     Object.keys(styleObj).forEach((key) => {
       const { fromValue, toValue, exitValue, trans, animationType } =
