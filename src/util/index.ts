@@ -1,12 +1,13 @@
 import { PixelRatio, Platform } from 'react-native';
 import tc from 'tinycolor2';
+import type { BaseTheme } from '../style/types';
 
 export { default as deepMerge } from './deepMerge';
 export { default as generateHash } from './generateHash';
 export { default as getValue } from './getValue';
 export { default as setValue } from './setValue';
 
-export function isFunction(functionToCheck: () => {}) {
+export function isFunction(functionToCheck: () => void) {
   return (
     functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
   );
@@ -31,15 +32,16 @@ export function em(value: number): number | string {
   return rem(value);
 }
 
-export const getProgress = (a, b, v) => {
-  return (v - a) / (b - a);
+export const getProgress = (a: number, b: number, v: number) => {
+  const p = (v - a) / (b - a);
+  return parseFloat(p.toFixed(3));
 };
 
-export const getValueByProgress = (start, end, t) => {
+export const getValueByProgress = (start: number, end: number, t: number) => {
   return start * (1 - t) + end * t;
 };
 
-export const colorAware = (value: string, theme: object) => {
+export const colorAware = (value: string, theme: BaseTheme) => {
   const themeC = theme.colors[value] || value;
   const brightness = tc(themeC).getBrightness();
   const c = brightness > 170 ? '#000' : '#FFF';

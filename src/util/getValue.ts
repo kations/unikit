@@ -7,7 +7,7 @@
 
 import isObject from './isObject';
 
-export default function (target: object, path: string, options: object) {
+export default function (target: object, path: string, options: any) {
   if (!isObject(options)) {
     options = { default: options };
   }
@@ -85,27 +85,27 @@ export default function (target: object, path: string, options: object) {
   return options.default;
 }
 
-function join(segs, joinChar, options) {
+function join(segs: any, joinChar: string, options: any) {
   if (typeof options.join === 'function') {
     return options.join(segs);
   }
   return segs[0] + joinChar + segs[1];
 }
 
-function split(path, splitChar, options) {
+function split(path: string, splitChar: string, options: any) {
   if (typeof options.split === 'function') {
     return options.split(path);
   }
   return path.split(splitChar);
 }
 
-function isValid(key, target, options) {
+function isValid(key: string, target: any, options: any) {
   if (typeof options.isValid === 'function') {
     return options.isValid(key, target);
   }
   return true;
 }
 
-function isValidObject(val) {
+function isValidObject(val: any) {
   return isObject(val) || Array.isArray(val) || typeof val === 'function';
 }

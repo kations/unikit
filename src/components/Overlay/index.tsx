@@ -10,7 +10,7 @@ import Button from '../Button';
 
 const Touchable = styled.Touchable();
 
-import { useUpdateEffect } from '../../hooks';
+import { useUpdateEffect, useLayout } from '../../hooks';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -37,6 +37,21 @@ const customStyle = {
   },
 };
 
+const defaultSprings = ({ width, height }) => ({
+  fadeInUp: {
+    from: { opacity: 0, y: height },
+    to: { opacity: 1, y: 0 },
+  },
+  height: {
+    from: { opacity: 0, height: 0 },
+    to: { opacity: 1, height },
+  },
+  scale: {
+    from: { scale: 0 },
+    to: { scale: 1 },
+  },
+});
+
 const Overlay = ({
   theme,
   visible = false,
@@ -47,7 +62,7 @@ const Overlay = ({
   zIndex = 900,
   maxWidth = 600,
   position = 'center',
-  paddingVertical = 100,
+  paddingVertical = 50,
   scroll = true,
   x,
   y,
@@ -59,10 +74,7 @@ const Overlay = ({
     from: { opacity: 0 },
     to: { opacity: 1 },
   },
-  contentSpring = {
-    from: { opacity: 0, y: 100 },
-    to: { opacity: 1, y: 0 },
-  },
+  contentSpring = 'height',
   modalProps = {},
   scrollerProps = {},
   contentProps = {},
@@ -70,7 +82,14 @@ const Overlay = ({
   closeButtonProps = {},
   ...rest
 }) => {
+  const { width, height, onLayout } = useLayout();
   const [render, setRender] = React.useState(visible);
+
+  if (typeof contentSpring === 'string') {
+    contentSpring =
+      defaultSprings({ width, height })[contentSpring] ||
+      defaultSprings({ width, height })[0];
+  }
 
   useUpdateEffect(() => {
     if (visible === true) {
@@ -122,8 +141,10 @@ const Overlay = ({
       }}
       {...contentSpring}
     >
-      <Flex w="100%" p={theme.globals.gap} {...rest}>
-        {render && children}
+      <Flex w="100%" h="100%" overflow="hidden">
+        <Flex w="100%" p={theme.globals.gap} onLayout={onLayout} {...rest}>
+          {render && children}
+        </Flex>
       </Flex>
       {closeButton ? (
         <Button

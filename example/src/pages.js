@@ -50,6 +50,25 @@ const pages = [
     code: ``,
   },
   {
+    slug: 'pointer',
+    title: 'Pointer',
+    from: 'Pointer',
+    group: 'Layout',
+    smallCode: `<Flex flex={1} flexCenter>
+        <Pointer fromCenter={true}>
+          {({x,xProgress,y,yProgress}) => (
+            <Flex bg="primary" w={150} h={150} borderRadius={5} center>
+              <Text color="#FFF">{"x: " + x}</Text>
+              <Text color="#FFF">{"xProgress: " + xProgress}</Text>
+              <Text color="#FFF">{"y: " + y}</Text>
+              <Text color="#FFF">{"yProgress: " + yProgress}</Text>
+            </Flex>
+            )}
+        </Pointer>
+      </Flex>`,
+    code: ``,
+  },
+  {
     slug: 'group',
     title: 'Group',
     from: 'Group',
@@ -366,132 +385,157 @@ const pages = [
   //     <PieChart data={[{value:15},{value: 25},{value:35}]} color="error" size={200} innerRadius="90%" cornerRadius={20} />
   //   </Flex>`,
   // },
-  // {
-  //   slug: 'chart',
-  //   title: 'Chart',
-  //   from: 'Chart',
-  //   group: 'Interface',
-  //   smallCode: `<Flex w="100%" h={80}><Chart
-  //   data={[1, 2, 3, 1, 2, 3]}
-  //   height={80}
-  // >
-  //   <Chart.Line />
-  // </Chart></Flex>`,
-  //   code: `<Flex p={10}>
-  //   <Flex mt={10}>
-  //     <Chart
-  //       data={[1, 2, 3, 1, 2, 3]}
-  //       xAxis
-  //       yAxis
-  //       yTicks={4}
-  //       height={200}
-  //       wrapperProps={{
-  //         bg: "surface",
-  //         borderRadius: 15,
-  //         shadow: 3,
-  //         mb: 5,
-  //       }}
-  //     >
-  //       <Chart.Grid />
-  //       <Chart.Indicator color="primary:setAlpha:0.5" />
-  //       <Chart.Line onChange={({value, index}) => console.log(value)} />
+  {
+    slug: 'chart',
+    title: 'Chart',
+    from: 'Chart',
+    group: 'Interface',
+    smallCode: `<Flex w="100%" h={80}><Chart
+    data={[1, 2, 3, 1, 2, 3]}
+    height={80}
+  >
+    <Chart.Line />
+  </Chart></Flex>`,
+    code: `<Flex p={10}>
+    <Flex mt={10}>
 
-  //     </Chart>
-  //   </Flex>
-  //   <Flex mt={50}>
-  //     <Chart
-  //     useScaleBand
-  //     xAxis
+      <Chart
+        data={[1, 2, 3, 1, 2, 3]}
+        xAxis
+        yAxis
+        yTicks={4}
+        height={200}
+        wrapperProps={{
+          bg: "surface",
+          borderRadius: 15,
+          shadow: 3,
+          mb: 5,
+        }}
+      >
+        <Chart.Grid />
+        <Chart.Indicator color="primary:setAlpha:0.5" />
+        <Chart.Line onChange={({value, index}) => console.log(value)} />
 
-  //       data={[
-  //         {
-  //           test: 10,
-  //           test2: 12,
-  //         },
-  //         {
-  //           test: 15,
-  //           test2: 5,
-  //         },
-  //         {
-  //           test: 14,
-  //           test2: 33,
-  //         },
-  //         {
-  //           test: 10,
-  //           test2: 12,
-  //         },
-  //         {
-  //           test: 15,
-  //           test2: 5,
-  //         },
-  //         {
-  //           label: "Dez",
-  //           test: 14,
-  //           test2: 33,
-  //         },
-  //         {
-  //           test: 10,
-  //           test2: 12,
-  //         },
-  //         {
-  //           test: 15,
-  //           test2: 5,
-  //         },
-  //         {
-  //           test: 14,
-  //           test2: 33,
-  //           test3: 25,
-  //         },
-  //       ]}
-  //       height={200}
-  //       wrapperProps={{
-  //         bg: "surface",
-  //         borderRadius: 15,
-  //         shadow: 3,
-  //         mb: 5,
-  //       }}
-  //     >
+      </Chart>
+  
+    </Flex>
+    <Flex mt={50}>
+      <Chart
+      useScaleBand
+      xAxis
 
-  //       <Chart.Bar
-  //         color="primary:setAlpha:0.1"
-  //         activeColor="primary:setAlpha:0.85"
-  //         activeIndex={8}
-  //         dataKey="test2"
-  //         showValue
-  //         onChange={({ value, index }) => console.log(value)}
-  //       />
+        data={[
+          {
+            test: 10,
+            test2: 12,
+          },
+          {
+            test: 15,
+            test2: 5,
+          },
+          {
+            test: 14,
+            test2: 33,
+          },
+          {
+            test: 10,
+            test2: 12,
+          },
+          {
+            test: 15,
+            test2: 5,
+          },
+          {
+            label: "Dez",
+            test: 14,
+            test2: 33,
+          },
+          {
+            test: 10,
+            test2: 12,
+          },
+          {
+            test: 15,
+            test2: 5,
+          },
+          {
+            test: 14,
+            test2: 33,
+            test3: 25,
+          },
+        ]}
+        height={200}
+        wrapperProps={{
+          bg: "surface",
+          borderRadius: 15,
+          shadow: 3,
+          mb: 5,
+        }}
+      >
 
-  //       <Chart.Line dataKey="test" showValue gradient={false}  />
-  //       <Chart.Indicator />
-  //     </Chart>
-  //   </Flex>
-  //   <Flex mt={50}>
-  //     <Chart
-  //     useScaleBand
-  //     xAxis
-  //     data={[1, 2, 3, 1, 2, 3]}
-  //       height={200}
-  //       wrapperProps={{
-  //         bg: "surface",
-  //         borderRadius: 15,
-  //         shadow: 3,
-  //         mb: 5,
-  //       }}
-  //     >
-  //     <Chart.Indicator />
-  //     <Chart.GridLine value={2} color="primary" gridDasharray={5} />
-  //       <Chart.Bar
-  //         color="primary:setAlpha:0.1"
-  //         activeColor="primary:setAlpha:0.85"
-  //         barSize={25}
-  //         showActiveValue
-  //         onChange={({ value, index }) => console.log(value)}
-  //       />
+        <Chart.Bar
+          color="primary:setAlpha:0.1"
+          activeColor="primary:setAlpha:0.85"
+          activeIndex={8}
+          dataKey="test2"
+          showValue
+          onChange={({ value, index }) => console.log(value)}
+        />
 
-  //     </Chart>
-  //   </Flex>
-  //   </Flex>`,
-  // },
+        <Chart.Line dataKey="test" showValue gradient={false}  />
+        <Chart.Indicator />
+      </Chart>
+    </Flex>
+    <Flex mt={50}>
+      <Chart
+      useScaleBand
+      xAxis
+      data={[1, 2, 3, 1, 2, 3]}
+        height={200}
+        wrapperProps={{
+          bg: "surface",
+          borderRadius: 15,
+          shadow: 3,
+          mb: 5,
+        }}
+      >
+      <Chart.Indicator />
+      <Chart.GridLine value={2} color="primary" gridDasharray={5} />
+        <Chart.Bar
+          color="primary:setAlpha:0.1"
+          activeColor="primary:setAlpha:0.85"
+          barSize={25}
+          showActiveValue
+          onChange={({ value, index }) => console.log(value)}
+        />
+
+      </Chart>
+    </Flex>
+    </Flex>`,
+  },
+  {
+    slug: 'tilt',
+    title: 'Tilt',
+    from: 'Tilt',
+    group: 'Interface',
+    smallCode: `<Flex p={20} w="100%" center>
+      <Tilt>
+        <Avatar char="U" size={150} source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}}  />
+      </Tilt>
+    </Flex>`,
+    code: `<>
+    <Flex p={20} w="100%" center>
+      <Tilt>
+        <Avatar char="M" size={150} source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}}  />
+      </Tilt>
+    </Flex>
+    <Flex p={20} w="100%" center>
+      <Tilt mouse={false} reverse>
+        <Avatar char="PAN" size={150} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}}  />
+      </Tilt>
+    </Flex>
+    </>`,
+  },
   {
     slug: 'swiper',
     title: 'Swiper',
@@ -578,138 +622,136 @@ const pages = [
   //     </Form>
   //   </Flex>`,
   // },
-  {
-    slug: 'codefield',
-    title: 'CodeField',
-    from: 'CodeField',
-    group: 'Inputs',
-    smallCode: `<CodeField  width="80%" cells={4}  />`,
-    code: `<Form>
-      <Input label="Code Field" mt={10} clean>
-      <CodeField field="code" autoFocus />
-      </Input>
-      <Input label="Secure Text" mt={10} clean>
-      <CodeField field="code2" cells={4} maxWidth={300} secureTextEntry />
-      </Input>
-      <Input label="Clean" mt={10} clean>
-      <CodeField  field="code3" cells={4} gap={0} maxWidth={300} clean secureTextEntry />
-      </Input>
-      <Input label="Custom" mt={10} clean>
-      <CodeField  field="code4" cells={3} customCursor={<Icon name="zap" size={22} />}  />
-      </Input>
-    </Form>`,
-  },
-  {
-    slug: 'textinput',
-    title: 'TextInput',
-    from: 'TextInput',
-    group: 'Inputs',
-    smallCode: `<TextInput placeholder="text" width="80%"  />`,
-    code: `<Flex w="100%" flexCenter><TextInput placeholder="text" width="80%"  /></Flex>`,
-  },
-  {
-    slug: 'slider',
-    title: 'Slider',
-    from: 'Slider',
-    group: 'Inputs',
-    smallCode: `<Slider w="80%" value={30} />`,
-    code: `<Flex width="100%" flexCenter>
-    <Form button={false}  w="80%" >
- 
-      <Slider progressColor="success" hideValue={false} my={30}  defaultValue={10} field="s0" />
-      <Slider hideValue={false} my={30}  steps={20} defaultValue={20} field="s1" />
-      <Slider
-        my={30}
+  // {
+  //   slug: 'codefield',
+  //   title: 'CodeField',
+  //   from: 'CodeField',
+  //   group: 'Inputs',
+  //   smallCode: `<CodeField  width="80%" cells={4}  />`,
+  //   code: `<Form>
+  //     <Input label="Code Field" mt={10} clean>
+  //     <CodeField field="code" autoFocus />
+  //     </Input>
+  //     <Input label="Secure Text" mt={10} clean>
+  //     <CodeField field="code2" cells={4} maxWidth={300} secureTextEntry />
+  //     </Input>
+  //     <Input label="Clean" mt={10} clean>
+  //     <CodeField  field="code3" cells={4} gap={0} maxWidth={300} clean secureTextEntry />
+  //     </Input>
+  //     <Input label="Custom" mt={10} clean>
+  //     <CodeField  field="code4" cells={3} customCursor={<Icon name="zap" size={22} />}  />
+  //     </Input>
+  //   </Form>`,
+  // },
+  // {
+  //   slug: 'textinput',
+  //   title: 'TextInput',
+  //   from: 'TextInput',
+  //   group: 'Inputs',
+  //   smallCode: `<TextInput placeholder="text" width="80%"  />`,
+  //   code: `<Flex w="100%" flexCenter><TextInput placeholder="text" width="80%"  /></Flex>`,
+  // },
+  // {
+  //   slug: 'slider',
+  //   title: 'Slider',
+  //   from: 'Slider',
+  //   group: 'Inputs',
+  //   smallCode: `<Slider w="80%" value={30} />`,
+  //   code: `<Flex width="100%" flexCenter>
+  //   <Form button={false}  w="80%" >
 
-        defaultValue={20}
-        handleFocusOpacity={0.1}
-        showTicks={false}
-        showValue={false}
-        trackHeight={50}
-        handleSize={50}
-        showHandle={false}
-        handleColor="transparent"
-        field="s2"
-      />
-      <Slider my={30} showValue min={20} max={80} formatValue={v => v + "%"}  steps={20} defaultValue={[20, 40]}  field="s3" />
- 
-   
-     
-    </Form>
-  </Flex>;`,
-  },
-  {
-    slug: 'switch',
-    title: 'Switch',
-    from: 'Switch',
-    group: 'Inputs',
-    smallCode: `<Form button={false} flexCenter><Switch value={true} field="switch" /></Form>`,
-    code: `function render() {
-      const [value, setValue] = useState(true);
-      return (
-        <Flex flex={1} row wrap center>
-          <Switch mx={10} value={value} onChange={v => setValue(v)} />
-          <Switch mx={10} value={value} size={60} onChange={v => setValue(v)} />
-          <Switch mx={10} value={value} roundness={0} activeTrackColor="success" onChange={v => setValue(v)} />
-        </Flex>
-      );
-    }`,
-  },
-  {
-    slug: 'color',
-    title: 'Color',
-    from: 'Color',
-    group: 'Inputs',
-    smallCode: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
-    code: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
-  },
-  {
-    slug: 'checkbox',
-    title: 'Checkbox',
-    from: 'Checkbox',
-    group: 'Inputs',
-    smallCode: `<Checkbox size={40} />`,
-    code: `<Checkbox size={40} />`,
-  },
-  {
-    slug: 'number',
-    title: 'Number',
-    from: 'Number',
-    group: 'Inputs',
-    smallCode: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
-    code: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
-  },
-  {
-    slug: 'select',
-    title: 'Select',
-    from: 'Select',
-    group: 'Inputs',
-    smallCode: `<Select options={["unikit", "is awesome"]} />`,
-    code: `<Form button={false}>
-      <Select options={["unikit", "is awesome"]} field="select" />
-      <Select mt={10} options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="selectNumber" scrollable />
-    </Form>`,
-  },
-  {
-    slug: 'datepicker',
-    title: 'DatePicker',
-    from: 'DatePicker',
-    group: 'Inputs',
-    smallCode: `<DatePicker  />`,
-    code: `<Form><DatePicker field="date"  /><DatePicker time mt={10}  /></Form>`,
-  },
-  {
-    slug: 'image',
-    title: 'Image',
-    from: 'Image',
-    group: 'Layout',
-    smallCode: `<Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={100} lazy  />`,
-    code: `<Flex flexCenter py={100}>
-      <Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width={200} lazy  />
-      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1601451977966-85a9e242c7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width="75%" lazy  />
-      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={400} lazy  />
-    </Flex>`,
-  },
+  //     <Slider progressColor="success" hideValue={false} my={30}  defaultValue={10} field="s0" />
+  //     <Slider hideValue={false} my={30}  steps={20} defaultValue={20} field="s1" />
+  //     <Slider
+  //       my={30}
+
+  //       defaultValue={20}
+  //       handleFocusOpacity={0.1}
+  //       showTicks={false}
+  //       showValue={false}
+  //       trackHeight={50}
+  //       handleSize={50}
+  //       showHandle={false}
+  //       handleColor="transparent"
+  //       field="s2"
+  //     />
+  //     <Slider my={30} showValue min={20} max={80} formatValue={v => v + "%"}  steps={20} defaultValue={[20, 40]}  field="s3" />
+
+  //   </Form>
+  // </Flex>;`,
+  // },
+  // {
+  //   slug: 'switch',
+  //   title: 'Switch',
+  //   from: 'Switch',
+  //   group: 'Inputs',
+  //   smallCode: `<Form button={false} flexCenter><Switch value={true} field="switch" /></Form>`,
+  //   code: `function render() {
+  //     const [value, setValue] = useState(true);
+  //     return (
+  //       <Flex flex={1} row wrap center>
+  //         <Switch mx={10} value={value} onChange={v => setValue(v)} />
+  //         <Switch mx={10} value={value} size={60} onChange={v => setValue(v)} />
+  //         <Switch mx={10} value={value} roundness={0} activeTrackColor="success" onChange={v => setValue(v)} />
+  //       </Flex>
+  //     );
+  //   }`,
+  // },
+  // {
+  //   slug: 'color',
+  //   title: 'Color',
+  //   from: 'Color',
+  //   group: 'Inputs',
+  //   smallCode: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
+  //   code: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
+  // },
+  // {
+  //   slug: 'checkbox',
+  //   title: 'Checkbox',
+  //   from: 'Checkbox',
+  //   group: 'Inputs',
+  //   smallCode: `<Checkbox size={40} />`,
+  //   code: `<Checkbox size={40} />`,
+  // },
+  // {
+  //   slug: 'number',
+  //   title: 'Number',
+  //   from: 'Number',
+  //   group: 'Inputs',
+  //   smallCode: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
+  //   code: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
+  // },
+  // {
+  //   slug: 'select',
+  //   title: 'Select',
+  //   from: 'Select',
+  //   group: 'Inputs',
+  //   smallCode: `<Select options={["unikit", "is awesome"]} />`,
+  //   code: `<Form button={false}>
+  //     <Select options={["unikit", "is awesome"]} field="select" />
+  //     <Select mt={10} options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="selectNumber" scrollable />
+  //   </Form>`,
+  // },
+  // {
+  //   slug: 'datepicker',
+  //   title: 'DatePicker',
+  //   from: 'DatePicker',
+  //   group: 'Inputs',
+  //   smallCode: `<DatePicker  />`,
+  //   code: `<Form><DatePicker field="date"  /><DatePicker time mt={10}  /></Form>`,
+  // },
+  // {
+  //   slug: 'image',
+  //   title: 'Image',
+  //   from: 'Image',
+  //   group: 'Layout',
+  //   smallCode: `<Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={100} lazy  />`,
+  //   code: `<Flex flexCenter py={100}>
+  //     <Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width={200} lazy  />
+  //     <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1601451977966-85a9e242c7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width="75%" lazy  />
+  //     <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={400} lazy  />
+  //   </Flex>`,
+  // },
 ];
 
 module.exports.pages = pages;

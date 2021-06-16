@@ -15,6 +15,7 @@ interface AnimateProps {
   visible?: boolean;
   repeat?: number;
   reverse?: boolean;
+  paused?: boolean;
   onDidAnimate?: () => void;
 }
 
@@ -45,6 +46,7 @@ const Animate: React.FC<AnimateProps> = ({
   delay,
   repeat,
   reverse,
+  paused = false,
   ripple,
   ...rest
 }) => {
@@ -58,6 +60,7 @@ const Animate: React.FC<AnimateProps> = ({
     repeat,
     delay,
     onDidAnimate,
+    paused,
     extraStyle: rest?.style || {},
   });
 

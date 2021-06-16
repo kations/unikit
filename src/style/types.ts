@@ -1,5 +1,3 @@
-import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
-
 export type ResponsiveValue<Value, Theme extends BaseTheme> =
   | Value
   | { [Key in keyof Theme['breakpoints']]?: Value };
@@ -7,6 +5,12 @@ export type ResponsiveValue<Value, Theme extends BaseTheme> =
 export type SafeVariants<T> = Omit<T, keyof KnownBaseTheme>;
 
 export interface KnownBaseTheme {
+  mode: string;
+  width: number;
+  height: number;
+  alert?: () => void;
+  showAlert?: () => void;
+  hideAlert?: () => void;
   colors: {
     [key: string]: string;
   };
@@ -16,11 +20,11 @@ export interface KnownBaseTheme {
   breakpoints: {
     [key: string]: Breakpoint;
   };
-  zIndices?: {
+  globals?: {
     [key: string]: number;
   };
-  borderRadii?: {
-    [key: string]: number;
+  fonts?: {
+    [key: string]: any;
   };
 }
 
@@ -57,12 +61,5 @@ export type RestyleFunction<
 ) => {
   [key in S]?: any;
 };
-
-export type RNStyle = ViewStyle | TextStyle | ImageStyle;
-
-export type RNStyleProperty =
-  | keyof ViewStyle
-  | keyof TextStyle
-  | keyof ImageStyle;
 
 export type PropValue = string | number | undefined | null;

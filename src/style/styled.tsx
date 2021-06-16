@@ -23,7 +23,10 @@ const styled = (Component: React.ComponentType = View) => {
     styledProps: ViewStyle | ImageStyle | TextStyle = {}
   ) => {
     const ForwardRefComponent = React.forwardRef(
-      (props: ViewStyle | ImageStyle | TextStyle | React.ReactNode, ref) => {
+      (
+        props: ViewStyle | ImageStyle | TextStyle | React.ReactNode | any[],
+        ref
+      ) => {
         const theme = useTheme();
 
         const css = React.useRef(

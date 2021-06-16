@@ -8,13 +8,13 @@ import ThemeContext from './context';
 import DefaultTheme from './theme';
 import { useDimensions } from '../hooks';
 
-export function showAlert(obj) {
+export function showAlert(obj: any) {
   if (alertRef.current) {
     return alertRef.current.show(obj);
   }
 }
 
-export function hideAlert(obj) {
+export function hideAlert(obj: any) {
   if (alertRef.current) {
     return alertRef.current.show({ ...obj, timeout: 0 });
   }
@@ -26,6 +26,7 @@ const ThemeProvider = ({
   children,
 }: {
   theme: BaseTheme;
+  mode?: string;
   children: React.ReactNode;
 }) => {
   const { window } = useDimensions();
@@ -44,9 +45,9 @@ const ThemeProvider = ({
         mode,
         width: window.width,
         height: window.height,
-        alert: (a) => alertRef.current.show(a),
-        showAlert: (a) => alertRef.current.show(a),
-        hideAlert: (a) => alertRef.current.show({ ...a, timeout: 0 }),
+        alert: (a: any) => alertRef.current.show(a),
+        showAlert: (a: any) => alertRef.current.show(a),
+        hideAlert: (a: any) => alertRef.current.show({ ...a, timeout: 0 }),
       }}
     >
       {children}

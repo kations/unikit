@@ -10,21 +10,21 @@
 import isPlainObject from './isPlainObject';
 import isObject from './isObject';
 
-const isUnsafeKey = (key) => {
+const isUnsafeKey = (key: string) => {
   return key === '__proto__' || key === 'constructor' || key === 'prototype';
 };
 
-const validateKey = (key) => {
+const validateKey = (key: string) => {
   if (isUnsafeKey(key)) {
     throw new Error(`Cannot set unsafe key: "${key}"`);
   }
 };
 
-const toString = (input) => {
+const toString = (input: any) => {
   return Array.isArray(input) ? input.flat().map(String).join(',') : input;
 };
 
-const createMemoKey = (input, options) => {
+const createMemoKey = (input: any, options: any) => {
   if (typeof input !== 'string' || !options) return input;
   let key = input + ';';
   if (options.arrays !== undefined) key += `arrays=${options.arrays};`;
@@ -36,7 +36,7 @@ const createMemoKey = (input, options) => {
   return key;
 };
 
-const memoize = (input, options, fn) => {
+const memoize = (input: any, options: any, fn: () => void) => {
   const key = toString(options ? createMemoKey(input, options) : input);
   validateKey(key);
 
@@ -45,7 +45,7 @@ const memoize = (input, options, fn) => {
   return val;
 };
 
-const isNumber = (value) => {
+const isNumber = (value: any) => {
   if (value.trim() !== '') {
     const number = Number(value);
     return { is: Number.isInteger(number), number };
@@ -53,7 +53,7 @@ const isNumber = (value) => {
   return { is: false };
 };
 
-const splitString = (input, options) => {
+const splitString = (input: string, options: any) => {
   const opts = options || {};
   const sep = opts.separator || '.';
   const preserve = sep === '/' ? false : opts.preservePaths;
@@ -94,11 +94,11 @@ const splitString = (input, options) => {
   return keys;
 };
 
-const split = (input, options) => {
+const split = (input: string, options: any) => {
   return memoize(input, options, () => splitString(input, options));
 };
 
-const setProp = (obj, prop, value, options) => {
+const setProp = (obj: any, prop: string, value: any, options: any) => {
   validateKey(prop);
 
   // Delete property when "value" is undefined
@@ -120,7 +120,7 @@ const setProp = (obj, prop, value, options) => {
   return obj;
 };
 
-const setValue = (obj, path, value, options) => {
+const setValue = (obj: any, path: string, value: any, options: any) => {
   if (!path) return obj;
   if (!isObject(obj)) return obj;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function useTimeout(callback, timeout = 0) {
+export default function useTimeout(callback: () => void, timeout: number = 0) {
   const timeoutId = React.useRef();
   const handler = React.useMemo(() => {
     return {

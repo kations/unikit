@@ -14,7 +14,7 @@ export const useIsMounted = function useIsMounted() {
   return isMounted;
 };
 
-export default function useUpdateEffect(effect, dependencies) {
+export default function useUpdateEffect(effect: () => void, dependencies: any) {
   const isMounted = useIsMounted();
   const isInitialMount = React.useRef(true);
 

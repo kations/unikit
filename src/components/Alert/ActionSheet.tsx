@@ -7,7 +7,6 @@ import Button from '../Button';
 
 const ActionSheet = ({
   theme,
-  textColor,
   type = 'surface',
   actions = [{ label: 'Demo' }, { label: 'Demo' }, { label: 'Demo' }],
   close,
@@ -24,34 +23,39 @@ const ActionSheet = ({
         }
         justifyContent="flex-end"
       >
-        {actions.map(({ label, icon, onPress, ...rest }, i) => {
-          return (
-            <Button
-              onPress={() => {
-                close();
-                if (onPress) onPress();
-              }}
-              bg={type}
-              width="100%"
-              key={`button-${i}`}
-              //   renderLeft={
-              //     icon && (
-              //       <Icon
-              //         mr={theme.globals.gap / 2}
-              //         name={icon}
-              //         size={20}
-              //         color={textColor}
-              //       />
-              //     )
-              //   }
-              labelProps={{ fontSize: theme.fonts.p.fontSize }}
-              mb={i === 2 ? 0 : theme.globals.gap / 2}
-              {...rest}
-            >
-              {label}
-            </Button>
-          );
-        })}
+        {actions.map(
+          (
+            {
+              label,
+              icon,
+              onPress,
+              ...rest
+            }: {
+              label: string;
+              icon: string;
+              onPress: () => void;
+              [key: string]: any;
+            },
+            i
+          ) => {
+            return (
+              <Button
+                onPress={() => {
+                  close();
+                  if (onPress) onPress();
+                }}
+                bg={type}
+                width="100%"
+                key={`button-${i}`}
+                labelProps={{ fontSize: theme.fonts.p.fontSize }}
+                mb={i === 2 ? 0 : theme.globals.gap / 2}
+                {...rest}
+              >
+                {label}
+              </Button>
+            );
+          }
+        )}
       </Flex>
       <Button
         bg={type}

@@ -19,6 +19,9 @@ export { default as Group } from './Group';
 export { default as Tabs } from './Tabs';
 export { default as Form } from './Form';
 export { default as Swiper } from './Swiper';
+export { default as Chart } from './Chart';
+export { default as Pointer } from './Pointer';
+export { default as Tilt } from './Tilt';
 
 export * from './Image';
 export * from './Inputs';

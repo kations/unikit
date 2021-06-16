@@ -1,0 +1,25 @@
+{
+  "files": {
+    "static/js/0.0d5d3763.chunk.js": "/static/js/0.0d5d3763.chunk.js",
+    "static/js/0.0d5d3763.chunk.js.map": "/static/js/0.0d5d3763.chunk.js.map",
+    "static/js/1.8bc12dfb.chunk.js": "/static/js/1.8bc12dfb.chunk.js",
+    "static/js/1.8bc12dfb.chunk.js.map": "/static/js/1.8bc12dfb.chunk.js.map",
+    "app.js": "/static/js/app.f8510722.chunk.js",
+    "app.js.map": "/static/js/app.f8510722.chunk.js.map",
+    "runtime~app.js": "/static/js/runtime~app.e000af3c.js",
+    "runtime~app.js.map": "/static/js/runtime~app.e000af3c.js.map",
+    "static/js/4.732f239d.chunk.js": "/static/js/4.732f239d.chunk.js",
+    "static/js/4.732f239d.chunk.js.map": "/static/js/4.732f239d.chunk.js.map",
+    "index.html": "/index.html",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "static/js/0.0d5d3763.chunk.js.LICENSE.txt": "/static/js/0.0d5d3763.chunk.js.LICENSE.txt",
+    "static/js/4.732f239d.chunk.js.LICENSE.txt": "/static/js/4.732f239d.chunk.js.LICENSE.txt",
+    "static/media/expo.png": "/static/media/expo.7cde9d48.png"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.e000af3c.js",
+    "static/js/4.732f239d.chunk.js",
+    "static/js/app.f8510722.chunk.js"
+  ]
+}

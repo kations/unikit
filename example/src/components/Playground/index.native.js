@@ -42,6 +42,10 @@ export default function Table({ code, scope, title, ...rest }) {
         Button: unikit.Button,
         Animate: unikit.Animate,
         Form: unikit.Form,
+        Input: unikit.Input,
+        Image: unikit.Image,
+        Tilt: unikit.Tilt,
+        Avatar: unikit.Avatar,
         [title]: unikit[title],
         ...scope,
       }}

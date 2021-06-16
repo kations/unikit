@@ -11,6 +11,7 @@ import {
 } from 'react-native-reanimated';
 
 import { isWeb } from '../util';
+import { withPause } from './useSpringHelper';
 
 interface SpringProps {
   to: any;
@@ -107,6 +108,7 @@ const useSpring = <Props extends SpringProps>({
   repeat = 1,
   reverse = false,
   onDidAnimate,
+  paused,
   extraStyle = {},
 }: Props) => {
   const isMounted = useSharedValue(false);
@@ -150,17 +152,19 @@ const useSpring = <Props extends SpringProps>({
         wasMounted.value === true && isMounted.value === false
           ? 'exit'
           : 'enter';
+      const value =
+        wasMounted.value === true &&
+        exitValue !== undefined &&
+        isMounted.value === false
+          ? exitValue
+          : isMounted.value === false && fromValue !== undefined
+          ? fromValue
+          : toValue;
       const aniValue = withDelay(
         delay || 0,
         withRepeat(
           animation(
-            wasMounted.value === true &&
-              exitValue !== undefined &&
-              isMounted.value === false
-              ? exitValue
-              : isMounted.value === false && fromValue !== undefined
-              ? fromValue
-              : toValue,
+            value,
             { ...config },
             () =>
               onDidAnimate &&
@@ -171,13 +175,14 @@ const useSpring = <Props extends SpringProps>({
                 });
               })()
           ),
+
           repeat,
           reverse
         )
       );
 
       if (trans) {
-        final.transform.push({ [key]: aniValue });
+        final.transform.push({ [key]: paused ? value : aniValue });
       } else {
         final[key] = aniValue;
       }

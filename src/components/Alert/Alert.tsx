@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withThemeProps } from '../../style';
+import { withThemeProps, BaseTheme } from '../../style';
 
 import Animate from '../Animate';
 
@@ -17,6 +17,19 @@ const POSITIONS = {
   bottom: { alignSelf: 'flex-end', from: { y: 100, opacity: 0 } },
 };
 
+interface Props {
+  component: string;
+  theme: BaseTheme;
+  timeout?: number;
+  removeItem: () => void;
+  itemKey?: string;
+  maxWidth?: number;
+  item?: any;
+  position?: string;
+  setBackdrop?: () => void;
+  onDidAnimate?: () => void;
+}
+
 const Alert = React.forwardRef(
   (
     {
@@ -30,7 +43,7 @@ const Alert = React.forwardRef(
       position = 'top',
       setBackdrop,
       ...rest
-    },
+    }: Props,
     ref
   ) => {
     const [wait, setWait] = React.useState(false);

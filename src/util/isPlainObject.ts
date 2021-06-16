@@ -9,7 +9,7 @@ function isObject(o: any) {
   return Object.prototype.toString.call(o) === '[object Object]';
 }
 
-export function isPlainObject(o: any) {
+function isPlainObject(o: any) {
   var ctor, prot;
 
   if (isObject(o) === false) return false;
@@ -30,3 +30,5 @@ export function isPlainObject(o: any) {
   // Most likely a plain Object
   return true;
 }
+
+export default isPlainObject;

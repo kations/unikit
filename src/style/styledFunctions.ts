@@ -74,7 +74,7 @@ const background = {
   gradient: {
     property: 'backgroundImage',
     themeKey: 'colors',
-    transform: ({ value, theme }) => {
+    transform: ({ value }) => {
       if (value === true) value = ['red', 'blue'];
       return `linear-gradient(90deg, ${value.join(',')})`;
     },
@@ -129,11 +129,11 @@ const spacingPropertiesShorthand = {
   pe: 'paddingEnd',
 };
 
-const spacing = Object.keys(spacingProperties).map((key) => ({
+const spacing = Object.keys(spacingProperties).map((key: string) => ({
   property: key,
 }));
 
-Object.keys(spacingPropertiesShorthand).map((key) => {
+Object.keys(spacingPropertiesShorthand).map((key: string) => {
   spacing[key] = {
     property: spacingPropertiesShorthand[key],
   };
