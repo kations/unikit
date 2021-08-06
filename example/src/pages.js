@@ -288,6 +288,24 @@ const pages = [
     <Button><Icon name="chevron-down" color="#FFF" size={20} /></Button>
     </Dropdown></Flex>`,
   },
+  {
+    slug: 'tooltip',
+    title: 'Tooltip',
+    from: 'Tooltip',
+    group: 'Interface',
+    smallCode: `<Flex width="100%" flexCenter><Button rounded>Tooltip</Button></Flex>`,
+    code: `<Flex width="100%" flexCenter py={100}>
+    <Tooltip
+    position="center"
+    mr={10}
+    popover={<Flex w="100%">
+      <Button onPress={() => theme.alert({type: "primary",message: "Hi!"})}>Content</Button>
+      <Button   onPress={() => theme.alert({ type: "primary", message: "Hi!"})}>Content</Button>
+      </Flex>}>
+    <Button><Icon name="chevron-down" color="#FFF" size={20} /></Button>
+    </Tooltip>
+    </Flex>`,
+  },
   // {
   //   slug: 'alert',
   //   title: 'Alert',
@@ -541,50 +559,39 @@ const pages = [
     title: 'Swiper',
     from: 'Swiper',
     group: 'Interface',
-    smallCode: `<Swiper w={160} h={100} autoplay arrows>
-      <Flex bg="primary:setAlpha:0.75" flex={1} />
-      <Flex bg="primary:setAlpha:0.5"  flex={1} />
-      <Flex bg="primary:setAlpha:0.25"  flex={1} />
-    </Swiper>`,
+    smallCode: `<Swiper w={160} h={100} inactiveScale={0.2} arrows dots autoplay>
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.5"  flex={1} />
+    <Flex bg="primary:setAlpha:0.25"  flex={1} />
+  </Swiper>`,
     code: `function render() {
-      const swipeRef = React.useRef(null)
-      const [visible, setVisible] = useState(false);
+      const [date, setDate] = useState(new Date());
 
-      return (
-        <Flex>
-        <Flex row center p={15}>
-         <Button onPress={() => swipeRef.current.swipeTo(2)}>Slide 3</Button>
-        
-        </Flex>
-        <Flex w="100%" h={200}>
-          <Swiper ref={swipeRef} itemDimension="50%" flex={1} dots arrows>
-            <Flex bg="primary:setAlpha:0.75" flex={1} />
-            <Flex bg="primary:setAlpha:0.5"  flex={1} />
-            <Flex bg="primary:setAlpha:0.25"  flex={1} />
-          </Swiper>
-        </Flex>
-        <Flex w="100%" mt={20} h={200}>
-      <Swiper
-        
-        flex={1}
-        vertical
-        autoplay
-        dots
-        dotsProps={{
-          roundness: 0,
-          trackSize: 2,
-          indicatorColor: "#FFF",
-          trackColor: "#FFF"
-        }}
-      >
-      <Flex bg="primary:setAlpha:0.75" flex={1} />
-      <Flex bg="primary:setAlpha:0.5"  flex={1} />
-      <Flex bg="primary:setAlpha:0.25"  flex={1} />
-      </Swiper>
-    </Flex>
+      return (<Flex flex={1}>
+        <Swiper w="100%" h={200} my={10} arrows dots autoplay>
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.5"  flex={1} />
+    <Flex bg="primary:setAlpha:0.25"  flex={1} />
+  </Swiper>
+  <Swiper w="100%" h={200} my={10} dots snapTo="center"  itemDimension={300}>
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.5"  flex={1} />
+    <Flex bg="primary:setAlpha:0.25"  flex={1} />
+  </Swiper>
+  <Swiper w="100%" h={200} my={10} dots gap={30} itemDimension={300}>
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.75" flex={1} />
+    <Flex bg="primary:setAlpha:0.5"  flex={1} />
+    <Flex bg="primary:setAlpha:0.25"  flex={1} />
+  </Swiper>
+  <Swiper w="100%" h={400} my={10} dots snapTo="center"  itemDimension={250} vertical>
+  <Flex bg="primary:setAlpha:0.75" flex={1} />
+  <Flex bg="primary:setAlpha:0.5"  flex={1} />
+  <Flex bg="primary:setAlpha:0.25"  flex={1} />
+</Swiper>
   </Flex>
-      );
-      }`,
+  )}`,
   },
   // {
   //   slug: 'input',
@@ -622,64 +629,64 @@ const pages = [
   //     </Form>
   //   </Flex>`,
   // },
-  // {
-  //   slug: 'codefield',
-  //   title: 'CodeField',
-  //   from: 'CodeField',
-  //   group: 'Inputs',
-  //   smallCode: `<CodeField  width="80%" cells={4}  />`,
-  //   code: `<Form>
-  //     <Input label="Code Field" mt={10} clean>
-  //     <CodeField field="code" autoFocus />
-  //     </Input>
-  //     <Input label="Secure Text" mt={10} clean>
-  //     <CodeField field="code2" cells={4} maxWidth={300} secureTextEntry />
-  //     </Input>
-  //     <Input label="Clean" mt={10} clean>
-  //     <CodeField  field="code3" cells={4} gap={0} maxWidth={300} clean secureTextEntry />
-  //     </Input>
-  //     <Input label="Custom" mt={10} clean>
-  //     <CodeField  field="code4" cells={3} customCursor={<Icon name="zap" size={22} />}  />
-  //     </Input>
-  //   </Form>`,
-  // },
-  // {
-  //   slug: 'textinput',
-  //   title: 'TextInput',
-  //   from: 'TextInput',
-  //   group: 'Inputs',
-  //   smallCode: `<TextInput placeholder="text" width="80%"  />`,
-  //   code: `<Flex w="100%" flexCenter><TextInput placeholder="text" width="80%"  /></Flex>`,
-  // },
-  // {
-  //   slug: 'slider',
-  //   title: 'Slider',
-  //   from: 'Slider',
-  //   group: 'Inputs',
-  //   smallCode: `<Slider w="80%" value={30} />`,
-  //   code: `<Flex width="100%" flexCenter>
-  //   <Form button={false}  w="80%" >
+  {
+    slug: 'codefield',
+    title: 'CodeField',
+    from: 'CodeField',
+    group: 'Inputs',
+    smallCode: `<CodeField  width="80%" cells={4}  />`,
+    code: `<Form>
+      <Input label="Code Field" mt={10} clean>
+      <CodeField field="code" autoFocus />
+      </Input>
+      <Input label="Secure Text" mt={10} clean>
+      <CodeField field="code2" cells={4} maxWidth={300} secureTextEntry />
+      </Input>
+      <Input label="Clean" mt={10} clean>
+      <CodeField  field="code3" cells={4} gap={0} maxWidth={300} clean secureTextEntry />
+      </Input>
+      <Input label="Custom" mt={10} clean>
+      <CodeField  field="code4" cells={3} customCursor={<Icon name="zap" size={22} />}  />
+      </Input>
+    </Form>`,
+  },
+  {
+    slug: 'textinput',
+    title: 'TextInput',
+    from: 'TextInput',
+    group: 'Inputs',
+    smallCode: `<TextInput placeholder="text" width="80%"  />`,
+    code: `<Flex w="100%" flexCenter><TextInput placeholder="text" width="80%"  /></Flex>`,
+  },
+  {
+    slug: 'slider',
+    title: 'Slider',
+    from: 'Slider',
+    group: 'Inputs',
+    smallCode: `<Slider w="80%" value={30} />`,
+    code: `<Flex width="100%" flexCenter>
+    <Form button={false}  w="80%" >
 
-  //     <Slider progressColor="success" hideValue={false} my={30}  defaultValue={10} field="s0" />
-  //     <Slider hideValue={false} my={30}  steps={20} defaultValue={20} field="s1" />
-  //     <Slider
-  //       my={30}
+      <Slider progressColor="success" hideValue={false} my={30}  defaultValue={10} field="s0" />
+      <Slider hideValue={false} my={30}  steps={20} defaultValue={20} field="s1" />
+      <Slider
+        my={30}
 
-  //       defaultValue={20}
-  //       handleFocusOpacity={0.1}
-  //       showTicks={false}
-  //       showValue={false}
-  //       trackHeight={50}
-  //       handleSize={50}
-  //       showHandle={false}
-  //       handleColor="transparent"
-  //       field="s2"
-  //     />
-  //     <Slider my={30} showValue min={20} max={80} formatValue={v => v + "%"}  steps={20} defaultValue={[20, 40]}  field="s3" />
+        defaultValue={20}
+        handleFocusOpacity={0.1}
+        showTicks={false}
+        showValue={false}
+        trackHeight={50}
+        handleSize={50}
+        showHandle={false}
+        handleColor="transparent"
+        field="s2"
+      />
+      <Slider my={30} showValue min={20} max={80} formatValue={v => v + "%"}  steps={20} defaultValue={[20, 40]}  field="s3" />
 
-  //   </Form>
-  // </Flex>;`,
-  // },
+    </Form>
+  </Flex>;`,
+  },
   // {
   //   slug: 'switch',
   //   title: 'Switch',
@@ -697,61 +704,68 @@ const pages = [
   //     );
   //   }`,
   // },
-  // {
-  //   slug: 'color',
-  //   title: 'Color',
-  //   from: 'Color',
-  //   group: 'Inputs',
-  //   smallCode: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
-  //   code: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
-  // },
-  // {
-  //   slug: 'checkbox',
-  //   title: 'Checkbox',
-  //   from: 'Checkbox',
-  //   group: 'Inputs',
-  //   smallCode: `<Checkbox size={40} />`,
-  //   code: `<Checkbox size={40} />`,
-  // },
-  // {
-  //   slug: 'number',
-  //   title: 'Number',
-  //   from: 'Number',
-  //   group: 'Inputs',
-  //   smallCode: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
-  //   code: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
-  // },
-  // {
-  //   slug: 'select',
-  //   title: 'Select',
-  //   from: 'Select',
-  //   group: 'Inputs',
-  //   smallCode: `<Select options={["unikit", "is awesome"]} />`,
-  //   code: `<Form button={false}>
-  //     <Select options={["unikit", "is awesome"]} field="select" />
-  //     <Select mt={10} options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="selectNumber" scrollable />
-  //   </Form>`,
-  // },
-  // {
-  //   slug: 'datepicker',
-  //   title: 'DatePicker',
-  //   from: 'DatePicker',
-  //   group: 'Inputs',
-  //   smallCode: `<DatePicker  />`,
-  //   code: `<Form><DatePicker field="date"  /><DatePicker time mt={10}  /></Form>`,
-  // },
-  // {
-  //   slug: 'image',
-  //   title: 'Image',
-  //   from: 'Image',
-  //   group: 'Layout',
-  //   smallCode: `<Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={100} lazy  />`,
-  //   code: `<Flex flexCenter py={100}>
-  //     <Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width={200} lazy  />
-  //     <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1601451977966-85a9e242c7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width="75%" lazy  />
-  //     <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={400} lazy  />
-  //   </Flex>`,
-  // },
+  {
+    slug: 'color',
+    title: 'Color',
+    from: 'Color',
+    group: 'Inputs',
+    smallCode: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
+    code: `<Form button={false}><Flex w="100%" flexCenter><Color field="color" defaultValue="#673fb4" /></Flex></Form>`,
+  },
+  {
+    slug: 'checkbox',
+    title: 'Checkbox',
+    from: 'Checkbox',
+    group: 'Inputs',
+    smallCode: `<Checkbox size={40} />`,
+    code: `<Checkbox size={40} />`,
+  },
+  {
+    slug: 'number',
+    title: 'Number',
+    from: 'Number',
+    group: 'Inputs',
+    smallCode: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
+    code: `<Form button={false}><Number w="80%" defaultValue={5}  bg="input" field="num" /></Form>`,
+  },
+  {
+    slug: 'draw',
+    title: 'Draw',
+    from: 'Draw',
+    group: 'Inputs',
+    smallCode: `<Form button={false}><Draw w="80%"  bg="input" field="num" /></Form>`,
+  },
+  {
+    slug: 'select',
+    title: 'Select',
+    from: 'Select',
+    group: 'Inputs',
+    smallCode: `<Select options={["unikit", "is awesome"]} />`,
+    code: `<Form button={false}>
+      <Select options={["unikit", "is awesome"]} field="select" />
+      <Select mt={10} options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="selectNumber" scrollable />
+    </Form>`,
+  },
+  {
+    slug: 'datepicker',
+    title: 'DatePicker',
+    from: 'DatePicker',
+    group: 'Inputs',
+    smallCode: `<DatePicker  />`,
+    code: `<Form><DatePicker field="date"  /><DatePicker time mt={10}  /></Form>`,
+  },
+  {
+    slug: 'image',
+    title: 'Image',
+    from: 'Image',
+    group: 'Layout',
+    smallCode: `<Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={100} lazy  />`,
+    code: `<Flex flexCenter py={100}>
+      <Image source={{uri: "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width={200} lazy  />
+      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1601451977966-85a9e242c7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} width="75%" lazy  />
+      <Image mt={100} source={{uri: "https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"}} height={400} lazy  />
+    </Flex>`,
+  },
 ];
 
 module.exports.pages = pages;

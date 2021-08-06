@@ -1,24 +1,24 @@
-import * as React from 'react';
-import { withThemeProps, Touchable } from '../../style';
-import { useLayout } from '../../hooks';
-import { isNumber } from '../../util';
+import * as React from "react";
+import { withThemeProps, Touchable } from "../../style";
+import { useLayout } from "../../hooks";
+import { isNumber } from "../../util";
 
-import Flex from '../Flex';
+import Flex from "../Flex";
 
-import Text from '../Text';
-import Animate from '../Animate';
-import Icon from '../Icon';
+import Text from "../Text";
+import Animate from "../Animate";
+import Icon from "../Icon";
 
-import TextInput from './Text';
-import Switch from './Switch';
-import Slider from './Slider';
-import Color from './Color';
-import Select from './Select';
-import Number from './Number';
-import Tabs from './Tabs';
-import DatePicker from './DatePicker';
-import File from './File';
-import Tags from './Tags';
+import TextInput from "./Text";
+import Switch from "./Switch";
+import Slider from "./Slider";
+import Color from "./Color";
+import Select from "./Select";
+import Number from "./Number";
+import Tabs from "./Tabs";
+import DatePicker from "./DatePicker";
+import File from "./File";
+import Tags from "./Tags";
 
 const TYPES = {
   tags: {
@@ -37,7 +37,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: 'date',
+      mask: "date",
     }),
     focus: true,
   },
@@ -45,7 +45,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: 'timeago',
+      mask: "timeago",
       editable: false,
     }),
     focus: true,
@@ -54,21 +54,21 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} time />,
-      mask: 'datetime',
+      mask: "datetime",
     }),
     focus: true,
   },
   time: {
     component: TextInput,
     props: () => ({
-      mask: 'time',
+      mask: "time",
     }),
     focus: true,
   },
   phone: {
     component: TextInput,
     props: () => ({
-      mask: 'phone',
+      mask: "phone",
     }),
     focus: true,
   },
@@ -81,7 +81,7 @@ const TYPES = {
   number: {
     component: TextInput,
     props: () => ({
-      mask: 'number',
+      mask: "number",
       renderRight: <Number />,
     }),
     focus: true,
@@ -89,7 +89,7 @@ const TYPES = {
   password: {
     component: TextInput,
     props: () => ({
-      textContentType: 'password',
+      textContentType: "password",
       secureTextEntry: true,
     }),
     focus: true,
@@ -107,13 +107,13 @@ const TYPES = {
     component: Switch,
     wrapperPressable: true,
     props: ({ clean }) => ({
-      trackColor: 'input:darken:5',
+      trackColor: "input:darken:5",
     }),
   },
   range: {
     component: Slider,
     props: ({ clean }) => ({
-      trackColor: clean ? 'input' : 'input:darken:5',
+      trackColor: clean ? "input" : "input:darken:5",
       mt: 10,
     }),
   },
@@ -131,6 +131,7 @@ interface Props {
   theme: object;
   children?: React.ReactNode;
   type?: string;
+  labelPosition?: "top" | "left";
   label?: string;
   inputProps?: object;
   roundness: number;
@@ -149,13 +150,14 @@ const needsBg = {
 const Input = React.memo(
   ({
     value,
+    labelPosition = "left",
     size = 55,
     error = false,
     theme,
     children,
-    type = 'text',
-    variant = 'underline',
-    indicatorFocusColor = 'primary',
+    type = "text",
+    variant = "underline",
+    indicatorFocusColor = "primary",
     indicatorBlurColor,
     indicatorSize = 2,
     label,
@@ -169,7 +171,7 @@ const Input = React.memo(
     onChange,
     field,
     labelProps = {},
-    bg = 'input',
+    bg = "input",
     style,
     ...rest
   }: Props) => {
@@ -180,6 +182,17 @@ const Input = React.memo(
     const WrapperComp = TYPE.wrapperPressable ? Touchable : Flex;
 
     const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
+    const labelPositionStyle =
+      labelPosition === "top"
+        ? { pb: 5 }
+        : {
+            position: "absolute",
+            l: 15,
+            t: 0,
+            b: 0,
+            zIndex: 100,
+            center: true,
+          };
 
     const inputProps = {
       value,
@@ -187,26 +200,41 @@ const Input = React.memo(
       field,
       ...(TYPE && TYPE.props ? TYPE.props({ clean, inline }) : {}),
       setFocus,
-      position: 'relative',
-      zIndex: type === 'range' ? 999 : 0,
+      position: "relative",
+      zIndex: type === "range" ? 999 : 0,
       inline,
       ...rest,
-      width: '100%',
+      width: "100%",
       shadow: clean ? shadow : undefined,
       mt: 0,
-      roundness: type === 'switch' ? undefined : radius,
-      mr: type === 'switch' ? theme.globals.inputGap : undefined,
-      size: type === 'switch' ? undefined : size,
+      roundness: type === "switch" ? undefined : radius,
+      mr: type === "switch" ? theme.globals.inputGap : undefined,
+      size: type === "switch" ? undefined : size,
       bg: needsBg[type] ? bg : undefined,
       style: {
-        textAlign: inline ? 'right' : 'left',
+        textAlign: inline ? "right" : "left",
       },
     };
+
+    return (
+      <Flex w="100%" {...rest} relative>
+        <Flex {...labelPositionStyle}>
+          <Text font="label" {...labelProps}>
+            {label}
+          </Text>
+        </Flex>
+        <Flex w="100%" bg={bg} h={size} borderRadius={radius} relative>
+          {children ? children : <Comp {...inputProps} />}
+        </Flex>
+      </Flex>
+    );
+
+    //const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
 
     if (TYPE.inline === false && TYPE.inline !== inline) {
       inline = TYPE.inline;
     }
-    if (type === 'switch') {
+    if (type === "switch") {
       inline = true;
       clean = false;
     }
@@ -222,11 +250,11 @@ const Input = React.memo(
         {...rest}
       >
         <WrapperComp
-          bg={clean ? 'transparent' : bg}
+          bg={clean ? "transparent" : bg}
           shadow={clean ? undefined : shadow}
           borderRadius={radius}
-          alignItems={inline ? 'flex-end' : undefined}
-          justifyContent={inline ? 'center' : undefined}
+          alignItems={inline ? "flex-end" : undefined}
+          justifyContent={inline ? "center" : undefined}
           minHeight={size}
           h="auto"
           w="100%"
@@ -241,7 +269,7 @@ const Input = React.memo(
         >
           {label && (
             <Flex
-              position={inline ? undefined : 'relative'}
+              position={inline ? undefined : "relative"}
               alignItems="center"
               zIndex={888}
               pointerEvents="none"
@@ -267,10 +295,10 @@ const Input = React.memo(
               )}
               <Text
                 font="label"
-                color={error ? 'error' : 'text'}
+                color={error ? "error" : "text"}
                 {...labelProps}
               >
-                {`${label} ${typeof error === 'string' ? `(${error})` : ''}`}
+                {`${label} ${typeof error === "string" ? `(${error})` : ""}`}
               </Text>
             </Flex>
           )}
@@ -291,7 +319,7 @@ const Input = React.memo(
               flexCenter
             >
               <Animate
-                isVisible={focused}
+                visible={focused}
                 width={width}
                 height={height}
                 from={{ s: 0, o: 0 }}
@@ -318,4 +346,4 @@ const Input = React.memo(
   }
 );
 
-export default withThemeProps(Input, 'Input');
+export default withThemeProps(Input, "Input");

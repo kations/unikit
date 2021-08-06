@@ -19,7 +19,8 @@ const Pointer = ({
   fromCenter = false,
   resetOnRelease = false,
   mouse = true,
-  onPointer,
+  onMove,
+  onLeave,
   ...rest
 }: Props) => {
   const { width, height, onLayout } = useLayout();
@@ -59,7 +60,7 @@ const Pointer = ({
   };
 
   React.useEffect(() => {
-    if (onPointer) onPointer(pp);
+    if (onMove) onMove(pp);
   }, [JSON.stringify(position)]);
 
   const bindGesture = useGesture(
@@ -82,6 +83,7 @@ const Pointer = ({
       },
       onPanResponderRelease: () => {
         setPointer(false);
+        if (onLeave) onLeave();
       },
     },
     [width, height]
@@ -97,7 +99,10 @@ const Pointer = ({
             y: Math.round(layerY),
           });
         },
-        onMouseLeave: () => setPointer(false),
+        onMouseLeave: () => {
+          setPointer(false);
+          if (onLeave) onLeave();
+        },
       }
     : {};
 

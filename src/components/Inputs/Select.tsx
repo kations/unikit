@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { Picker as NativePicker } from '@react-native-picker/picker';
+import React, { useState } from "react";
+import { Platform } from "react-native";
+import { Picker as NativePicker } from "@react-native-picker/picker";
 
-import { withThemeProps, Pressable } from '../../style';
-import { isIOS } from '../../util';
+import { withThemeProps, Touchable } from "../../style";
+import { isIOS } from "../../util";
 
-import Dropdown from '../Dropdown';
-import Button from '../Button';
-import Icon from '../Icon';
-import Flex from '../Flex';
-import TextInput from './Text';
+import Tooltip from "../Tooltip";
+import Icon from "../Icon";
+import Flex from "../Flex";
+import TextInput from "./Text";
 
 const Picker = ({
   size = 50,
@@ -18,8 +17,8 @@ const Picker = ({
   onChange,
   options = [],
   style,
-  placeholder = 'Please select...',
-  doneText = 'Done',
+  placeholder = "Please select...",
+  doneText = "Done",
   overlayProps = {},
   inputProps = {},
   pickerProps = {},
@@ -29,8 +28,8 @@ const Picker = ({
   const [show, setShow] = useState(false);
 
   const renderCheckbox = (option, index) => {
-    const label = typeof option === 'string' ? option : option.label;
-    const optionValue = typeof option === 'string' ? option : option.value;
+    const label = typeof option === "string" ? option : option.label;
+    const optionValue = typeof option === "string" ? option : option.value;
     return (
       <NativePicker.Item
         key={`pick-${index}`}
@@ -42,7 +41,7 @@ const Picker = ({
 
   const getValue = () => {
     if (value && options) {
-      if (typeof options[0] === 'string') {
+      if (typeof options[0] === "string") {
         return value;
       } else {
         const option = options.find((e) => e.value === value);
@@ -60,24 +59,24 @@ const Picker = ({
         onValueChange={(itemValue, itemIndex) =>
           onChange ? onChange(itemValue) : null
         }
-        itemStyle={{ textAlign: 'center', color: theme.colors.text }}
+        itemStyle={{ textAlign: "center", color: theme.colors.text }}
         {...pickerProps}
         style={[
           {
-            width: '100%',
+            width: "100%",
             paddingVertical: theme.globals.inputGap,
             paddingHorizontal: theme.globals.inputGap,
             margin: 0,
             borderRadius: 0,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             fontSize: theme.fonts.p.fontSize,
             color: theme.colors.text,
             ...Platform.select({
               web: {
                 outlineWidth: 0,
-                outlineColor: 'unset',
-                borderColor: 'transparent',
-                appearance: 'none',
+                outlineColor: "unset",
+                borderColor: "transparent",
+                appearance: "none",
               },
             }),
           },
@@ -111,11 +110,10 @@ const Picker = ({
         </Flex>
       )}
       {isIOS ? (
-        <Dropdown
+        <Tooltip
           position="center"
-          visible={show}
           onClose={() => setShow(false)}
-          content={renderPicker()}
+          popover={renderPicker()}
           wrapperProps={{
             w: 250,
             r: 0,
@@ -123,23 +121,15 @@ const Picker = ({
           }}
           {...overlayProps}
         >
-          <Pressable
-            onPress={() => {
-              setShow(!show);
-            }}
-            w="100%"
-            h={size}
-          >
-            <TextInput
-              type="text"
-              editable={false}
-              value={getValue()}
-              placeholder={placeholder}
-              pointerEvents={Platform.OS === 'web' ? 'all' : 'none'}
-              {...inputProps}
-            />
-          </Pressable>
-        </Dropdown>
+          <TextInput
+            type="text"
+            editable={false}
+            value={getValue()}
+            placeholder={placeholder}
+            pointerEvents={Platform.OS === "web" ? "all" : "none"}
+            {...inputProps}
+          />
+        </Tooltip>
       ) : null}
       <Flex
         absolute
@@ -158,4 +148,4 @@ const Picker = ({
   );
 };
 
-export default withThemeProps(Picker, 'Picker');
+export default withThemeProps(Picker, "Picker");

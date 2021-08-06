@@ -8,7 +8,7 @@ const getProgress = (a, b, v) => {
   return (v - a) / (b - a);
 };
 
-export default ({ title = '', top = 0 }) => {
+export default ({ title = '', top = 0, renderLeft = null }) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const { navigate } = useNavigation();
@@ -19,7 +19,6 @@ export default ({ title = '', top = 0 }) => {
     <Animate
       from={{ y: -100 }}
       to={{ y: -(progress * 50 > 15 ? 15 : progress * 50) }}
-      // duration={1500}
       position="absolute"
       l={0}
       t={10}
@@ -33,14 +32,26 @@ export default ({ title = '', top = 0 }) => {
         shadow={55}
         absoluteFill
       />
-      <Flex px={30} py={20} w="100%" justifyContent="space-between" row>
-        <Flex />
-        <Touchable onPress={() => navigate('Home')}>
-          <Text font="h4" color="primary" bold>
-            unikit
-            <Text font="h4" color="text">{`${title ? ` ${title}` : ''}`}</Text>
-          </Text>
-        </Touchable>
+      <Flex
+        px={30}
+        h={60}
+        alignItems="center"
+        w="100%"
+        justifyContent="space-between"
+        row
+        relative
+      >
+        <Flex>{renderLeft}</Flex>
+        <Flex absoluteFill pointerEvents="box-none" center>
+          <Touchable onPress={() => navigate('Home')}>
+            <Text font="h4" color="primary" bold>
+              unikit
+              <Text font="h4" color="text">{`${
+                title ? ` ${title}` : ''
+              }`}</Text>
+            </Text>
+          </Touchable>
+        </Flex>
         <Flex />
       </Flex>
     </Animate>

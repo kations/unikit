@@ -1,14 +1,14 @@
-import tc from 'tinycolor2';
-import { PixelRatio } from 'react-native';
-import { isWeb, isNative } from '../util';
-import { getResponsiveValue } from './responsiveHelpers';
+import tc from "tinycolor2";
+import { PixelRatio } from "react-native";
+import { isWeb, isNative } from "../util";
+import { getResponsiveValue } from "./responsiveHelpers";
 
 export const transformColor = ({ value, theme, themeKey }) => {
-  if (!value) return '#FFF';
+  if (!value) return "#FFF";
   if (theme[themeKey][value]) {
     return theme[themeKey][value];
   }
-  let split = value.split(':');
+  let split = value.split(":");
 
   if (split.length > 1) {
     let themeValue = theme[themeKey][split[0]] || split[0];
@@ -45,8 +45,8 @@ const platformSpecific = {
 
 const color = {
   color: {
-    property: 'color',
-    themeKey: 'colors',
+    property: "color",
+    themeKey: "colors",
     transform: transformColor,
   },
   colorAware: {
@@ -54,7 +54,7 @@ const color = {
     transform: ({ value, theme }) => {
       const themeC = theme.colors[value] || value;
       const brightness = tc(themeC).getBrightness();
-      const c = brightness > 170 ? '#000' : '#FFF';
+      const c = brightness > 170 ? "#000" : "#FFF";
       return { color: c };
     },
   },
@@ -62,21 +62,21 @@ const color = {
 
 const background = {
   bg: {
-    property: 'backgroundColor',
-    themeKey: 'colors',
+    property: "backgroundColor",
+    themeKey: "colors",
     transform: transformColor,
   },
   backgroundColor: {
-    property: 'backgroundColor',
-    themeKey: 'colors',
+    property: "backgroundColor",
+    themeKey: "colors",
     transform: transformColor,
   },
   gradient: {
-    property: 'backgroundImage',
-    themeKey: 'colors',
+    property: "backgroundImage",
+    themeKey: "colors",
     transform: ({ value }) => {
-      if (value === true) value = ['red', 'blue'];
-      return `linear-gradient(90deg, ${value.join(',')})`;
+      if (value === true) value = ["red", "blue"];
+      return `linear-gradient(90deg, ${value.join(",")})`;
     },
   },
 };
@@ -103,30 +103,30 @@ const spacingProperties = {
 };
 
 const spacingPropertiesShorthand = {
-  t: 'top',
-  r: 'right',
-  l: 'left',
-  b: 'bottom',
-  w: 'width',
-  h: 'height',
-  m: 'margin',
-  mt: 'marginTop',
-  mr: 'marginRight',
-  mb: 'marginBottom',
-  ml: 'marginLeft',
-  mx: 'marginHorizontal',
-  my: 'marginVertical',
-  ms: 'marginStart',
-  me: 'marginEnd',
-  p: 'padding',
-  pt: 'paddingTop',
-  pr: 'paddingRight',
-  pb: 'paddingBottom',
-  pl: 'paddingLeft',
-  px: 'paddingHorizontal',
-  py: 'paddingVertical',
-  ps: 'paddingStart',
-  pe: 'paddingEnd',
+  t: "top",
+  r: "right",
+  l: "left",
+  b: "bottom",
+  w: "width",
+  h: "height",
+  m: "margin",
+  mt: "marginTop",
+  mr: "marginRight",
+  mb: "marginBottom",
+  ml: "marginLeft",
+  mx: "marginHorizontal",
+  my: "marginVertical",
+  ms: "marginStart",
+  me: "marginEnd",
+  p: "padding",
+  pt: "paddingTop",
+  pr: "paddingRight",
+  pb: "paddingBottom",
+  pl: "paddingLeft",
+  px: "paddingHorizontal",
+  py: "paddingVertical",
+  ps: "paddingStart",
+  pe: "paddingEnd",
 };
 
 const spacing = Object.keys(spacingProperties).map((key: string) => ({
@@ -165,18 +165,18 @@ const layoutProperties = {
 
 const layout = {
   row: {
-    property: 'flexDirection',
-    transform: ({ value }) => (value === true ? 'row' : undefined),
+    property: "flexDirection",
+    transform: ({ value }) => (value === true ? "row" : undefined),
   },
   wrap: {
-    property: 'flexWrap',
-    transform: ({ value }) => (value === true ? 'wrap' : undefined),
+    property: "flexWrap",
+    transform: ({ value }) => (value === true ? "wrap" : undefined),
   },
   center: {
     property: false,
     transform: ({ value }) => {
       return value === true
-        ? { alignItems: 'center', justifyContent: 'center' }
+        ? { alignItems: "center", justifyContent: "center" }
         : undefined;
     },
   },
@@ -184,7 +184,7 @@ const layout = {
     property: false,
     transform: ({ value }) => {
       return value === true
-        ? { alignItems: 'center', justifyContent: 'center' }
+        ? { alignItems: "center", justifyContent: "center" }
         : undefined;
     },
   },
@@ -210,22 +210,22 @@ const position = {
     property: false,
     transform: ({ value }) => {
       return value === true
-        ? { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }
+        ? { position: "absolute", left: 0, top: 0, right: 0, bottom: 0 }
         : undefined;
     },
   },
   absolute: {
-    property: 'position',
-    transform: ({ value }) => (value ? 'absolute' : undefined),
+    property: "position",
+    transform: ({ value }) => (value ? "absolute" : undefined),
   },
   relative: {
-    property: 'position',
-    transform: ({ value }) => (value ? 'relative' : undefined),
+    property: "position",
+    transform: ({ value }) => (value ? "relative" : undefined),
   },
   fixed: {
-    property: 'position',
+    property: "position",
     transform: ({ value }) =>
-      value ? (isWeb ? 'fixed' : 'absolute') : undefined,
+      value ? (isWeb ? "fixed" : "absolute") : undefined,
   },
 };
 Object.keys(positionProperties).map((key) => {
@@ -285,7 +285,7 @@ const borderColor = {};
 Object.keys(borderColorProperties).map((key) => {
   borderColor[key] = {
     property: key,
-    themeKey: 'colors',
+    themeKey: "colors",
     transform: transformColor,
   };
 });
@@ -334,8 +334,8 @@ const textShadowProperties = {
 };
 const textShadow = {
   textShadowColor: {
-    property: 'textShadowColor',
-    themeKey: 'colors',
+    property: "textShadowColor",
+    themeKey: "colors",
     transform: transformColor,
   },
 };
@@ -359,12 +359,12 @@ const typographyProperties = {
 };
 
 const typographyPropertiesShorthand = {
-  bold: 'fontWeight',
-  uppercase: 'textTransform',
-  lowercase: 'textTransform',
-  capitalize: 'textTransform',
-  italic: 'fontStyle',
-  underline: 'textDecorationLine',
+  bold: "fontWeight",
+  uppercase: "textTransform",
+  lowercase: "textTransform",
+  capitalize: "textTransform",
+  italic: "fontStyle",
+  underline: "textDecorationLine",
 };
 
 const typography = {
@@ -434,7 +434,7 @@ const matchProps = (props, functions, theme) => {
 
   Object.keys(merged).map((key) => {
     const style = functions[key];
-    if (style && typeof merged[key] !== 'undefined') {
+    if (style && typeof merged[key] !== "undefined") {
       const { transform, themeKey, property } = style;
       const value = getResponsiveValue(merged[key], {
         theme,
@@ -444,22 +444,22 @@ const matchProps = (props, functions, theme) => {
       if (property) {
         if (
           isNative &&
-          typeof value === 'string' &&
+          typeof value === "string" &&
           value.length > 0 &&
-          (value.indexOf('vh') > -1 || value.indexOf('vw') > -1) &&
+          (value.indexOf("vh") > -1 || value.indexOf("vw") > -1) &&
           theme.height > 0
         ) {
-          if (value.indexOf('vh') > -1) {
+          if (value.indexOf("vh") > -1) {
             styles[property] =
-              (parseInt(value.replace('vh', ''), 10) / 100) * theme.height;
+              (parseInt(value.replace("vh", ""), 10) / 100) * theme.height;
           } else {
             styles[property] =
-              (parseInt(value.replace('vw', ''), 10) / 100) * theme.width;
+              (parseInt(value.replace("vw", ""), 10) / 100) * theme.width;
           }
         } else {
           styles[property] = value;
         }
-      } else if (property === false && typeof value === 'object') {
+      } else if (property === false && typeof value === "object") {
         Object.keys(value).map((valueKey) => {
           styles[valueKey] = value[valueKey];
         });

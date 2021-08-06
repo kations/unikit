@@ -9,3 +9,4 @@ export { default as Tags } from './Tags';
 export { default as Input } from './Input';
 export { default as Number } from './Number';
 export { default as TextInput } from './Text';
+export { default as Draw } from './Draw';

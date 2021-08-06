@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { Grid, Flex, Text, Animate, Page, Touchable } from 'unikit';
+import { Grid, Flex, Text, Animate, Page, Touchable, useTheme } from 'unikit';
 
-import { Header } from '../components';
 import { pages } from '../pages';
 import { useNavigation } from '../hooks';
 const Playground = React.lazy(() => import('../components/Playground'));
@@ -12,10 +11,11 @@ const getComponentsByGroup = (array, group) => {
 };
 
 export default function App() {
+  const { width } = useTheme();
   const { navigate } = useNavigation();
   const groups = ['Layout', 'Interface', 'Inputs'];
   return (
-    <Page renderHeader={(top) => <Header title="components" top={top} />}>
+    <Page title="components">
       <Flex w="100vw" h={100} />
 
       <Flex w="100%" px="10vw">
@@ -25,7 +25,14 @@ export default function App() {
               <Text font="h3" mt={25} bold>
                 {group}
               </Text>
-              <Grid mt={10} mb={50} min={250} gap={20}>
+              <Grid
+                numColumns={width > 1000 ? 3 : width > 768 ? 2 : 1}
+                gap={0}
+                mt={10}
+                mb={50}
+                min={250}
+                gap={20}
+              >
                 {getComponentsByGroup(pages, group)
                   .sort((a, b) => a.title > b.title)
                   .map(({ title, slug, smallCode }) => {

@@ -27,7 +27,7 @@ const NumberInput = ({
         <Group
           gap={1}
           h={size * 0.8}
-          w={size * 0.8 * 2}
+          w="auto"
           t={size * 0.1}
           r={size * 0.1}
           absolute

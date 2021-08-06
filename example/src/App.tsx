@@ -31,35 +31,33 @@ const linking = {
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider
-        mode="darkk"
-        theme={{
-          colors: { backgroundDark: '#3F2D61' },
-          Button: { rounded: true },
-        }}
-      >
-        <NavigationContainer linking={linking}>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{ ...screenOptions }}
-            />
-            <Stack.Screen
-              name="Components"
-              component={Components}
-              options={{ ...screenOptions }}
-            />
-            <Stack.Screen
-              name="Component"
-              component={Component}
-              options={{ ...screenOptions }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <Alert />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <ThemeProvider
+      mode="darkk"
+      theme={{
+        colors: { backgroundDark: '#3F2D61' },
+        Button: { rounded: true },
+      }}
+    >
+      <NavigationContainer linking={linking}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ ...screenOptions }}
+          />
+          <Stack.Screen
+            name="Components"
+            component={Components}
+            options={{ ...screenOptions }}
+          />
+          <Stack.Screen
+            name="Component"
+            component={Component}
+            options={{ ...screenOptions }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <Alert />
+    </ThemeProvider>
   );
 }

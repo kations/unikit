@@ -5,7 +5,7 @@ import { withThemeProps } from '../../style';
 import { useUpdateEffect } from '../../hooks';
 
 import Icon from '../Icon';
-import Overlay from '../Overlay';
+import Tooltip from '../Tooltip';
 import Flex from '../Flex';
 import Button from '../Button';
 import Group from '../Group';
@@ -141,23 +141,11 @@ const DatePicker = ({
   const currentHour = dayjs(date).format('HH');
   const currentMinute = dayjs(date).format('mm');
   return (
-    <>
-      <Button
-        size={size}
-        onPress={() => {
-          setVisible(true);
-        }}
-        rounded
-        {...rest}
-      >
-        <Icon name="calendar" size={size / 2} />
-      </Button>
-      <Overlay
-        visible={visible}
-        maxWidth={450}
-        onClose={() => setVisible(false)}
-        p={0}
-      >
+    <Tooltip
+      width={400}
+      color="surface"
+      useScrollView
+      popover={
         <Flex>
           <Collapsible
             collapsed={year === false}
@@ -367,8 +355,12 @@ const DatePicker = ({
             )}
           </Collapsible>
         </Flex>
-      </Overlay>
-    </>
+      }
+    >
+      <Button size={size} rounded {...rest}>
+        <Icon name="calendar" size={size / 2} />
+      </Button>
+    </Tooltip>
   );
 };
 

@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Svg from 'react-native-svg';
-import { scaleLinear, scaleBand } from 'd3-scale';
+import * as React from "react";
+import Svg from "react-native-svg";
+import { scaleLinear, scaleBand } from "d3-scale";
 
-import Flex from '../Flex';
-import { withThemeProps } from '../../style';
-import { useLayout, useGesture } from '../../hooks';
-import { isNumber, getProgress } from '../../util';
+import Flex from "../Flex";
+import { withThemeProps } from "../../style";
+import { useLayout, useGesture } from "../../hooks";
+import { isNumber, getProgress } from "../../util";
 
-import Line from './Line';
-import Bar from './Bar';
-import Grid from './Grid';
-import GridLine from './GridLine';
-import Indicator from './Indicator';
-import Axis from '../Axis';
-import Pointer from '../Pointer';
+import Line from "./Line";
+import Bar from "./Bar";
+import Grid from "./Grid";
+import GridLine from "./GridLine";
+import Indicator from "./Indicator";
+import Axis from "../Axis";
+import Pointer from "../Pointer";
 
 const getValue = (d, key) => {
   if (d[key] !== undefined && d[key] !== null && isNumber(d[key])) {
@@ -131,9 +131,9 @@ const Chart = ({
           {({ x, xProgress, y, width, height, pointer }) => (
             <Svg
               style={{
-                width: '100%',
+                width: "100%",
                 height: height,
-                position: 'absolute',
+                position: "absolute",
                 left: 0,
                 top: 0,
                 right: 0,
@@ -172,112 +172,7 @@ const Chart = ({
             padding={xAxisPadding}
             ticks={xTicks || data.length}
             formatTick={(d) => {
-              if (typeof data[d] === 'undefined') return '';
-              if (formatX) {
-                return formatX(data[d], d);
-              }
-              return data[d].label || d;
-            }}
-          />
-        )}
-      </Flex>
-    </Flex>
-  );
-
-  return (
-    <Flex width="100%" row {...rest}>
-      {yAxis && (
-        <Axis
-          orient="LEFT"
-          scale={scaleY}
-          height={height}
-          padding={yAxisPadding}
-          ticks={yTicks}
-          formatTick={(v) => {
-            if (formatY) {
-              return formatY(v);
-            }
-            return v;
-          }}
-        />
-      )}
-      <Flex flex={1}>
-        <Flex
-          width="100%"
-          onLayout={onLayout}
-          height={height}
-          position="relative"
-          collapsable={false}
-          onMouseOver={
-            mouse
-              ? (e) => {
-                  setPan(true);
-                }
-              : undefined
-          }
-          onMouseMove={
-            mouse
-              ? (e) => {
-                  const { layerX } = e.nativeEvent;
-                  setProgressValue({ dist: layerX });
-                }
-              : undefined
-          }
-          onMouseLeave={
-            mouse
-              ? () => {
-                  setPan(false);
-                }
-              : undefined
-          }
-          {...(gesture ? bindGesture : {})}
-          {...wrapperProps}
-        >
-          {width > 0 && (
-            <Svg
-              style={{
-                width: '100%',
-                height: height,
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                right: 0,
-                bottom: 0,
-                borderRadius: wrapperProps.borderRadius,
-              }}
-            >
-              {React.Children.toArray(children).map((c, i) => {
-                if (c) {
-                  return React.cloneElement(c, {
-                    ...c.props,
-                    data,
-                    width,
-                    height,
-                    scaleY,
-                    scaleX,
-                    domainX,
-                    contentInset,
-                    keys,
-                    progress,
-                    pan,
-                    offset,
-                    gesture,
-                  });
-                }
-              })}
-            </Svg>
-          )}
-        </Flex>
-        {xAxis && (
-          <Axis
-            scale={scaleX}
-            useScaleBand={useScaleBand}
-            height={height}
-            width={width}
-            padding={xAxisPadding}
-            ticks={xTicks || data.length}
-            formatTick={(d) => {
-              if (typeof data[d] === 'undefined') return '';
+              if (typeof data[d] === "undefined") return "";
               if (formatX) {
                 return formatX(data[d], d);
               }
@@ -290,7 +185,7 @@ const Chart = ({
   );
 };
 
-const ChartWithTheme = withThemeProps(Chart, 'Chart');
+const ChartWithTheme = withThemeProps(Chart, "Chart");
 
 ChartWithTheme.Line = Line;
 ChartWithTheme.Bar = Bar;

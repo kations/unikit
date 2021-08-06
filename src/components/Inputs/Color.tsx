@@ -10,7 +10,7 @@ import Icon from '../Icon';
 import Grid from '../Grid';
 import Slider from './Slider';
 import Text from '../Text';
-import Overlay from '../Overlay';
+import Tooltip from '../Tooltip';
 import Gradient from '../Gradient';
 
 const HLSGradient = ({
@@ -77,34 +77,12 @@ const Color = ({
   };
 
   return (
-    <Touchable
-      height={44}
-      style={{
-        minWidth: 60,
-        borderRadius: theme.globals.roundness,
-        paddingHorizontal: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.1)',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        backgroundColor: value || '#FFF',
-      }}
-      onPress={() => {
-        setVisible(true);
-      }}
-      {...rest}
-    >
-      <Icon
-        name="chevron-down"
-        color={colorAware(value || '#FFF', theme)}
-        size={15}
-      />
-      <Overlay
-        visible={visible}
-        maxWidth={450}
-        onClose={() => setVisible(false)}
-      >
-        <Flex width={400}>
+    <Tooltip
+      width={400}
+      color="surface"
+      useScrollView
+      popover={
+        <Flex bg="surface" width="100%">
           <Text font="label" mb={5} webStyle={{ userSelect: 'none' }}>
             Selected Color
           </Text>
@@ -133,7 +111,7 @@ const Color = ({
             </Button>
           </Flex>
           {sliders.map(({ key, label, max, steps = 1, ...rest }) => (
-            <Flex w="1005" key={key}>
+            <Flex w="100%" key={key}>
               <Text font="label" mt={5}>
                 {label}
               </Text>
@@ -153,7 +131,7 @@ const Color = ({
               <Text font="label" my={5}>
                 Variants
               </Text>
-              <Grid min={44} gap={theme.globals.gap / 2}>
+              <Grid min={44} gap={theme.globals.gap / 2} outerGap={false}>
                 {defaultColors.map((col, index) => (
                   <Touchable
                     key={index}
@@ -164,6 +142,7 @@ const Color = ({
                       backgroundColor: col,
                       borderWidth: 1,
                       borderColor: 'rgba(0,0,0,0.1)',
+                      marginBottom: 10,
                     }}
                     onPress={() => {
                       setColor(tinycolor(col).toHsl());
@@ -174,8 +153,32 @@ const Color = ({
             </>
           ) : null}
         </Flex>
-      </Overlay>
-    </Touchable>
+      }
+    >
+      <Flex
+        height={44}
+        style={{
+          minWidth: 60,
+          borderRadius: theme.globals.roundness,
+          paddingHorizontal: 8,
+          borderWidth: 1,
+          borderColor: 'rgba(0,0,0,0.1)',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          backgroundColor: value || '#FFF',
+        }}
+        onPress={() => {
+          setVisible(true);
+        }}
+        {...rest}
+      >
+        <Icon
+          name="chevron-down"
+          color={colorAware(value || '#FFF', theme)}
+          size={15}
+        />
+      </Flex>
+    </Tooltip>
   );
 };
 

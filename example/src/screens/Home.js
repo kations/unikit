@@ -25,7 +25,7 @@ export default function App() {
   const { navigate } = useNavigation();
   const theme = useTheme();
   return (
-    <Page renderHeader={(top) => <Header top={top} />}>
+    <Page title="unikit" renderHeader={(top) => <Header top={top} />}>
       <Flex w="100vw" h="95vh" flexCenter>
         <Text
           font="h1"
@@ -118,7 +118,7 @@ export default function App() {
         </LinkBox>
       </Flex>
 
-      {Array.from({ length: 10 }, (_, index) => index + 1).map((a, i) => (
+      {Array.from({ length: 100 }, (_, index) => index + 1).map((a, i) => (
         <Animate
           key={`${i}-index-shadow`}
           delay={i * 1000}

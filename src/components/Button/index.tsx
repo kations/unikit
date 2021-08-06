@@ -19,6 +19,7 @@ export interface Props {
   onPress: void;
   theme: object;
   loading: boolean;
+  lighten: boolean | number;
   progress?: number;
   rounded?: boolean;
   light?: boolean;
@@ -55,7 +56,6 @@ export const Button = ({
   ...rest
 }: Props) => {
   const [hover, setHover] = React.useState(false);
-  const borderRadius = rounded ? size / 2 : theme.globals.roundness;
 
   const cProps = onPress
     ? {
@@ -92,7 +92,7 @@ export const Button = ({
       h={size}
       ripple={ripple}
       px={size / 2}
-      borderRadius={borderRadius}
+      borderRadius={theme.globals.roundness}
       opacity={disabled ? 0.5 : 1}
       shadow={shadow}
       flexCenter
@@ -108,7 +108,7 @@ export const Button = ({
     >
       {gradient ? (
         <Flex
-          borderRadius={borderRadius}
+          borderRadius={rest.borderRadius || theme.globals.roundness}
           overflow="hidden"
           zIndex={0}
           absoluteFill
@@ -122,7 +122,7 @@ export const Button = ({
       {image ? (
         <ImageBackground
           source={image}
-          borderRadius={borderRadius}
+          borderRadius={rest.borderRadius || theme.globals.roundness}
           overflow="hidden"
           zIndex={0}
           absoluteFill
@@ -180,4 +180,16 @@ export const Button = ({
   );
 };
 
-export default withThemeProps(Button, 'Button');
+const modes = {
+  light: ({ bg = 'primary', color }) => {
+    return { bg: `${bg}:setAlpha:0.2`, color: color || bg };
+  },
+  rounded: ({ size = 50 }) => {
+    return { borderRadius: size / 2 };
+  },
+  clean: () => {
+    return { bg: 'transparent', color: 'primary' };
+  },
+};
+
+export default withThemeProps(Button, 'Button', modes);

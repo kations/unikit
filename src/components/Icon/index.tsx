@@ -28,14 +28,14 @@ const Icon = ({
   color = 'primary',
   strokeLinecap = 'round',
   strokeLinejoin = 'round',
-  strokeWidth = 2,
+  strokeWidth = 1.5,
   fill = false,
   animate = false,
   duration,
   delay = 250,
   ...rest
 }: Props) => {
-  const paths = icons[name];
+  const paths = icons[name] || icons.x;
   const PathComp = React.useMemo(
     () => (animate ? AnimatedPath : Path),
     [animate]

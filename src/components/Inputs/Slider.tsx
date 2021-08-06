@@ -226,7 +226,11 @@ const Slider = ({
                       {hideProgressTrack ? null : (
                         <TrackProgress
                           translationX={translationX}
-                          progressColor={progressColor}
+                          progressColor={
+                            values?.length > 1 && i === values?.length - 1
+                              ? trackColor
+                              : progressColor
+                          }
                           trackHeight={trackHeight}
                           handleSize={handleSize}
                           borderRadius={borderRadius}

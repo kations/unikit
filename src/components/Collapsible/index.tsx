@@ -14,7 +14,7 @@ export interface Props {
   collapsed: boolean;
   font?: string;
   trigger: string;
-  renderTriger?: void;
+  renderTrigger?: void;
   icon?: string;
   iconSize?: number;
   outlined?: boolean;
@@ -32,7 +32,7 @@ const Collapsible = ({
   trigger = 'Trigger',
   spacing = 15,
   font = 'default',
-  renderTriger,
+  renderTrigger,
   triggerProps = {},
   contentProps = {},
   icon = 'chevron-down',
@@ -48,7 +48,7 @@ const Collapsible = ({
 
   return (
     <Flex w="100%" {...rest}>
-      {trigger && !renderTriger ? (
+      {trigger && !renderTrigger ? (
         <Button
           onPress={() => {
             setOpen(!open);
@@ -74,8 +74,8 @@ const Collapsible = ({
         >
           {trigger}
         </Button>
-      ) : renderTriger ? (
-        renderTriger({ open, setOpen })
+      ) : renderTrigger ? (
+        renderTrigger({ open, setOpen })
       ) : null}
       <Animate
         to={{ height: open ? height : 0 }}

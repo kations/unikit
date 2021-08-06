@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { SafeAreaView } from 'react-native';
+import * as React from "react";
+import { SafeAreaView } from "react-native";
 
-import { withThemeProps, Touchable } from '../../style';
+import { withThemeProps, Touchable } from "../../style";
 
-import Animate from '../Animate';
+import Animate from "../Animate";
 
-import Flex from '../Flex';
+import Flex from "../Flex";
 
-import { isNumber, randomId } from '../../util';
+import { isNumber, randomId } from "../../util";
 
-import alertRef from './ref';
-import Alert from './Alert';
+import alertRef from "./ref";
+import Alert from "./Alert";
 
 const AlertWrap = ({
   timeout = 2000,
-  from = 'bottom',
+  from = "bottom",
   gap = 15,
   maxWidth = 500,
   offset = 0,
@@ -71,12 +71,12 @@ const AlertWrap = ({
             ? alert.timeout
             : timeout;
         alertObj.timeout = alertTimeout;
-        if (alertObj.position === 'bottom' || alertObj.position === 'center') {
+        if (alertObj.position === "bottom" || alertObj.position === "center") {
           return [
             ...state,
             {
               key: newAlertId.toString(),
-              position: alertObj.position || 'top',
+              position: alertObj.position || "top",
               ...alertObj,
             },
           ];
@@ -84,7 +84,7 @@ const AlertWrap = ({
           return [
             {
               key: newAlertId.toString(),
-              position: alertObj.position || 'top',
+              position: alertObj.position || "top",
               ...alertObj,
             },
             ...state,
@@ -109,7 +109,7 @@ const AlertWrap = ({
   }));
 
   const renderItem = (item) => {
-    const { key, position = 'top', ...rest } = item;
+    const { key, position = "top", ...rest } = item;
     return (
       <Alert
         ref={(ref) => ref && refMap.set(item, ref)}
@@ -151,10 +151,10 @@ const AlertWrap = ({
           height={theme.height}
           absoluteFill
           bg="rgba(0,0,0,0.25)"
-          pointerEvents={backdrop && items.length > 0 ? 'auto' : 'none'}
+          pointerEvents={backdrop && items.length > 0 ? "auto" : "none"}
           webStyle={{
-            backfaceVisibility: 'hidden',
-            backdropFilter: 'blur(1px)',
+            backfaceVisibility: "hidden",
+            backdropFilter: "blur(1px)",
           }}
         >
           <Touchable
@@ -167,17 +167,17 @@ const AlertWrap = ({
       <Flex w="100%" pointerEvents="box-none">
         <SafeAreaView collapsable={false} />
         {items
-          .filter((i) => i.position === 'top')
+          .filter((i) => i.position === "top")
           .map((item) => renderItem(item))}
       </Flex>
       <Flex w="100%" pointerEvents="box-none">
         {items
-          .filter((i) => i.position === 'center')
+          .filter((i) => i.position === "center")
           .map((item) => renderItem(item))}
       </Flex>
       <Flex w="100%" pointerEvents="box-none">
         {items
-          .filter((i) => i.position === 'bottom')
+          .filter((i) => i.position === "bottom")
           .map((item) => renderItem(item))}
         <SafeAreaView collapsable={false} />
       </Flex>
@@ -185,4 +185,4 @@ const AlertWrap = ({
   );
 };
 
-export default withThemeProps(AlertWrap, 'AlertWrap');
+export default withThemeProps(AlertWrap, "AlertWrap");

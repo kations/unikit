@@ -1,39 +1,41 @@
-import * as React from 'react';
-import { ScrollView, Modal } from 'react-native';
-import Animated from 'react-native-reanimated';
+import * as React from "react";
+import { ScrollView, Modal } from "react-native";
+import Animated from "react-native-reanimated";
 
-import { styled, withThemeProps, Pressable } from '../../style';
-import Animate from '../Animate';
-import Flex from '../Flex';
-import Icon from '../Icon';
-import Button from '../Button';
+import { styled, withThemeProps, Pressable } from "../../style";
+import { isWeb } from "../../util";
+
+import Animate from "../Animate";
+import Flex from "../Flex";
+import Icon from "../Icon";
+import Button from "../Button";
 
 const Touchable = styled.Touchable();
 
-import { useUpdateEffect, useLayout } from '../../hooks';
+import { useUpdateEffect, useLayout } from "../../hooks";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const customStyle = {
   center: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   bottom: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   top: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   left: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   right: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
 };
 
@@ -41,6 +43,10 @@ const defaultSprings = ({ width, height }) => ({
   fadeInUp: {
     from: { opacity: 0, y: height },
     to: { opacity: 1, y: 0 },
+  },
+  slideInRight: {
+    from: { x: -300 },
+    to: { x: 0 },
   },
   height: {
     from: { opacity: 0, height: 0 },
@@ -58,10 +64,10 @@ const Overlay = ({
   scrollComp,
   onClose,
   backdrop = true,
-  backdropColor = 'rgba(0,0,0,0.25)',
+  backdropColor = "rgba(0,0,0,0.25)",
   zIndex = 900,
   maxWidth = 600,
-  position = 'center',
+  position = "center",
   paddingVertical = 50,
   scroll = true,
   x,
@@ -74,7 +80,7 @@ const Overlay = ({
     from: { opacity: 0 },
     to: { opacity: 1 },
   },
-  contentSpring = 'height',
+  contentSpring = "fadeInUp",
   modalProps = {},
   scrollerProps = {},
   contentProps = {},
@@ -85,7 +91,7 @@ const Overlay = ({
   const { width, height, onLayout } = useLayout();
   const [render, setRender] = React.useState(visible);
 
-  if (typeof contentSpring === 'string') {
+  if (typeof contentSpring === "string") {
     contentSpring =
       defaultSprings({ width, height })[contentSpring] ||
       defaultSprings({ width, height })[0];
@@ -94,6 +100,8 @@ const Overlay = ({
   useUpdateEffect(() => {
     if (visible === true) {
       setRender(true);
+    } else if (visible === false && !isWeb) {
+      setRender(false);
     }
   }, [visible]);
 
@@ -124,8 +132,7 @@ const Overlay = ({
       duration={750}
       visible={visible}
       relative
-      w="auto"
-      bg="background"
+      w={100}
       useTransition
       delay={50}
       borderRadius={roundness || theme.globals.roundness}
@@ -135,13 +142,13 @@ const Overlay = ({
         ...(contentProps.style ? contentProps.style : {}),
       }}
       onDidAnimate={(ani) => {
-        if (ani.state === 'exit') {
+        if (ani.state === "exit") {
           setRender(false);
         }
       }}
       {...contentSpring}
     >
-      <Flex w="100%" h="100%" overflow="hidden">
+      <Flex w="100%">
         <Flex w="100%" p={theme.globals.gap} onLayout={onLayout} {...rest}>
           {render && children}
         </Flex>
@@ -180,19 +187,22 @@ const Overlay = ({
           bg={backdropColor}
           absoluteFill
           {...modalSpring}
-        />
+        >
+          {onClose ? (
+            <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
+          ) : null}
+          {renderHeader}
+        </Animate>
       ) : null}
-      {onClose ? (
-        <Touchable onPress={onClose} activeOpacity={1} absoluteFill />
-      ) : null}
-      {renderHeader}
+
       <Flex
         fixed
         left={x || 0}
         top={y || 0}
         right={0}
         bottom={0}
-        pointerEvents={visible ? 'auto' : 'box-none'}
+        pointerEvents="box-none"
+        bg="red"
         {...modalProps}
       >
         {scroll ? (
@@ -211,4 +221,4 @@ const Overlay = ({
   );
 };
 
-export default withThemeProps(Overlay, 'Overlay');
+export default withThemeProps(Overlay, "Overlay");

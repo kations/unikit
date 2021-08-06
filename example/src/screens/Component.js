@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Flex, Text, Animate, Page, isWeb } from 'unikit';
+import { Button, Flex, Text, Animate, Page, Icon } from 'unikit';
 import { Header } from '../components';
 import { pages } from '../pages';
 import { useNavigation } from '../hooks';
@@ -14,7 +14,19 @@ export default function App({ route = {} }) {
   const { title, desc, from, code, props, smallCode, codeProps } = item;
 
   return (
-    <Page renderHeader={(top) => <Header title={slug} top={top} />}>
+    <Page
+      title={slug}
+      leftAction={
+        <Button
+          size={44}
+          onPress={() => navigate('Components')}
+          bg="accent"
+          rounded
+        >
+          <Icon name="chevron-left" />
+        </Button>
+      }
+    >
       <Flex w="100vw" h="40vh" mt={80} flexCenter>
         <Text
           font="h1"
@@ -76,6 +88,7 @@ export default function App({ route = {} }) {
           />
         </React.Suspense>
       </Flex>
+      <Flex w="100%" h={1000} />
     </Page>
   );
 }

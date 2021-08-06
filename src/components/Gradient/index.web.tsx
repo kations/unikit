@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { withThemeProps } from '../../style';
-import Flex from '../Flex';
+import * as React from "react";
+import { withThemeProps } from "../../style";
+import Flex from "../Flex";
 
 const parseColors = (colors, theme) => {
   const parsedColors = [];
@@ -40,7 +40,7 @@ export const Gradient = ({
       style={{
         ...style,
         backgroundImage: `linear-gradient(${deg}deg, ${parsedColors.join(
-          ','
+          ","
         )})`,
       }}
       {...rest}
@@ -48,4 +48,4 @@ export const Gradient = ({
   );
 };
 
-export default withThemeProps(Gradient, 'Gradient');
+export default withThemeProps(Gradient, "Gradient");

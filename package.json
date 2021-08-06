@@ -75,6 +75,7 @@
     "react-native": "*",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "2.1.0",
+    "react-native-safe-area-context": "^3.3.0",
     "react-native-svg": "^12.1.1"
   },
   "jest": {
@@ -152,8 +153,11 @@
   },
   "dependencies": {
     "@types/tinycolor2": "^1.4.2",
+    "bignumber.js": "^9.0.1",
+    "buffer": "^6.0.3",
     "d3-scale": "^4.0.0",
     "d3-shape": "^3.0.1",
+    "expo-gl": "^10.3.0",
     "svg-path-properties": "^1.0.11",
     "tinycolor2": "^1.4.2"
   }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import type { BaseTheme } from './types';
 
 import deepmerge from '../util/deepMerge';
@@ -39,19 +41,21 @@ const ThemeProvider = ({
   }, [theme, mode]);
 
   return (
-    <ThemeContext.Provider
-      value={{
-        ...mergedTheme,
-        mode,
-        width: window.width,
-        height: window.height,
-        alert: (a: any) => alertRef.current.show(a),
-        showAlert: (a: any) => alertRef.current.show(a),
-        hideAlert: (a: any) => alertRef.current.show({ ...a, timeout: 0 }),
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+    <SafeAreaProvider>
+      <ThemeContext.Provider
+        value={{
+          ...mergedTheme,
+          mode,
+          width: window.width,
+          height: window.height,
+          alert: (a: any) => alertRef.current.show(a),
+          showAlert: (a: any) => alertRef.current.show(a),
+          hideAlert: (a: any) => alertRef.current.show({ ...a, timeout: 0 }),
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </SafeAreaProvider>
   );
 };
 

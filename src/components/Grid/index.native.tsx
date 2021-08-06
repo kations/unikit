@@ -1,75 +1,55 @@
-import * as React from 'react';
+import { ScrollView, View } from 'react-native';
+import React, { ReactElement, useState } from 'react';
+import Animated from 'react-native-reanimated';
 
 import { withThemeProps } from '../../style';
-import { useLayout } from '../../hooks';
-import Flex from '../Flex';
+
+const AnimatedList = Animated.createAnimatedComponent(ScrollView);
 
 interface Props {
   children: React.ReactNode;
   min: number;
   theme: object;
   gap: number;
-  outerGap: boolean;
   itemStyle: object;
   rowStlye: object;
   numColumns?: number;
   [key: string]: any;
 }
 
-const Grid = ({
+function Grid({
   children,
-  min = 250,
-  gap = 5,
-  outerGap = false,
-  itemStyle = {},
-  rowStlye = {},
-  numColumns,
+  keyPrefix = 'grid',
+  numColumns = 2,
+  gap = 10,
+  outerGap = true,
+  style,
   ...rest
-}: Props) => {
-  const { onLayout, width } = useLayout();
-  const childs = React.Children.toArray(children);
-
-  console.log({ width });
-
-  numColumns = numColumns || Math.max(1, Math.floor(width / min));
-  const maxWidth = width / numColumns;
-
-  const gridProps = {
-    p: outerGap ? gap / 2 : 0,
-    opacity: width > 0 ? 1 : 0,
-    height: width > 0 ? 'auto' : 0,
-  };
+}: Props) {
+  const data = React.Children.toArray(children);
 
   return (
-    <Flex
-      key={`${width}`}
-      wrap
-      w="100%"
-      relative
-      row
-      {...gridProps}
-      {...rest}
-      onLayout={onLayout}
+    <View
+      style={{ flex: 1, flexDirection: 'row', padding: outerGap ? gap / 2 : 0 }}
     >
-      {childs.map((child, i) => {
+      {Array.from(Array(numColumns), (_, num) => {
         return (
-          <Flex
-            key={`${i}`}
-            style={{
-              paddingRight: (i + 1) % numColumns === 0 ? 0 : gap,
-              paddingBottom: i === childs.length - 1 ? 0 : gap,
-              flex: 1,
-              minWidth: min,
-              maxWidth,
-            }}
-            {...itemStyle}
+          <View
+            key={`${keyPrefix}-${num.toString()}`}
+            style={{ flex: 1 / numColumns, padding: gap / 2 }}
           >
-            {child}
-          </Flex>
+            {data
+              .map((el, i) => {
+                if (i % numColumns === num) return el;
+
+                return null;
+              })
+              .filter((e) => !!e)}
+          </View>
         );
       })}
-    </Flex>
+    </View>
   );
-};
+}
 
 export default withThemeProps(Grid, 'Grid');

@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { withThemeProps, BaseTheme } from '../../style';
+import * as React from "react";
+import { withThemeProps, BaseTheme } from "../../style";
 
-import Animate from '../Animate';
+import Animate from "../Animate";
 
-import Flex from '../Flex';
-import Draggable from '../Draggable';
+import Flex from "../Flex";
+import Draggable from "../Draggable";
 
-import Toast from './Toast';
-import ActionSheet from './ActionSheet';
+import Toast from "./Toast";
+import ActionSheet from "./ActionSheet";
 
-import { useInterval } from '../../hooks';
+import { useInterval } from "../../hooks";
 
 const POSITIONS = {
-  top: { alignSelf: 'flex-start', from: { y: -100, opacity: 0 } },
-  center: { alignSelf: 'center', from: { y: 100, opacity: 0 } },
-  bottom: { alignSelf: 'flex-end', from: { y: 100, opacity: 0 } },
+  top: { alignSelf: "flex-start", from: { y: -100, opacity: 0 } },
+  center: { alignSelf: "center", from: { y: 100, opacity: 0 } },
+  bottom: { alignSelf: "flex-end", from: { y: 100, opacity: 0 } },
 };
 
 interface Props {
@@ -33,14 +33,14 @@ interface Props {
 const Alert = React.forwardRef(
   (
     {
-      component = 'Toast',
+      component = "Toast",
       theme,
       timeout,
       removeItem,
       itemKey,
       maxWidth,
       item,
-      position = 'top',
+      position = "top",
       setBackdrop,
       ...rest
     }: Props,
@@ -64,10 +64,10 @@ const Alert = React.forwardRef(
     return (
       <Draggable
         direction="y"
-        maxY={position === 'top' ? 10 : undefined}
-        minY={position !== 'top' ? -10 : undefined}
+        maxY={position === "top" ? 10 : undefined}
+        minY={position !== "top" ? -10 : undefined}
         snapTo={
-          position === 'top' ? [{ top: 0, offset: -70 }] : [{ bottom: 0 }]
+          position === "top" ? [{ top: 0, offset: -70 }] : [{ bottom: 0 }]
         }
         onDragStart={() => setWait(true)}
         onDragStop={() => setWait(false)}
@@ -87,7 +87,7 @@ const Alert = React.forwardRef(
           onMouseOver={() => setWait(true)}
           onMouseLeave={() => setWait(false)}
           onDidAnimate={(ani) => {
-            if (ani.state === 'exit') {
+            if (ani.state === "exit") {
               removeItem(item.key);
             }
           }}
@@ -96,10 +96,10 @@ const Alert = React.forwardRef(
           {...positionProps}
         >
           <Flex ref={ref} w="100%" maxWidth={maxWidth} pointerEvents="box-none">
-            {component === 'Toast' ? (
+            {component === "Toast" ? (
               <Toast close={close} {...rest} {...item} />
             ) : null}
-            {component === 'ActionSheet' ? (
+            {component === "ActionSheet" ? (
               <ActionSheet close={close} {...rest} {...item} />
             ) : null}
           </Flex>
@@ -109,4 +109,4 @@ const Alert = React.forwardRef(
   }
 );
 
-export default withThemeProps(Alert, 'Alert');
+export default withThemeProps(Alert, "Alert");

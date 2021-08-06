@@ -98,6 +98,7 @@ const MASKS = {
       const { mask, validators } = PRE['number'];
       const rawValue = removeMask({ mask, validators, value: v });
       const maskedValue = applyMask({ mask, validators, value: rawValue });
+
       return maskedValue;
     },
     parseValue: (v, onChange) => {
@@ -272,7 +273,8 @@ const TextInput = ({
   style,
   ...rest
 }) => {
-  if (!value && defaultValue) value = defaultValue;
+  if ((value === undefined || value === null) && defaultValue)
+    value = defaultValue;
   const maskObj = MASKS[mask];
   const [secure, setSecure] = React.useState(secureTextEntry);
   const [text, setText] = React.useState(
