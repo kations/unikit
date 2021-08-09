@@ -323,7 +323,6 @@ const TextInput = ({
         </Flex>
       )}
       <StyledTextInput
-        width="100%"
         flex={1}
         px={theme.globals.inputGap}
         height={multiline ? 'auto' : size}

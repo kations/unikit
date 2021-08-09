@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-import { withThemeProps } from '../../style';
+import { withThemeProps, transformColor } from '../../style';
 import Pointer from '../Pointer';
 import Button from '../Button';
 import Flex from '../Flex';
@@ -19,8 +19,9 @@ const plotToSvg = (points: any[]) => {
 };
 
 const Draw = ({
+  theme,
   children,
-  stroke = 'black',
+  stroke = 'text',
   strokeWidth = 2,
   smoothing = 0.2,
   strokeLinejoin = 'round',
@@ -44,7 +45,7 @@ const Draw = ({
   }, [paths]);
 
   const pathProps = {
-    stroke,
+    stroke: transformColor({ value: stroke, theme, themeKey: 'colors' }),
     strokeWidth,
     strokeLinejoin,
     fill: 'none',

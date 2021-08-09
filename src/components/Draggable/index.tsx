@@ -1,5 +1,5 @@
-import * as React from "react";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import * as React from 'react';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import {
   useSharedValue,
   withSpring,
@@ -7,15 +7,15 @@ import {
   useAnimatedGestureHandler,
   default as Reanimated,
   runOnJS,
-} from "react-native-reanimated";
-import { withThemeProps, Pressable } from "../../style";
-import { useLayout, useUpdateEffect } from "../../hooks";
+} from 'react-native-reanimated';
+import { withThemeProps, Pressable } from '../../style';
+import { useLayout, useUpdateEffect } from '../../hooks';
 
 const AnimatedTouchable = Reanimated.createAnimatedComponent(Pressable);
 
 interface Props {
   children: React.ReactNode;
-  direction: "x" | "y" | "xy";
+  direction: 'x' | 'y' | 'xy';
   minX?: number;
   maxX?: number;
   minY?: number;
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const isNumber = (value) => {
-  "worklet";
+  'worklet';
   if (value === 0) return true;
   return runOnJS(isFinite)(value);
 };
@@ -39,7 +39,7 @@ const Draggable = React.forwardRef(
     {
       theme,
       children,
-      direction = "x",
+      direction = 'x',
       minX = -9999999,
       maxX = 9999999,
       minY = -9999999,
@@ -68,8 +68,8 @@ const Draggable = React.forwardRef(
     const [press, setPress] = React.useState(true);
 
     const getBounds = (v, d) => {
-      "worklet";
-      if (d === "x") {
+      'worklet';
+      if (d === 'x') {
         return Math.max(minX, Math.min(v, maxX));
       } else {
         return Math.max(minY, Math.min(v, maxY));
@@ -89,21 +89,21 @@ const Draggable = React.forwardRef(
       y: number;
       index: number;
     }) => {
-      "worklet";
+      'worklet';
       translationY.value = withSpring(
         isNumber(y) ? y : translationY.value,
         {},
-        () => onSnap && direction === "y" && runOnJS(onSnap)(index)
+        () => onSnap && direction === 'y' && runOnJS(onSnap)(index)
       );
       translationX.value = withSpring(
         isNumber(x) ? x : translationX.value,
         {},
-        () => onSnap && direction === "x" && runOnJS(onSnap)(index)
+        () => onSnap && direction === 'x' && runOnJS(onSnap)(index)
       );
     };
 
     const getSnap = ({ stopX, stopY, absoluteX, absoluteY }) => {
-      "worklet";
+      'worklet';
       const index = snapTo.findIndex((point) => {
         const isAbsolute =
           isNumber(point.top) || isNumber(point.bottom) || false;
@@ -111,8 +111,8 @@ const Draggable = React.forwardRef(
         if (isNumber(point.bottom)) point.y = theme.height - point.bottom;
         const xFactor = (point.x || 0) - snapFactor;
         const yFactor = (point.y || 0) - snapFactor;
-        const xPosition = isAbsolute && direction === "x" ? absoluteX : stopX;
-        const yPosition = isAbsolute && direction === "y" ? absoluteY : stopY;
+        const xPosition = isAbsolute && direction === 'x' ? absoluteX : stopX;
+        const yPosition = isAbsolute && direction === 'y' ? absoluteY : stopY;
         return (
           xFactor <= xPosition &&
           xPosition <= xFactor + snapFactor * 2 &&
@@ -138,13 +138,13 @@ const Draggable = React.forwardRef(
       },
       onActive: (event, ctx: GestureContext) => {
         const pos = {
-          x: getBounds(ctx.startX! + event.translationX, "x"),
-          y: getBounds(ctx.startY! + event.translationY, "y"),
+          x: getBounds(ctx.startX! + event.translationX, 'x'),
+          y: getBounds(ctx.startY! + event.translationY, 'y'),
         };
         console.log({ pos });
-        if (["y", "xy"].includes(direction)) {
+        if (['y', 'xy'].includes(direction)) {
           translationY.value = pos.y;
-        } else if (["x", "xy"].includes(direction)) {
+        } else if (['x', 'xy'].includes(direction)) {
           translationX.value = pos.x;
         }
         if (onDrag) runOnJS(onDrag)(pos);
@@ -152,9 +152,9 @@ const Draggable = React.forwardRef(
       onEnd: (event, ctx: GestureContext) => {
         if (snapTo || snapToStart) {
           let velocity =
-            direction === "x"
+            direction === 'x'
               ? event.velocityX
-              : direction === "y"
+              : direction === 'y'
               ? event.velocityY
               : 0;
           if (reverseVelocity) {
@@ -218,7 +218,7 @@ const Draggable = React.forwardRef(
             translateX: translationX.value,
           },
         ],
-        cursor: "grab",
+        cursor: 'grab',
         ...(pressableProps?.style || {}),
       };
     });
@@ -256,4 +256,4 @@ const Draggable = React.forwardRef(
   }
 );
 
-export default withThemeProps(Draggable, "Draggable");
+export default withThemeProps(Draggable, 'Draggable');

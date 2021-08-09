@@ -3,6 +3,7 @@ import * as React from 'react';
 import { withThemeProps } from '../../style';
 import Button from '../Button';
 import Flex from '../Flex';
+import Text from '../Text';
 import { getValue, setValue, isWeb, isFunction } from '../../util';
 import { useDebounce } from '../../hooks';
 
@@ -37,7 +38,7 @@ const getDefaultState = (children, defaultDoc) => {
   return state;
 };
 
-const renderChildren = (children, doc, setDoc) => {
+const renderChildren = (children, doc, setDoc, inputProps) => {
   return React.Children.toArray(children).map((child, index) => {
     const key =
       child.props && child.props.field ? child.props.field : undefined;
@@ -50,6 +51,7 @@ const renderChildren = (children, doc, setDoc) => {
           }
         : undefined,
       doc,
+      ...inputProps,
       children:
         child.props &&
         child.props.children &&
@@ -73,6 +75,8 @@ const Form = React.forwardRef(
       defaultDoc = {},
       leftAction,
       rightAction,
+      inputProps = {},
+      debug = true,
       ...rest
     },
     ref
@@ -118,8 +122,10 @@ const Form = React.forwardRef(
         {renderChildren(
           isFunction(children) ? children({ doc }) : children,
           doc,
-          setDocState
+          setDocState,
+          inputProps
         )}
+        {debug ? <Text>{JSON.stringify(doc)}</Text> : null}
         <Flex row jc="space-between">
           {leftAction}
           {button ? (

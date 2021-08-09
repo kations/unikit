@@ -1,24 +1,23 @@
-import * as React from "react";
-import { withThemeProps, Touchable } from "../../style";
-import { useLayout } from "../../hooks";
-import { isNumber } from "../../util";
+import * as React from 'react';
+import { withThemeProps, Touchable } from '../../style';
+import { useLayout } from '../../hooks';
+import { isNumber } from '../../util';
 
-import Flex from "../Flex";
+import Flex from '../Flex';
 
-import Text from "../Text";
-import Animate from "../Animate";
-import Icon from "../Icon";
+import Text from '../Text';
+import Animate from '../Animate';
 
-import TextInput from "./Text";
-import Switch from "./Switch";
-import Slider from "./Slider";
-import Color from "./Color";
-import Select from "./Select";
-import Number from "./Number";
-import Tabs from "./Tabs";
-import DatePicker from "./DatePicker";
-import File from "./File";
-import Tags from "./Tags";
+import TextInput from './Text';
+import Switch from './Switch';
+import Slider from './Slider';
+import Color from './Color';
+import Select from './Select';
+import Number from './Number';
+import Tabs from './Tabs';
+import DatePicker from './DatePicker';
+import File from './File';
+import Tags from './Tags';
 
 const TYPES = {
   tags: {
@@ -37,7 +36,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: "date",
+      mask: 'date',
     }),
     focus: true,
   },
@@ -45,7 +44,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: "timeago",
+      mask: 'timeago',
       editable: false,
     }),
     focus: true,
@@ -54,21 +53,21 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} time />,
-      mask: "datetime",
+      mask: 'datetime',
     }),
     focus: true,
   },
   time: {
     component: TextInput,
     props: () => ({
-      mask: "time",
+      mask: 'time',
     }),
     focus: true,
   },
   phone: {
     component: TextInput,
     props: () => ({
-      mask: "phone",
+      mask: 'phone',
     }),
     focus: true,
   },
@@ -79,17 +78,16 @@ const TYPES = {
     }),
   },
   number: {
-    component: TextInput,
+    component: Number,
     props: () => ({
-      mask: "number",
-      renderRight: <Number />,
+      mask: 'number',
     }),
     focus: true,
   },
   password: {
     component: TextInput,
     props: () => ({
-      textContentType: "password",
+      textContentType: 'password',
       secureTextEntry: true,
     }),
     focus: true,
@@ -106,14 +104,11 @@ const TYPES = {
   switch: {
     component: Switch,
     wrapperPressable: true,
-    props: ({ clean }) => ({
-      trackColor: "input:darken:5",
-    }),
   },
   range: {
     component: Slider,
     props: ({ clean }) => ({
-      trackColor: clean ? "input" : "input:darken:5",
+      trackColor: clean ? 'input' : 'input:darken:5',
       mt: 10,
     }),
   },
@@ -131,11 +126,10 @@ interface Props {
   theme: object;
   children?: React.ReactNode;
   type?: string;
-  labelPosition?: "top" | "left";
+  labelPosition?: 'top' | 'left';
   label?: string;
   inputProps?: object;
   roundness: number;
-  variant?: string;
   clean?: boolean;
   shadow?: number;
   animationProps?: object;
@@ -143,53 +137,65 @@ interface Props {
 
 const needsBg = {
   text: true,
+  date: true,
   select: true,
-  tabs: true,
+  phone: true,
+  number: true,
+  textarea: true,
+  password: true,
+  timeago: true,
+  time: true,
+  datetime: true,
+};
+
+const needsAutoHeight = {
+  textarea: true,
+  file: true,
+  select: true,
 };
 
 const Input = React.memo(
   ({
     value,
-    labelPosition = "left",
+    labelPosition = 'top',
     size = 55,
     error = false,
     theme,
     children,
-    type = "text",
-    variant = "underline",
-    indicatorFocusColor = "primary",
+    type = 'text',
+    indicatorFocusColor = 'primary',
     indicatorBlurColor,
     indicatorSize = 2,
     label,
     roundness,
     animationProps = {}, //{ from: { o: 0 }, to: { o: 1 } },
     clean = false,
-    inline = false,
     shadow,
     icon,
     iconSize,
     onChange,
     field,
     labelProps = {},
-    bg = "input",
+    bg = 'input',
     style,
+    mt,
+    mr,
+    ml,
+    mb,
     ...rest
   }: Props) => {
-    const { onLayout, width, height } = useLayout();
     const [focused, setFocus] = React.useState(false);
     const TYPE = TYPES[type];
     const Comp = TYPE ? TYPE.component : null;
-    const WrapperComp = TYPE.wrapperPressable ? Touchable : Flex;
 
     const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
     const labelPositionStyle =
-      labelPosition === "top"
+      labelPosition === 'top'
         ? { pb: 5 }
         : {
-            position: "absolute",
-            l: 15,
-            t: 0,
-            b: 0,
+            pl: 10,
+            pr: 15,
+            height: size,
             zIndex: 100,
             center: true,
           };
@@ -198,143 +204,66 @@ const Input = React.memo(
       value,
       onChange,
       field,
-      ...(TYPE && TYPE.props ? TYPE.props({ clean, inline }) : {}),
+      ...(TYPE && TYPE.props ? TYPE.props({ clean }) : {}),
       setFocus,
-      position: "relative",
-      zIndex: type === "range" ? 999 : 0,
-      inline,
+      position: 'relative',
+      zIndex: type === 'range' ? 999 : 0,
       ...rest,
-      width: "100%",
-      shadow: clean ? shadow : undefined,
-      mt: 0,
-      roundness: type === "switch" ? undefined : radius,
-      mr: type === "switch" ? theme.globals.inputGap : undefined,
-      size: type === "switch" ? undefined : size,
+      width: '100%',
+      roundness: type === 'switch' ? undefined : radius,
+      size: type === 'switch' ? undefined : size,
       bg: needsBg[type] ? bg : undefined,
-      style: {
-        textAlign: inline ? "right" : "left",
-      },
+      textAlign: labelPosition === 'top' ? undefined : 'right',
     };
 
     return (
-      <Flex w="100%" {...rest} relative>
-        <Flex {...labelPositionStyle}>
+      <Flex
+        w="100%"
+        mb={mb}
+        {...rest}
+        bg={needsBg[type] && labelPosition !== 'top' ? bg : undefined}
+        row={labelPosition !== 'top'}
+        justifyContent={
+          labelPosition !== 'top' ? 'space-between' : 'flex-start'
+        }
+        borderRadius={radius}
+        relative
+      >
+        <Flex pointerEvents="none" {...labelPositionStyle}>
           <Text font="label" {...labelProps}>
             {label}
           </Text>
         </Flex>
-        <Flex w="100%" bg={bg} h={size} borderRadius={radius} relative>
+        <Flex
+          flex={1}
+          h={children || needsAutoHeight[type] ? 'auto' : size}
+          borderRadius={radius}
+          justifyContent="center"
+          relative
+        >
+          <Animate
+            visible={focused}
+            from={{ scale: 0.9, opacity: 0 }}
+            to={{ scale: 1, opacity: 1 }}
+            bg="primary"
+            borderRadius={radius + indicatorSize}
+            l={-indicatorSize}
+            t={-indicatorSize}
+            r={-indicatorSize}
+            b={-indicatorSize}
+            absolute
+          />
           {children ? children : <Comp {...inputProps} />}
         </Flex>
       </Flex>
     );
-
-    //const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
-
-    if (TYPE.inline === false && TYPE.inline !== inline) {
-      inline = TYPE.inline;
-    }
-    if (type === "switch") {
-      inline = true;
-      clean = false;
-    }
-
-    return (
-      <Flex
-        borderRadius={radius}
-        position="relative"
-        w="100%"
-        h="auto"
-        onLayout={onLayout}
-        style={style}
-        {...rest}
-      >
-        <WrapperComp
-          bg={clean ? "transparent" : bg}
-          shadow={clean ? undefined : shadow}
-          borderRadius={radius}
-          alignItems={inline ? "flex-end" : undefined}
-          justifyContent={inline ? "center" : undefined}
-          minHeight={size}
-          h="auto"
-          w="100%"
-          {...(TYPE.wrapperPressable === true
-            ? {
-                activeOpacity: 0.9,
-                onPress: () => {
-                  if (onChange) onChange(value === true ? false : true);
-                },
-              }
-            : {})}
-        >
-          {label && (
-            <Flex
-              position={inline ? undefined : "relative"}
-              alignItems="center"
-              zIndex={888}
-              pointerEvents="none"
-              absoluteFill={inline === true}
-              px={clean && !inline ? radius : theme.globals.inputGap}
-              pt={theme.globals.inputGap / 2}
-              pb={
-                clean
-                  ? theme.globals.inputGap / 1.5
-                  : inline
-                  ? theme.globals.inputGap / 2
-                  : 0
-              }
-              mb={inline ? 0 : -(theme.globals.inputGap / 2)}
-              row
-            >
-              {icon && (
-                <Icon
-                  name={icon}
-                  mr={theme.globals.inputGap / 2}
-                  size={iconSize || size * 0.37}
-                />
-              )}
-              <Text
-                font="label"
-                color={error ? "error" : "text"}
-                {...labelProps}
-              >
-                {`${label} ${typeof error === "string" ? `(${error})` : ""}`}
-              </Text>
-            </Flex>
-          )}
-          {children ? children : <Comp {...inputProps} />}
-        </WrapperComp>
-        {width > 0 && TYPE.focus && !children && (
-          <Flex
-            absoluteFill
-            borderRadius={radius}
-            overflow="hidden"
-            pointerEvents="none"
-            justifyContent="flex-end"
-          >
-            <Flex
-              bg={indicatorBlurColor || `${bg}:darken:5`}
-              height={indicatorSize}
-              overflow="hidden"
-              flexCenter
-            >
-              <Animate
-                visible={focused}
-                width={width}
-                height={height}
-                from={{ s: 0, o: 0 }}
-                to={{ s: 1, o: 1 }}
-                bg={indicatorFocusColor}
-                {...animationProps}
-              />
-            </Flex>
-          </Flex>
-        )}
-      </Flex>
-    );
   },
   (prevProps, nextProps) => {
-    if (JSON.stringify(prevProps.value) !== JSON.stringify(nextProps.value)) {
+    if (nextProps.type === 'select' && nextProps.multi) {
+      return false;
+    } else if (
+      JSON.stringify(prevProps.value) !== JSON.stringify(nextProps.value)
+    ) {
       return false;
     } else if (prevProps.needsDoc || nextProps.needsDoc) {
       return false;
@@ -346,4 +275,4 @@ const Input = React.memo(
   }
 );
 
-export default withThemeProps(Input, "Input");
+export default withThemeProps(Input, 'Input');

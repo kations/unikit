@@ -263,7 +263,7 @@ function Tooltip({
   };
 
   return (
-    <View collapsable={false} ref={ref}>
+    <Flex collapsable={false} ref={ref} {...rest}>
       {renderContent(false)}
       <Modal
         animationType="fade"
@@ -288,7 +288,7 @@ function Tooltip({
           {renderContent(true)}
         </TouchableOpacity>
       </Modal>
-    </View>
+    </Flex>
   );
 }
 

@@ -42,7 +42,6 @@ const Switch = ({
   const dragRef = React.useRef(null);
   const TRACK_WIDTH = size * 2 - gap;
   const circleSize = size - gap * 2;
-  console.log({ value });
 
   const changeValue = (v: boolean) => {
     if (onChange) onChange(v);
@@ -51,13 +50,12 @@ const Switch = ({
 
   const widthStyle = useAnimatedStyle(() => {
     return {
-      opacity: dragRef?.current?.translationX?.value / size || 0,
+      opacity: 0,
     };
   });
 
   return (
     <Pressable
-      w={TRACK_WIDTH}
       position="relative"
       activeOpacity={0.8}
       height={size}
@@ -70,6 +68,7 @@ const Switch = ({
         cursor: 'pointer',
       }}
       {...rest}
+      w={TRACK_WIDTH}
       bg={trackColor}
     >
       <Track

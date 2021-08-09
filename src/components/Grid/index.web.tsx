@@ -168,6 +168,7 @@ function Grid({
   return (
     <View
       style={{ flex: 1, flexDirection: 'row', padding: outerGap ? gap / 2 : 0 }}
+      webStyle={{ whiteSpace: 'nowrap' }}
     >
       {Array.from(Array(numColumns), (_, num) => {
         return (

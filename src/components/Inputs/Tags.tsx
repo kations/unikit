@@ -59,6 +59,7 @@ const Tags = ({
             size={size * 0.66}
             ml={theme.globals.inputGap / 2}
             onPress={() => revert(index)}
+            rounded
           >
             {string}
           </Button>

@@ -79,10 +79,10 @@ const Color = ({
   return (
     <Tooltip
       width={400}
-      color="surface"
+      color="input"
       useScrollView
       popover={
-        <Flex bg="surface" width="100%">
+        <Flex width="100%">
           <Text font="label" mb={5} webStyle={{ userSelect: 'none' }}>
             Selected Color
           </Text>

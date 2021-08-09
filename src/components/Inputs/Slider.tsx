@@ -106,7 +106,7 @@ const Slider = ({
   value = 0,
   onChange,
   trackColor = 'input',
-  handleColor = 'surface',
+  handleColor = 'input',
   progressColor = 'primary',
   trackHeight = 10,
   handleSize = 30,
@@ -160,128 +160,130 @@ const Slider = ({
   };
 
   return (
-    <Flex w="100%" h={handleSize} justifyContent="center" relative {...rest}>
-      <Flex
-        onLayout={onLayout}
-        bg={trackColor}
-        width="100%"
-        height={trackHeight}
-        borderRadius={borderRadius}
-        overflow="hidden"
-      >
-        {renderTrack}
-      </Flex>
-      {width > 0
-        ? values.map((v, i) => {
-            const progress = getProgress(min, max, v);
-            const x = progress * width;
+    <Flex w="100%" px={handleSize / 2}>
+      <Flex w="100%" h={handleSize} justifyContent="center" relative {...rest}>
+        <Flex
+          onLayout={onLayout}
+          bg={trackColor}
+          width="100%"
+          height={trackHeight}
+          borderRadius={borderRadius}
+          overflow="hidden"
+        >
+          {renderTrack}
+        </Flex>
+        {width > 0
+          ? values.map((v, i) => {
+              const progress = getProgress(min, max, v);
+              const x = progress * width;
 
-            return (
-              <Flex
-                l={-handleSize / 2}
-                t={0}
-                key={`slider-handle-${i}`}
-                absolute
-              >
-                <Draggable
-                  key={`slider-${i}`}
-                  direction="x"
-                  minX={
-                    values[i + 1]
-                      ? getProgress(min, max, values[i + 1]) * width
-                      : 0
-                  }
-                  maxX={
-                    values[i - 1]
-                      ? getProgress(min, max, values[i - 1]) * width
-                      : width
-                  }
-                  snapFactor={handleSize}
-                  initialSnap={{ x }}
-                  snap={{ x }}
-                  onDragStop={(onDragStop) => {
-                    let v = calcValue(onDragStop.x, true);
-                    if (Array.isArray(value)) {
-                      const newValue = [...values];
-                      const findIndex = newValue.findIndex(
-                        (ov, oi) => ov === v && i !== oi
-                      );
-                      console.log({ findIndex });
-                      if (findIndex > -1) {
-                        if (findIndex < i) {
-                          v = v - steps;
-                        } else {
-                          v = v + steps;
-                        }
-                      }
-                      newValue[i] = v;
-                      if (onChange) onChange(sortValue(newValue));
-                    } else {
-                      if (onChange) onChange(v);
-                    }
-                  }}
+              return (
+                <Flex
+                  l={-handleSize / 2}
+                  t={0}
+                  key={`slider-handle-${i}`}
+                  absolute
                 >
-                  {({ dragging, translationX }) => (
-                    <>
-                      {hideProgressTrack ? null : (
-                        <TrackProgress
-                          translationX={translationX}
-                          progressColor={
-                            values?.length > 1 && i === values?.length - 1
-                              ? trackColor
-                              : progressColor
+                  <Draggable
+                    key={`slider-${i}`}
+                    direction="x"
+                    minX={
+                      values[i + 1]
+                        ? getProgress(min, max, values[i + 1]) * width
+                        : 0
+                    }
+                    maxX={
+                      values[i - 1]
+                        ? getProgress(min, max, values[i - 1]) * width
+                        : width
+                    }
+                    snapFactor={handleSize}
+                    initialSnap={{ x }}
+                    snap={{ x }}
+                    onDragStop={(onDragStop) => {
+                      let v = calcValue(onDragStop.x, true);
+                      if (Array.isArray(value)) {
+                        const newValue = [...values];
+                        const findIndex = newValue.findIndex(
+                          (ov, oi) => ov === v && i !== oi
+                        );
+                        console.log({ findIndex });
+                        if (findIndex > -1) {
+                          if (findIndex < i) {
+                            v = v - steps;
+                          } else {
+                            v = v + steps;
                           }
-                          trackHeight={trackHeight}
-                          handleSize={handleSize}
-                          borderRadius={borderRadius}
-                        />
-                      )}
-                      <Animate
-                        to={{ scale: dragging ? 1.2 : 1 }}
-                        duration={500}
-                        center
-                        relative
-                      >
-                        <Animate
-                          bg={progressColor}
-                          to={{
-                            scale: dragging ? 1.4 : 1,
-                            opacity: dragging ? 0.5 : 0,
-                          }}
-                          duration={500}
-                          borderRadius={handleSize / 2}
-                          absoluteFill
-                        />
-                        {showValue ? (
-                          <ValueButton
+                        }
+                        newValue[i] = v;
+                        if (onChange) onChange(sortValue(newValue));
+                      } else {
+                        if (onChange) onChange(v);
+                      }
+                    }}
+                  >
+                    {({ dragging, translationX }) => (
+                      <>
+                        {hideProgressTrack ? null : (
+                          <TrackProgress
                             translationX={translationX}
-                            progressColor={progressColor}
+                            progressColor={
+                              values?.length > 1 && i === values?.length - 1
+                                ? trackColor
+                                : progressColor
+                            }
                             trackHeight={trackHeight}
                             handleSize={handleSize}
                             borderRadius={borderRadius}
-                            calcValue={calcValue}
-                            dragging={dragging}
-                            onSlide={onSlide}
-                            steps={steps}
                           />
-                        ) : null}
-                        <Flex
-                          width={handleSize}
-                          height={handleSize}
-                          borderRadius={handleSize / 2}
-                          borderWidth={1}
-                          shadow={theme.globals.shadow}
-                          borderColor={`${handleColor}:darken:5`}
-                          bg={handleColor}
-                        ></Flex>
-                      </Animate>
-                    </>
-                  )}
-                </Draggable>
-              </Flex>
-            );
-          })
-        : null}
+                        )}
+                        <Animate
+                          to={{ scale: dragging ? 1.2 : 1 }}
+                          duration={500}
+                          center
+                          relative
+                        >
+                          <Animate
+                            bg={progressColor}
+                            to={{
+                              scale: dragging ? 1.4 : 1,
+                              opacity: dragging ? 0.5 : 0,
+                            }}
+                            duration={500}
+                            borderRadius={handleSize / 2}
+                            absoluteFill
+                          />
+                          {showValue ? (
+                            <ValueButton
+                              translationX={translationX}
+                              progressColor={progressColor}
+                              trackHeight={trackHeight}
+                              handleSize={handleSize}
+                              borderRadius={borderRadius}
+                              calcValue={calcValue}
+                              dragging={dragging}
+                              onSlide={onSlide}
+                              steps={steps}
+                            />
+                          ) : null}
+                          <Flex
+                            width={handleSize}
+                            height={handleSize}
+                            borderRadius={handleSize / 2}
+                            borderWidth={1}
+                            shadow={theme.globals.shadow}
+                            borderColor={`${handleColor}:darken:5`}
+                            bg={handleColor}
+                          ></Flex>
+                        </Animate>
+                      </>
+                    )}
+                  </Draggable>
+                </Flex>
+              );
+            })
+          : null}
+      </Flex>
     </Flex>
   );
 };

@@ -593,42 +593,42 @@ const pages = [
   </Flex>
   )}`,
   },
-  // {
-  //   slug: 'input',
-  //   title: 'Input',
-  //   from: 'Input',
-  //   group: 'Inputs',
-  //   smallCode: `<Input type="text" label="Sunny" placeholder="text"  inline icon="sun"  />`,
-  //   code: `<Flex w="100%" flexCenter>
-  //     <Form defaultDoc={{date: "2020-11-25T06:00:00.000Z", datetime: "2020-11-25T06:00:00.000Z"}}  onSubmit={doc => alert(JSON.stringify(doc))} clean>
-  //     <Input label="Custom input" field="custom" clean>
-  //       <Flex width={100} height={100} bg="primary"></Flex>
-  //     </Input>
-  //     <Input type="text" label="Text" placeholder="text"  field="text" clean needsDoc  />
-  //     <Input type="password" label="Password" placeholder="password"  field="password" clean  />
-  //     <Input type="date" label="Date"  defaultValue={new Date()}  field="date" clean  />
-  //     <Input type="timeago" label="Timeago"  defaultValue={new Date()}  field="timeago" clean  />
-  //     <Input type="time" label="Time"  defaultValue={new Date()}  field="time" clean  />
-  //     <Input type="datetime" label="Datetime"  defaultValue={new Date()}  field="datetime" clean  />
-  //     <Input type="phone" error label="Phone"  field="phone" clean  />
-  //     <Input type="textarea" label="Textarea" placeholder="text"  field="textarea" clean  />
-  //     <Input type="number" label="Number" placeholder="number" defaultValue={0.9}  field="number" clean  />
-  //     <Input type="tabs" label="Tabs" options={["unikit", "is awesome"]}  field="tabs" clean  />
-  //     <Input type="text" label="Inline" placeholder="text" mt={10} field="inline" inline clean  />
-  //     <Input type="switch" mt={10} label="Sunny" placeholder="text" icon="sun" field="switch" clean   />
-  //     <Input type="range" mt={10} label="Sunny"  field="range" clean  />
-  //     <Input type="tags" mt={10} label="Tags"  field="tags" clean  />
-  //     <Input type="color" mt={10} label="Color"  field="color" clean  />
-  //     <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="select" clean  />
-  //     <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="selectinline" inline  clean />
-  //     <Input type="select" options={[{label: <Flex flexCenter row><Flex w={34} h={34} bg="primary" borderRadius={22} /><Text ml={5}>Unikit</Text></Flex>, value: "unikit"}, {label: "is awesome", value: "is awesome"}]} mt={10} label="MultiSelect with array value"  field="selectpicker" inline picker="switch"  multi clean   />
-  //     <Input type="select" options={[{label:"unikit", value: "unikit"}, {label:"is awesome", value: "awesome"}]} mt={10} label="MultiSelect with object value"  field="selectobject" inline  mode="pills" multi multiType="object" clean   />
-  //     <Input type="text" mt={10} label="Label" placeholder="text" field="normal" clean />
-  //     <Input type="file" mt={10} label="File" defaultValue={"https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"} field="file" clean />
-  //     <Input type="file" mt={10} label="File" defaultValue={["https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60", "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"]} field="file2" multi clean />
-  //     </Form>
-  //   </Flex>`,
-  // },
+  {
+    slug: 'input',
+    title: 'Input',
+    from: 'Input',
+    group: 'Inputs',
+    smallCode: `<Input type="text" label="Sunny" placeholder="text"  inline icon="sun"  />`,
+    code: `<Flex w="100%" flexCenter>
+      <Form inputProps={{mb:10}} defaultDoc={{date: "2020-11-25T06:00:00.000Z", datetime: "2020-11-25T06:00:00.000Z"}}  onSubmit={doc => alert(JSON.stringify(doc))} clean>
+      <Input label="Custom input" field="custom" clean>
+        <Flex width={100} height={100} bg="primary"></Flex>
+      </Input>
+      <Input type="text" label="Text" placeholder="text"  field="text" clean needsDoc  />
+      <Input type="password" label="Password" placeholder="password"  field="password" clean  />
+      <Input type="date" label="Date"  defaultValue={new Date()}  field="date" clean  />
+      <Input type="timeago" label="Timeago"  defaultValue={new Date()}  field="timeago" clean  />
+      <Input type="time" label="Time"  defaultValue={new Date()}  field="time" clean  />
+      <Input type="datetime" label="Datetime"  defaultValue={new Date()}  field="datetime" clean  />
+      <Input type="phone" error label="Phone"  field="phone" clean  />
+      <Input type="textarea" label="Textarea" placeholder="text"  field="textarea" clean  />
+      <Input type="number" label="Number" placeholder="number" defaultValue={0.9}  field="number" clean  />
+      <Input type="tabs" label="Tabs" options={["unikit", "is awesome"]}  field="tabs" clean  />
+      <Input type="text" label="Inline" placeholder="text" mt={10} field="inline" inline clean  />
+      <Input type="switch" mt={10} label="Sunny" placeholder="text" icon="sun" field="switch" clean   />
+      <Input type="range" mt={10} label="Sunny"  field="range" clean  />
+      <Input type="tags" mt={10} label="Tags"  field="tags" clean  />
+      <Input type="color" mt={10} label="Color" defaultValue="red"  field="color" clean  />
+      <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="select" clean  />
+      <Input type="select" options={["unikit", "is awesome"]} mt={10} label="Select"  field="selectinline"  picker="switch"  />
+      <Input type="select" options={[{label: <Flex flexCenter row><Flex w={34} h={34} bg="primary" borderRadius={22} /><Text ml={5}>Unikit</Text></Flex>, value: "unikit"}, {label: "is awesome", value: "is awesome"}]} mt={10} label="MultiSelect with array value" bg="transparent" field="selectpicker" inline picker="checkbox"  multi    />
+      <Input type="select" options={[{label:"unikit", value: "unikit"}, {label:"is awesome", value: "awesome"}]} mt={10} label="MultiSelect with object value" field="selectobject" multi responseType="object" picker="switch"  />
+      <Input type="text" mt={10} label="Label" placeholder="text" field="normal" clean />
+      <Input type="file" mt={10} label="File" defaultValue={"https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"} field="file" clean />
+      <Input type="file" mt={10} label="File" defaultValue={["https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60", "https://images.unsplash.com/photo-1506252374453-ef5237291d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"]} field="file2" multi clean />
+      </Form>
+    </Flex>`,
+  },
   {
     slug: 'codefield',
     title: 'CodeField',
@@ -687,23 +687,23 @@ const pages = [
     </Form>
   </Flex>;`,
   },
-  // {
-  //   slug: 'switch',
-  //   title: 'Switch',
-  //   from: 'Switch',
-  //   group: 'Inputs',
-  //   smallCode: `<Form button={false} flexCenter><Switch value={true} field="switch" /></Form>`,
-  //   code: `function render() {
-  //     const [value, setValue] = useState(true);
-  //     return (
-  //       <Flex flex={1} row wrap center>
-  //         <Switch mx={10} value={value} onChange={v => setValue(v)} />
-  //         <Switch mx={10} value={value} size={60} onChange={v => setValue(v)} />
-  //         <Switch mx={10} value={value} roundness={0} activeTrackColor="success" onChange={v => setValue(v)} />
-  //       </Flex>
-  //     );
-  //   }`,
-  // },
+  {
+    slug: 'switch',
+    title: 'Switch',
+    from: 'Switch',
+    group: 'Inputs',
+    smallCode: `<Form button={false} flexCenter><Switch value={true} field="switch" /></Form>`,
+    code: `function render() {
+      const [value, setValue] = useState(true);
+      return (
+        <Flex flex={1} row wrap center>
+          <Switch mx={10} value={value} onChange={v => setValue(v)} />
+          <Switch mx={10} value={value} size={60} onChange={v => setValue(v)} />
+          <Switch mx={10} value={value} roundness={0} activeTrackColor="success" onChange={v => setValue(v)} />
+        </Flex>
+      );
+    }`,
+  },
   {
     slug: 'color',
     title: 'Color',
@@ -742,8 +742,15 @@ const pages = [
     group: 'Inputs',
     smallCode: `<Select options={["unikit", "is awesome"]} />`,
     code: `<Form button={false}>
-      <Select options={["unikit", "is awesome"]} field="select" />
+      <Text mt={20}>Normal</Text>
+      <Select mt={10} options={["unikit", "is awesome"]} field="select" />
+      <Select mt={10} options={["unikit", "is awesome"]} picker="switch" field="selectSwitch" />
+      <Select mt={10} options={["unikit", "is awesome"]} picker="checkbox" field="selectCheckboox" />
       <Select mt={10} options={["1", "2", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]} field="selectNumber" scrollable />
+      <Text mt={20}>Multi</Text>
+      <Select mt={10} options={["unikit", "is awesome","select me too"]} picker="checkbox" multi field="selectCheckboxMulti" />
+      <Text mt={20}>Multi inline</Text>
+      <Select mt={10} options={["unikit", "is awesome","select me too"]} picker="switch" multi inline field="selectCheckboxMultiInline" />
     </Form>`,
   },
   {
