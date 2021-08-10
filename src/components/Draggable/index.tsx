@@ -10,6 +10,7 @@ import {
 } from 'react-native-reanimated';
 import { withThemeProps, Pressable } from '../../style';
 import { useLayout, useUpdateEffect } from '../../hooks';
+import Flex from '../Flex';
 
 const AnimatedTouchable = Reanimated.createAnimatedComponent(Pressable);
 
@@ -57,6 +58,8 @@ const Draggable = React.forwardRef(
       onLongPress,
       pressableProps = {},
       reverseVelocity = false,
+      wrapperComponent,
+      wrapperProps = {},
       ...rest
     }: Props,
     ref
@@ -141,7 +144,6 @@ const Draggable = React.forwardRef(
           x: getBounds(ctx.startX! + event.translationX, 'x'),
           y: getBounds(ctx.startY! + event.translationY, 'y'),
         };
-        console.log({ pos });
         if (['y', 'xy'].includes(direction)) {
           translationY.value = pos.y;
         } else if (['x', 'xy'].includes(direction)) {
@@ -234,24 +236,32 @@ const Draggable = React.forwardRef(
       translationY,
     }));
 
+    const Wrapper = wrapperComponent ? wrapperComponent : React.Fragment;
+
     return (
-      <PanGestureHandler onGestureEvent={gestureHandler} {...rest}>
-        <AnimatedTouchable
-          onPress={() => {
-            if (onPress && press) onPress();
-            setPress(true);
-          }}
-          onPressIn={() => setDragging(true)}
-          onPressOut={(e) => setDragging(false)}
-          onLayout={onLayout}
-          {...pressableProps}
-          style={reanimatedStyle}
-        >
-          {children instanceof Function
-            ? children({ dragging, translationX })
-            : children}
-        </AnimatedTouchable>
-      </PanGestureHandler>
+      <Wrapper
+        {...(wrapperComponent
+          ? { translationX, dragging, ...wrapperProps }
+          : {})}
+      >
+        <PanGestureHandler onGestureEvent={gestureHandler} {...rest}>
+          <AnimatedTouchable
+            onPress={() => {
+              if (onPress && press) onPress();
+              setPress(true);
+            }}
+            onPressIn={() => setDragging(true)}
+            onPressOut={(e) => setDragging(false)}
+            onLayout={onLayout}
+            {...pressableProps}
+            style={reanimatedStyle}
+          >
+            {children instanceof Function
+              ? children({ dragging, translationX })
+              : children}
+          </AnimatedTouchable>
+        </PanGestureHandler>
+      </Wrapper>
     );
   }
 );

@@ -32,7 +32,7 @@ const linking = {
 export default function App() {
   return (
     <ThemeProvider
-      mode="dark"
+      mode="darkk"
       theme={{
         colors: { backgroundDark: '#3F2D61' },
         Button: { rounded: true },

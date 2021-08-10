@@ -1,13 +1,16 @@
 import * as React from 'react';
 
-import Reanimated, { useAnimatedStyle } from 'react-native-reanimated';
-import { withThemeProps, Pressable } from '../../style';
+import Reanimated, {
+  useAnimatedStyle,
+  interpolateColor,
+} from 'react-native-reanimated';
+import { withThemeProps, Pressable, transformColor } from '../../style';
 
 import Flex from '../Flex';
 import Draggable from '../Draggable';
 import { isNumber } from '../../util';
 
-const Track = Reanimated.createAnimatedComponent(Flex);
+const AnimatedTrack = Reanimated.createAnimatedComponent(Flex);
 
 interface Props {
   theme: object;
@@ -23,6 +26,31 @@ interface Props {
   disabled?: boolean;
   [key: string]: any;
 }
+
+const Track = ({ activeTrackColor, translationX, size, theme, ...rest }) => {
+  const c1 = transformColor({
+    value: 'input',
+    theme,
+    themeKey: 'colors',
+  });
+  const c2 = transformColor({
+    value: activeTrackColor,
+    theme,
+    themeKey: 'colors',
+  });
+
+  const colorStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        translationX.value,
+        [0, size],
+        [c1, c2]
+      ),
+    };
+  }, []);
+
+  return <AnimatedTrack style={colorStyle} absoluteFill {...rest} />;
+};
 
 const Switch = ({
   theme,
@@ -48,18 +76,11 @@ const Switch = ({
     if (theme.onFeedback) theme.onFeedback('success');
   };
 
-  const widthStyle = useAnimatedStyle(() => {
-    return {
-      opacity: 0,
-    };
-  });
-
   return (
     <Pressable
       position="relative"
       activeOpacity={0.8}
       height={size}
-      p={gap}
       borderRadius={isNumber(roundness) ? roundness : size}
       onPress={() => {
         changeValue(!value);
@@ -71,13 +92,7 @@ const Switch = ({
       w={TRACK_WIDTH}
       bg={trackColor}
     >
-      <Track
-        bg={activeTrackColor}
-        borderRadius={isNumber(roundness) ? roundness : size}
-        style={widthStyle}
-        absoluteFill
-      />
-      <Flex position="relative" height="100%">
+      <Flex height="100%">
         <Draggable
           ref={dragRef}
           direction="x"
@@ -93,6 +108,24 @@ const Switch = ({
           }}
           onPress={() => {
             changeValue(!value);
+          }}
+          wrapperComponent={Track}
+          wrapperProps={{
+            borderRadius: isNumber(roundness) ? roundness : size,
+            size,
+            activeTrackColor,
+            theme,
+            p: gap,
+          }}
+          renderHeader={({ translationX }) => {
+            return (
+              <Track
+                bg={activeTrackColor}
+                borderRadius={isNumber(roundness) ? roundness : size}
+                translationX={translationX}
+                size={size}
+              />
+            );
           }}
         >
           <Flex
