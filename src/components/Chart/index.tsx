@@ -68,7 +68,6 @@ const Chart = ({
   mouse = true,
   ...rest
 }) => {
-  const pointerRef = React.useRef(null);
   const { onLayout, width } = useLayout();
 
   const keys = React.Children.toArray(children).map((c) => {
@@ -83,7 +82,6 @@ const Chart = ({
     [data, keys, minChartWidth]
   );
 
-  console.log(pointerRef?.current);
   const scaleX = React.useMemo(() => {
     const width = 300;
     return useScaleBand
@@ -98,7 +96,7 @@ const Chart = ({
       : scaleLinear()
           .domain(domainX || getDomain(data.map((d, i) => i)))
           .range([contentInset.left, width - contentInset.right]);
-  }, [data, keys, pointerRef, minChartWidth]);
+  }, [data, keys, minChartWidth]);
 
   const offset = scaleX.bandwidth ? scaleX.bandwidth() : 0;
 
@@ -121,7 +119,6 @@ const Chart = ({
       )}
       <Flex flex={1}>
         <Pointer
-          ref={pointerRef}
           w="100%"
           h={height}
           collapsable={false}

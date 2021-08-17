@@ -10,7 +10,6 @@ import {
 } from 'react-native-reanimated';
 import { withThemeProps, Pressable } from '../../style';
 import { useLayout, useUpdateEffect } from '../../hooks';
-import Flex from '../Flex';
 
 const AnimatedTouchable = Reanimated.createAnimatedComponent(Pressable);
 
@@ -60,6 +59,8 @@ const Draggable = React.forwardRef(
       reverseVelocity = false,
       wrapperComponent,
       wrapperProps = {},
+      activeScale,
+      scaleOnHover,
       ...rest
     }: Props,
     ref
@@ -68,6 +69,7 @@ const Draggable = React.forwardRef(
     const translationY = useSharedValue(initialSnap?.y || 0);
     const translationX = useSharedValue(initialSnap?.x || 0);
     const [dragging, setDragging] = React.useState(false);
+    const [hover, setHover] = React.useState(false);
     const [press, setPress] = React.useState(true);
 
     const getBounds = (v, d) => {
@@ -219,6 +221,15 @@ const Draggable = React.forwardRef(
           {
             translateX: translationX.value,
           },
+          ...(activeScale
+            ? [
+                {
+                  scale: withSpring(
+                    dragging || (hover && scaleOnHover) ? activeScale : 1
+                  ),
+                },
+              ]
+            : []),
         ],
         cursor: 'grab',
         ...(pressableProps?.style || {}),
@@ -252,6 +263,8 @@ const Draggable = React.forwardRef(
             }}
             onPressIn={() => setDragging(true)}
             onPressOut={(e) => setDragging(false)}
+            onMouseOver={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
             onLayout={onLayout}
             {...pressableProps}
             style={reanimatedStyle}

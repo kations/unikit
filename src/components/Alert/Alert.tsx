@@ -53,13 +53,9 @@ const Alert = React.forwardRef(
       setVisible(false);
     };
 
-    console.log({ timeout, wait });
-
     useInterval(close, !timeout || wait ? undefined : timeout);
 
     const positionProps = POSITIONS[position];
-
-    console.log({ component, visible });
 
     return (
       <Draggable

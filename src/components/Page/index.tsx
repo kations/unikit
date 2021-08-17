@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { ScrollView, SafeAreaView, Platform, FlatList } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as React from "react";
+import { ScrollView, Platform, FlatList } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,13 +8,15 @@ import Animated, {
   interpolate,
   interpolateColor,
   withSpring,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 
-import Flex from '../Flex';
-import Text from '../Text';
-import Gradient from '../Gradient';
+import Flex from "../Flex";
+import Text from "../Text";
+import Gradient from "../Gradient";
 
-import { withThemeProps, styled, transformColor } from '../../style';
+import { withThemeProps, styled, transformColor } from "../../style";
+import { isWeb } from "../../util";
+import { useUpdateEffect } from "../../hooks";
 
 const AnimatedList = Animated.createAnimatedComponent(ScrollView);
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -22,36 +24,53 @@ const AnimatedFlex = Animated.createAnimatedComponent(Flex);
 const AnimatedText = Animated.createAnimatedComponent(styled.Text());
 
 export const getProgress = (a: number, b: number, v: number) => {
-  'worklet';
+  "worklet";
   const p = (v - a) / (b - a);
   return parseFloat(p.toFixed(3));
 };
 
 const MAX = 999999999;
 
-function Navbar({
-  theme,
-  title,
-  titleProps = {},
-  top,
-  inset = 0,
-  offset = 20,
-  distance = 100,
-  roundness = 10,
-  leftAction = null,
-  rightAction = null,
-  maxWidth = '99%',
-  gap = 10,
-  setHeight,
-  bg = 'primary',
-  color = 'text',
-  stopColor = '#FFF',
-  stopScale = 0.8,
-  gradient = ['accent', 'primary'],
-  animateBg = true,
-  ...rest
-}) {
-  const insets = useSafeAreaInsets();
+function Navbar(
+  {
+    theme,
+    title,
+    subTitle,
+    titleLeft = null,
+    titleProps = {},
+    subTitleProps = {},
+    top,
+    offset = 20,
+    distance = 100,
+    roundness = 10,
+    leftAction = null,
+    rightAction = null,
+    maxWidth = "99%",
+    gap = 10,
+    setHeight,
+    bg = "primary",
+    color = "text",
+    stopColor = "#FFF",
+    stopScale = 0.8,
+    stopOpacity = 1,
+    gradient = ["accent", "primary"],
+    animateBg = true,
+    collapsible = false,
+    inset = 0,
+    ...rest
+  },
+  ref
+) {
+  const [dynamicTitle, setTitle] = React.useState(title);
+
+  React.useImperativeHandle(ref, () => ({
+    setTitle,
+  }));
+
+  useUpdateEffect(() => {
+    setTitle(title);
+  }, [title]);
+
   const animatedStyle = useAnimatedStyle(() => {
     const y = interpolate(top.value, [0, distance, MAX], [offset, 0, 0]);
     return {
@@ -65,7 +84,11 @@ function Navbar({
 
   const animatedBg = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(top.value, [0, distance], [0, 1]),
+      opacity: interpolate(
+        top.value,
+        [0, distance, MAX],
+        [0, stopOpacity, stopOpacity]
+      ),
     };
   }, []);
 
@@ -84,15 +107,13 @@ function Navbar({
     };
   }, []);
 
-  const c1 = transformColor({ value: color, theme, themeKey: 'colors' });
-  const c2 = transformColor({ value: stopColor, theme, themeKey: 'colors' });
+  const c1 = transformColor({ value: color, theme, themeKey: "colors" });
+  const c2 = transformColor({ value: stopColor, theme, themeKey: "colors" });
   const animatedColorStyle = useAnimatedStyle(() => {
     return {
       color: interpolateColor(top.value, [0, distance], [c1, c2]),
     };
   }, []);
-
-  console.log({ animatedColorStyle });
 
   return (
     <AnimatedFlex
@@ -100,7 +121,7 @@ function Navbar({
       r={0}
       l={0}
       t={0}
-      pt={insets.top}
+      pt={inset}
       w="100%"
       zIndex={999}
       center
@@ -138,23 +159,33 @@ function Navbar({
           absoluteFill
           pointerEvents="box-none"
         >
-          <AnimatedText
-            maxWidth="70%"
-            font="h4"
-            key={title}
-            numberOfLines={1}
-            bold
-            style={animatedColorStyle}
-            {...titleProps}
-          >
-            {title}
-          </AnimatedText>
+          <Flex w="100%" center row>
+            {titleLeft}
+            <AnimatedText
+              maxWidth="70%"
+              font="h4"
+              key={title}
+              numberOfLines={1}
+              bold
+              style={animatedColorStyle}
+              {...titleProps}
+            >
+              {dynamicTitle}
+            </AnimatedText>
+          </Flex>
+          {subTitle ? (
+            <AnimatedText color="primary" {...subTitleProps}>
+              {subTitle}
+            </AnimatedText>
+          ) : null}
         </AnimatedFlex>
         <Flex zIndex={888}>{rightAction}</Flex>
       </Flex>
     </AnimatedFlex>
   );
 }
+
+const NavBarWithRef = React.forwardRef(Navbar);
 
 interface Props {
   children: React.ReactNode;
@@ -166,30 +197,36 @@ interface Props {
   [key: string]: any;
 }
 
-const Page = ({
-  theme,
-  bg = 'background',
-  children,
-  hasSafeArea,
-  scrollable = true,
-  renderHeader,
-  renderFooter,
-  scrollProps,
-  scrollComponent,
-  onScroll,
-  scrollTop,
-  scrollAnimated = true,
-  useFlatList = false,
-  withNavbar = true,
-  navbarProps = {},
-  navbarComponent,
-  title,
-  leftAction = null,
-  rightAction = null,
-  ...rest
-}: Props) => {
-  const spacerHeight =
-    55 + (navbarProps.offset || 20) + (navbarProps.inset || 0);
+const Page = (
+  {
+    theme,
+    bg = "background",
+    children,
+    scrollable = true,
+    renderHeader,
+    renderFooter,
+    scrollProps,
+    scrollComponent,
+    onScroll,
+    scrollTop,
+    disableSafeArea = false,
+    scrollAnimated = true,
+    useFlatList = false,
+    withNavbar = true,
+    navbarProps = {},
+    navbarComponent,
+    title,
+    subTitle,
+    titleLeft,
+    leftAction = null,
+    rightAction = null,
+    ...rest
+  }: Props,
+  ref
+) => {
+  const insets = useSafeAreaInsets();
+  const inset = disableSafeArea ? 0 : insets.top;
+  const spacerHeight = 55 + (navbarProps.offset || 20) + inset;
   const scrollViewRef = React.useRef(null);
   const top = useSharedValue(0);
 
@@ -223,21 +260,23 @@ const Page = ({
 
   return (
     <Flex
-      flex={1}
       h="100vh"
       bg={bg}
-      as={hasSafeArea ? SafeAreaView : undefined}
-      accessibilityRole={Platform.OS === 'web' ? 'main' : 'none'}
-      webStyle={{ transitionDuration: '0.5s', transitionProperty: 'all' }}
+      accessibilityRole={Platform.OS === "web" ? "main" : "none"}
+      webStyle={{ transitionDuration: "0.5s", transitionProperty: "all" }}
       {...rest}
     >
       {withNavbar ? (
-        <Navbar
+        <NavBarWithRef
+          ref={ref}
           theme={theme}
           title={title}
+          titleLeft={titleLeft}
+          subTitle={subTitle}
           leftAction={leftAction}
           rightAction={rightAction}
           top={top}
+          inset={inset}
           {...navbarProps}
         />
       ) : null}
@@ -251,4 +290,4 @@ const Page = ({
   );
 };
 
-export default withThemeProps(Page, 'Page');
+export default withThemeProps(React.forwardRef(Page), "Page");

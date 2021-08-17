@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { Picker as NativePicker } from '@react-native-picker/picker';
+import React, { useState } from "react";
+import { Platform } from "react-native";
+import { Picker as NativePicker } from "@react-native-picker/picker";
 
-import { withThemeProps, Touchable } from '../../style';
-import { isIOS } from '../../util';
+import { withThemeProps, Touchable } from "../../style";
+import { isIOS } from "../../util";
 
-import Tooltip from '../Tooltip';
-import Icon from '../Icon';
-import Flex from '../Flex';
-import TextInput from './Text';
-import Text from '../Text';
-import Switch from './Switch';
-import Checkbox from './Checkbox';
-import Button from '../Button';
+import Tooltip from "../Tooltip";
+import Icon from "../Icon";
+import Flex from "../Flex";
+import TextInput from "./Text";
+import Text from "../Text";
+import Switch from "./Switch";
+import Checkbox from "./Checkbox";
+import Button from "../Button";
 
 const Select = ({
   size = 50,
@@ -21,25 +21,25 @@ const Select = ({
   onChange,
   options = [],
   style,
-  placeholder = 'Please select...',
-  doneText = 'Done',
+  placeholder = "Please select...",
+  doneText = "Done",
   overlayProps = {},
   inputProps = {},
   pickerProps = {},
   name,
   multi = false,
-  picker = 'default',
+  picker = "default",
   inline = false,
-  row = true,
-  responseType = 'string',
+  row = false,
+  responseType = "string",
   ...rest
 }) => {
-  if (multi && responseType === 'string') responseType = 'array';
+  if (multi && responseType === "string") responseType = "array";
 
   const onChangeValue = (v, option) => {
-    if (multi === false && responseType === 'string') {
+    if (multi === false && responseType === "string") {
       onChange(v === false ? undefined : option);
-    } else if (responseType === 'array') {
+    } else if (responseType === "array") {
       let newV = value || [];
       if (v === true) {
         newV.push(option);
@@ -47,25 +47,24 @@ const Select = ({
         newV = newV.filter((o) => o !== option);
       }
       onChange(newV);
-    } else if (responseType === 'object') {
+    } else if (responseType === "object") {
       let newV = value || {};
       if (v === true) {
         newV[option] = v;
       } else {
         delete newV[option];
       }
-      console.log({ newV });
       onChange(newV);
     }
   };
 
   const renderCheckbox = (option, index) => {
-    const label = typeof option === 'string' ? option : option.label;
-    const optionValue = typeof option === 'string' ? option : option.value;
-    if (picker === 'switch' || picker === 'checkbox') {
-      const Comp = picker === 'switch' ? Switch : Checkbox;
+    const label = typeof option === "string" ? option : option.label;
+    const optionValue = typeof option === "string" ? option : option.value;
+    if (picker === "switch" || picker === "checkbox") {
+      const Comp = picker === "switch" ? Switch : Checkbox;
       const isActive = multi
-        ? responseType === 'object'
+        ? responseType === "object"
           ? value?.[optionValue] === true
           : (value || []).indexOf(optionValue) > -1
         : optionValue === value;
@@ -81,14 +80,14 @@ const Select = ({
           }}
           borderColor="text:setAlpha:0.05"
           borderBottomWidth={index === options.length - 1 ? 0 : 1}
-          flexDirection={picker === 'checkbox' ? 'row-reverse' : 'row'}
+          flexDirection={picker === "checkbox" ? "row-reverse" : "row"}
         >
           <Text>{label}</Text>
           <Comp
-            size={size * (picker === 'switch' ? 0.66 : 0.55)}
+            size={size * (picker === "switch" ? 0.66 : 0.55)}
             value={isActive}
-            mr={picker === 'checkbox' ? 10 : 0}
-            ml={picker === 'switch' ? 10 : 0}
+            mr={picker === "checkbox" ? 10 : 0}
+            ml={picker === "switch" ? 10 : 0}
             onChange={(v) => onChangeValue(v, optionValue)}
           />
         </Touchable>
@@ -105,7 +104,7 @@ const Select = ({
 
   const getValue = () => {
     if (value && options) {
-      if (typeof options[0] === 'string') {
+      if (typeof options[0] === "string") {
         return value;
       } else {
         const option = options.find((e) => e.value === value);
@@ -116,7 +115,7 @@ const Select = ({
   };
 
   const renderPicker = () => {
-    if (picker === 'switch' || picker === 'checkbox') {
+    if (picker === "switch" || picker === "checkbox") {
       return options.map((option, index) => {
         return renderCheckbox(option, index);
       });
@@ -128,24 +127,24 @@ const Select = ({
         onValueChange={(itemValue, itemIndex) =>
           onChange ? onChange(itemValue) : null
         }
-        itemStyle={{ textAlign: 'center', color: theme.colors.text }}
+        itemStyle={{ textAlign: "center", color: theme.colors.text }}
         {...pickerProps}
         style={[
           {
-            width: '100%',
+            width: "100%",
             paddingVertical: theme.globals.inputGap,
             paddingHorizontal: theme.globals.inputGap,
             margin: 0,
             borderRadius: 0,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             fontSize: theme.fonts.p.fontSize,
             color: theme.colors.text,
             ...Platform.select({
               web: {
                 outlineWidth: 0,
-                outlineColor: 'unset',
-                borderColor: 'transparent',
-                appearance: 'none',
+                outlineColor: "unset",
+                borderColor: "transparent",
+                appearance: "none",
               },
             }),
           },
@@ -160,7 +159,7 @@ const Select = ({
     );
   };
 
-  const tooltipMode = isIOS || multi || picker !== 'default';
+  const tooltipMode = isIOS || multi || picker !== "default";
 
   const Arrow = (
     <Flex
@@ -183,7 +182,7 @@ const Select = ({
       <Flex width="100%" relative>
         <Flex
           width="100%"
-          h={inline ? 'auto' : size}
+          h={inline ? "auto" : size}
           overflow="hidden"
           bg="input"
           borderRadius={theme.globals.roundness}
@@ -199,9 +198,7 @@ const Select = ({
   }
 
   const mapArray =
-    value && responseType === 'object' ? Object.keys(value) : value || [];
-
-  console.log({ mapArray, value, responseType });
+    value && responseType === "object" ? Object.keys(value) : value || [];
 
   return (
     <Tooltip
@@ -233,6 +230,7 @@ const Select = ({
             {mapArray.map((v) => {
               return (
                 <Button
+                  key={`select-value-${v}`}
                   size={size * 0.75}
                   onPress={() => {
                     onChangeValue(false, v);
@@ -255,7 +253,7 @@ const Select = ({
             editable={false}
             value={getValue()}
             placeholder={placeholder}
-            pointerEvents={Platform.OS === 'web' ? 'all' : 'none'}
+            pointerEvents={Platform.OS === "web" ? "all" : "none"}
             {...inputProps}
           />
         )}
@@ -265,4 +263,4 @@ const Select = ({
   );
 };
 
-export default withThemeProps(Select, 'Select');
+export default withThemeProps(Select, "Select");

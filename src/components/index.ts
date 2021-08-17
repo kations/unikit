@@ -14,7 +14,6 @@ export { default as Avatar } from "./Avatar";
 export { default as Collapsible } from "./Collapsible";
 export { default as Overlay } from "./Overlay";
 export { default as Ripple } from "./Ripple";
-export { default as Dropdown } from "./Dropdown";
 export { default as Group } from "./Group";
 export { default as Tabs } from "./Tabs";
 export { default as Form } from "./Form";
@@ -24,6 +23,8 @@ export { default as Pointer } from "./Pointer";
 export { default as Tilt } from "./Tilt";
 export { default as Tooltip } from "./Tooltip";
 export { default as MasonryList } from "./MasonryList";
+export { default as TabBar } from "./TabBar";
+
 export * from "./Image";
 export * from "./Inputs";
 export * from "./Mask";

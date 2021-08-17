@@ -1,23 +1,23 @@
-import * as React from 'react';
-import { withThemeProps, Touchable } from '../../style';
-import { useLayout } from '../../hooks';
-import { isNumber } from '../../util';
+import * as React from "react";
+import { withThemeProps, Touchable } from "../../style";
+import { useLayout } from "../../hooks";
+import { isNumber } from "../../util";
 
-import Flex from '../Flex';
+import Flex from "../Flex";
 
-import Text from '../Text';
-import Animate from '../Animate';
+import Text from "../Text";
+import Animate from "../Animate";
 
-import TextInput from './Text';
-import Switch from './Switch';
-import Slider from './Slider';
-import Color from './Color';
-import Select from './Select';
-import Number from './Number';
-import Tabs from './Tabs';
-import DatePicker from './DatePicker';
-import File from './File';
-import Tags from './Tags';
+import TextInput from "./Text";
+import Switch from "./Switch";
+import Slider from "./Slider";
+import Color from "./Color";
+import Select from "./Select";
+import Number from "./Number";
+import Tabs from "./Tabs";
+import DatePicker from "./DatePicker";
+import File from "./File";
+import Tags from "./Tags";
 
 const TYPES = {
   tags: {
@@ -36,7 +36,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: 'date',
+      mask: "date",
     }),
     focus: true,
   },
@@ -44,7 +44,7 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} />,
-      mask: 'timeago',
+      mask: "timeago",
       editable: false,
     }),
     focus: true,
@@ -53,21 +53,21 @@ const TYPES = {
     component: TextInput,
     props: () => ({
       renderRight: <DatePicker light size={35} time />,
-      mask: 'datetime',
+      mask: "datetime",
     }),
     focus: true,
   },
   time: {
     component: TextInput,
     props: () => ({
-      mask: 'time',
+      mask: "time",
     }),
     focus: true,
   },
   phone: {
     component: TextInput,
     props: () => ({
-      mask: 'phone',
+      mask: "phone",
     }),
     focus: true,
   },
@@ -80,14 +80,14 @@ const TYPES = {
   number: {
     component: Number,
     props: () => ({
-      mask: 'number',
+      mask: "number",
     }),
     focus: true,
   },
   password: {
     component: TextInput,
     props: () => ({
-      textContentType: 'password',
+      textContentType: "password",
       secureTextEntry: true,
     }),
     focus: true,
@@ -108,8 +108,8 @@ const TYPES = {
   range: {
     component: Slider,
     props: ({ clean }) => ({
-      trackColor: clean ? 'input' : 'input:darken:5',
-      mt: 10,
+      trackColor: clean ? "input" : "input:darken:5",
+      mt: 50,
     }),
   },
   select: {
@@ -126,7 +126,7 @@ interface Props {
   theme: object;
   children?: React.ReactNode;
   type?: string;
-  labelPosition?: 'top' | 'left';
+  labelPosition?: "top" | "left";
   label?: string;
   inputProps?: object;
   roundness: number;
@@ -157,13 +157,13 @@ const needsAutoHeight = {
 const Input = React.memo(
   ({
     value,
-    labelPosition = 'top',
+    labelPosition = "top",
     size = 55,
     error = false,
     theme,
     children,
-    type = 'text',
-    indicatorFocusColor = 'primary',
+    type = "text",
+    indicatorFocusColor = "primary",
     indicatorBlurColor,
     indicatorSize = 2,
     label,
@@ -176,7 +176,7 @@ const Input = React.memo(
     onChange,
     field,
     labelProps = {},
-    bg = 'input',
+    bg = "input",
     style,
     mt,
     mr,
@@ -190,7 +190,7 @@ const Input = React.memo(
 
     const radius = isNumber(roundness) ? roundness : theme.globals.roundness;
     const labelPositionStyle =
-      labelPosition === 'top'
+      labelPosition === "top"
         ? { pb: 5 }
         : {
             pl: 10,
@@ -206,14 +206,14 @@ const Input = React.memo(
       field,
       ...(TYPE && TYPE.props ? TYPE.props({ clean }) : {}),
       setFocus,
-      position: 'relative',
-      zIndex: type === 'range' ? 999 : 0,
+      position: "relative",
+      zIndex: type === "range" ? 999 : 0,
       ...rest,
-      width: '100%',
-      roundness: type === 'switch' ? undefined : radius,
-      size: type === 'switch' ? undefined : size,
+      width: "100%",
+      roundness: type === "switch" ? undefined : radius,
+      size: type === "switch" ? undefined : size,
       bg: needsBg[type] ? bg : undefined,
-      textAlign: labelPosition === 'top' ? undefined : 'right',
+      textAlign: labelPosition === "top" ? undefined : "right",
     };
 
     return (
@@ -221,22 +221,24 @@ const Input = React.memo(
         w="100%"
         mb={mb}
         {...rest}
-        bg={needsBg[type] && labelPosition !== 'top' ? bg : undefined}
-        row={labelPosition !== 'top'}
+        bg={needsBg[type] && labelPosition !== "top" ? bg : undefined}
+        row={labelPosition !== "top"}
         justifyContent={
-          labelPosition !== 'top' ? 'space-between' : 'flex-start'
+          labelPosition !== "top" ? "space-between" : "flex-start"
         }
         borderRadius={radius}
         relative
       >
-        <Flex pointerEvents="none" {...labelPositionStyle}>
-          <Text font="label" {...labelProps}>
-            {label}
-          </Text>
-        </Flex>
+        {label ? (
+          <Flex pointerEvents="none" {...labelPositionStyle}>
+            <Text font="label" {...labelProps}>
+              {label}
+            </Text>
+          </Flex>
+        ) : null}
         <Flex
           flex={1}
-          h={children || needsAutoHeight[type] ? 'auto' : size}
+          h={children || needsAutoHeight[type] ? "auto" : size}
           borderRadius={radius}
           justifyContent="center"
           relative
@@ -251,6 +253,7 @@ const Input = React.memo(
             t={-indicatorSize}
             r={-indicatorSize}
             b={-indicatorSize}
+            //duration={500}
             absolute
           />
           {children ? children : <Comp {...inputProps} />}
@@ -259,7 +262,7 @@ const Input = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    if (nextProps.type === 'select' && nextProps.multi) {
+    if (nextProps.type === "select" && nextProps.multi) {
       return false;
     } else if (
       JSON.stringify(prevProps.value) !== JSON.stringify(nextProps.value)
@@ -275,4 +278,4 @@ const Input = React.memo(
   }
 );
 
-export default withThemeProps(Input, 'Input');
+export default withThemeProps(Input, "Input");

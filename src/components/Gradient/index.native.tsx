@@ -33,11 +33,8 @@ interface Props {
 }
 
 export const Gradient = ({ colors, theme, deg = 90, ...rest }: Props) => {
-  console.log(1 * Math.cos(deg));
-  console.log(1 * Math.sin(deg));
   if (!colors) colors = theme.colors.gradient;
   const { parsedColors, id } = parseColors(colors, theme, deg);
-  console.log({ deg, res: degree(deg) });
   return (
     <Flex height="100%" width="100%" overflow="hidden" {...rest}>
       <Svg height="110%" width="110%" style={{ marignLeft: "-5%" }}>

@@ -37,7 +37,6 @@ function SwipeItem({
     const scaleOutputRange = [inactiveScale, 1, inactiveScale];
     const opacityOutputRange = [inactiveOpacity, 1, inactiveOpacity];
     const spacerOutputRange = [spacer, spacer, spacer * 1.5];
-    console.log({ spacerOutputRange });
 
     const transform = [
       {
@@ -245,7 +244,6 @@ export function Swiper(
           getValueByProgress(0, itemsCount, progress)
         );
         if (newIndex !== page.value) {
-          console.log({ index, newIndex, page: page.value });
           runOnJS(setIndex)(newIndex);
           page.value = newIndex;
         }

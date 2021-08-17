@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { withThemeProps } from '../../style';
-import { isNumber } from '../../util';
+import { withThemeProps } from "../../style";
+import { isNumber } from "../../util";
 
-import Button from '../Button';
-import Icon from '../Icon';
-import TextInput from './Text';
-import Group from '../Group';
+import Button from "../Button";
+import Icon from "../Icon";
+import TextInput from "./Text";
+import Group from "../Group";
 
 const NumberInput = ({
   theme,
@@ -16,7 +16,6 @@ const NumberInput = ({
   size = 50,
   ...rest
 }) => {
-  console.log({ value });
   if (!isNumber(value)) value = 0;
   return (
     <TextInput
@@ -55,4 +54,4 @@ const NumberInput = ({
   );
 };
 
-export default withThemeProps(NumberInput, 'Number');
+export default withThemeProps(NumberInput, "Number");

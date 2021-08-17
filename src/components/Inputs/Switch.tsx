@@ -117,16 +117,8 @@ const Switch = ({
             theme,
             p: gap,
           }}
-          renderHeader={({ translationX }) => {
-            return (
-              <Track
-                bg={activeTrackColor}
-                borderRadius={isNumber(roundness) ? roundness : size}
-                translationX={translationX}
-                size={size}
-              />
-            );
-          }}
+          activeScale={0.95}
+          scaleOnHover
         >
           <Flex
             shadow={handleShow || theme.globals.shadow}

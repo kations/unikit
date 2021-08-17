@@ -1,14 +1,14 @@
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import type { BaseTheme } from './types';
+import type { BaseTheme } from "./types";
 
-import deepmerge from '../util/deepMerge';
-import alertRef from '../components/Alert/ref';
+import deepmerge from "../util/deepMerge";
+import alertRef from "../components/Alert/ref";
 
-import ThemeContext from './context';
-import DefaultTheme from './theme';
-import { useDimensions } from '../hooks';
+import ThemeContext from "./context";
+import DefaultTheme from "./theme";
+import { useDimensions } from "../hooks";
 
 export function showAlert(obj: any) {
   if (alertRef.current) {

@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Svg, { G, Path } from 'react-native-svg';
+import * as React from "react";
+import Svg, { G, Path } from "react-native-svg";
 
-import { withThemeProps, transformColor } from '../../style';
-import Pointer from '../Pointer';
-import Button from '../Button';
-import Flex from '../Flex';
+import { withThemeProps, transformColor } from "../../style";
+import Pointer from "../Pointer";
+import Button from "../Button";
+import Flex from "../Flex";
 
 const plotToSvg = (points: any[]) => {
   if (points.length > 0) {
@@ -14,24 +14,23 @@ const plotToSvg = (points: any[]) => {
     });
     return path;
   } else {
-    return '';
+    return "";
   }
 };
 
 const Draw = ({
   theme,
   children,
-  stroke = 'text',
+  stroke = "text",
   strokeWidth = 2,
   smoothing = 0.2,
-  strokeLinejoin = 'round',
+  strokeLinejoin = "round",
   onDraw,
   ...rest
 }) => {
   const [paths, setPaths] = React.useState([]);
   const [pointer, setPointer] = React.useState(false);
   const [points, setPoints] = React.useState([]);
-  console.log({ points, pointer });
 
   React.useEffect(() => {
     if (!pointer) {
@@ -45,10 +44,10 @@ const Draw = ({
   }, [paths]);
 
   const pathProps = {
-    stroke: transformColor({ value: stroke, theme, themeKey: 'colors' }),
+    stroke: transformColor({ value: stroke, theme, themeKey: "colors" }),
     strokeWidth,
     strokeLinejoin,
-    fill: 'none',
+    fill: "none",
   };
 
   return (
@@ -65,7 +64,7 @@ const Draw = ({
           setPointer(false);
         }}
         relative
-        webStyle={{ cursor: 'crosshair' }}
+        webStyle={{ cursor: "crosshair" }}
         {...rest}
       >
         {({ width, height }) => {
@@ -92,4 +91,4 @@ const Draw = ({
   );
 };
 
-export default withThemeProps(Draw, 'Draw');
+export default withThemeProps(Draw, "Draw");

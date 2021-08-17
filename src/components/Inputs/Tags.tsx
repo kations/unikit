@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { withThemeProps } from '../../style';
+import { withThemeProps } from "../../style";
 
-import TextInput from './Text';
-import Icon from '../Icon';
-import Flex from '../Flex';
-import Button from '../Button';
+import TextInput from "./Text";
+import Icon from "../Icon";
+import Flex from "../Flex";
+import Button from "../Button";
 
-import Animate from '../Animate';
-import { isNumber } from '../../util';
+import Animate from "../Animate";
+import { isNumber } from "../../util";
 
 const Tags = ({
   theme,
@@ -16,19 +16,19 @@ const Tags = ({
   value = [],
   onChange,
   textInputProps = {},
-  placeholder = 'Add Tag...',
-  submitOnString = [' ', ','],
+  placeholder = "Add Tag...",
+  submitOnString = [" ", ","],
   setFocus,
   roundness,
   ...rest
 }) => {
-  const [text, setText] = React.useState('');
+  const [text, setText] = React.useState("");
   const submit = () => {
     if (text.length > 0) {
       const newArray = value;
       newArray.push(text);
       onChange(newArray);
-      setText('');
+      setText("");
     }
   };
   const revert = (index) => {
@@ -68,7 +68,6 @@ const Tags = ({
       <TextInput
         value={text}
         onChange={(value) => {
-          console.log({ value });
           if (
             value.length > 1 &&
             submitOnString.indexOf(value.substr(value.length - 1)) > -1
@@ -81,11 +80,11 @@ const Tags = ({
         placeholder={placeholder}
         onSubmitEditing={() => submit()}
         {...textInputProps}
-        style={{ width: 'auto', flex: 1 }}
+        style={{ width: "auto", flex: 1 }}
         setFocus={setFocus}
       />
     </Flex>
   );
 };
 
-export default withThemeProps(Tags, 'Tags');
+export default withThemeProps(Tags, "Tags");

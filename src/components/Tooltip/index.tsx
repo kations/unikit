@@ -1,7 +1,7 @@
 //  @flow
 
-import * as React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   TouchableOpacity,
@@ -9,14 +9,14 @@ import {
   View,
   I18nManager,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 
-import Triangle from './Triangle';
-import { ScreenWidth, ScreenHeight, isIOS } from './helpers';
-import getTooltipCoordinate from './getTooltipCoordinate';
-import Flex from '../Flex';
-import Animate from '../Animate';
-import { withThemeProps, Touchable } from '../../style';
+import Triangle from "./Triangle";
+import { ScreenWidth, ScreenHeight, isIOS } from "./helpers";
+import getTooltipCoordinate from "./getTooltipCoordinate";
+import Flex from "../Flex";
+import { withThemeProps, Touchable } from "../../style";
+import { useUpdateEffect } from "../../hooks";
 
 type Props = {
   withPointer: boolean;
@@ -33,7 +33,7 @@ type Props = {
   backgroundColor: string;
   highlightColor: string;
   toggleWrapperProps: {};
-  actionType: 'press' | 'longPress' | 'none';
+  actionType: "press" | "longPress" | "none";
   hover?: boolean;
 };
 
@@ -67,17 +67,19 @@ function Tooltip({
   width = 250,
   maxWidth,
   containerStyle = {},
+  containerProps = {},
   pointerStyle = {},
   onClose = () => {},
   onOpen = () => {},
   withOverlay = true,
-  overlayColor = 'rgba(0,0,0,0.1)',
-  color = 'primary',
-  highlightColor = 'transparent',
+  overlayColor = "rgba(0,0,0,0.2)",
+  color = "primary",
+  highlightColor = "transparent",
   toggleWrapperProps = {},
-  actionType = 'press',
+  actionType = "press",
   hover = false,
   useScrollView = false,
+  visible,
   ...rest
 }: Props) {
   if (maxWidth && maxWidth < width) width = maxWidth;
@@ -107,20 +109,32 @@ function Tooltip({
     getElementPosition();
   }, [ref.current]);
 
+  useUpdateEffect(() => {
+    if (isVisible === false) {
+      onClose && onClose();
+    }
+  }, [isVisible]);
+
   const toggleTooltip = () => {
     getElementPosition();
     setVisible((prevState) => {
-      if (prevState && !isIOS) {
-        onClose && onClose();
-      }
-
       return !prevState;
     });
   };
 
+  useUpdateEffect(() => {
+    if (visible !== undefined) {
+      if (visible === false) {
+        setVisible(false);
+      } else {
+        toggleTooltip();
+      }
+    }
+  }, [visible]);
+
   const wrapWithAction = (actionType, children) => {
     switch (actionType) {
-      case 'press':
+      case "press":
         return (
           <Touchable
             onPress={toggleTooltip}
@@ -128,17 +142,22 @@ function Tooltip({
             onMouseOver={hover ? () => toggleTooltip() : undefined}
             {...toggleWrapperProps}
           >
-            {children}
+            {children instanceof Function
+              ? children({ toggleTooltip })
+              : children}
           </Touchable>
         );
-      case 'longPress':
+      case "longPress":
         return (
           <Touchable
             onLongPress={toggleTooltip}
             activeOpacity={1}
+            onMouseOver={hover ? () => toggleTooltip() : undefined}
             {...toggleWrapperProps}
           >
-            {children}
+            {children instanceof Function
+              ? children({ toggleTooltip })
+              : children}
           </Touchable>
         );
       default:
@@ -166,13 +185,13 @@ function Tooltip({
       ? yOffset - 20 - insets.top
       : theme.height - (yOffset + elementHeight + 20 + insets.bottom);
     const tooltipStyle = {
-      position: 'absolute',
+      position: "absolute",
       left: I18nManager.isRTL ? null : x,
       right: I18nManager.isRTL ? x : null,
       width: width > theme.width ? theme.width - 20 : width,
       maxHeight,
       // default styles
-      display: 'flex',
+      display: "flex",
       flex: 1,
       borderRadius: 10,
       ...containerStyle,
@@ -193,7 +212,7 @@ function Tooltip({
     return (
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: pastMiddleLine ? yOffset - 13 : yOffset + elementHeight - 2,
           left: I18nManager.isRTL ? null : xOffset + elementWidth / 2 - 7.5,
           right: I18nManager.isRTL ? xOffset + elementWidth / 2 - 7.5 : null,
@@ -221,18 +240,20 @@ function Tooltip({
       <>
         <View
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: yOffset,
             left: I18nManager.isRTL ? null : xOffset,
             right: I18nManager.isRTL ? xOffset : null,
             backgroundColor: highlightColor,
-            overflow: 'visible',
+            overflow: "visible",
             width: elementWidth,
             height: elementHeight,
           }}
           // onMouseLeave={hover ? () => toggleTooltip() : undefined}
         >
-          {children}
+          {children instanceof Function
+            ? children({ toggleTooltip })
+            : children}
         </View>
         {withPointer && renderPointer(!tooltipStyle.top)}
         <Touchable
@@ -241,6 +262,7 @@ function Tooltip({
           bg={color}
           style={tooltipStyle}
           onMouseLeave={hover ? () => toggleTooltip() : undefined}
+          {...rest}
         >
           <Wrapper
             {...(useScrollView
@@ -263,7 +285,7 @@ function Tooltip({
   };
 
   return (
-    <Flex collapsable={false} ref={ref} {...rest}>
+    <Flex collapsable={false} ref={ref}>
       {renderContent(false)}
       <Modal
         animationType="fade"
@@ -279,8 +301,8 @@ function Tooltip({
             backgroundColor: withOverlay
               ? overlayColor
                 ? overlayColor
-                : 'rgba(250, 250, 250, 0.70)'
-              : 'transparent',
+                : "rgba(250, 250, 250, 0.70)"
+              : "transparent",
           }}
           onPress={toggleTooltip}
           activeOpacity={1}
@@ -292,4 +314,4 @@ function Tooltip({
   );
 }
 
-export default withThemeProps(Tooltip, 'Tooltip');
+export default withThemeProps(Tooltip, "Tooltip");

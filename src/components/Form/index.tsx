@@ -1,18 +1,18 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { withThemeProps } from '../../style';
-import Button from '../Button';
-import Flex from '../Flex';
-import Text from '../Text';
-import { getValue, setValue, isWeb, isFunction } from '../../util';
-import { useDebounce } from '../../hooks';
+import { withThemeProps } from "../../style";
+import Button from "../Button";
+import Flex from "../Flex";
+import Text from "../Text";
+import { getValue, setValue, isWeb, isFunction } from "../../util";
+import { useDebounce, useUpdateEffect } from "../../hooks";
 
 const getDefaultValue = ({ child: { props } }) => {
   let value = undefined;
-  if (props.type === 'range') {
+  if (props.type === "range") {
     value = 0;
   }
-  if (props.type === 'switch' || props.type === 'checkbox') {
+  if (props.type === "switch" || props.type === "checkbox") {
     value = false;
   }
   if (props.defaultValue) value = props.defaultValue;
@@ -26,7 +26,7 @@ const getDefaultState = (children, defaultDoc) => {
       child.props && child.props.field ? child.props.field : undefined;
     if (
       key &&
-      typeof key === 'string' &&
+      typeof key === "string" &&
       key.length > 0 &&
       getValue(state, key) === undefined
     ) {
@@ -55,7 +55,7 @@ const renderChildren = (children, doc, setDoc, inputProps) => {
       children:
         child.props &&
         child.props.children &&
-        typeof child.props.children !== 'string'
+        typeof child.props.children !== "string"
           ? renderChildren(child.props.children, doc, setDoc)
           : child.props.children,
     });
@@ -70,13 +70,14 @@ const Form = React.forwardRef(
       onChange,
       onValidate,
       button = true,
-      buttonLabel = 'Submit',
+      buttonLabel = "Submit",
       buttonProps = { mt: 10 },
       defaultDoc = {},
       leftAction,
       rightAction,
       inputProps = {},
-      debug = true,
+      debug = false,
+      onChangeDelay = 500,
       ...rest
     },
     ref
@@ -86,13 +87,9 @@ const Form = React.forwardRef(
       return getDefaultState(children, defaultDoc);
     });
 
-    const debouncedDoc = useDebounce(doc, 500);
+    const debouncedDoc = useDebounce(doc, onChangeDelay);
 
-    React.useEffect(() => {
-      if (onChange) onChange(doc);
-    }, [doc]);
-
-    React.useEffect(() => {
+    useUpdateEffect(() => {
       if (onChange) onChange(doc);
     }, [debouncedDoc]);
 
@@ -109,7 +106,6 @@ const Form = React.forwardRef(
     }));
 
     const setDocState = (key, value) => {
-      console.log({ key, value });
       setDoc((doc) => {
         const newDoc = { ...(doc || {}) };
         setValue(newDoc, key, value);
@@ -118,7 +114,7 @@ const Form = React.forwardRef(
     };
 
     return (
-      <Flex w="100%" {...rest} accessibilityRole={isWeb ? 'form' : 'none'}>
+      <Flex w="100%" {...rest} accessibilityRole={isWeb ? "form" : "none"}>
         {renderChildren(
           isFunction(children) ? children({ doc }) : children,
           doc,
@@ -152,4 +148,4 @@ const Form = React.forwardRef(
   }
 );
 
-export default withThemeProps(Form, 'Form');
+export default withThemeProps(Form, "Form");

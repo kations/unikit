@@ -1,19 +1,19 @@
-import * as React from 'react';
+import * as React from "react";
 //import { scaleLinear } from 'd3-scale';
 
 import Reanimated, {
   useAnimatedStyle,
   useDerivedValue,
   runOnJS,
-} from 'react-native-reanimated';
-import { useLayout } from '../../hooks';
-import { withThemeProps, styled } from '../../style';
-import { getProgress, getValueByProgress, isNumber } from '../../util';
+} from "react-native-reanimated";
+import { useLayout } from "../../hooks";
+import { withThemeProps, styled } from "../../style";
+import { getProgress, getValueByProgress, isNumber } from "../../util";
 
-import Button from '../Button';
-import Flex from '../Flex';
-import Animate from '../Animate';
-import Draggable from '../Draggable';
+import Button from "../Button";
+import Flex from "../Flex";
+import Animate from "../Animate";
+import Draggable from "../Draggable";
 
 Reanimated.addWhitelistedNativeProps({ text: true });
 const Track = styled(Reanimated.createAnimatedComponent(Flex))();
@@ -28,12 +28,12 @@ const TrackProgress = ({
   const widthStyle = useAnimatedStyle(() => {
     return {
       width: translationX.value,
-      position: 'absolute',
+      position: "absolute",
       height: trackHeight,
       top: handleSize / 2 - trackHeight / 2,
       right: handleSize / 2,
       borderRadius,
-      pointerEvents: 'none',
+      pointerEvents: "none",
     };
   });
   return <Track bg={progressColor} style={widthStyle}></Track>;
@@ -41,7 +41,7 @@ const TrackProgress = ({
 
 const countDecimals = function (num: number) {
   if (Math.floor(num.valueOf()) === num.valueOf()) return 0;
-  return num.toString().split('.')[1].length || 0;
+  return num.toString().split(".")[1].length || 0;
 };
 
 const ValueButton = ({
@@ -52,8 +52,10 @@ const ValueButton = ({
   calcValue,
   onSlide,
   steps,
+  formatValue,
+  showValueOnDrag = false,
 }) => {
-  const [text, setText] = React.useState('0');
+  const [text, setText] = React.useState("0");
 
   const recordResult = (result: number) => {
     const v = calcValue(result, false);
@@ -73,7 +75,7 @@ const ValueButton = ({
 
   return (
     <Animate
-      visible={dragging}
+      visible={showValueOnDrag ? dragging : true}
       from={{ y: 10, opacity: 0 }}
       to={{ y: 0, opacity: 1 }}
       duration={500}
@@ -87,9 +89,10 @@ const ValueButton = ({
         bg={progressColor}
         size={handleSize * 0.66}
         rounded
-        webStyle={{ userSelect: 'none' }}
+        webStyle={{ userSelect: "none" }}
+        labelProps={{ fontSize: 10 }}
       >
-        {text}
+        {formatValue ? formatValue(text) : text}
       </Button>
     </Animate>
   );
@@ -105,9 +108,9 @@ const Slider = ({
   theme,
   value = 0,
   onChange,
-  trackColor = 'input',
-  handleColor = 'input',
-  progressColor = 'primary',
+  trackColor = "input",
+  handleColor = "input",
+  progressColor = "primary",
   trackHeight = 10,
   handleSize = 30,
   showHandle = true,
@@ -115,6 +118,7 @@ const Slider = ({
   max = 100,
   steps = 1,
   showValue = true,
+  showValueOnDrag = false,
   panValue = false,
   showTicks = true,
   ticks,
@@ -133,12 +137,12 @@ const Slider = ({
 }) => {
   const { onLayout, width } = useLayout();
   const [values, setValues] = React.useState(() =>
-    Array.isArray(value) ? sortValue(value).reverse() : [value || 0]
+    Array.isArray(value) ? sortValue([...value]).reverse() : [value || 0]
   );
 
   React.useEffect(() => {
     const newValues = Array.isArray(value)
-      ? sortValue(value).reverse()
+      ? sortValue([...value]).reverse()
       : [value || 0];
     if (JSON.stringify(newValues) !== JSON.stringify(values))
       setValues([...newValues]);
@@ -216,7 +220,8 @@ const Slider = ({
                           }
                         }
                         newValue[i] = v;
-                        if (onChange) onChange(sortValue(newValue));
+                        const sortedNewValue = sortValue(newValue);
+                        if (onChange) onChange(sortedNewValue);
                       } else {
                         if (onChange) onChange(v);
                       }
@@ -264,6 +269,8 @@ const Slider = ({
                               dragging={dragging}
                               onSlide={onSlide}
                               steps={steps}
+                              formatValue={formatValue}
+                              showValueOnDrag={showValueOnDrag}
                             />
                           ) : null}
                           <Flex
@@ -288,4 +295,4 @@ const Slider = ({
   );
 };
 
-export default withThemeProps(Slider, 'Slider');
+export default withThemeProps(Slider, "Slider");

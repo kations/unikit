@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Animate from '../Animate';
-import { styled, withThemeProps } from '../../style';
+import Animate from "../Animate";
+import { styled, withThemeProps } from "../../style";
 
 const Touchable = styled.Touchable();
 
@@ -19,7 +19,7 @@ function Ripple({
   children,
   onPress,
   size = 50,
-  rippleColor = 'text',
+  rippleColor = "text",
   overflow = false,
   disabled = false,
   ...rest
@@ -36,7 +36,6 @@ function Ripple({
       onPress={(e) => {
         if (disabled !== true) {
           let { locationX, layerX, locationY, layerY } = e.nativeEvent;
-          console.log({ locationX, layerX, locationY, layerY });
           if (onPress) onPress();
           setItems((state) => [
             ...state,
@@ -49,7 +48,7 @@ function Ripple({
         }
       }}
       {...rest}
-      overflow={!overflow ? 'hidden' : undefined}
+      overflow={!overflow ? "hidden" : undefined}
       pointerEvents="box-only"
       relative
     >
@@ -78,4 +77,4 @@ function Ripple({
   );
 }
 
-export default withThemeProps(Ripple, 'Ripple');
+export default withThemeProps(Ripple, "Ripple");

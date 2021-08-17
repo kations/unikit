@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
+import * as React from "react";
+import Svg, { Path } from "react-native-svg";
 
-import icons from './icons';
-import { withThemeProps } from '../../style';
-import AnimatedPath from '../AnimatedPath';
-import Flex from '../Flex';
+import icons from "./icons";
+import { withThemeProps, transformColor } from "../../style";
+import AnimatedPath from "../AnimatedPath";
+import Flex from "../Flex";
 
 interface Props {
   theme: object;
@@ -23,14 +23,15 @@ interface Props {
 
 const Icon = ({
   theme,
-  name = 'activity',
+  name = "activity",
   size = 24,
-  color = 'primary',
-  strokeLinecap = 'round',
-  strokeLinejoin = 'round',
+  color = "primary",
+  strokeLinecap = "round",
+  strokeLinejoin = "round",
   strokeWidth = 1.5,
   fill = false,
   animate = false,
+  animateFillPath,
   duration,
   delay = 250,
   ...rest
@@ -40,6 +41,12 @@ const Icon = ({
     () => (animate ? AnimatedPath : Path),
     [animate]
   );
+  const c1 = transformColor({ value: color, theme, themeKey: "colors" });
+  const c2 = transformColor({
+    value: animateFillPath,
+    theme,
+    themeKey: "colors",
+  });
   return (
     <Flex {...rest}>
       <Svg
@@ -48,10 +55,15 @@ const Icon = ({
         viewBox={`0 0 24 24`}
         strokeLinecap={strokeLinecap}
         strokeLinejoin={strokeLinejoin}
-        fill={fill ? theme.colors[color] || color : 'transparent'}
-        stroke={theme.colors[color] || color}
+        fill={fill ? c1 : "transparent"}
+        stroke={c1}
         strokeWidth={strokeWidth}
       >
+        {animateFillPath
+          ? paths.map((path, i) => {
+              return <Path key={`bg-path-${name}-${i}`} d={path} stroke={c2} />;
+            })
+          : null}
         {paths.map((path, i) => {
           return (
             <PathComp
@@ -67,4 +79,4 @@ const Icon = ({
   );
 };
 
-export default withThemeProps(Icon, 'Icon');
+export default withThemeProps(Icon, "Icon");

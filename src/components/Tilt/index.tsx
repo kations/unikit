@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Animate from '../Animate';
-import { withThemeProps } from '../../style';
-import Pointer from '../Pointer';
+import Animate from "../Animate";
+import { withThemeProps } from "../../style";
+import Pointer from "../Pointer";
 
 const getTilt = ({ reverse, max, x, y }) => {
   const r = reverse ? -1 : 1;
   return {
-    x: (r * (max / 2 - x * max)).toFixed(2) + 'deg',
-    y: (r * (y * max - max / 2)).toFixed(2) + 'deg',
+    x: (r * (max / 2 - x * max)).toFixed(2) + "deg",
+    y: (r * (y * max - max / 2)).toFixed(2) + "deg",
   };
 };
 
@@ -28,12 +28,11 @@ const Tilt = ({
     <Pointer mouse={mouse} delayedPointer={50} resetOnRelease {...rest}>
       {({ xProgress, yProgress, pointer, delayedPointer }) => {
         const tilt = getTilt({ reverse, max, x: xProgress, y: yProgress });
-        console.log({ tilt });
         return (
           <Animate
             paused={pointer === false ? pointer : delayedPointer}
             duration={500}
-            style={mouse ? {} : { cursor: 'grab' }}
+            style={mouse ? {} : { cursor: "grab" }}
             to={{
               perspective,
               scale: pointer ? scale : 1,
@@ -49,4 +48,4 @@ const Tilt = ({
   );
 };
 
-export default withThemeProps(Tilt, 'Tilt');
+export default withThemeProps(Tilt, "Tilt");
